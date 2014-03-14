@@ -8,87 +8,64 @@
     <script src="dev-lib/kityformula-parser.all.js"></script>
     <script src="dev-lib/sea-debug.js"></script>
     <script>
+
+        seajs.config( {
+            base: "./src"
+        } );
+
+    </script>
+    <script>
+
+        define( 'start', function ( require ) {
+
+            var Editor = require( "editor/editor" ),
+                editor = new Editor( document.getElementsByClassName( "kf-editor-container" )[ 0 ], {
+                    formula: {
+                        fontsize: 30
+                    }
+                } );
+
+//            initCapture();
+
+            var currentLatexStr = 'a+b-3\\div 4 + c = \\sqrt[]{} ';
+
+            editor.render( currentLatexStr );
+
+        } );
+
         window.onload = function () {
 
-            var assembly = kf.Assembly.use( document.getElementsByClassName( "kf-editor-container" )[ 0 ], {
-                        fontsize: 50,
-                        autoresize: false
-                    } ),
-                parser = kf.Parser.use( "latex" ),
-                viewPort = assembly.formula.getViewPort(),
-                formulaSpace = null,
-                REZISE_TIMER = null;
+            seajs.use( 'start' );
 
-            // 输入数据
-            var currentLatexStr = 'a+b-3\\div 4';
+        };
 
-            generateFormula( currentLatexStr );
+        function initCapture () {
 
-            function generateFormula ( latexStr ) {
+            document.getElementsByTagName( "svg" )[0].onmousedown = function ( e ) {
 
-                assembly.regenerateBy( parser.parse( latexStr ) );
+                var group = getGroup( e.target );
 
-                formulaSpace = assembly.formula.container.getRenderBox();
-
-                viewPort.center.x = formulaSpace.width / 2;
-                viewPort.center.y = formulaSpace.height / 2;
-                assembly.formula.setViewPort( viewPort );
-
-            }
-
-            /* 滚轮事件 */
-            document.addEventListener( "mousewheel", function ( e ) {
-
-                if ( e.wheelDelta > 0 ) {
-                    enlargeView();
-                } else {
-                    narrowView();
-                }
-
-            } );
-
-
-            function enlargeView () {
-                updateViewZoom( 1.05 );
-            }
-
-            function narrowView () {
-                updateViewZoom( 0.95 );
-            }
-
-            function updateViewZoom ( zoom ) {
-
-                var viewPort = assembly.formula.getViewPort();
-
-                zoom = viewPort.zoom * zoom;
-
-                if ( zoom < 0.5 || zoom > 5 ) {
-                    return false;
-                }
-
-                viewPort.zoom = zoom;
-
-                assembly.formula.setViewPort( viewPort );
-
-            }
-
-            /* 视图变化 重新渲染 */
-            window.onresize = function () {
-
-                if ( REZISE_TIMER !== null ) {
-                    window.clearTimeout( REZISE_TIMER );
-                }
-
-                REZISE_TIMER = window.setTimeout( function () {
-
-                    generateFormula( currentLatexStr );
-
-                }, 100 );
+                debugger;
 
             };
 
+        }
 
-        };
+        function getGroup ( node ) {
+
+            var tagName = node.tagName.toLowerCase();
+
+            if ( tagName === "svg" ) {
+                return null;
+            }
+
+            if ( tagName === "g" && node.getAttribute( "data-type" ) === "kf-editor-group" ) {
+                return node;
+            } else {
+                return getGroup( node.parentNode );
+            }
+
+        }
 
     </script>
     <link rel="stylesheet" href="assets/styles/page.css">

@@ -1,6 +1,6 @@
 /*!
  * ====================================================
- * Kity Formula - v1.0.0 - 2014-03-10
+ * Kity Formula - v1.0.0 - 2014-03-14
  * https://github.com/kitygraph/formula
  * GitHub: https://github.com/kitygraph/formula.git 
  * Copyright (c) 2014 Baidu Kity Group; Licensed MIT
@@ -88,7 +88,7 @@ function use ( id ) {
 /**
  * 字符类
  */
-define("char/char", [ "kity", "char/data", "char/data/number/0", "char/data/number/1", "char/data/number/2", "char/data/number/3", "char/data/number/4", "char/data/number/5", "char/data/number/6", "char/data/number/7", "char/data/number/8", "char/data/number/9", "char/data/character/a", "char/data/character/b", "char/data/character/c", "char/data/character/d", "char/data/character/e", "char/data/character/f", "char/data/character/g", "char/data/character/h", "char/data/character/i", "char/data/character/j", "char/data/character/k", "char/data/character/l", "char/data/character/m", "char/data/character/n", "char/data/character/o", "char/data/character/p", "char/data/character/q", "char/data/character/r", "char/data/character/s", "char/data/character/t", "char/data/character/u", "char/data/character/v", "char/data/character/w", "char/data/character/x", "char/data/character/y", "char/data/character/z", "char/data/character/ua", "char/data/character/ub", "char/data/character/uc", "char/data/character/ud", "char/data/character/ue", "char/data/character/uf", "char/data/character/ug", "char/data/character/uh", "char/data/character/ui", "char/data/character/uj", "char/data/character/uk", "char/data/character/ul", "char/data/character/um", "char/data/character/un", "char/data/character/uo", "char/data/character/up", "char/data/character/uq", "char/data/character/ur", "char/data/character/us", "char/data/character/ut", "char/data/character/uu", "char/data/character/uv", "char/data/character/uw", "char/data/character/ux", "char/data/character/uy", "char/data/character/uz", "char/data/symbol/l-parentheses", "char/data/symbol/r-parentheses", "char/data/symbol/negative", "char/data/symbol/positive", "char/data/symbol/vertical", "char/data/symbol/slash", "char/data/symbol/exclamation", "char/data/symbol/l-brackets", "char/data/symbol/r-brackets", "char/data/symbol/colon", "char/data/symbol/quotation", "char/data/symbol/lt", "char/data/symbol/gt", "char/data/symbol/point", "char/data/symbol/l-braces", "char/data/symbol/r-braces", "char/data/symbol/comma", "char/data/symbol/times", "char/data/symbol/div", "char/data/symbol/asterisk", "char/data/symbol/dot", "char/data/symbol/eq", "char/data/symbol/infty", "char/data/symbol/to", "char/data/greek/alpha", "char/data/greek/beta", "char/data/greek/gamma", "char/data/greek/delta", "char/data/greek/epsilon", "char/data/greek/zeta", "char/data/greek/eta", "char/data/greek/theta", "char/data/greek/iota", "char/data/greek/kappa", "char/data/greek/lambda", "char/data/greek/mu", "char/data/greek/nu", "char/data/greek/xi", "char/data/greek/pi", "char/data/greek/rho", "char/data/greek/sigma", "char/data/greek/tau", "char/data/greek/upsilon", "char/data/greek/phi", "char/data/greek/chi", "char/data/greek/psi", "char/data/greek/omega", "char/data/roman/ua", "char/data/roman/ub", "char/data/greek/u-gamma", "char/data/greek/u-delta", "char/data/roman/ue", "char/data/roman/uz", "char/data/roman/uh", "char/data/greek/u-theta", "char/data/roman/ui", "char/data/roman/uk", "char/data/greek/u-lambda", "char/data/roman/um", "char/data/roman/un", "char/data/greek/u-xi", "char/data/roman/uo", "char/data/greek/u-pi", "char/data/roman/up", "char/data/greek/u-sigma", "char/data/roman/ut", "char/data/greek/u-upsilon", "char/data/greek/u-phi", "char/data/roman/ux", "char/data/greek/u-psi", "char/data/greek/u-omega", "char/data/roman/a", "char/data/roman/b", "char/data/roman/c", "char/data/roman/d", "char/data/roman/e", "char/data/roman/f", "char/data/roman/g", "char/data/roman/h", "char/data/roman/i", "char/data/roman/j", "char/data/roman/k", "char/data/roman/l", "char/data/roman/m", "char/data/roman/n", "char/data/roman/o", "char/data/roman/p", "char/data/roman/q", "char/data/roman/r", "char/data/roman/s", "char/data/roman/t", "char/data/roman/u", "char/data/roman/v", "char/data/roman/w", "char/data/roman/x", "char/data/roman/y", "char/data/roman/z", "char/data/roman/uc", "char/data/roman/ud", "char/data/roman/uf", "char/data/roman/ug", "char/data/roman/uj", "char/data/roman/ul", "char/data/roman/uq", "char/data/roman/ur", "char/data/roman/us", "char/data/roman/uu", "char/data/roman/uv", "char/data/roman/uw", "char/data/roman/uy", "signgroup" ], function(require, exports, module) {
+define("char/char", [ "kity", "char/data", "char/data/number/0", "char/data/number/1", "char/data/number/2", "char/data/number/3", "char/data/number/4", "char/data/number/5", "char/data/number/6", "char/data/number/7", "char/data/number/8", "char/data/number/9", "char/data/character/a", "char/data/character/b", "char/data/character/c", "char/data/character/d", "char/data/character/e", "char/data/character/f", "char/data/character/g", "char/data/character/h", "char/data/character/i", "char/data/character/j", "char/data/character/k", "char/data/character/l", "char/data/character/m", "char/data/character/n", "char/data/character/o", "char/data/character/p", "char/data/character/q", "char/data/character/r", "char/data/character/s", "char/data/character/t", "char/data/character/u", "char/data/character/v", "char/data/character/w", "char/data/character/x", "char/data/character/y", "char/data/character/z", "char/data/character/ua", "char/data/character/ub", "char/data/character/uc", "char/data/character/ud", "char/data/character/ue", "char/data/character/uf", "char/data/character/ug", "char/data/character/uh", "char/data/character/ui", "char/data/character/uj", "char/data/character/uk", "char/data/character/ul", "char/data/character/um", "char/data/character/un", "char/data/character/uo", "char/data/character/up", "char/data/character/uq", "char/data/character/ur", "char/data/character/us", "char/data/character/ut", "char/data/character/uu", "char/data/character/uv", "char/data/character/uw", "char/data/character/ux", "char/data/character/uy", "char/data/character/uz", "char/data/symbol/l-parentheses", "char/data/symbol/r-parentheses", "char/data/symbol/negative", "char/data/symbol/relational/eq", "char/data/symbol/positive", "char/data/symbol/vertical", "char/data/symbol/slash", "char/data/symbol/exclamation", "char/data/symbol/l-brackets", "char/data/symbol/r-brackets", "char/data/symbol/colon", "char/data/symbol/quotation", "char/data/symbol/relational/lt", "char/data/symbol/relational/gt", "char/data/symbol/point", "char/data/symbol/l-braces", "char/data/symbol/r-braces", "char/data/symbol/comma", "char/data/symbol/times", "char/data/symbol/div", "char/data/symbol/pm", "char/data/symbol/mp", "char/data/symbol/ast", "char/data/symbol/cdot", "char/data/symbol/cdots", "char/data/symbol/ddots", "char/data/symbol/ldots", "char/data/symbol/vdots", "char/data/symbol/wedge", "char/data/symbol/vee", "char/data/symbol/mid", "char/data/symbol/relational/approx", "char/data/symbol/relational/equiv", "char/data/symbol/relational/geq", "char/data/symbol/relational/gg", "char/data/symbol/relational/leq", "char/data/symbol/relational/ll", "char/data/symbol/relational/sim", "char/data/symbol/relational/simeq", "char/data/symbol/set/cap", "char/data/symbol/set/cup", "char/data/symbol/set/in", "char/data/symbol/set/ni", "char/data/symbol/set/sqcap", "char/data/symbol/set/sqcup", "char/data/symbol/set/sqsubset", "char/data/symbol/set/sqsubseteq", "char/data/symbol/set/sqsupset", "char/data/symbol/set/sqsupseteq", "char/data/symbol/set/subset", "char/data/symbol/set/subseteq", "char/data/symbol/set/supset", "char/data/symbol/set/supseteq", "char/data/symbol/not/ncong", "char/data/symbol/not/neq", "char/data/symbol/not/nequiv", "char/data/symbol/not/nge", "char/data/symbol/not/ngt", "char/data/symbol/not/nlt", "char/data/symbol/not/nle", "char/data/symbol/not/nsim", "char/data/symbol/not/nsubseteq", "char/data/symbol/not/nsupseteq", "char/data/symbol/not/nin", "char/data/symbol/infty", "char/data/symbol/to", "char/data/greek/alpha", "char/data/greek/beta", "char/data/greek/gamma", "char/data/greek/delta", "char/data/greek/epsilon", "char/data/greek/varepsilon", "char/data/greek/zeta", "char/data/greek/eta", "char/data/greek/theta", "char/data/greek/iota", "char/data/greek/kappa", "char/data/greek/lambda", "char/data/greek/mu", "char/data/greek/nu", "char/data/greek/xi", "char/data/greek/pi", "char/data/greek/rho", "char/data/greek/sigma", "char/data/greek/tau", "char/data/greek/upsilon", "char/data/greek/phi", "char/data/greek/varphi", "char/data/greek/chi", "char/data/greek/psi", "char/data/greek/omega", "char/data/roman/ua", "char/data/roman/ub", "char/data/greek/u-gamma", "char/data/greek/u-delta", "char/data/roman/ue", "char/data/roman/uz", "char/data/roman/uh", "char/data/greek/u-theta", "char/data/roman/ui", "char/data/roman/uk", "char/data/greek/u-lambda", "char/data/roman/um", "char/data/roman/un", "char/data/greek/u-xi", "char/data/roman/uo", "char/data/greek/u-pi", "char/data/roman/up", "char/data/greek/u-sigma", "char/data/roman/ut", "char/data/greek/u-upsilon", "char/data/greek/u-phi", "char/data/roman/ux", "char/data/greek/u-psi", "char/data/greek/u-omega", "char/data/roman/a", "char/data/roman/b", "char/data/roman/c", "char/data/roman/d", "char/data/roman/e", "char/data/roman/f", "char/data/roman/g", "char/data/roman/h", "char/data/roman/i", "char/data/roman/j", "char/data/roman/k", "char/data/roman/l", "char/data/roman/m", "char/data/roman/n", "char/data/roman/o", "char/data/roman/p", "char/data/roman/q", "char/data/roman/r", "char/data/roman/s", "char/data/roman/t", "char/data/roman/u", "char/data/roman/v", "char/data/roman/w", "char/data/roman/x", "char/data/roman/y", "char/data/roman/z", "char/data/roman/uc", "char/data/roman/ud", "char/data/roman/uf", "char/data/roman/ug", "char/data/roman/uj", "char/data/roman/ul", "char/data/roman/uq", "char/data/roman/ur", "char/data/roman/us", "char/data/roman/uu", "char/data/roman/uv", "char/data/roman/uw", "char/data/roman/uy", "signgroup", "def/gtype" ], function(require, exports, module) {
     var kity = require("kity"), CHAR_DATA = require("char/data");
     return kity.createClass("Char", {
         base: require("signgroup"),
@@ -127,7 +127,7 @@ define("char/char", [ "kity", "char/data", "char/data/number/0", "char/data/numb
 /**
  * 字符与pathdata映射
  */
-define("char/data", [ "char/data/number/0", "char/data/number/1", "char/data/number/2", "char/data/number/3", "char/data/number/4", "char/data/number/5", "char/data/number/6", "char/data/number/7", "char/data/number/8", "char/data/number/9", "char/data/character/a", "char/data/character/b", "char/data/character/c", "char/data/character/d", "char/data/character/e", "char/data/character/f", "char/data/character/g", "char/data/character/h", "char/data/character/i", "char/data/character/j", "char/data/character/k", "char/data/character/l", "char/data/character/m", "char/data/character/n", "char/data/character/o", "char/data/character/p", "char/data/character/q", "char/data/character/r", "char/data/character/s", "char/data/character/t", "char/data/character/u", "char/data/character/v", "char/data/character/w", "char/data/character/x", "char/data/character/y", "char/data/character/z", "char/data/character/ua", "char/data/character/ub", "char/data/character/uc", "char/data/character/ud", "char/data/character/ue", "char/data/character/uf", "char/data/character/ug", "char/data/character/uh", "char/data/character/ui", "char/data/character/uj", "char/data/character/uk", "char/data/character/ul", "char/data/character/um", "char/data/character/un", "char/data/character/uo", "char/data/character/up", "char/data/character/uq", "char/data/character/ur", "char/data/character/us", "char/data/character/ut", "char/data/character/uu", "char/data/character/uv", "char/data/character/uw", "char/data/character/ux", "char/data/character/uy", "char/data/character/uz", "char/data/symbol/l-parentheses", "char/data/symbol/r-parentheses", "char/data/symbol/negative", "char/data/symbol/positive", "char/data/symbol/vertical", "char/data/symbol/slash", "char/data/symbol/exclamation", "char/data/symbol/l-brackets", "char/data/symbol/r-brackets", "char/data/symbol/colon", "char/data/symbol/quotation", "char/data/symbol/lt", "char/data/symbol/gt", "char/data/symbol/point", "char/data/symbol/l-braces", "char/data/symbol/r-braces", "char/data/symbol/comma", "char/data/symbol/times", "char/data/symbol/div", "char/data/symbol/asterisk", "char/data/symbol/dot", "char/data/symbol/eq", "char/data/symbol/infty", "char/data/symbol/to", "char/data/greek/alpha", "char/data/greek/beta", "char/data/greek/gamma", "char/data/greek/delta", "char/data/greek/epsilon", "char/data/greek/zeta", "char/data/greek/eta", "char/data/greek/theta", "char/data/greek/iota", "char/data/greek/kappa", "char/data/greek/lambda", "char/data/greek/mu", "char/data/greek/nu", "char/data/greek/xi", "char/data/greek/pi", "char/data/greek/rho", "char/data/greek/sigma", "char/data/greek/tau", "char/data/greek/upsilon", "char/data/greek/phi", "char/data/greek/chi", "char/data/greek/psi", "char/data/greek/omega", "char/data/roman/ua", "char/data/roman/ub", "char/data/greek/u-gamma", "char/data/greek/u-delta", "char/data/roman/ue", "char/data/roman/uz", "char/data/roman/uh", "char/data/greek/u-theta", "char/data/roman/ui", "char/data/roman/uk", "char/data/greek/u-lambda", "char/data/roman/um", "char/data/roman/un", "char/data/greek/u-xi", "char/data/roman/uo", "char/data/greek/u-pi", "char/data/roman/up", "char/data/greek/u-sigma", "char/data/roman/ut", "char/data/greek/u-upsilon", "char/data/greek/u-phi", "char/data/roman/ux", "char/data/greek/u-psi", "char/data/greek/u-omega", "char/data/roman/a", "char/data/roman/b", "char/data/roman/c", "char/data/roman/d", "char/data/roman/e", "char/data/roman/f", "char/data/roman/g", "char/data/roman/h", "char/data/roman/i", "char/data/roman/j", "char/data/roman/k", "char/data/roman/l", "char/data/roman/m", "char/data/roman/n", "char/data/roman/o", "char/data/roman/p", "char/data/roman/q", "char/data/roman/r", "char/data/roman/s", "char/data/roman/t", "char/data/roman/u", "char/data/roman/v", "char/data/roman/w", "char/data/roman/x", "char/data/roman/y", "char/data/roman/z", "char/data/roman/uc", "char/data/roman/ud", "char/data/roman/uf", "char/data/roman/ug", "char/data/roman/uj", "char/data/roman/ul", "char/data/roman/uq", "char/data/roman/ur", "char/data/roman/us", "char/data/roman/uu", "char/data/roman/uv", "char/data/roman/uw", "char/data/roman/uy" ], function(require, exports, module) {
+define("char/data", [ "char/data/number/0", "char/data/number/1", "char/data/number/2", "char/data/number/3", "char/data/number/4", "char/data/number/5", "char/data/number/6", "char/data/number/7", "char/data/number/8", "char/data/number/9", "char/data/character/a", "char/data/character/b", "char/data/character/c", "char/data/character/d", "char/data/character/e", "char/data/character/f", "char/data/character/g", "char/data/character/h", "char/data/character/i", "char/data/character/j", "char/data/character/k", "char/data/character/l", "char/data/character/m", "char/data/character/n", "char/data/character/o", "char/data/character/p", "char/data/character/q", "char/data/character/r", "char/data/character/s", "char/data/character/t", "char/data/character/u", "char/data/character/v", "char/data/character/w", "char/data/character/x", "char/data/character/y", "char/data/character/z", "char/data/character/ua", "char/data/character/ub", "char/data/character/uc", "char/data/character/ud", "char/data/character/ue", "char/data/character/uf", "char/data/character/ug", "char/data/character/uh", "char/data/character/ui", "char/data/character/uj", "char/data/character/uk", "char/data/character/ul", "char/data/character/um", "char/data/character/un", "char/data/character/uo", "char/data/character/up", "char/data/character/uq", "char/data/character/ur", "char/data/character/us", "char/data/character/ut", "char/data/character/uu", "char/data/character/uv", "char/data/character/uw", "char/data/character/ux", "char/data/character/uy", "char/data/character/uz", "char/data/symbol/l-parentheses", "char/data/symbol/r-parentheses", "char/data/symbol/negative", "char/data/symbol/relational/eq", "char/data/symbol/positive", "char/data/symbol/vertical", "char/data/symbol/slash", "char/data/symbol/exclamation", "char/data/symbol/l-brackets", "char/data/symbol/r-brackets", "char/data/symbol/colon", "char/data/symbol/quotation", "char/data/symbol/relational/lt", "char/data/symbol/relational/gt", "char/data/symbol/point", "char/data/symbol/l-braces", "char/data/symbol/r-braces", "char/data/symbol/comma", "char/data/symbol/times", "char/data/symbol/div", "char/data/symbol/pm", "char/data/symbol/mp", "char/data/symbol/ast", "char/data/symbol/cdot", "char/data/symbol/cdots", "char/data/symbol/ddots", "char/data/symbol/ldots", "char/data/symbol/vdots", "char/data/symbol/wedge", "char/data/symbol/vee", "char/data/symbol/mid", "char/data/symbol/relational/approx", "char/data/symbol/relational/equiv", "char/data/symbol/relational/geq", "char/data/symbol/relational/gg", "char/data/symbol/relational/leq", "char/data/symbol/relational/ll", "char/data/symbol/relational/sim", "char/data/symbol/relational/simeq", "char/data/symbol/set/cap", "char/data/symbol/set/cup", "char/data/symbol/set/in", "char/data/symbol/set/ni", "char/data/symbol/set/sqcap", "char/data/symbol/set/sqcup", "char/data/symbol/set/sqsubset", "char/data/symbol/set/sqsubseteq", "char/data/symbol/set/sqsupset", "char/data/symbol/set/sqsupseteq", "char/data/symbol/set/subset", "char/data/symbol/set/subseteq", "char/data/symbol/set/supset", "char/data/symbol/set/supseteq", "char/data/symbol/not/ncong", "char/data/symbol/not/neq", "char/data/symbol/not/nequiv", "char/data/symbol/not/nge", "char/data/symbol/not/ngt", "char/data/symbol/not/nlt", "char/data/symbol/not/nle", "char/data/symbol/not/nsim", "char/data/symbol/not/nsubseteq", "char/data/symbol/not/nsupseteq", "char/data/symbol/not/nin", "char/data/symbol/infty", "char/data/symbol/to", "char/data/greek/alpha", "char/data/greek/beta", "char/data/greek/gamma", "char/data/greek/delta", "char/data/greek/epsilon", "char/data/greek/varepsilon", "char/data/greek/zeta", "char/data/greek/eta", "char/data/greek/theta", "char/data/greek/iota", "char/data/greek/kappa", "char/data/greek/lambda", "char/data/greek/mu", "char/data/greek/nu", "char/data/greek/xi", "char/data/greek/pi", "char/data/greek/rho", "char/data/greek/sigma", "char/data/greek/tau", "char/data/greek/upsilon", "char/data/greek/phi", "char/data/greek/varphi", "char/data/greek/chi", "char/data/greek/psi", "char/data/greek/omega", "char/data/roman/ua", "char/data/roman/ub", "char/data/greek/u-gamma", "char/data/greek/u-delta", "char/data/roman/ue", "char/data/roman/uz", "char/data/roman/uh", "char/data/greek/u-theta", "char/data/roman/ui", "char/data/roman/uk", "char/data/greek/u-lambda", "char/data/roman/um", "char/data/roman/un", "char/data/greek/u-xi", "char/data/roman/uo", "char/data/greek/u-pi", "char/data/roman/up", "char/data/greek/u-sigma", "char/data/roman/ut", "char/data/greek/u-upsilon", "char/data/greek/u-phi", "char/data/roman/ux", "char/data/greek/u-psi", "char/data/greek/u-omega", "char/data/roman/a", "char/data/roman/b", "char/data/roman/c", "char/data/roman/d", "char/data/roman/e", "char/data/roman/f", "char/data/roman/g", "char/data/roman/h", "char/data/roman/i", "char/data/roman/j", "char/data/roman/k", "char/data/roman/l", "char/data/roman/m", "char/data/roman/n", "char/data/roman/o", "char/data/roman/p", "char/data/roman/q", "char/data/roman/r", "char/data/roman/s", "char/data/roman/t", "char/data/roman/u", "char/data/roman/v", "char/data/roman/w", "char/data/roman/x", "char/data/roman/y", "char/data/roman/z", "char/data/roman/uc", "char/data/roman/ud", "char/data/roman/uf", "char/data/roman/ug", "char/data/roman/uj", "char/data/roman/ul", "char/data/roman/uq", "char/data/roman/ur", "char/data/roman/us", "char/data/roman/uu", "char/data/roman/uv", "char/data/roman/uw", "char/data/roman/uy" ], function(require, exports, module) {
     return {
         // 标准字体
         std: {
@@ -199,6 +199,7 @@ define("char/data", [ "char/data/number/0", "char/data/number/1", "char/data/num
             "(": require("char/data/symbol/l-parentheses"),
             ")": require("char/data/symbol/r-parentheses"),
             "-": require("char/data/symbol/negative"),
+            "=": require("char/data/symbol/relational/eq"),
             "+": require("char/data/symbol/positive"),
             "|": require("char/data/symbol/vertical"),
             "/": require("char/data/symbol/slash"),
@@ -207,17 +208,65 @@ define("char/data", [ "char/data/number/0", "char/data/number/1", "char/data/num
             "]": require("char/data/symbol/r-brackets"),
             ":": require("char/data/symbol/colon"),
             "'": require("char/data/symbol/quotation"),
-            "<": require("char/data/symbol/lt"),
-            ">": require("char/data/symbol/gt"),
+            "<": require("char/data/symbol/relational/lt"),
+            ">": require("char/data/symbol/relational/gt"),
             ".": require("char/data/symbol/point"),
             "{": require("char/data/symbol/l-braces"),
             "}": require("char/data/symbol/r-braces"),
             ",": require("char/data/symbol/comma"),
             "\\times\\": require("char/data/symbol/times"),
             "\\div\\": require("char/data/symbol/div"),
-            "\\ast\\": require("char/data/symbol/asterisk"),
-            "\\dot\\": require("char/data/symbol/dot"),
-            "\\eq\\": require("char/data/symbol/eq"),
+            "\\pm\\": require("char/data/symbol/pm"),
+            "\\mp\\": require("char/data/symbol/mp"),
+            "\\ast\\": require("char/data/symbol/ast"),
+            "\\cdot\\": require("char/data/symbol/cdot"),
+            "\\cdots\\": require("char/data/symbol/cdots"),
+            "\\ddots\\": require("char/data/symbol/ddots"),
+            "\\ldots\\": require("char/data/symbol/ldots"),
+            "\\vdots\\": require("char/data/symbol/vdots"),
+            "\\wedge\\": require("char/data/symbol/wedge"),
+            "\\vee\\": require("char/data/symbol/vee"),
+            "\\mid\\": require("char/data/symbol/mid"),
+            // relational symbol
+            "\\approx\\": require("char/data/symbol/relational/approx"),
+            "\\eq\\": require("char/data/symbol/relational/eq"),
+            "\\equiv\\": require("char/data/symbol/relational/equiv"),
+            "\\geq\\": require("char/data/symbol/relational/geq"),
+            "\\gg\\": require("char/data/symbol/relational/gg"),
+            "\\gt\\": require("char/data/symbol/relational/gt"),
+            "\\leq\\": require("char/data/symbol/relational/leq"),
+            "\\ll\\": require("char/data/symbol/relational/ll"),
+            "\\lt\\": require("char/data/symbol/relational/lt"),
+            "\\sim\\": require("char/data/symbol/relational/sim"),
+            "\\simeq\\": require("char/data/symbol/relational/simeq"),
+            //set symbol
+            "\\cap\\": require("char/data/symbol/set/cap"),
+            "\\cup\\": require("char/data/symbol/set/cup"),
+            "\\in\\": require("char/data/symbol/set/in"),
+            "\\ni\\": require("char/data/symbol/set/ni"),
+            "\\sqcap\\": require("char/data/symbol/set/sqcap"),
+            "\\sqcup\\": require("char/data/symbol/set/sqcup"),
+            "\\sqsubset\\": require("char/data/symbol/set/sqsubset"),
+            "\\sqsubseteq\\": require("char/data/symbol/set/sqsubseteq"),
+            "\\sqsupset\\": require("char/data/symbol/set/sqsupset"),
+            "\\sqsupseteq\\": require("char/data/symbol/set/sqsupseteq"),
+            "\\subset\\": require("char/data/symbol/set/subset"),
+            "\\subseteq\\": require("char/data/symbol/set/subseteq"),
+            "\\supset\\": require("char/data/symbol/set/supset"),
+            "\\supseteq\\": require("char/data/symbol/set/supseteq"),
+            // not symbol
+            "\\ncong\\": require("char/data/symbol/not/ncong"),
+            "\\neq\\": require("char/data/symbol/not/neq"),
+            "\\nequiv\\": require("char/data/symbol/not/nequiv"),
+            "\\nge\\": require("char/data/symbol/not/nge"),
+            "\\ngt\\": require("char/data/symbol/not/ngt"),
+            "\\nlt\\": require("char/data/symbol/not/nlt"),
+            "\\nle\\": require("char/data/symbol/not/nle"),
+            "\\nsim\\": require("char/data/symbol/not/nsim"),
+            "\\nsubseteq\\": require("char/data/symbol/not/nsubseteq"),
+            "\\nsupseteq\\": require("char/data/symbol/not/nsupseteq"),
+            "\\nin\\": require("char/data/symbol/not/nin"),
+            // arrow symbol
             "\\infty\\": require("char/data/symbol/infty"),
             "∞": require("char/data/symbol/infty"),
             "\\to\\": require("char/data/symbol/to"),
@@ -230,8 +279,10 @@ define("char/data", [ "char/data/number/0", "char/data/number/1", "char/data/num
             "\\gamma\\": require("char/data/greek/gamma"),
             "δ": require("char/data/greek/delta"),
             "\\delta\\": require("char/data/greek/delta"),
-            "ε": require("char/data/greek/epsilon"),
+            "ϵ": require("char/data/greek/epsilon"),
             "\\epsilon\\": require("char/data/greek/epsilon"),
+            "ε": require("char/data/greek/varepsilon"),
+            "\\varepsilon\\": require("char/data/greek/varepsilon"),
             "ζ": require("char/data/greek/zeta"),
             "\\zeta\\": require("char/data/greek/zeta"),
             "η": require("char/data/greek/eta"),
@@ -262,8 +313,10 @@ define("char/data", [ "char/data/number/0", "char/data/number/1", "char/data/num
             "\\tau\\": require("char/data/greek/tau"),
             "υ": require("char/data/greek/upsilon"),
             "\\upsilon\\": require("char/data/greek/upsilon"),
-            "φ": require("char/data/greek/phi"),
+            "ф": require("char/data/greek/phi"),
             "\\phi\\": require("char/data/greek/phi"),
+            "φ": require("char/data/greek/varphi"),
+            "\\varphi\\": require("char/data/greek/varphi"),
             "χ": require("char/data/greek/chi"),
             "\\chi\\": require("char/data/greek/chi"),
             "ψ": require("char/data/greek/psi"),
@@ -996,12 +1049,12 @@ define("char/data/greek/delta", [], {
  * 希腊字符data: epsilon
  */
 define("char/data/greek/epsilon", [], {
-    path: "M0.552,14.517c0,1.704,1.968,2.088,3.456,2.088c2.856,0,3.48-0.96,3.745-1.417c0.096-0.144,0.144-0.216,0.264-0.216   s0.216,0.096,0.216,0.216c0,0.336-1.272,2.448-4.44,2.448C1.488,17.637,0,16.317,0,14.661c0-1.176,0.816-2.472,2.208-3.264   c-0.408-0.288-0.984-0.84-0.984-1.729c0-1.776,2.544-3.384,5.232-3.384c1.656,0,3.048,0.912,3.048,1.344c0,0.288-0.312,0.6-0.6,0.6   c-0.168,0-0.24-0.072-0.384-0.168c-1.008-0.744-1.873-0.744-2.28-0.744c-2.136,0-4.489,0.864-4.489,2.352   c0,0.528,0.288,1.08,1.032,1.44c0.84-0.36,1.56-0.432,2.16-0.432c1.224,0,1.68,0.168,1.68,0.6c0,0.696-1.248,0.696-1.872,0.696   c-0.456,0-1.272,0-2.04-0.312C1.152,12.477,0.552,13.701,0.552,14.517z M4.752,11.492c0.864,0,0.912,0,1.32-0.192   c-0.384-0.096-0.504-0.144-1.176-0.144c-0.168,0-0.792,0-1.44,0.216C3.937,11.492,4.32,11.492,4.752,11.492z",
+    path: "M1.896,11.737c-0.216,0.96-0.264,1.584-0.264,2.04c0,2.328,1.344,3.168,2.616,3.168c0.72,0,1.608-0.288,2.52-0.888   c0.12-0.096,0.168-0.12,0.24-0.12c0.144,0,0.216,0.144,0.216,0.288c0,0.24-1.512,1.2-3.048,1.2C1.8,17.426,0,15.625,0,12.961   c0-3.768,3.24-6.12,6.193-6.12h0.816c0.432,0,0.696,0,0.696,0.312c0,0.384-0.36,0.384-0.768,0.384H6.241   c-2.136,0-3.552,1.32-4.152,3.504h3.888c0.432,0,0.672,0,0.672,0.312c0,0.384-0.408,0.384-0.768,0.384H1.896z",
     offset: {
         x: 0,
         y: 2
     },
-    box: "M 0 0 L 11 0 L 11 27 L 0 27 Z"
+    box: "M 0 0 L 8 0 L 8 27 L 0 27 Z"
 });
 /**
  * 希腊字符data: eta
@@ -1299,6 +1352,28 @@ define("char/data/greek/upsilon", [], {
         y: 2
     },
     box: "M 0 0 L 13 0 L 13 27 L 0 27 Z"
+});
+/**
+ * 希腊字符data: 变体epsilon
+ */
+define("char/data/greek/varepsilon", [], {
+    path: "M0.552,14.517c0,1.704,1.968,2.088,3.456,2.088c2.856,0,3.48-0.96,3.745-1.417c0.096-0.144,0.144-0.216,0.264-0.216   s0.216,0.096,0.216,0.216c0,0.336-1.272,2.448-4.44,2.448C1.488,17.637,0,16.317,0,14.661c0-1.176,0.816-2.472,2.208-3.264   c-0.408-0.288-0.984-0.84-0.984-1.729c0-1.776,2.544-3.384,5.232-3.384c1.656,0,3.048,0.912,3.048,1.344c0,0.288-0.312,0.6-0.6,0.6   c-0.168,0-0.24-0.072-0.384-0.168c-1.008-0.744-1.873-0.744-2.28-0.744c-2.136,0-4.489,0.864-4.489,2.352   c0,0.528,0.288,1.08,1.032,1.44c0.84-0.36,1.56-0.432,2.16-0.432c1.224,0,1.68,0.168,1.68,0.6c0,0.696-1.248,0.696-1.872,0.696   c-0.456,0-1.272,0-2.04-0.312C1.152,12.477,0.552,13.701,0.552,14.517z M4.752,11.492c0.864,0,0.912,0,1.32-0.192   c-0.384-0.096-0.504-0.144-1.176-0.144c-0.168,0-0.792,0-1.44,0.216C3.937,11.492,4.32,11.492,4.752,11.492z",
+    offset: {
+        x: 0,
+        y: 2
+    },
+    box: "M 0 0 L 11 0 L 11 27 L 0 27 Z"
+});
+/**
+ * 希腊字符data: 变体phi
+ */
+define("char/data/greek/varphi", [], {
+    path: "M4.176,21.794c-0.192,0.48-0.624,0.576-0.864,0.576c-0.048,0-0.624-0.024-0.624-0.6c0-0.096,0-0.144,0.12-0.504   l1.248-4.057C2.112,16.777,0,15.313,0,12.625c0-2.28,1.824-5.784,2.472-5.784c0.048,0,0.24,0,0.24,0.192   c0,0.048,0,0.096-0.264,0.408c-1.392,1.728-1.896,4.296-1.896,4.944c0,1.608,1.152,3.072,3.913,3.6   c1.344-4.512,2.808-9.385,6.265-9.385c2.016,0,2.664,1.776,2.664,3.24c0,3.792-3.625,7.585-7.561,7.585   c-0.432,0-0.672-0.024-0.816-0.048C4.92,17.857,4.248,21.578,4.176,21.794z M12.793,10.393c0-1.32-0.72-2.496-2.28-2.496   c-2.088,0-3.912,2.208-4.68,5.28c-0.144,0.528-0.552,2.784-0.552,2.832c0,0.12,0.36,0.12,0.768,0.12   C9.721,16.129,12.793,13.129,12.793,10.393z",
+    offset: {
+        x: 0,
+        y: 2
+    },
+    box: "M 0 0 L 14 0 L 14 27 L 0 27 Z"
 });
 /**
  * 希腊字符data: xi
@@ -2007,7 +2082,7 @@ define("char/data/roman/z", [], {
 /**
  * 字符data: *
  */
-define("char/data/symbol/asterisk", [], {
+define("char/data/symbol/ast", [], {
     path: "M4.705,10.633l2.688-1.944c0.6-0.456,0.648-0.456,0.816-0.456c0.336,0,0.648,0.312,0.648,0.672   c0,0.36-0.192,0.456-0.576,0.648l-3.312,1.608c1.896,0.888,1.944,0.888,3.384,1.608c0.288,0.144,0.504,0.264,0.504,0.624   c0,0.336-0.312,0.672-0.648,0.672c-0.168,0-0.216-0.048-0.432-0.168l-3.072-2.232l0.36,4.033c0,0.456-0.36,0.624-0.648,0.624   c-0.192,0-0.624-0.12-0.624-0.624l0.36-4.033l-2.688,1.944c-0.6,0.456-0.648,0.456-0.816,0.456C0.312,14.065,0,13.753,0,13.394   c0-0.36,0.192-0.456,0.576-0.648l3.312-1.608L0.48,9.505C0.24,9.385,0,9.289,0,8.905c0-0.336,0.312-0.672,0.648-0.672   c0.168,0,0.216,0.048,0.432,0.168l3.072,2.232L3.816,6.913V6.601C3.745,6.289,4.057,5.977,4.44,5.977   c0.624,0,0.624,0.576,0.6,0.912L4.705,10.633z",
     offset: {
         x: 3,
@@ -2015,6 +2090,29 @@ define("char/data/symbol/asterisk", [], {
     },
     size: [ 15, 27 ],
     box: "M 0 0 L 15 0 L 15 27 L 0 27 Z"
+});
+/**
+ * 字符data: cdot
+ */
+define("char/data/symbol/cdot", [], {
+    path: "M1.272,12.409C0.576,12.409,0,11.833,0,11.137c0-0.696,0.576-1.272,1.272-1.272c0.696,0,1.272,0.576,1.272,1.272   C2.544,11.833,1.968,12.409,1.272,12.409z",
+    offset: {
+        x: 3,
+        y: 2
+    },
+    size: [ 9, 27 ],
+    box: "M 0 0 L 9 0 L 9 27 L 0 27 Z"
+});
+/**
+ * 字符data:
+ */
+define("char/data/symbol/cdots", [], {
+    path: "M1.44,9.745c0.864,0,1.464,0.672,1.464,1.416c0,0.864-0.696,1.464-1.44,1.464C0.6,12.625,0,11.929,0,11.185   C0,10.369,0.624,9.745,1.44,9.745z M12.169,9.745c0.864,0,1.464,0.672,1.464,1.416c0,0.864-0.696,1.464-1.44,1.464   c-0.864,0-1.464-0.696-1.464-1.44C10.729,10.369,11.353,9.745,12.169,9.745z M22.898,9.745c0.864,0,1.464,0.672,1.464,1.416   c0,0.864-0.696,1.464-1.44,1.464c-0.864,0-1.464-0.696-1.464-1.44C21.458,10.369,22.082,9.745,22.898,9.745z",
+    offset: {
+        x: 3,
+        y: 2
+    },
+    box: "M 0 0 L 31 0 L 31 27 L 0 27 Z"
 });
 /**
  * 字符data: :
@@ -2039,6 +2137,17 @@ define("char/data/symbol/comma", [], {
     box: "M 0 0 L 9 0 L 9 27 L 0 27 Z"
 });
 /**
+ * 字符data:
+ */
+define("char/data/symbol/ddots", [], {
+    path: "M1.44,1.92c0.864,0,1.464,0.672,1.464,1.416c0,0.864-0.696,1.464-1.44,1.464C0.6,4.801,0,4.104,0,3.36   C0,2.544,0.624,1.92,1.44,1.92z M12.169,9.121c0.864,0,1.464,0.672,1.464,1.416c0,0.864-0.696,1.464-1.44,1.464   c-0.864,0-1.464-0.696-1.464-1.44C10.729,9.745,11.353,9.121,12.169,9.121z M22.898,16.322c0.864,0,1.464,0.672,1.464,1.416   c0,0.864-0.696,1.464-1.44,1.464c-0.864,0-1.464-0.696-1.464-1.44C21.458,16.946,22.082,16.322,22.898,16.322z",
+    offset: {
+        x: 3,
+        y: 2
+    },
+    box: "M 0 0 L 31 0 L 31 27 L 0 27 Z"
+});
+/**
  * 字符data: 除号
  */
 define("char/data/symbol/div", [], {
@@ -2051,30 +2160,6 @@ define("char/data/symbol/div", [], {
     box: "M 0 0 L 23 0 L 23 27 L 0 27 Z"
 });
 /**
- * 字符data: cdot
- */
-define("char/data/symbol/dot", [], {
-    path: "M1.272,12.409C0.576,12.409,0,11.833,0,11.137c0-0.696,0.576-1.272,1.272-1.272c0.696,0,1.272,0.576,1.272,1.272   C2.544,11.833,1.968,12.409,1.272,12.409z",
-    offset: {
-        x: 3,
-        y: 2
-    },
-    size: [ 9, 27 ],
-    box: "M 0 0 L 9 0 L 9 27 L 0 27 Z"
-});
-/**
- * 字符data: =
- */
-define("char/data/symbol/eq", [], {
-    path: "M0.816,9.289c-0.36,0-0.816,0-0.816-0.48s0.456-0.48,0.792-0.48h14.377c0.336,0,0.792,0,0.792,0.48s-0.456,0.48-0.816,0.48   H0.816z M0.792,13.945c-0.336,0-0.792,0-0.792-0.48s0.456-0.48,0.816-0.48h14.329c0.36,0,0.816,0,0.816,0.48   s-0.456,0.48-0.792,0.48H0.792z",
-    offset: {
-        x: 3,
-        y: 2
-    },
-    size: [ 22, 27 ],
-    box: "M 0 0 L 22 0 L 22 27 L 0 27 Z"
-});
-/**
  * 字符data: !
  */
 define("char/data/symbol/exclamation", [], {
@@ -2084,17 +2169,6 @@ define("char/data/symbol/exclamation", [], {
         y: 2
     },
     box: "M 0 0 L 9 0 L 9 27 L 0 27 Z"
-});
-/**
- * 字符data: >
- */
-define("char/data/symbol/gt", [], {
-    path: "M0,17.637c0-0.227,0.102-0.379,0.305-0.457l13.418-6.023L0.305,5.133C0.102,5.055,0,4.902,0,4.676   c0-0.109,0.045-0.217,0.135-0.322S0.34,4.195,0.48,4.195c0.031,0,0.094,0.016,0.188,0.047l14.426,6.457   c0.195,0.109,0.293,0.262,0.293,0.457c0,0.203-0.098,0.348-0.293,0.434L0.668,18.07c-0.094,0.031-0.156,0.047-0.188,0.047   c-0.141,0-0.256-0.053-0.346-0.158S0,17.746,0,17.637z",
-    offset: {
-        x: 3,
-        y: 2
-    },
-    box: "M 0 0 L 22 0 L 22 27 L 0 27 Z"
 });
 /**
  * 字符data: ∞
@@ -2141,15 +2215,39 @@ define("char/data/symbol/l-parentheses", [], {
     box: "M 0 0 L 12 0 L 12 27 L 0 27 Z"
 });
 /**
- * 字符data: <
+ * 字符data:
  */
-define("char/data/symbol/lt", [], {
-    path: "M0.305,11.566C0.102,11.488,0,11.344,0,11.133c0-0.203,0.102-0.355,0.305-0.457L14.73,4.219   c0.063-0.031,0.121-0.047,0.176-0.047c0.125,0,0.236,0.053,0.334,0.158s0.146,0.213,0.146,0.322c0,0.219-0.098,0.371-0.293,0.457   L1.652,11.133l13.441,6.023c0.195,0.086,0.293,0.238,0.293,0.457c0,0.109-0.049,0.217-0.146,0.322s-0.209,0.158-0.334,0.158   c-0.055,0-0.113-0.016-0.176-0.047L0.305,11.566z",
+define("char/data/symbol/ldots", [], {
+    path: "M1.44,14.305c0.864,0,1.464,0.672,1.464,1.416c0,0.864-0.696,1.464-1.44,1.464C0.6,17.186,0,16.489,0,15.746   C0,14.929,0.624,14.305,1.44,14.305z M12.169,14.305c0.864,0,1.464,0.672,1.464,1.416c0,0.864-0.696,1.464-1.44,1.464   c-0.864,0-1.464-0.696-1.464-1.44C10.729,14.929,11.353,14.305,12.169,14.305z M22.898,14.305c0.864,0,1.464,0.672,1.464,1.416   c0,0.864-0.696,1.464-1.44,1.464c-0.864,0-1.464-0.696-1.464-1.44C21.458,14.929,22.082,14.305,22.898,14.305z",
     offset: {
         x: 3,
         y: 2
     },
-    box: "M 0 0 L 22 0 L 22 27 L 0 27 Z"
+    box: "M 0 0 L 31 0 L 31 27 L 0 27 Z"
+});
+/**
+ * 字符data: ∧
+ */
+define("char/data/symbol/mid", [], {
+    path: "M0.96,23.138c0,0.432,0,0.864-0.48,0.864S0,23.57,0,23.138V0.864C0,0.432,0,0,0.48,0s0.48,0.432,0.48,0.864V23.138z",
+    offset: {
+        x: 5,
+        y: 2
+    },
+    size: [ 1, 27 ],
+    box: "M 0 0 L 11 0 L 11 27 L 0 27 Z"
+});
+/**
+ * Created by hn on 14-3-13.
+ */
+define("char/data/symbol/mp", [], {
+    path: "M8.497,20.234c0,0.36,0,0.888-0.48,0.888s-0.48-0.432-0.48-0.816v-6.697H0.84c-0.408,0-0.84,0-0.84-0.48   s0.432-0.48,0.84-0.48h6.697V6.097H0.84c-0.408,0-0.84,0-0.84-0.48s0.432-0.48,0.84-0.48h14.329c0.408,0,0.84,0,0.84,0.48   s-0.432,0.48-0.84,0.48H8.497v6.553h6.672c0.408,0,0.84,0,0.84,0.48s-0.432,0.48-0.84,0.48H8.497V20.234z",
+    offset: {
+        x: 3,
+        y: 2
+    },
+    size: [ 23, 27 ],
+    box: "M 0 0 L 23 0 L 23 27 L 0 27 Z"
 });
 /**
  * 字符data: -
@@ -2162,6 +2260,139 @@ define("char/data/symbol/negative", [], {
     },
     size: [ 22, 27 ],
     box: "M 0 0 L 16 0 L 16 27 L 0 27 Z"
+});
+/**
+ * 字符data: ≇
+ */
+define("char/data/symbol/not/ncong", [], {
+    path: "M5.736,16.01h9.337c0.432,0,0.888,0,0.888,0.48s-0.432,0.48-0.84,0.48H5.185l-1.92,3.36c-0.24,0.432-0.336,0.576-0.6,0.576   c-0.288,0-0.48-0.216-0.48-0.48c0-0.144,0.048-0.192,0.144-0.408c0.264-0.432,0.696-1.176,1.752-3.048H0.84   c-0.408,0-0.84,0-0.84-0.48s0.456-0.48,0.888-0.48h3.744l2.112-3.696H0.84c-0.408,0-0.84,0-0.84-0.48c0-0.48,0.456-0.48,0.888-0.48   h6.408l2.353-4.128C8.497,6.673,8.041,6.241,7.008,5.617c-0.912-0.576-1.872-1.08-3-1.08c-1.248,0-3.216,0.72-3.336,2.736   c0,0.12-0.072,0.552-0.336,0.552C0.168,7.825,0,7.633,0,7.105c0-2.208,1.776-3.913,4.008-3.913c1.536,0,2.904,0.912,4.2,1.776   C9.745,6,10.201,6.121,10.249,6.121c0.024,0,0.048-0.024,0.216-0.288l2.304-4.008c0.144-0.264,0.264-0.456,0.528-0.456   c0.288,0,0.48,0.216,0.48,0.48c0,0.12-0.024,0.168-0.192,0.48l-2.352,4.104c0.312,0.072,0.6,0.072,0.744,0.072   c1.632,0,3.216-1.056,3.312-2.64c0.024-0.528,0.216-0.648,0.336-0.648c0.144,0,0.336,0.168,0.336,0.744   c0,2.064-1.632,3.889-3.984,3.889c-0.24,0-0.768,0-1.44-0.24L8.4,11.353h6.673c0.432,0,0.888,0,0.888,0.48   c0,0.48-0.432,0.48-0.84,0.48H7.849L5.736,16.01z",
+    offset: {
+        x: 3,
+        y: 2
+    },
+    box: "M 0 0 L 22 0 L 22 27 L 0 27 Z"
+});
+/**
+ * 字符data: 不等号
+ */
+define("char/data/symbol/not/neq", [], {
+    path: "M1.376,9.745H0.56c-0.12,0-0.288,0.024-0.408-0.024c-0.048-0.024-0.096-0.072-0.12-0.12   c-0.024-0.072-0.024-0.12-0.024-0.192c0-0.144-0.048-0.384,0.096-0.504c0.144-0.096,0.384-0.048,0.552-0.048H2h4.2h1.2   c0.144,0,0.384,0.048,0.528-0.024c0.12-0.072,0.192-0.264,0.264-0.384c0.192-0.312,0.384-0.624,0.552-0.936   c0.576-0.984,1.152-1.968,1.704-2.952c0.168-0.288,0.336-0.552,0.504-0.84c0.072-0.12,0.12-0.288,0.24-0.384   c0.096-0.048,0.168-0.048,0.264-0.048c0.192,0,0.648-0.048,0.576,0.288c-0.048,0.192-0.192,0.408-0.312,0.576   c-0.192,0.36-0.408,0.744-0.624,1.104c-0.696,1.2-1.416,2.376-2.088,3.6h4.417h0.576c0.096,0,0.216,0,0.288,0.096   c0.072,0.12,0.048,0.264,0.048,0.384s0,0.24-0.072,0.312c-0.096,0.12-0.264,0.096-0.408,0.096h-1.056H9.92H9.033   c-0.144,0-0.312-0.024-0.456,0C8.48,9.793,8.408,9.865,8.36,9.961c-0.096,0.168-0.168,0.312-0.264,0.48   c-0.408,0.696-0.816,1.368-1.2,2.064h6.072h0.816c0.12,0,0.288-0.024,0.408,0.024c0.048,0.024,0.096,0.072,0.12,0.12   c0.024,0.072,0.024,0.12,0.024,0.192c0,0.144,0.048,0.384-0.096,0.504c-0.144,0.096-0.384,0.048-0.552,0.048h-1.344h-4.2h-1.2   c-0.144,0-0.384-0.048-0.528,0.024c-0.12,0.072-0.192,0.264-0.264,0.384C5.96,14.113,5.768,14.425,5.6,14.737   c-0.576,0.984-1.152,1.968-1.704,2.953c-0.168,0.288-0.336,0.552-0.504,0.84c-0.072,0.12-0.12,0.288-0.24,0.384   c-0.096,0.048-0.168,0.048-0.264,0.048c-0.192,0-0.648,0.048-0.576-0.288c0.048-0.192,0.192-0.408,0.312-0.576   c0.192-0.36,0.408-0.744,0.624-1.104c0.696-1.2,1.416-2.376,2.088-3.6H0.92H0.344c-0.096,0-0.216,0-0.288-0.096   c-0.072-0.12-0.048-0.264-0.048-0.384c0-0.12,0-0.24,0.072-0.313c0.096-0.12,0.264-0.096,0.408-0.096h1.056h2.88h0.888   c0.144,0,0.312,0.024,0.456,0c0.096-0.048,0.168-0.12,0.216-0.216c0.096-0.168,0.168-0.312,0.264-0.48   c0.408-0.696,0.816-1.368,1.2-2.064H1.376z",
+    offset: {
+        x: 3,
+        y: 2
+    },
+    box: "M 0 0 L 22 0 L 22 27 L 0 27 Z"
+});
+/**
+ * 字符data:
+ */
+define("char/data/symbol/not/nequiv", [], {
+    path: "M1.784,7.921H0.68c-0.168,0-0.384,0.048-0.528-0.024c-0.048-0.024-0.096-0.072-0.12-0.12   c-0.024-0.072-0.024-0.12-0.024-0.192c0-0.144-0.048-0.384,0.096-0.504C0.272,6.985,0.56,7.033,0.728,7.033h1.584h4.969h1.392   c0.168,0,0.456,0.048,0.624-0.024c0.144-0.072,0.216-0.288,0.264-0.432c0.192-0.384,0.408-0.792,0.576-1.176   c0.552-1.2,1.152-2.376,1.729-3.553c0.168-0.312,0.312-0.624,0.456-0.936c0.072-0.12,0.12-0.312,0.24-0.408   c0.096-0.048,0.192-0.048,0.288-0.048c0.192,0,0.576-0.048,0.528,0.264c-0.024,0.216-0.168,0.432-0.264,0.624   c-0.216,0.408-0.408,0.816-0.6,1.224c-0.432,0.936-0.912,1.848-1.368,2.784c-0.264,0.552-0.504,1.128-0.816,1.68h4.44h0.576   c0.096,0,0.216,0,0.288,0.096c0.072,0.12,0.048,0.264,0.048,0.384c0,0.12,0,0.24-0.072,0.312c-0.096,0.12-0.264,0.096-0.408,0.096   h-1.032h-2.904h-0.864c-0.144,0-0.312-0.024-0.432,0.024c-0.096,0.024-0.12,0.12-0.168,0.192c-0.096,0.168-0.168,0.336-0.24,0.504   c-0.336,0.672-0.648,1.392-1.008,2.04h5.736h0.912c0.12,0,0.288-0.024,0.384,0.072c0.12,0.096,0.096,0.264,0.096,0.384   s0.024,0.264-0.072,0.336c-0.12,0.144-0.36,0.096-0.504,0.096h-1.392h-3.84H8.745c-0.168,0-0.384-0.048-0.552,0.024   C8.097,11.617,8.049,11.713,8,11.809c-0.072,0.168-0.144,0.312-0.216,0.48c-0.336,0.672-0.648,1.392-1.008,2.041h7.128h1.104   c0.168,0,0.384-0.048,0.528,0.024c0.048,0.024,0.096,0.072,0.12,0.12c0.024,0.072,0.024,0.12,0.024,0.192   c0,0.144,0.048,0.384-0.096,0.504c-0.168,0.096-0.456,0.048-0.624,0.048h-1.584H8.409H7.017c-0.168,0-0.456-0.048-0.624,0.024   c-0.144,0.072-0.216,0.288-0.264,0.432l-0.576,1.152c-0.552,1.2-1.152,2.4-1.729,3.576c-0.168,0.312-0.312,0.624-0.456,0.936   c-0.072,0.12-0.12,0.312-0.24,0.408c-0.096,0.048-0.192,0.048-0.288,0.048c-0.192,0-0.576,0.048-0.528-0.264   c0.024-0.216,0.168-0.432,0.264-0.624c0.216-0.408,0.408-0.816,0.6-1.224c0.432-0.937,0.912-1.848,1.368-2.785   c0.264-0.552,0.504-1.128,0.816-1.68H0.92H0.344c-0.096,0-0.216,0-0.288-0.096c-0.072-0.12-0.048-0.264-0.048-0.384   c0-0.12,0-0.24,0.072-0.312c0.096-0.12,0.264-0.096,0.408-0.096H1.52h2.904h0.864c0.144,0,0.312,0.024,0.432-0.024   c0.096-0.024,0.12-0.12,0.168-0.192c0.096-0.168,0.168-0.336,0.24-0.504c0.336-0.672,0.648-1.392,1.008-2.04H1.4H0.488   c-0.12,0-0.288,0.024-0.384-0.072c-0.12-0.096-0.096-0.264-0.096-0.384s-0.024-0.264,0.072-0.336   c0.12-0.144,0.36-0.096,0.504-0.096h1.392h3.84h1.128c0.168,0,0.384,0.048,0.552-0.024c0.096-0.024,0.144-0.12,0.192-0.216   c0.072-0.168,0.144-0.312,0.216-0.48c0.336-0.672,0.648-1.392,1.008-2.04H1.784z",
+    offset: {
+        x: 3,
+        y: 2
+    },
+    box: "M 0 0 L 23 0 L 23 27 L 0 27 Z"
+});
+/**
+ * 字符data: ≱
+ */
+define("char/data/symbol/not/nge", [], {
+    path: "M4.393,21.602h9.433c0.432,0,0.84,0,0.84,0.48s-0.48,0.48-0.888,0.48H3.984L2.568,25.97   c-0.144,0.336-0.24,0.576-0.552,0.576c-0.288,0-0.48-0.216-0.48-0.48c0-0.24,1.2-3,1.416-3.504H0.888c-0.408,0-0.888,0-0.888-0.48   s0.408-0.48,0.84-0.48h2.497l2.616-6.24l-5.088,2.4c-0.24,0.12-0.288,0.144-0.384,0.144c-0.264,0-0.48-0.24-0.48-0.48   c0-0.192,0.072-0.36,0.48-0.552l6-2.832l2.16-5.185l-8.113-3.84C0.144,4.848,0,4.776,0,4.488s0.216-0.48,0.48-0.48   c0.168,0,0.36,0.096,0.504,0.168l8.041,3.792l3.264-7.825C12.385,0.048,12.505,0,12.649,0c0.288,0,0.48,0.216,0.48,0.48   c0,0.12-0.024,0.168-0.144,0.456L9.889,8.4l4.32,2.016c0.24,0.12,0.456,0.264,0.456,0.528c0,0.312-0.168,0.384-0.528,0.552   l-6.913,3.265L4.393,21.602z M7.777,13.441l5.28-2.496l-3.552-1.68L7.777,13.441z",
+    offset: {
+        x: 3,
+        y: 2
+    },
+    box: "M 0 0 L 21 0 L 21 27 L 0 27 Z"
+});
+/**
+ * 字符data: ≯
+ */
+define("char/data/symbol/not/ngt", [], {
+    path: "M5.521,15.77l-2.952,5.785c-0.192,0.336-0.216,0.36-0.288,0.432c-0.096,0.072-0.168,0.096-0.264,0.096   c-0.264,0-0.48-0.192-0.48-0.48s2.208-4.488,2.568-5.161L2.16,17.33c-0.168,0.096-1.512,0.744-1.68,0.744   c-0.24,0-0.48-0.216-0.48-0.456c0-0.192,0.072-0.36,0.48-0.552l4.344-2.041l3.192-6.265L0.48,5.208C0.072,5.017,0,4.849,0,4.657   c0-0.24,0.24-0.456,0.48-0.456c0.096,0,0.192,0.024,0.432,0.144l7.537,3.552l3.696-7.249c0.168-0.312,0.24-0.456,0.504-0.456   c0.264,0,0.48,0.192,0.48,0.48c0,0.096,0,0.144-0.192,0.48L9.313,8.305l4.872,2.304c0.288,0.144,0.48,0.216,0.48,0.528   c0,0.264-0.168,0.408-0.456,0.528L5.521,15.77z M6.216,14.354l6.841-3.216L8.881,9.169L6.216,14.354z",
+    offset: {
+        x: 3,
+        y: 2
+    },
+    box: "M 0 0 L 22 0 L 22 27 L 0 27 Z"
+});
+/**
+ * 字符data:
+ */
+define("char/data/symbol/not/nin", [], {
+    path: "M7.061,3.957c0.288-0.937,0.576-1.896,0.84-2.833l0.144-0.432C8.069,0.597,8.117,0.5,8.189,0.453   c0.12-0.072,0.288-0.048,0.432-0.048c0.12,0,0.264,0,0.336,0.096c0.096,0.096,0.048,0.264,0,0.384L8.693,1.772   c-0.24,0.816-0.48,1.608-0.72,2.424C7.829,4.653,7.685,5.109,7.565,5.565c0.552,0,1.128,0.072,1.68,0.144   c0.288,0.048,0.6,0.072,0.888,0.168c0.264,0.096,0.168,0.36,0.12,0.576c-0.024,0.096-0.048,0.216-0.12,0.288   c-0.096,0.072-0.216,0.048-0.312,0.024C9.677,6.741,9.509,6.717,9.365,6.693c-0.456-0.072-0.912-0.12-1.368-0.168   c-0.24-0.024-0.48,0-0.72-0.048l-0.36,1.2l-0.864,2.928h2.616h0.864c0.144,0,0.312-0.024,0.456,0   c0.288,0.048,0.24,0.336,0.24,0.552c0,0.144,0,0.288-0.144,0.36c-0.096,0.048-0.24,0.024-0.336,0.024H9.125H6.869H6.101   c-0.096,0-0.24-0.024-0.312,0.048c-0.096,0.072-0.096,0.24-0.144,0.336l-0.216,0.744c-0.192,0.672-0.408,1.32-0.6,1.992   c-0.096,0.336-0.24,0.672-0.288,1.032c0.984,0,1.992,0.024,2.976-0.072c0.336-0.048,0.672-0.072,1.008-0.144   c0.216-0.024,0.432-0.12,0.648-0.12c0.072,0,0.144,0.024,0.192,0.096c0.048,0.072,0.072,0.168,0.096,0.24   c0.024,0.168,0.144,0.408-0.048,0.528c-0.096,0.072-0.24,0.096-0.336,0.12c-0.24,0.048-0.48,0.096-0.72,0.12   c-0.888,0.12-1.8,0.168-2.688,0.168H4.661c-0.12,0-0.288-0.048-0.384,0.024c-0.096,0.072-0.12,0.24-0.144,0.336l-0.24,0.84   c-0.288,0.912-0.552,1.8-0.816,2.712l-0.24,0.744c-0.024,0.12-0.048,0.264-0.144,0.36c-0.096,0.096-0.216,0.096-0.336,0.096   c-0.216,0-0.576,0.024-0.528-0.288c0.024-0.168,0.096-0.336,0.144-0.504l0.288-0.96c0.216-0.768,0.456-1.512,0.672-2.28   c0.12-0.432,0.264-0.864,0.384-1.296c-0.336-0.072-0.672-0.216-0.984-0.408c-0.24-0.12-0.456-0.264-0.648-0.432   c-1.416-1.248-1.8-3.288-1.656-5.088c0.024-0.432,0.072-0.864,0.192-1.296c0.144-0.6,0.384-1.176,0.744-1.68   c0.192-0.288,0.456-0.576,0.72-0.816c0.864-0.792,2.064-1.104,3.216-1.176c0.552-0.024,1.128,0,1.704,0   C6.701,4.989,6.917,4.461,7.061,3.957z M3.917,10.605h0.768l0.336-0.048l0.144-0.312l0.24-0.768l0.912-3.024   c-0.912,0-1.848-0.048-2.736,0.24c-0.648,0.216-1.224,0.6-1.656,1.128c-0.624,0.744-0.96,1.824-0.96,2.784H3.917z M3.965,14.278   l0.816-2.736H0.964c0,1.704,0.888,3.528,2.641,3.984L3.965,14.278z",
+    offset: {
+        x: 3,
+        y: 2
+    },
+    box: "M 0 0 L 18 0 L 18 27 L 0 27 Z"
+});
+/**
+ * 字符data: ≰
+ */
+define("char/data/symbol/not/nle", [], {
+    path: "M4.393,21.602h9.433c0.432,0,0.84,0,0.84,0.48s-0.48,0.48-0.888,0.48H3.984L2.568,25.97   c-0.144,0.336-0.24,0.576-0.552,0.576c-0.288,0-0.48-0.216-0.48-0.48c0-0.24,1.2-3,1.416-3.504H0.888c-0.408,0-0.888,0-0.888-0.48   s0.408-0.48,0.84-0.48h2.497l3.072-7.321l-5.905-2.784C0.24,11.377,0,11.257,0,10.945c0-0.264,0.192-0.408,0.504-0.552L9.841,6   l2.448-5.857C12.385,0.048,12.505,0,12.649,0c0.288,0,0.48,0.216,0.48,0.48c0,0.12-0.024,0.168-0.144,0.456L11.137,5.4l2.592-1.248   c0.12-0.072,0.288-0.144,0.456-0.144c0.264,0,0.48,0.192,0.48,0.48s-0.144,0.336-0.528,0.528L10.585,6.72l-2.952,7.081l6.504,3.048   c0.36,0.192,0.528,0.264,0.528,0.576c0,0.24-0.216,0.48-0.48,0.48c-0.144,0-1.176-0.504-3.288-1.512l-3.648-1.704L4.393,21.602z    M1.608,10.945l5.161,2.448l2.52-6.073L1.608,10.945z",
+    offset: {
+        x: 3,
+        y: 2
+    },
+    box: "M 0 0 L 21 0 L 21 27 L 0 27 Z"
+});
+/**
+ * 字符data: ≰
+ */
+define("char/data/symbol/not/nlt", [], {
+    path: "M6.672,13.513c1.2,0.6,7.441,3.504,7.753,3.672c0.024,0.024,0.24,0.168,0.24,0.408c0,0.336-0.288,0.48-0.48,0.48   c-0.096,0-0.144,0-0.6-0.216l-0.864-0.408l-6.505-3.072c-0.528,1.056-3.648,7.297-3.864,7.537c-0.12,0.168-0.312,0.168-0.336,0.168   c-0.264,0-0.48-0.192-0.48-0.48c0-0.12,0-0.168,0.336-0.792l3.48-6.841L0.48,11.665C0.192,11.521,0,11.449,0,11.137   c0-0.264,0.168-0.384,0.456-0.528l8.689-4.08l3-5.88c0.168-0.312,0.24-0.456,0.504-0.456c0.264,0,0.48,0.192,0.48,0.48   c0,0.096,0,0.144-0.192,0.48l-2.376,4.705l3.24-1.536c0.168-0.072,0.264-0.12,0.384-0.12c0.192,0,0.48,0.144,0.48,0.48   c0,0.192-0.096,0.36-0.48,0.528L9.841,7.249L6.672,13.513z M1.608,11.137l4.177,1.968l2.664-5.185L1.608,11.137z",
+    offset: {
+        x: 3,
+        y: 2
+    },
+    box: "M 0 0 L 21 0 L 21 27 L 0 27 Z"
+});
+/**
+ * 字符data: ≁
+ */
+define("char/data/symbol/not/nsim", [], {
+    path: "M4.512,18.146c-0.24,0.288-0.288,0.36-0.528,0.36c-0.336,0-0.48-0.312-0.48-0.48c0-0.096,0.024-0.216,0.288-0.528   l3.313-3.96c-1.128-0.84-2.064-1.272-3.096-1.272c-1.224,0-1.992,0.624-2.304,0.912c-0.864,0.84-0.912,1.584-0.936,2.16   c-0.024,0.24-0.12,0.72-0.384,0.72C0.288,16.057,0,15.913,0,15.097c0-2.424,1.608-4.632,4.008-4.632c1.56,0,2.808,0.96,4.08,1.944   l3.36-4.008c0.24-0.288,0.288-0.36,0.528-0.36c0.336,0,0.48,0.312,0.48,0.48c0,0.096-0.024,0.216-0.288,0.528l-3.313,3.96   c1.128,0.84,2.064,1.272,3.097,1.272c1.224,0,1.992-0.624,2.304-0.912c0.864-0.84,0.912-1.608,0.936-2.161   c0.024-0.312,0.168-0.72,0.384-0.72c0.168,0,0.384,0.216,0.384,0.96c0,2.424-1.608,4.632-4.008,4.632   c-1.561,0-2.809-0.96-4.081-1.944L4.512,18.146z",
+    offset: {
+        x: 3,
+        y: 2
+    },
+    box: "M 0 0 L 22 0 L 22 27 L 0 27 Z"
+});
+/**
+ * 字符data: ⊈
+ */
+define("char/data/symbol/not/nsubseteq", [], {
+    path: "M6.36,16.873c0.48,0.072,0.912,0.072,1.08,0.072h6.385c0.408,0,0.84,0,0.84,0.48s-0.432,0.48-0.84,0.48H7.369   c-0.144,0-0.768,0-1.392-0.12l-1.584,3.816h9.433c0.408,0,0.84,0,0.84,0.48s-0.432,0.48-0.84,0.48H3.984L2.568,25.97   c-0.144,0.336-0.24,0.576-0.552,0.576c-0.288,0-0.48-0.216-0.48-0.48c0-0.24,1.2-3,1.416-3.504H1.32c-0.408,0-0.84,0-0.84-0.48   s0.432-0.48,0.84-0.48h2.016l1.704-4.056C2.496,16.825,0,14.377,0,10.945c0-3.889,3.313-6.937,7.345-6.937h3.312l1.632-3.865   C12.385,0.048,12.505,0,12.649,0c0.288,0,0.48,0.216,0.48,0.48c0,0.12-0.024,0.168-0.144,0.456l-1.272,3.072h2.112   c0.408,0,0.84,0,0.84,0.48s-0.432,0.48-0.84,0.48h-2.52L6.36,16.873z M7.417,4.968c-3.72,0-6.457,2.736-6.457,6   c0,2.808,2.016,4.992,4.44,5.688l4.873-11.689H7.417z",
+    offset: {
+        x: 3,
+        y: 2
+    },
+    box: "M 0 0 L 21 0 L 21 27 L 0 27 Z"
+});
+/**
+ * 字符data: ⊉
+ */
+define("char/data/symbol/not/nsupseteq", [], {
+    path: "M11.257,5.088c1.704,0.984,3.408,3.072,3.408,5.88c0,3.888-3.312,6.937-7.344,6.937H5.929l-1.536,3.696h8.953   c0.408,0,0.84,0,0.84,0.48s-0.432,0.48-0.84,0.48H3.984L2.568,25.97c-0.144,0.336-0.24,0.576-0.552,0.576   c-0.288,0-0.48-0.216-0.48-0.48c0-0.24,1.2-3,1.416-3.504H0.84c-0.408,0-0.84,0-0.84-0.48s0.432-0.48,0.84-0.48h2.497l1.56-3.696   H0.84c-0.408,0-0.84,0-0.84-0.48s0.432-0.48,0.84-0.48h4.44L10.033,5.52c-1.2-0.504-2.232-0.552-2.808-0.552H0.84   c-0.408,0-0.84,0-0.84-0.48s0.432-0.48,0.84-0.48h6.457c1.056,0,2.136,0.192,3.121,0.648l1.872-4.513   C12.385,0.048,12.505,0,12.649,0c0.288,0,0.48,0.216,0.48,0.48c0,0.12-0.024,0.168-0.144,0.456L11.257,5.088z M6.336,16.945   c1.68,0,3.48,0,5.281-1.56c1.32-1.128,2.088-2.665,2.088-4.44c0-1.632-0.72-3.625-2.832-4.969L6.336,16.945z",
+    offset: {
+        x: 3,
+        y: 2
+    },
+    box: "M 0 0 L 21 0 L 21 27 L 0 27 Z"
+});
+/**
+ * Created by hn on 14-3-13.
+ */
+define("char/data/symbol/pm", [], {
+    path: "M8.497,16.178h6.672c0.408,0,0.84,0,0.84,0.48s-0.432,0.48-0.84,0.48H0.84c-0.408,0-0.84,0-0.84-0.48s0.432-0.48,0.84-0.48   h6.697V9.625H0.84c-0.408,0-0.84,0-0.84-0.48s0.432-0.48,0.84-0.48h6.697V1.968c0-0.384,0-0.816,0.48-0.816s0.48,0.504,0.48,0.888   v6.625h6.672c0.408,0,0.84,0,0.84,0.48s-0.432,0.48-0.84,0.48H8.497V16.178z",
+    offset: {
+        x: 3,
+        y: 2
+    },
+    size: [ 23, 27 ],
+    box: "M 0 0 L 23 0 L 23 27 L 0 27 Z"
 });
 /**
  * 字符data: .
@@ -2231,6 +2462,291 @@ define("char/data/symbol/r-parentheses", [], {
     box: "M 0 0 L 12 0 L 12 27 L 0 27 Z"
 });
 /**
+ * 字符data: 约等于
+ */
+define("char/data/symbol/relational/approx", [], {
+    path: "M12.001,10.201c-1.56,0-2.856-0.864-4.152-1.728C6.601,7.633,5.4,6.889,4.008,6.889c-1.248,0-3.216,0.72-3.336,2.736   c0,0.096-0.096,0.552-0.336,0.552C0.192,10.177,0,9.985,0,9.457c0-2.208,1.776-3.912,4.008-3.912c1.56,0,2.856,0.864,4.152,1.728   c1.248,0.84,2.448,1.584,3.84,1.584c1.56,0,3.24-0.984,3.336-2.64c0.024-0.552,0.24-0.648,0.336-0.648   c0.168,0,0.336,0.216,0.336,0.72C16.009,8.497,14.233,10.201,12.001,10.201z M12.001,15.793c-1.56,0-2.856-0.864-4.152-1.728   c-1.248-0.84-2.448-1.584-3.84-1.584c-1.248,0-3.216,0.72-3.336,2.736c0,0.096-0.096,0.552-0.336,0.552   C0.192,15.77,0,15.578,0,15.049c0-2.208,1.776-3.912,4.008-3.912c1.56,0,2.856,0.864,4.152,1.728   c1.248,0.84,2.448,1.584,3.84,1.584c1.56,0,3.24-0.984,3.336-2.64c0.024-0.528,0.24-0.648,0.336-0.648   c0.048,0,0.336,0.048,0.336,0.744C16.009,14.018,14.281,15.793,12.001,15.793z",
+    offset: {
+        x: 3,
+        y: 2
+    },
+    box: "M 0 0 L 23 0 L 23 27 L 0 27 Z"
+});
+/**
+ * 字符data: =
+ */
+define("char/data/symbol/relational/eq", [], {
+    path: "M0.816,9.289c-0.36,0-0.816,0-0.816-0.48s0.456-0.48,0.792-0.48h14.377c0.336,0,0.792,0,0.792,0.48s-0.456,0.48-0.816,0.48   H0.816z M0.792,13.945c-0.336,0-0.792,0-0.792-0.48s0.456-0.48,0.816-0.48h14.329c0.36,0,0.816,0,0.816,0.48   s-0.456,0.48-0.792,0.48H0.792z",
+    offset: {
+        x: 3,
+        y: 2
+    },
+    size: [ 22, 27 ],
+    box: "M 0 0 L 22 0 L 22 27 L 0 27 Z"
+});
+/**
+ * 字符data: equiv
+ */
+define("char/data/symbol/relational/equiv", [], {
+    path: "M0.864,6.961C0.48,6.961,0,6.961,0,6.481s0.432-0.48,0.84-0.48h14.329c0.408,0,0.84,0,0.84,0.48s-0.456,0.48-0.864,0.48   H0.864z M0.84,11.617c-0.408,0-0.84,0-0.84-0.48s0.432-0.48,0.84-0.48h14.329c0.408,0,0.84,0,0.84,0.48s-0.432,0.48-0.84,0.48H0.84   z M0.84,16.273c-0.408,0-0.84,0-0.84-0.48s0.48-0.48,0.864-0.48h14.281c0.408,0,0.864,0,0.864,0.48s-0.432,0.48-0.84,0.48H0.84z",
+    offset: {
+        x: 3,
+        y: 2
+    },
+    size: [ 22, 27 ],
+    box: "M 0 0 L 22 0 L 22 27 L 0 27 Z"
+});
+/**
+ * 字符data: geq
+ */
+define("char/data/symbol/relational/geq", [], {
+    path: "M0.912,15.602C0.6,15.77,0.552,15.77,0.48,15.77C0.216,15.77,0,15.554,0,15.29c0-0.144,0.024-0.336,0.504-0.552   l12.553-5.928L0.456,2.88C0.192,2.76,0,2.641,0,2.353c0-0.264,0.192-0.48,0.48-0.48c0.048,0,0.144,0,0.48,0.168l13.225,6.24   c0.384,0.168,0.48,0.312,0.48,0.552c0,0.216-0.144,0.384-0.48,0.528L0.912,15.602z M0.84,20.426c-0.408,0-0.84,0-0.84-0.48   s0.504-0.48,0.864-0.48h12.937c0.36,0,0.864,0,0.864,0.48s-0.432,0.48-0.84,0.48H0.84z",
+    offset: {
+        x: 3,
+        y: 2
+    },
+    size: [ 22, 27 ],
+    box: "M 0 0 L 22 0 L 22 27 L 0 27 Z"
+});
+/**
+ * 字符data: gg
+ */
+define("char/data/symbol/relational/gg", [], {
+    path: "M0.624,18.722c-0.168,0-0.624,0-0.624-0.48c0-0.264,0.192-0.36,0.48-0.528l12.049-6.577L0.48,4.561   C0.192,4.393,0,4.296,0,4.033c0-0.336,0.264-0.48,0.48-0.48c0.168,0,0.336,0.096,0.432,0.144l12.649,6.913   c0.288,0.168,0.456,0.24,0.456,0.528s-0.168,0.36-0.456,0.528L0.624,18.722z M7.944,18.722c-0.168,0-0.624,0-0.624-0.48   c0-0.264,0.192-0.36,0.48-0.528l12.049-6.577L7.8,4.561C7.513,4.393,7.32,4.296,7.32,4.033c0-0.336,0.264-0.48,0.48-0.48   c0.168,0,0.336,0.096,0.432,0.144l12.649,6.913c0.288,0.168,0.456,0.24,0.456,0.528s-0.168,0.36-0.456,0.528L7.944,18.722z",
+    offset: {
+        x: 3,
+        y: 2
+    },
+    size: [ 28, 27 ],
+    box: "M 0 0 L 28 0 L 28 27 L 0 27 Z"
+});
+/**
+ * 字符data: equiv
+ */
+define("char/data/symbol/relational/gt", [], {
+    path: "M0.864,17.642c-0.336,0.144-0.36,0.168-0.408,0.168C0.168,17.81,0,17.57,0,17.378c0-0.144,0-0.312,0.48-0.528l12.361-5.712   L0.504,5.449C0.192,5.305,0,5.208,0,4.92c0-0.192,0.168-0.432,0.456-0.432c0.048,0,0.096,0.024,0.408,0.168l12.985,5.977   c0.432,0.192,0.48,0.36,0.48,0.504c0,0.168-0.024,0.312-0.48,0.528L0.864,17.642z",
+    offset: {
+        x: 3,
+        y: 2
+    },
+    size: [ 22, 27 ],
+    box: "M 0 0 L 22 0 L 22 27 L 0 27 Z"
+});
+/**
+ * 字符data: leq
+ */
+define("char/data/symbol/relational/leq", [], {
+    path: "M1.608,8.833l12.553,5.904c0.408,0.192,0.504,0.336,0.504,0.552c0,0.264-0.216,0.48-0.48,0.48c-0.072,0-0.12,0-0.432-0.168   L0.48,9.361C0.144,9.217,0,9.049,0,8.833c0-0.192,0.072-0.36,0.48-0.552l13.273-6.264c0.096-0.048,0.313-0.144,0.432-0.144   c0.288,0,0.48,0.216,0.48,0.48c0,0.288-0.192,0.408-0.456,0.528L1.608,8.833z M0.84,20.426c-0.408,0-0.84,0-0.84-0.48   s0.504-0.48,0.864-0.48h12.937c0.36,0,0.864,0,0.864,0.48s-0.432,0.48-0.84,0.48H0.84z",
+    offset: {
+        x: 3,
+        y: 2
+    },
+    size: [ 22, 27 ],
+    box: "M 0 0 L 22 0 L 22 27 L 0 27 Z"
+});
+/**
+ * 字符data: ll
+ */
+define("char/data/symbol/relational/ll", [], {
+    path: "M1.488,11.137l12.049,6.577c0.288,0.168,0.48,0.264,0.48,0.528c0,0.24-0.168,0.48-0.48,0.48c-0.096,0-0.168,0-0.456-0.168   L0.456,11.665C0.168,11.497,0,11.425,0,11.137s0.168-0.36,0.456-0.528l12.649-6.913c0.096-0.048,0.264-0.144,0.432-0.144   c0.216,0,0.48,0.144,0.48,0.48c0,0.264-0.192,0.36-0.48,0.528L1.488,11.137z M8.809,11.137l12.049,6.577   c0.288,0.168,0.48,0.264,0.48,0.528c0,0.24-0.168,0.48-0.48,0.48c-0.096,0-0.168,0-0.456-0.168L7.776,11.665   c-0.288-0.168-0.456-0.24-0.456-0.528s0.168-0.36,0.456-0.528l12.649-6.913c0.096-0.048,0.264-0.144,0.432-0.144   c0.216,0,0.48,0.144,0.48,0.48c0,0.264-0.192,0.36-0.48,0.528L8.809,11.137z",
+    offset: {
+        x: 3,
+        y: 2
+    },
+    size: [ 28, 27 ],
+    box: "M 0 0 L 28 0 L 28 27 L 0 27 Z"
+});
+/**
+ * 字符data: <
+ */
+define("char/data/symbol/relational/lt", [], {
+    path: "M1.488,11.161l12.361,5.688c0.432,0.192,0.48,0.36,0.48,0.504c0,0.264-0.192,0.456-0.456,0.456   c-0.048,0-0.096-0.024-0.408-0.168L0.48,11.665C0.024,11.449,0,11.305,0,11.137c0-0.144,0.048-0.312,0.48-0.504l12.985-5.977   c0.336-0.144,0.36-0.168,0.408-0.168c0.264,0,0.456,0.192,0.456,0.456c0,0.144-0.048,0.312-0.48,0.504L1.488,11.161z",
+    offset: {
+        x: 3,
+        y: 2
+    },
+    size: [ 21, 27 ],
+    box: "M 0 0 L 21 0 L 21 27 L 0 27 Z"
+});
+/**
+ * 字符data: leq
+ */
+define("char/data/symbol/relational/sim", [], {
+    path: "M11.977,13.945c-1.632,0-2.88-1.104-4.104-2.208c-1.176-1.032-2.328-2.064-3.84-2.064c-1.464,0-3.264,1.056-3.36,3.696   c0,0.072-0.072,0.552-0.336,0.552c-0.024,0-0.336,0-0.336-0.768c0-2.184,1.416-4.824,4.032-4.824c1.632,0,2.88,1.104,4.104,2.208   c1.176,1.032,2.328,2.064,3.84,2.064c1.68,0,3.264-1.32,3.36-3.624c0.024-0.456,0.216-0.624,0.336-0.624   c0.192,0,0.336,0.24,0.336,0.768C16.009,11.305,14.593,13.945,11.977,13.945z",
+    offset: {
+        x: 3,
+        y: 2
+    },
+    size: [ 22, 27 ],
+    box: "M 0 0 L 22 0 L 22 27 L 0 27 Z"
+});
+/**
+ * 字符data: simeq
+ */
+define("char/data/symbol/relational/simeq", [], {
+    path: "M12.001,11.137c-1.608,0-2.88-0.984-4.152-1.992c-1.248-0.96-2.4-1.8-3.84-1.8c-1.296,0-3.216,0.864-3.336,3.216   c0,0.072-0.072,0.552-0.336,0.552C0.312,11.113,0,11.089,0,10.369c0-2.256,1.656-4.368,4.008-4.368c1.608,0,2.88,0.984,4.152,1.992   c1.248,0.96,2.4,1.8,3.84,1.8c1.56,0,3.24-1.128,3.336-3.12c0.024-0.552,0.24-0.648,0.336-0.648c0.168,0,0.336,0.216,0.336,0.744   C16.009,9.025,14.353,11.137,12.001,11.137z M15.145,15.313c0.408,0,0.864,0,0.864,0.48s-0.432,0.48-0.84,0.48H0.84   c-0.408,0-0.84,0-0.84-0.48s0.48-0.48,0.864-0.48H15.145z",
+    offset: {
+        x: 3,
+        y: 2
+    },
+    size: [ 22, 27 ],
+    box: "M 0 0 L 22 0 L 22 27 L 0 27 Z"
+});
+/**
+ * 字符data: cap
+ */
+define("char/data/symbol/set/cap", [], {
+    path: "M13.345,16.802c0,0.432,0,0.864-0.48,0.864s-0.48-0.432-0.48-0.864V8.137c0-0.648,0-2.184-1.848-3.36   C9.265,3.96,7.752,3.745,6.672,3.745c-1.8,0-5.712,0.768-5.712,4.368v8.689c0,0.432,0,0.864-0.48,0.864S0,17.234,0,16.802V7.993   c0-3.528,3.552-5.208,6.672-5.208c3,0,6.672,1.584,6.672,5.232V16.802z",
+    offset: {
+        x: 3,
+        y: 2
+    },
+    box: "M 0 0 L 20 0 L 20 27 L 0 27 Z"
+});
+/**
+ * 字符data: cap
+ */
+define("char/data/symbol/set/cup", [], {
+    path: "M13.345,12.458c0,3.528-3.552,5.208-6.672,5.208c-3,0-6.672-1.584-6.672-5.232V3.648c0-0.432,0-0.864,0.48-0.864   s0.48,0.432,0.48,0.864v8.665c0,0.648,0,2.184,1.848,3.36c1.272,0.816,2.784,1.032,3.864,1.032c1.8,0,5.712-0.768,5.712-4.368   V3.648c0-0.432,0-0.864,0.48-0.864s0.48,0.432,0.48,0.864V12.458z",
+    offset: {
+        x: 3,
+        y: 2
+    },
+    box: "M 0 0 L 20 0 L 20 27 L 0 27 Z"
+});
+/**
+ * 字符data: in
+ */
+define("char/data/symbol/set/in", [], {
+    path: "M0.984,11.617c0.288,3.216,3.048,5.521,6.433,5.521h3.745c0.408,0,0.84,0,0.84,0.48s-0.432,0.48-0.84,0.48H7.369   c-4.104,0-7.369-3.12-7.369-6.96s3.264-6.96,7.369-6.96h3.792c0.408,0,0.84,0,0.84,0.48s-0.432,0.48-0.84,0.48H7.417   c-3.384,0-6.145,2.304-6.433,5.521h10.177c0.408,0,0.84,0,0.84,0.48s-0.432,0.48-0.84,0.48H0.984z",
+    offset: {
+        x: 3,
+        y: 2
+    },
+    box: "M 0 0 L 19 0 L 19 27 L 0 27 Z"
+});
+/**
+ * 字符data: ni
+ */
+define("char/data/symbol/set/ni", [], {
+    path: "M0.84,5.137c-0.408,0-0.84,0-0.84-0.48s0.432-0.48,0.84-0.48h3.792c4.104,0,7.369,3.12,7.369,6.96s-3.264,6.96-7.369,6.96   H0.84c-0.408,0-0.84,0-0.84-0.48s0.432-0.48,0.84-0.48h3.745c3.384,0,6.145-2.304,6.433-5.521H0.84c-0.408,0-0.84,0-0.84-0.48   s0.432-0.48,0.84-0.48h10.177c-0.288-3.216-3.048-5.521-6.433-5.521H0.84z",
+    offset: {
+        x: 3,
+        y: 2
+    },
+    box: "M 0 0 L 19 0 L 19 27 L 0 27 Z"
+});
+/**
+ * 字符data: sqcap
+ */
+define("char/data/symbol/set/sqcap", [], {
+    path: "M13.057,16.273c0,0.432,0,0.864-0.48,0.864c-0.48,0-0.48-0.504-0.48-0.864V3.745H0.96v12.529c0,0.432,0,0.864-0.48,0.864   S0,16.634,0,16.273V3.648c0-0.792,0.072-0.864,0.84-0.864h11.377c0.768,0,0.84,0.072,0.84,0.864V16.273z",
+    offset: {
+        x: 3,
+        y: 2
+    },
+    box: "M 0 0 L 20 0 L 20 27 L 0 27 Z"
+});
+/**
+ * 字符data: sqcup
+ */
+define("char/data/symbol/set/sqcup", [], {
+    path: "M13.057,16.273c0,0.792-0.072,0.864-0.864,0.864H0.864C0.096,17.138,0,17.042,0,16.273V3.648c0-0.432,0-0.864,0.48-0.864   s0.48,0.432,0.48,0.864v12.529h11.137V3.648c0-0.432,0-0.864,0.48-0.864c0.48,0,0.48,0.432,0.48,0.864V16.273z",
+    offset: {
+        x: 3,
+        y: 2
+    },
+    box: "M 0 0 L 20 0 L 20 27 L 0 27 Z"
+});
+/**
+ * 字符data: ⊏
+ */
+define("char/data/symbol/set/sqsubset", [], {
+    path: "M0.96,5.161v11.977h12.841c0.408,0,0.864,0,0.864,0.48s-0.432,0.48-0.84,0.48H0.84c-0.768,0-0.84-0.096-0.84-0.84V5.064   c0-0.792,0.096-0.864,0.864-0.864h12.961c0.408,0,0.84,0,0.84,0.48s-0.432,0.48-0.84,0.48H0.96z",
+    offset: {
+        x: 3,
+        y: 2
+    },
+    box: "M 0 0 L 21 0 L 21 27 L 0 27 Z"
+});
+/**
+ * 字符data: ⊑
+ */
+define("char/data/symbol/set/sqsubseteq", [], {
+    path: "M0.84,20.426c-0.408,0-0.84,0-0.84-0.48s0.48-0.48,0.864-0.48h13.417c0.36,0,0.864,0,0.864,0.48s-0.432,0.48-0.84,0.48   H0.84z M1.224,2.833V14.81h13.057c0.408,0,0.864,0,0.864,0.48s-0.432,0.48-0.84,0.48H1.104c-0.768,0-0.84-0.072-0.84-0.864V2.736   c0-0.768,0.096-0.864,0.864-0.864h13.177c0.408,0,0.84,0,0.84,0.48s-0.432,0.48-0.84,0.48H1.224z",
+    offset: {
+        x: 3,
+        y: 2
+    },
+    box: "M 0 0 L 22 0 L 22 27 L 0 27 Z"
+});
+/**
+ * 字符data: ⊏
+ */
+define("char/data/symbol/set/sqsupset", [], {
+    path: "M15.625,17.603c0,0.768-0.096,0.84-0.84,0.84H0.84c-0.408,0-0.84,0-0.84-0.48s0.456-0.48,0.864-0.48h13.801V5.506H0.84   c-0.408,0-0.84,0-0.84-0.48s0.432-0.48,0.84-0.48h13.945c0.768,0,0.84,0.096,0.84,0.84V17.603z",
+    offset: {
+        x: 3,
+        y: 2
+    },
+    box: "M 0 0 L 21 0 L 21 27 L 0 27 Z"
+});
+/**
+ * 字符data: ⊒
+ */
+define("char/data/symbol/set/sqsupseteq", [], {
+    path: "M14.881,14.905c0,0.792-0.072,0.864-0.84,0.864H0.84c-0.408,0-0.84,0-0.84-0.48s0.48-0.48,0.864-0.48h13.057V2.833H0.84   c-0.408,0-0.84,0-0.84-0.48s0.432-0.48,0.84-0.48h13.201c0.768,0,0.84,0.072,0.84,0.864V14.905z M14.281,19.466   c0.408,0,0.864,0,0.864,0.48s-0.432,0.48-0.84,0.48H0.84c-0.408,0-0.84,0-0.84-0.48s0.504-0.48,0.864-0.48H14.281z",
+    offset: {
+        x: 3,
+        y: 2
+    },
+    box: "M 0 0 L 22 0 L 22 27 L 0 27 Z"
+});
+/**
+ * 字符data: ⊂
+ */
+define("char/data/symbol/set/subset", [], {
+    path: "M7.417,5.137c-3.744,0-6.457,2.784-6.457,6s2.712,6,6.457,6h6.409c0.408,0,0.84,0,0.84,0.48s-0.432,0.48-0.84,0.48H7.369   c-4.104,0-7.369-3.12-7.369-6.96s3.264-6.96,7.369-6.96h6.457c0.408,0,0.84,0,0.84,0.48s-0.432,0.48-0.84,0.48H7.417z",
+    offset: {
+        x: 3,
+        y: 2
+    },
+    box: "M 0 0 L 21 0 L 21 27 L 0 27 Z"
+});
+/**
+ * 字符data: ⊆
+ */
+define("char/data/symbol/set/subseteq", [], {
+    path: "M7.417,2.833c-3.72,0-6.457,2.736-6.457,6c0,3.168,2.665,5.977,6.457,5.977h6.409c0.408,0,0.84,0,0.84,0.48   s-0.432,0.48-0.84,0.48H7.369C3.313,15.77,0,12.673,0,8.809c0-3.792,3.24-6.937,7.369-6.937h6.457c0.408,0,0.84,0,0.84,0.48   s-0.432,0.48-0.84,0.48H7.417z M13.825,19.466c0.408,0,0.84,0,0.84,0.48s-0.432,0.48-0.84,0.48H1.32c-0.408,0-0.84,0-0.84-0.48   s0.432-0.48,0.84-0.48H13.825z",
+    offset: {
+        x: 3,
+        y: 2
+    },
+    box: "M 0 0 L 21 0 L 21 27 L 0 27 Z"
+});
+/**
+ * 字符data: ⊃
+ */
+define("char/data/symbol/set/supset", [], {
+    path: "M0.84,5.137c-0.408,0-0.84,0-0.84-0.48s0.432-0.48,0.84-0.48h6.457c4.104,0,7.369,3.12,7.369,6.96s-3.264,6.96-7.369,6.96   H0.84c-0.408,0-0.84,0-0.84-0.48s0.432-0.48,0.84-0.48h6.409c3.745,0,6.457-2.784,6.457-6s-2.712-6-6.457-6H0.84z",
+    offset: {
+        x: 3,
+        y: 2
+    },
+    box: "M 0 0 L 21 0 L 21 27 L 0 27 Z"
+});
+/**
+ * 字符data: ⊇
+ */
+define("char/data/symbol/set/supseteq", [], {
+    path: "M0.84,2.833c-0.408,0-0.84,0-0.84-0.48s0.432-0.48,0.84-0.48h6.457c4.057,0,7.369,3.096,7.369,6.96   c0,3.792-3.24,6.937-7.369,6.937H0.84c-0.408,0-0.84,0-0.84-0.48s0.432-0.48,0.84-0.48h6.409c3.72,0,6.457-2.736,6.457-6   c0-3.168-2.664-5.977-6.457-5.977H0.84z M0.84,20.426c-0.408,0-0.84,0-0.84-0.48s0.432-0.48,0.84-0.48h12.505   c0.408,0,0.84,0,0.84,0.48s-0.432,0.48-0.84,0.48H0.84z",
+    offset: {
+        x: 3,
+        y: 2
+    },
+    box: "M 0 0 L 21 0 L 21 27 L 0 27 Z"
+});
+/**
  * 字符data: /
  */
 define("char/data/symbol/slash", [], {
@@ -2265,6 +2781,29 @@ define("char/data/symbol/to", [], {
     box: "M 0 0 L 26 0 L 26 27 L 0 27 Z"
 });
 /**
+ * 字符data:
+ */
+define("char/data/symbol/vdots", [], {
+    path: "M1.44,0c0.864,0,1.464,0.672,1.464,1.417c0,0.864-0.696,1.464-1.44,1.464C0.6,2.88,0,2.185,0,1.44C0,0.624,0.624,0,1.44,0z    M1.44,9.601c0.864,0,1.464,0.672,1.464,1.416c0,0.864-0.696,1.464-1.44,1.464C0.6,12.481,0,11.785,0,11.041   C0,10.225,0.624,9.601,1.44,9.601z M1.44,19.442c0.864,0,1.464,0.672,1.464,1.416c0,0.864-0.696,1.464-1.44,1.464   C0.6,22.322,0,21.626,0,20.882C0,20.066,0.624,19.442,1.44,19.442z",
+    offset: {
+        x: 3,
+        y: 2
+    },
+    box: "M 0 0 L 9 0 L 9 27 L 0 27 Z"
+});
+/**
+ * 字符data: ∨
+ */
+define("char/data/symbol/vee", [], {
+    path: "M7.2,18.025c-0.144,0.336-0.216,0.504-0.528,0.504c-0.216,0-0.36-0.096-0.552-0.504L0.144,4.512C0,4.224,0,4.176,0,4.128   c0-0.264,0.216-0.48,0.48-0.48c0.168,0,0.36,0.048,0.552,0.504l5.641,12.721l5.641-12.697c0.168-0.36,0.312-0.528,0.552-0.528   c0.264,0,0.48,0.216,0.48,0.48c0,0.12-0.024,0.168-0.168,0.48L7.2,18.025z",
+    offset: {
+        x: 3,
+        y: 2
+    },
+    size: [ 14, 27 ],
+    box: "M 0 0 L 20 0 L 20 27 L 0 27 Z"
+});
+/**
  * 字符data: |
  */
 define("char/data/symbol/vertical", [], {
@@ -2276,9 +2815,21 @@ define("char/data/symbol/vertical", [], {
     box: "M 0 0 L 7 0 L 7 27 L 0 27 Z"
 });
 /**
+ * 字符data: ∧
+ */
+define("char/data/symbol/wedge", [], {
+    path: "M13.201,17.666c0.144,0.288,0.144,0.336,0.144,0.384c0,0.264-0.216,0.48-0.48,0.48c-0.096,0-0.336,0-0.552-0.504   L6.672,5.304L1.032,18.025c-0.192,0.456-0.384,0.504-0.552,0.504c-0.264,0-0.48-0.216-0.48-0.48c0-0.12,0.024-0.168,0.168-0.48   L6.145,4.152C6.289,3.816,6.36,3.648,6.672,3.648c0.216,0,0.36,0.096,0.552,0.504L13.201,17.666z",
+    offset: {
+        x: 3,
+        y: 2
+    },
+    size: [ 14, 27 ],
+    box: "M 0 0 L 20 0 L 20 27 L 0 27 Z"
+});
+/**
  * 罗马文本
  */
-define("char/roman", [ "kity", "char/char", "char/data", "signgroup" ], function(require, exports, module) {
+define("char/roman", [ "kity", "char/char", "char/data", "signgroup", "def/gtype" ], function(require, exports, module) {
     var kity = require("kity"), Char = require("char/char");
     return kity.createClass("RomanText", {
         base: require("signgroup"),
@@ -2329,7 +2880,7 @@ define("char/roman", [ "kity", "char/char", "char/data", "signgroup" ], function
 /**
  * 文本
  */
-define("char/text", [ "kity", "char/char", "char/data", "signgroup" ], function(require, exports, module) {
+define("char/text", [ "kity", "char/char", "char/data", "signgroup", "def/gtype" ], function(require, exports, module) {
     var kity = require("kity"), Char = require("char/char");
     return kity.createClass("Text", {
         base: require("signgroup"),
@@ -2375,80 +2926,14 @@ define("char/text", [ "kity", "char/char", "char/data", "signgroup" ], function(
     }
 });
 /**
- * 加法表达式
+ * 定义公式中各种对象的类型
  */
-define("expression/compound-exp/binary-exp/addition", [ "kity", "operator/binary-opr/addition", "char/data", "operator/binary-opr/left-right", "expression/compound-exp/binary-exp/left-right", "expression/compound-exp/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), AdditionOperator = require("operator/binary-opr/addition");
-    return kity.createClass("AdditionExpression", {
-        base: require("expression/compound-exp/binary-exp/left-right"),
-        constructor: function(leftOperand, rightOperand) {
-            this.callBase(leftOperand, rightOperand);
-            this.setOperator(new AdditionOperator());
-        }
-    });
-});
-/**
- * 星号表达式
- */
-define("expression/compound-exp/binary-exp/asterisk", [ "kity", "operator/binary-opr/asterisk", "char/data", "operator/binary-opr/left-right", "expression/compound-exp/binary-exp/left-right", "expression/compound-exp/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), AsteriskOperator = require("operator/binary-opr/asterisk");
-    return kity.createClass("AsteriskExpression", {
-        base: require("expression/compound-exp/binary-exp/left-right"),
-        constructor: function(leftOperand, rightOperand) {
-            this.callBase(leftOperand, rightOperand);
-            this.setOperator(new AsteriskOperator());
-        }
-    });
-});
-/**
- * 除法表达式
- */
-define("expression/compound-exp/binary-exp/division", [ "kity", "operator/binary-opr/division", "char/data", "operator/binary-opr/left-right", "expression/compound-exp/binary-exp/left-right", "expression/compound-exp/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), DivisionOperator = require("operator/binary-opr/division");
-    return kity.createClass("DivisionExpression", {
-        base: require("expression/compound-exp/binary-exp/left-right"),
-        constructor: function(leftOperand, rightOperand) {
-            this.callBase(leftOperand, rightOperand);
-            this.setOperator(new DivisionOperator());
-        }
-    });
-});
-/**
- * 点积表达式
- */
-define("expression/compound-exp/binary-exp/dot", [ "kity", "operator/binary-opr/dot", "char/data", "operator/binary-opr/left-right", "expression/compound-exp/binary-exp/left-right", "expression/compound-exp/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), DotOperator = require("operator/binary-opr/dot");
-    return kity.createClass("DotExpression", {
-        base: require("expression/compound-exp/binary-exp/left-right"),
-        constructor: function(leftOperand, rightOperand) {
-            this.callBase(leftOperand, rightOperand);
-            this.setOperator(new DotOperator());
-        }
-    });
-});
-/**
- * “连续点”表达式
- */
-define("expression/compound-exp/binary-exp/dots", [ "kity", "operator/binary-opr/dots", "operator/binary-opr/left-right", "expression/compound-exp/binary-exp/left-right", "expression/compound-exp/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), DotsOperator = require("operator/binary-opr/dots"), TYPES = {
-        cdots: 1,
-        ldots: 1,
-        vdots: 1,
-        ddots: 1
+define("def/gtype", [], function() {
+    return {
+        UNKNOWN: -1,
+        EXP: 0,
+        OP: 1
     };
-    return kity.createClass("DotsExpression", {
-        base: require("expression/compound-exp/binary-exp/left-right"),
-        constructor: function(type, leftOperand, rightOperand) {
-            this.callBase(leftOperand, rightOperand);
-            this.type = type in TYPES ? type : "cdots";
-            this.setOperator(new DotsOperator());
-        },
-        setType: function(type) {
-            if (type in TYPES) {
-                this.type = type;
-            }
-        }
-    });
 });
 /**
  * 分数表达式
@@ -2486,58 +2971,6 @@ define("expression/compound-exp/binary-exp/left-right", [ "kity", "expression/co
     });
 });
 /**
- * 逻辑与（交运算）表达式
- */
-define("expression/compound-exp/binary-exp/logical-conjunction", [ "kity", "operator/binary-opr/logical-conjunction", "operator/binary-opr/left-right", "expression/compound-exp/binary-exp/left-right", "expression/compound-exp/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), LogicalConjunctionOperator = require("operator/binary-opr/logical-conjunction");
-    return kity.createClass("LogicalConjunctionExpression", {
-        base: require("expression/compound-exp/binary-exp/left-right"),
-        constructor: function(leftOperand, rightOperand) {
-            this.callBase(leftOperand, rightOperand);
-            this.setOperator(new LogicalConjunctionOperator());
-        }
-    });
-});
-/**
- * 逻辑或表达式
- */
-define("expression/compound-exp/binary-exp/logical-disjunction", [ "kity", "operator/binary-opr/logical-disjunction", "operator/binary-opr/left-right", "expression/compound-exp/binary-exp/left-right", "expression/compound-exp/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), LogicalDisjunctionOperator = require("operator/binary-opr/logical-disjunction");
-    return kity.createClass("LogicalDisjunctionExpression", {
-        base: require("expression/compound-exp/binary-exp/left-right"),
-        constructor: function(leftOperand, rightOperand) {
-            this.callBase(leftOperand, rightOperand);
-            this.setOperator(new LogicalDisjunctionOperator());
-        }
-    });
-});
-/**
- * 负正表达式
- */
-define("expression/compound-exp/binary-exp/minus-plus", [ "kity", "operator/binary-opr/minus-plus", "operator/binary-opr/left-right", "expression/compound-exp/binary-exp/left-right", "expression/compound-exp/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), MinusPlusOperator = require("operator/binary-opr/minus-plus");
-    return kity.createClass("MinusPlusExpression", {
-        base: require("expression/compound-exp/binary-exp/left-right"),
-        constructor: function(leftOperand, rightOperand) {
-            this.callBase(leftOperand, rightOperand);
-            this.setOperator(new MinusPlusOperator());
-        }
-    });
-});
-/**
- * 乘法表达式
- */
-define("expression/compound-exp/binary-exp/multiplication", [ "kity", "operator/binary-opr/multiplication", "char/data", "operator/binary-opr/left-right", "expression/compound-exp/binary-exp/left-right", "expression/compound-exp/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), MultiplicationOperator = require("operator/binary-opr/multiplication");
-    return kity.createClass("MultiplicationExpression", {
-        base: require("expression/compound-exp/binary-exp/left-right"),
-        constructor: function(leftOperand, rightOperand) {
-            this.callBase(leftOperand, rightOperand);
-            this.setOperator(new MultiplicationOperator());
-        }
-    });
-});
-/**
  * “平行”表达式
  */
 define("expression/compound-exp/binary-exp/parallel", [ "kity", "operator/binary-opr/parallel", "operator/binary-opr/left-right", "expression/compound-exp/binary-exp/left-right", "expression/compound-exp/binary" ], function(require, exports, modules) {
@@ -2547,19 +2980,6 @@ define("expression/compound-exp/binary-exp/parallel", [ "kity", "operator/binary
         constructor: function(leftOperand, rightOperand) {
             this.callBase(leftOperand, rightOperand);
             this.setOperator(new ParallelOperator());
-        }
-    });
-});
-/**
- * 正负表达式
- */
-define("expression/compound-exp/binary-exp/plus-minus", [ "kity", "operator/binary-opr/plus-minus", "operator/binary-opr/left-right", "expression/compound-exp/binary-exp/left-right", "expression/compound-exp/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), PlusMinusOperator = require("operator/binary-opr/plus-minus");
-    return kity.createClass("PlusMinusExpression", {
-        base: require("expression/compound-exp/binary-exp/left-right"),
-        constructor: function(leftOperand, rightOperand) {
-            this.callBase(leftOperand, rightOperand);
-            this.setOperator(new PlusMinusOperator());
         }
     });
 });
@@ -2590,513 +3010,6 @@ define("expression/compound-exp/binary-exp/radical", [ "kity", "operator/binary-
         },
         getExponent: function() {
             return this.getLastOperand();
-        }
-    });
-});
-/**
- * 约等于表达式
- */
-define("expression/compound-exp/binary-exp/relational/approx", [ "kity", "operator/binary-opr/relational/approx", "operator/binary-opr/left-right", "expression/compound-exp/binary-exp/left-right", "expression/compound-exp/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), ApproxOperator = require("operator/binary-opr/relational/approx");
-    return kity.createClass("ApproxExpression", {
-        base: require("expression/compound-exp/binary-exp/left-right"),
-        constructor: function(leftOperand, rightOperand) {
-            this.callBase(leftOperand, rightOperand);
-            this.setOperator(new ApproxOperator());
-        }
-    });
-});
-/**
- * 等号表达式
- */
-define("expression/compound-exp/binary-exp/relational/eq", [ "kity", "operator/binary-opr/relational/eq", "char/data", "operator/binary-opr/left-right", "expression/compound-exp/binary-exp/left-right", "expression/compound-exp/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), EqOperator = require("operator/binary-opr/relational/eq");
-    return kity.createClass("EqExpression", {
-        base: require("expression/compound-exp/binary-exp/left-right"),
-        constructor: function(leftOperand, rightOperand) {
-            this.callBase(leftOperand, rightOperand);
-            this.setOperator(new EqOperator());
-        }
-    });
-});
-/**
- * "≡"表达式
- */
-define("expression/compound-exp/binary-exp/relational/equiv", [ "kity", "operator/binary-opr/relational/equiv", "operator/binary-opr/left-right", "expression/compound-exp/binary-exp/left-right", "expression/compound-exp/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), EquivOperator = require("operator/binary-opr/relational/equiv");
-    return kity.createClass("EquivExpression", {
-        base: require("expression/compound-exp/binary-exp/left-right"),
-        constructor: function(leftOperand, rightOperand) {
-            this.callBase(leftOperand, rightOperand);
-            this.setOperator(new EquivOperator());
-        }
-    });
-});
-/**
- * 大于等于表达式
- */
-define("expression/compound-exp/binary-exp/relational/geq", [ "kity", "operator/binary-opr/relational/geq", "operator/binary-opr/left-right", "expression/compound-exp/binary-exp/left-right", "expression/compound-exp/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), GeqOperator = require("operator/binary-opr/relational/geq");
-    return kity.createClass("GeqExpression", {
-        base: require("expression/compound-exp/binary-exp/left-right"),
-        constructor: function(leftOperand, rightOperand) {
-            this.callBase(leftOperand, rightOperand);
-            this.setOperator(new GeqOperator());
-        }
-    });
-});
-/**
- * 远大于表达式
- */
-define("expression/compound-exp/binary-exp/relational/gg", [ "kity", "operator/binary-opr/relational/gg", "operator/binary-opr/left-right", "expression/compound-exp/binary-exp/left-right", "expression/compound-exp/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), GgOperator = require("operator/binary-opr/relational/gg");
-    return kity.createClass("GgExpression", {
-        base: require("expression/compound-exp/binary-exp/left-right"),
-        constructor: function(leftOperand, rightOperand) {
-            this.callBase(leftOperand, rightOperand);
-            this.setOperator(new GgOperator());
-        }
-    });
-});
-/**
- * 大于表达式: >
- */
-define("expression/compound-exp/binary-exp/relational/gt", [ "kity", "operator/binary-opr/relational/gt", "operator/binary-opr/left-right", "expression/compound-exp/binary-exp/left-right", "expression/compound-exp/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), GtOperator = require("operator/binary-opr/relational/gt");
-    return kity.createClass("GtExpression", {
-        base: require("expression/compound-exp/binary-exp/left-right"),
-        constructor: function(leftOperand, rightOperand) {
-            this.callBase(leftOperand, rightOperand);
-            this.setOperator(new GtOperator());
-        }
-    });
-});
-/**
- * 小于等于表达式
- */
-define("expression/compound-exp/binary-exp/relational/leq", [ "kity", "operator/binary-opr/relational/leq", "operator/binary-opr/left-right", "expression/compound-exp/binary-exp/left-right", "expression/compound-exp/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), LeqOperator = require("operator/binary-opr/relational/leq");
-    return kity.createClass("LeqExpression", {
-        base: require("expression/compound-exp/binary-exp/left-right"),
-        constructor: function(leftOperand, rightOperand) {
-            this.callBase(leftOperand, rightOperand);
-            this.setOperator(new LeqOperator());
-        }
-    });
-});
-/**
- * 远小于表达式
- */
-define("expression/compound-exp/binary-exp/relational/ll", [ "kity", "operator/binary-opr/relational/ll", "operator/binary-opr/left-right", "expression/compound-exp/binary-exp/left-right", "expression/compound-exp/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), LlOperator = require("operator/binary-opr/relational/ll");
-    return kity.createClass("LlExpression", {
-        base: require("expression/compound-exp/binary-exp/left-right"),
-        constructor: function(leftOperand, rightOperand) {
-            this.callBase(leftOperand, rightOperand);
-            this.setOperator(new LlOperator());
-        }
-    });
-});
-/**
- * "|"表达式
- */
-define("expression/compound-exp/binary-exp/relational/logical/mid", [ "kity", "operator/binary-opr/relational/logical/mid", "operator/binary-opr/left-right", "expression/compound-exp/binary-exp/left-right", "expression/compound-exp/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), MidOperator = require("operator/binary-opr/relational/logical/mid");
-    return kity.createClass("MidExpression", {
-        base: require("expression/compound-exp/binary-exp/left-right"),
-        constructor: function(leftOperand, rightOperand) {
-            this.callBase(leftOperand, rightOperand);
-            this.setOperator(new MidOperator());
-        }
-    });
-});
-/**
- * "⋁"表达式
- */
-define("expression/compound-exp/binary-exp/relational/logical/vee", [ "kity", "operator/binary-opr/relational/logical/vee", "operator/binary-opr/left-right", "expression/compound-exp/binary-exp/left-right", "expression/compound-exp/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), VeeOperator = require("operator/binary-opr/relational/logical/vee");
-    return kity.createClass("VeeExpression", {
-        base: require("expression/compound-exp/binary-exp/left-right"),
-        constructor: function(leftOperand, rightOperand) {
-            this.callBase(leftOperand, rightOperand);
-            this.setOperator(new VeeOperator());
-        }
-    });
-});
-/**
- * "⋀"表达式
- */
-define("expression/compound-exp/binary-exp/relational/logical/wedge", [ "kity", "operator/binary-opr/relational/logical/wedge", "operator/binary-opr/left-right", "expression/compound-exp/binary-exp/left-right", "expression/compound-exp/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), WedgeOperator = require("operator/binary-opr/relational/logical/wedge");
-    return kity.createClass("WedgeExpression", {
-        base: require("expression/compound-exp/binary-exp/left-right"),
-        constructor: function(leftOperand, rightOperand) {
-            this.callBase(leftOperand, rightOperand);
-            this.setOperator(new WedgeOperator());
-        }
-    });
-});
-/**
- * 小于表达式: <
- */
-define("expression/compound-exp/binary-exp/relational/lt", [ "kity", "operator/binary-opr/relational/lt", "operator/binary-opr/left-right", "expression/compound-exp/binary-exp/left-right", "expression/compound-exp/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), LtOperator = require("operator/binary-opr/relational/lt");
-    return kity.createClass("LtExpression", {
-        base: require("expression/compound-exp/binary-exp/left-right"),
-        constructor: function(leftOperand, rightOperand) {
-            this.callBase(leftOperand, rightOperand);
-            this.setOperator(new LtOperator());
-        }
-    });
-});
-/**
- * "≇"表达式
- */
-define("expression/compound-exp/binary-exp/relational/not/not-cong", [ "kity", "operator/binary-opr/relational/not/not-cong", "operator/binary-opr/left-right", "expression/compound-exp/binary-exp/left-right", "expression/compound-exp/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), NotCongOperator = require("operator/binary-opr/relational/not/not-cong");
-    return kity.createClass("NotCongExpression", {
-        base: require("expression/compound-exp/binary-exp/left-right"),
-        constructor: function(leftOperand, rightOperand) {
-            this.callBase(leftOperand, rightOperand);
-            this.setOperator(new NotCongOperator());
-        }
-    });
-});
-/**
- * 不等号表达式
- */
-define("expression/compound-exp/binary-exp/relational/not/not-eq", [ "kity", "operator/binary-opr/relational/not/not-eq", "operator/binary-opr/left-right", "expression/compound-exp/binary-exp/left-right", "expression/compound-exp/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), NotEqOperator = require("operator/binary-opr/relational/not/not-eq");
-    return kity.createClass("NotEqExpression", {
-        base: require("expression/compound-exp/binary-exp/left-right"),
-        constructor: function(leftOperand, rightOperand) {
-            this.callBase(leftOperand, rightOperand);
-            this.setOperator(new NotEqOperator());
-        }
-    });
-});
-/**
- * ""表达式
- */
-define("expression/compound-exp/binary-exp/relational/not/not-equiv", [ "kity", "operator/binary-opr/relational/not/not-equiv", "operator/binary-opr/left-right", "expression/compound-exp/binary-exp/left-right", "expression/compound-exp/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), NotEquivOperator = require("operator/binary-opr/relational/not/not-equiv");
-    return kity.createClass("NotEquivExpression", {
-        base: require("expression/compound-exp/binary-exp/left-right"),
-        constructor: function(leftOperand, rightOperand) {
-            this.callBase(leftOperand, rightOperand);
-            this.setOperator(new NotEquivOperator());
-        }
-    });
-});
-/**
- * "≱"表达式
- */
-define("expression/compound-exp/binary-exp/relational/not/not-ge", [ "kity", "operator/binary-opr/relational/not/not-ge", "operator/binary-opr/left-right", "expression/compound-exp/binary-exp/left-right", "expression/compound-exp/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), NotGeOperator = require("operator/binary-opr/relational/not/not-ge");
-    return kity.createClass("NotGeExpression", {
-        base: require("expression/compound-exp/binary-exp/left-right"),
-        constructor: function(leftOperand, rightOperand) {
-            this.callBase(leftOperand, rightOperand);
-            this.setOperator(new NotGeOperator());
-        }
-    });
-});
-/**
- * "≯"表达式
- */
-define("expression/compound-exp/binary-exp/relational/not/not-gt", [ "kity", "operator/binary-opr/relational/not/not-gt", "operator/binary-opr/left-right", "expression/compound-exp/binary-exp/left-right", "expression/compound-exp/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), NotGtOperator = require("operator/binary-opr/relational/not/not-gt");
-    return kity.createClass("NotGtExpression", {
-        base: require("expression/compound-exp/binary-exp/left-right"),
-        constructor: function(leftOperand, rightOperand) {
-            this.callBase(leftOperand, rightOperand);
-            this.setOperator(new NotGtOperator());
-        }
-    });
-});
-/**
- * "≰"表达式
- */
-define("expression/compound-exp/binary-exp/relational/not/not-in", [ "kity", "operator/binary-opr/relational/not/not-in", "operator/binary-opr/left-right", "expression/compound-exp/binary-exp/left-right", "expression/compound-exp/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), NotInOperator = require("operator/binary-opr/relational/not/not-in");
-    return kity.createClass("NotInExpression", {
-        base: require("expression/compound-exp/binary-exp/left-right"),
-        constructor: function(leftOperand, rightOperand) {
-            this.callBase(leftOperand, rightOperand);
-            this.setOperator(new NotInOperator());
-        }
-    });
-});
-/**
- * "≰"表达式
- */
-define("expression/compound-exp/binary-exp/relational/not/not-le", [ "kity", "operator/binary-opr/relational/not/not-le", "operator/binary-opr/left-right", "expression/compound-exp/binary-exp/left-right", "expression/compound-exp/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), NotLeOperator = require("operator/binary-opr/relational/not/not-le");
-    return kity.createClass("NotLeExpression", {
-        base: require("expression/compound-exp/binary-exp/left-right"),
-        constructor: function(leftOperand, rightOperand) {
-            this.callBase(leftOperand, rightOperand);
-            this.setOperator(new NotLeOperator());
-        }
-    });
-});
-/**
- * "≮"表达式
- */
-define("expression/compound-exp/binary-exp/relational/not/not-lt", [ "kity", "operator/binary-opr/relational/not/not-lt", "operator/binary-opr/left-right", "expression/compound-exp/binary-exp/left-right", "expression/compound-exp/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), NotLtOperator = require("operator/binary-opr/relational/not/not-lt");
-    return kity.createClass("NotLtExpression", {
-        base: require("expression/compound-exp/binary-exp/left-right"),
-        constructor: function(leftOperand, rightOperand) {
-            this.callBase(leftOperand, rightOperand);
-            this.setOperator(new NotLtOperator());
-        }
-    });
-});
-/**
- * "≁"表达式
- */
-define("expression/compound-exp/binary-exp/relational/not/not-sim", [ "kity", "operator/binary-opr/relational/not/not-sim", "operator/binary-opr/left-right", "expression/compound-exp/binary-exp/left-right", "expression/compound-exp/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), NotSimOperator = require("operator/binary-opr/relational/not/not-sim");
-    return kity.createClass("NotSimExpression", {
-        base: require("expression/compound-exp/binary-exp/left-right"),
-        constructor: function(leftOperand, rightOperand) {
-            this.callBase(leftOperand, rightOperand);
-            this.setOperator(new NotSimOperator());
-        }
-    });
-});
-/**
- * "⊈"表达式
- */
-define("expression/compound-exp/binary-exp/relational/not/not-subseteq", [ "kity", "operator/binary-opr/relational/not/not-subseteq", "operator/binary-opr/left-right", "expression/compound-exp/binary-exp/left-right", "expression/compound-exp/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), NotSubseteqOperator = require("operator/binary-opr/relational/not/not-subseteq");
-    return kity.createClass("NotSubseteqExpression", {
-        base: require("expression/compound-exp/binary-exp/left-right"),
-        constructor: function(leftOperand, rightOperand) {
-            this.callBase(leftOperand, rightOperand);
-            this.setOperator(new NotSubseteqOperator());
-        }
-    });
-});
-/**
- * "⊉"表达式
- */
-define("expression/compound-exp/binary-exp/relational/not/not-supseteq", [ "kity", "operator/binary-opr/relational/not/not-supseteq", "operator/binary-opr/left-right", "expression/compound-exp/binary-exp/left-right", "expression/compound-exp/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), NotSupseteqOperator = require("operator/binary-opr/relational/not/not-supseteq");
-    return kity.createClass("NotSupseteqExpression", {
-        base: require("expression/compound-exp/binary-exp/left-right"),
-        constructor: function(leftOperand, rightOperand) {
-            this.callBase(leftOperand, rightOperand);
-            this.setOperator(new NotSupseteqOperator());
-        }
-    });
-});
-/**
- * "⋂"表达式
- */
-define("expression/compound-exp/binary-exp/relational/set/cap", [ "kity", "operator/binary-opr/relational/set/cap", "operator/binary-opr/left-right", "expression/compound-exp/binary-exp/left-right", "expression/compound-exp/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), CapOperator = require("operator/binary-opr/relational/set/cap");
-    return kity.createClass("CapExpression", {
-        base: require("expression/compound-exp/binary-exp/left-right"),
-        constructor: function(leftOperand, rightOperand) {
-            this.callBase(leftOperand, rightOperand);
-            this.setOperator(new CapOperator());
-        }
-    });
-});
-/**
- * "⋃"表达式
- */
-define("expression/compound-exp/binary-exp/relational/set/cup", [ "kity", "operator/binary-opr/relational/set/cup", "operator/binary-opr/left-right", "expression/compound-exp/binary-exp/left-right", "expression/compound-exp/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), CupOperator = require("operator/binary-opr/relational/set/cup");
-    return kity.createClass("CupExpression", {
-        base: require("expression/compound-exp/binary-exp/left-right"),
-        constructor: function(leftOperand, rightOperand) {
-            this.callBase(leftOperand, rightOperand);
-            this.setOperator(new CupOperator());
-        }
-    });
-});
-/**
- * in表达式
- */
-define("expression/compound-exp/binary-exp/relational/set/in", [ "kity", "operator/binary-opr/relational/set/in", "operator/binary-opr/left-right", "expression/compound-exp/binary-exp/left-right", "expression/compound-exp/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), InOperator = require("operator/binary-opr/relational/set/in");
-    return kity.createClass("InExpression", {
-        base: require("expression/compound-exp/binary-exp/left-right"),
-        constructor: function(leftOperand, rightOperand) {
-            this.callBase(leftOperand, rightOperand);
-            this.setOperator(new InOperator());
-        }
-    });
-});
-/**
- * ni表达式
- */
-define("expression/compound-exp/binary-exp/relational/set/ni", [ "kity", "operator/binary-opr/relational/set/ni", "operator/binary-opr/left-right", "expression/compound-exp/binary-exp/left-right", "expression/compound-exp/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), NiOperator = require("operator/binary-opr/relational/set/ni");
-    return kity.createClass("NiExpression", {
-        base: require("expression/compound-exp/binary-exp/left-right"),
-        constructor: function(leftOperand, rightOperand) {
-            this.callBase(leftOperand, rightOperand);
-            this.setOperator(new NiOperator());
-        }
-    });
-});
-/**
- * "⊓"表达式
- */
-define("expression/compound-exp/binary-exp/relational/set/sqcap", [ "kity", "operator/binary-opr/relational/set/sqcap", "operator/binary-opr/left-right", "expression/compound-exp/binary-exp/left-right", "expression/compound-exp/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), SqcapOperator = require("operator/binary-opr/relational/set/sqcap");
-    return kity.createClass("SqcapExpression", {
-        base: require("expression/compound-exp/binary-exp/left-right"),
-        constructor: function(leftOperand, rightOperand) {
-            this.callBase(leftOperand, rightOperand);
-            this.setOperator(new SqcapOperator());
-        }
-    });
-});
-/**
- * "⊔"表达式
- */
-define("expression/compound-exp/binary-exp/relational/set/sqcup", [ "kity", "operator/binary-opr/relational/set/sqcup", "operator/binary-opr/left-right", "expression/compound-exp/binary-exp/left-right", "expression/compound-exp/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), SqcupOperator = require("operator/binary-opr/relational/set/sqcup");
-    return kity.createClass("SqcupExpression", {
-        base: require("expression/compound-exp/binary-exp/left-right"),
-        constructor: function(leftOperand, rightOperand) {
-            this.callBase(leftOperand, rightOperand);
-            this.setOperator(new SqcupOperator());
-        }
-    });
-});
-/**
- * "⊏"表达式
- */
-define("expression/compound-exp/binary-exp/relational/set/sqsubset", [ "kity", "operator/binary-opr/relational/set/sqsubset", "operator/binary-opr/left-right", "expression/compound-exp/binary-exp/left-right", "expression/compound-exp/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), SqsubsetOperator = require("operator/binary-opr/relational/set/sqsubset");
-    return kity.createClass("SqsubsetExpression", {
-        base: require("expression/compound-exp/binary-exp/left-right"),
-        constructor: function(leftOperand, rightOperand) {
-            this.callBase(leftOperand, rightOperand);
-            this.setOperator(new SqsubsetOperator());
-        }
-    });
-});
-/**
- * "⊑"表达式
- */
-define("expression/compound-exp/binary-exp/relational/set/sqsubseteq", [ "kity", "operator/binary-opr/relational/set/sqsubseteq", "operator/binary-opr/left-right", "expression/compound-exp/binary-exp/left-right", "expression/compound-exp/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), SqsubseteqOperator = require("operator/binary-opr/relational/set/sqsubseteq");
-    return kity.createClass("SqsubseteqExpression", {
-        base: require("expression/compound-exp/binary-exp/left-right"),
-        constructor: function(leftOperand, rightOperand) {
-            this.callBase(leftOperand, rightOperand);
-            this.setOperator(new SqsubseteqOperator());
-        }
-    });
-});
-/**
- * "⊐"表达式
- */
-define("expression/compound-exp/binary-exp/relational/set/sqsupset", [ "kity", "operator/binary-opr/relational/set/sqsupset", "operator/binary-opr/left-right", "expression/compound-exp/binary-exp/left-right", "expression/compound-exp/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), SqsupsetOperator = require("operator/binary-opr/relational/set/sqsupset");
-    return kity.createClass("SqsupsetExpression", {
-        base: require("expression/compound-exp/binary-exp/left-right"),
-        constructor: function(leftOperand, rightOperand) {
-            this.callBase(leftOperand, rightOperand);
-            this.setOperator(new SqsupsetOperator());
-        }
-    });
-});
-/**
- * "⊒"表达式
- */
-define("expression/compound-exp/binary-exp/relational/set/sqsupseteq", [ "kity", "operator/binary-opr/relational/set/sqsupseteq", "operator/binary-opr/left-right", "expression/compound-exp/binary-exp/left-right", "expression/compound-exp/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), SqsupseteqOperator = require("operator/binary-opr/relational/set/sqsupseteq");
-    return kity.createClass("SqsupseteqExpression", {
-        base: require("expression/compound-exp/binary-exp/left-right"),
-        constructor: function(leftOperand, rightOperand) {
-            this.callBase(leftOperand, rightOperand);
-            this.setOperator(new SqsupseteqOperator());
-        }
-    });
-});
-/**
- * 子集表达式
- */
-define("expression/compound-exp/binary-exp/relational/set/subset", [ "kity", "operator/binary-opr/relational/set/subset", "operator/binary-opr/left-right", "expression/compound-exp/binary-exp/left-right", "expression/compound-exp/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), SubsetOperator = require("operator/binary-opr/relational/set/subset");
-    return kity.createClass("SubsetExpression", {
-        base: require("expression/compound-exp/binary-exp/left-right"),
-        constructor: function(leftOperand, rightOperand) {
-            this.callBase(leftOperand, rightOperand);
-            this.setOperator(new SubsetOperator());
-        }
-    });
-});
-/**
- * 真子集表达式
- */
-define("expression/compound-exp/binary-exp/relational/set/subseteq", [ "kity", "operator/binary-opr/relational/set/subseteq", "operator/binary-opr/left-right", "expression/compound-exp/binary-exp/left-right", "expression/compound-exp/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), SubseteqOperator = require("operator/binary-opr/relational/set/subseteq");
-    return kity.createClass("SubseteqExpression", {
-        base: require("expression/compound-exp/binary-exp/left-right"),
-        constructor: function(leftOperand, rightOperand) {
-            this.callBase(leftOperand, rightOperand);
-            this.setOperator(new SubseteqOperator());
-        }
-    });
-});
-/**
- * 超集表达式
- */
-define("expression/compound-exp/binary-exp/relational/set/supset", [ "kity", "operator/binary-opr/relational/set/supset", "operator/binary-opr/left-right", "expression/compound-exp/binary-exp/left-right", "expression/compound-exp/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), SupsetOperator = require("operator/binary-opr/relational/set/supset");
-    return kity.createClass("SupsetExpression", {
-        base: require("expression/compound-exp/binary-exp/left-right"),
-        constructor: function(leftOperand, rightOperand) {
-            this.callBase(leftOperand, rightOperand);
-            this.setOperator(new SupsetOperator());
-        }
-    });
-});
-/**
- * 真超集表达式
- */
-define("expression/compound-exp/binary-exp/relational/set/supseteq", [ "kity", "operator/binary-opr/relational/set/supseteq", "operator/binary-opr/left-right", "expression/compound-exp/binary-exp/left-right", "expression/compound-exp/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), SupseteqOperator = require("operator/binary-opr/relational/set/supseteq");
-    return kity.createClass("SupseteqExpression", {
-        base: require("expression/compound-exp/binary-exp/left-right"),
-        constructor: function(leftOperand, rightOperand) {
-            this.callBase(leftOperand, rightOperand);
-            this.setOperator(new SupseteqOperator());
-        }
-    });
-});
-/**
- * sim表达式
- */
-define("expression/compound-exp/binary-exp/relational/sim", [ "kity", "operator/binary-opr/relational/sim", "operator/binary-opr/left-right", "expression/compound-exp/binary-exp/left-right", "expression/compound-exp/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), SimOperator = require("operator/binary-opr/relational/sim");
-    return kity.createClass("SimExpression", {
-        base: require("expression/compound-exp/binary-exp/left-right"),
-        constructor: function(leftOperand, rightOperand) {
-            this.callBase(leftOperand, rightOperand);
-            this.setOperator(new SimOperator());
-        }
-    });
-});
-/**
- * simeq表达式
- */
-define("expression/compound-exp/binary-exp/relational/simeq", [ "kity", "operator/binary-opr/relational/simeq", "operator/binary-opr/left-right", "expression/compound-exp/binary-exp/left-right", "expression/compound-exp/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), SimeqOperator = require("operator/binary-opr/relational/simeq");
-    return kity.createClass("SimeqExpression", {
-        base: require("expression/compound-exp/binary-exp/left-right"),
-        constructor: function(leftOperand, rightOperand) {
-            this.callBase(leftOperand, rightOperand);
-            this.setOperator(new SimeqOperator());
         }
     });
 });
@@ -3391,7 +3304,7 @@ define("expression/compound-exp/summation", [ "kity", "operator/summation", "ope
  * 复合表达式
  * @abstract
  */
-define("expression/compound", [ "kity", "expression/expression", "signgroup" ], function(require, exports, modules) {
+define("expression/compound", [ "kity", "expression/expression", "def/gtype", "signgroup" ], function(require, exports, modules) {
     var kity = require("kity"), Expression = require("expression/expression");
     return kity.createClass("CompoundExpression", {
         base: require("expression/expression"),
@@ -3438,6 +3351,7 @@ define("expression/compound", [ "kity", "expression/expression", "signgroup" ], 
         },
         addedCall: function() {
             this.operator.applyOperand.apply(this.operator, this.operands);
+            this.updateBoxSize();
             return this;
         }
     });
@@ -3446,12 +3360,12 @@ define("expression/compound", [ "kity", "expression/expression", "signgroup" ], 
  * 空表达式
  * 该表达式主要用途是用于站位
  */
-define("expression/empty", [ "kity", "expression/expression", "signgroup" ], function(require, exports, module) {
+define("expression/empty", [ "kity", "expression/expression", "def/gtype", "signgroup" ], function(require, exports, module) {
     var kity = require("kity"), Expression = require("expression/expression"), EmptyExpression = kity.createClass("EmptyExpression", {
         base: Expression
     });
     // 注册打包函数
-    Expression.registerWrap(function(operand) {
+    Expression.registerWrap("empty", function(operand) {
         if (operand === null || operand === undefined) {
             return new EmptyExpression();
         }
@@ -3461,26 +3375,66 @@ define("expression/empty", [ "kity", "expression/expression", "signgroup" ], fun
  * 基础表达式， 该类是表达式和操作数的高层抽象
  * @abstract
  */
-define("expression/expression", [ "kity", "signgroup" ], function(require, exports, module) {
-    var kity = require("kity"), // 打包函数列表
-    WRAP_FN = [], Expression = kity.createClass("Expression", {
+define("expression/expression", [ "kity", "def/gtype", "signgroup" ], function(require, exports, module) {
+    var kity = require("kity"), GTYPE = require("def/gtype"), // 打包函数列表
+    WRAP_FN = [], // 注册的打包函数的名称与其在注册器列表中的索引之间的对应关系
+    WRAP_FN_INDEX = {}, Expression = kity.createClass("Expression", {
         base: require("signgroup"),
+        constructor: function() {
+            this.callBase();
+            this.type = GTYPE.EXP;
+            this.children = [];
+            this.box.setAttr("data-type", "kf-editor-exp-box");
+            this.expContent = new kity.Group();
+            this.addShape(this.expContent);
+        },
+        getChildren: function() {
+            return this.children;
+        },
+        getChild: function(index) {
+            return this.children[index] || null;
+        },
+        setChildren: function(index, exp) {
+            // 首先清理掉之前的表达式
+            if (this.children[index]) {
+                this.children[index].remove();
+            }
+            this.children[index] = exp;
+            this.expContent.addShape(exp);
+        },
         getBaseWidth: function() {
             return this.getWidth();
         },
         getBaseHeight: function() {
             return this.getHeight();
+        },
+        updateBoxSize: function() {
+            var renderBox = this.expContent.getRenderBox();
+            this.setBoxSize(renderBox.width, renderBox.height);
         }
     });
     // 表达式自动打包
     kity.Utils.extend(Expression, {
-        registerWrap: function(fn) {
+        registerWrap: function(name, fn) {
+            WRAP_FN_INDEX[name] = WRAP_FN.length;
             WRAP_FN.push(fn);
+        },
+        revokeWrap: function(name) {
+            var fn = null;
+            if (name in WRAP_FN_INDEX) {
+                fn = WRAP_FN[WRAP_FN_INDEX[name]];
+                WRAP_FN[WRAP_FN_INDEX[name]] = null;
+                delete WRAP_FN_INDEX[name];
+            }
+            return fn;
         },
         // 打包函数
         wrap: function(operand) {
             var result = undefined;
             kity.Utils.each(WRAP_FN, function(fn) {
+                if (!fn) {
+                    return;
+                }
                 result = fn(operand);
                 if (result) {
                     return false;
@@ -3494,7 +3448,7 @@ define("expression/expression", [ "kity", "signgroup" ], function(require, expor
 /**
  * 罗马文本表达式
  */
-define("expression/roman", [ "char/roman", "kity", "char/char", "signgroup", "expression/expression" ], function(require, exports, module) {
+define("expression/roman", [ "char/roman", "kity", "char/char", "signgroup", "expression/expression", "def/gtype" ], function(require, exports, module) {
     var RomanText = require("char/roman"), kity = require("kity");
     return kity.createClass("RomanTextExpression", {
         base: require("expression/expression"),
@@ -3508,7 +3462,7 @@ define("expression/roman", [ "char/roman", "kity", "char/char", "signgroup", "ex
 /**
  * Text表达式
  */
-define("expression/text", [ "char/text", "kity", "char/char", "signgroup", "expression/expression" ], function(require, exports, module) {
+define("expression/text", [ "char/text", "kity", "char/char", "signgroup", "expression/expression", "def/gtype" ], function(require, exports, module) {
     var Text = require("char/text"), kity = require("kity"), Expression = require("expression/expression"), TextExpression = kity.createClass("TextExpression", {
         base: require("expression/expression"),
         constructor: function(content) {
@@ -3522,7 +3476,7 @@ define("expression/text", [ "char/text", "kity", "char/char", "signgroup", "expr
         }
     });
     // 注册文本表达式的打包函数
-    Expression.registerWrap(function(operand) {
+    Expression.registerWrap("text", function(operand) {
         var operandType = typeof operand;
         if (operandType === "number" || operandType === "string") {
             operand = new TextExpression(operand);
@@ -3534,8 +3488,8 @@ define("expression/text", [ "char/text", "kity", "char/char", "signgroup", "expr
 /**
  * 公式对象，表达式容器
  */
-define("formula", [ "kity", "fpaper" ], function(require, exports, module) {
-    var kity = require("kity"), EXPRESSION_INTERVAL = 10;
+define("formula", [ "kity", "def/gtype", "fpaper" ], function(require, exports, module) {
+    var kity = require("kity"), GTYPE = require("def/gtype"), EXPRESSION_INTERVAL = 10;
     return kity.createClass("Formula", {
         base: require("fpaper"),
         constructor: function(container, config) {
@@ -3545,7 +3499,7 @@ define("formula", [ "kity", "fpaper" ], function(require, exports, module) {
                 fontsize: 20,
                 autoresize: true
             }, config);
-            this.zoom = (config.fontsize || 20) / 20;
+            this.zoom = (this.config.fontsize || 20) / 20;
             if ("width" in this.config) {
                 this.setWidth(this.config.width);
             }
@@ -3607,10 +3561,12 @@ define("formula", [ "kity", "fpaper" ], function(require, exports, module) {
         if (!expression) {
             return;
         }
-        len = expression.getChildren().length;
-        if (len > 0) {
-            for (var i = 0; i < len; i++) {
-                notifyExpression(expression.getChild(i));
+        if (expression.getType() === GTYPE.EXP) {
+            len = expression.getChildren().length;
+            if (len > 0) {
+                for (var i = 0; i < len; i++) {
+                    notifyExpression(expression.getChild(i));
+                }
             }
         }
         expression.addedCall && expression.addedCall();
@@ -3653,127 +3609,6 @@ define("kity", [], function(require, exports, module) {
     return window.kity;
 });
 /**
- * 加法操作符
- */
-define("operator/binary-opr/addition", [ "kity", "char/data", "char/data/number/0", "char/data/number/1", "char/data/number/2", "char/data/number/3", "char/data/number/4", "char/data/number/5", "char/data/number/6", "char/data/number/7", "char/data/number/8", "char/data/number/9", "char/data/character/a", "char/data/character/b", "char/data/character/c", "char/data/character/d", "char/data/character/e", "char/data/character/f", "char/data/character/g", "char/data/character/h", "char/data/character/i", "char/data/character/j", "char/data/character/k", "char/data/character/l", "char/data/character/m", "char/data/character/n", "char/data/character/o", "char/data/character/p", "char/data/character/q", "char/data/character/r", "char/data/character/s", "char/data/character/t", "char/data/character/u", "char/data/character/v", "char/data/character/w", "char/data/character/x", "char/data/character/y", "char/data/character/z", "char/data/character/ua", "char/data/character/ub", "char/data/character/uc", "char/data/character/ud", "char/data/character/ue", "char/data/character/uf", "char/data/character/ug", "char/data/character/uh", "char/data/character/ui", "char/data/character/uj", "char/data/character/uk", "char/data/character/ul", "char/data/character/um", "char/data/character/un", "char/data/character/uo", "char/data/character/up", "char/data/character/uq", "char/data/character/ur", "char/data/character/us", "char/data/character/ut", "char/data/character/uu", "char/data/character/uv", "char/data/character/uw", "char/data/character/ux", "char/data/character/uy", "char/data/character/uz", "char/data/symbol/l-parentheses", "char/data/symbol/r-parentheses", "char/data/symbol/negative", "char/data/symbol/positive", "char/data/symbol/vertical", "char/data/symbol/slash", "char/data/symbol/exclamation", "char/data/symbol/l-brackets", "char/data/symbol/r-brackets", "char/data/symbol/colon", "char/data/symbol/quotation", "char/data/symbol/lt", "char/data/symbol/gt", "char/data/symbol/point", "char/data/symbol/l-braces", "char/data/symbol/r-braces", "char/data/symbol/comma", "char/data/symbol/times", "char/data/symbol/div", "char/data/symbol/asterisk", "char/data/symbol/dot", "char/data/symbol/eq", "char/data/symbol/infty", "char/data/symbol/to", "char/data/greek/alpha", "char/data/greek/beta", "char/data/greek/gamma", "char/data/greek/delta", "char/data/greek/epsilon", "char/data/greek/zeta", "char/data/greek/eta", "char/data/greek/theta", "char/data/greek/iota", "char/data/greek/kappa", "char/data/greek/lambda", "char/data/greek/mu", "char/data/greek/nu", "char/data/greek/xi", "char/data/greek/pi", "char/data/greek/rho", "char/data/greek/sigma", "char/data/greek/tau", "char/data/greek/upsilon", "char/data/greek/phi", "char/data/greek/chi", "char/data/greek/psi", "char/data/greek/omega", "char/data/roman/ua", "char/data/roman/ub", "char/data/greek/u-gamma", "char/data/greek/u-delta", "char/data/roman/ue", "char/data/roman/uz", "char/data/roman/uh", "char/data/greek/u-theta", "char/data/roman/ui", "char/data/roman/uk", "char/data/greek/u-lambda", "char/data/roman/um", "char/data/roman/un", "char/data/greek/u-xi", "char/data/roman/uo", "char/data/greek/u-pi", "char/data/roman/up", "char/data/greek/u-sigma", "char/data/roman/ut", "char/data/greek/u-upsilon", "char/data/greek/u-phi", "char/data/roman/ux", "char/data/greek/u-psi", "char/data/greek/u-omega", "char/data/roman/a", "char/data/roman/b", "char/data/roman/c", "char/data/roman/d", "char/data/roman/e", "char/data/roman/f", "char/data/roman/g", "char/data/roman/h", "char/data/roman/i", "char/data/roman/j", "char/data/roman/k", "char/data/roman/l", "char/data/roman/m", "char/data/roman/n", "char/data/roman/o", "char/data/roman/p", "char/data/roman/q", "char/data/roman/r", "char/data/roman/s", "char/data/roman/t", "char/data/roman/u", "char/data/roman/v", "char/data/roman/w", "char/data/roman/x", "char/data/roman/y", "char/data/roman/z", "char/data/roman/uc", "char/data/roman/ud", "char/data/roman/uf", "char/data/roman/ug", "char/data/roman/uj", "char/data/roman/ul", "char/data/roman/uq", "char/data/roman/ur", "char/data/roman/us", "char/data/roman/uu", "char/data/roman/uv", "char/data/roman/uw", "char/data/roman/uy", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), CHAR_DATA = require("char/data");
-    return kity.createClass("AdditionOperator", {
-        base: require("operator/binary-opr/left-right"),
-        constructor: function() {
-            var opData = CHAR_DATA.std["+"], opShape = null;
-            this.callBase("Addition");
-            opShape = new kity.Path(opData.path).fill("black");
-            opShape.translate(opData.offset.x, opData.offset.y);
-            // 绘制符号图形
-            this.addOperatorShape(opShape);
-            this.setBoxSize(opData.size[0], opData.size[1]);
-        }
-    });
-});
-/**
- * 星号操作符
- */
-define("operator/binary-opr/asterisk", [ "kity", "char/data", "char/data/number/0", "char/data/number/1", "char/data/number/2", "char/data/number/3", "char/data/number/4", "char/data/number/5", "char/data/number/6", "char/data/number/7", "char/data/number/8", "char/data/number/9", "char/data/character/a", "char/data/character/b", "char/data/character/c", "char/data/character/d", "char/data/character/e", "char/data/character/f", "char/data/character/g", "char/data/character/h", "char/data/character/i", "char/data/character/j", "char/data/character/k", "char/data/character/l", "char/data/character/m", "char/data/character/n", "char/data/character/o", "char/data/character/p", "char/data/character/q", "char/data/character/r", "char/data/character/s", "char/data/character/t", "char/data/character/u", "char/data/character/v", "char/data/character/w", "char/data/character/x", "char/data/character/y", "char/data/character/z", "char/data/character/ua", "char/data/character/ub", "char/data/character/uc", "char/data/character/ud", "char/data/character/ue", "char/data/character/uf", "char/data/character/ug", "char/data/character/uh", "char/data/character/ui", "char/data/character/uj", "char/data/character/uk", "char/data/character/ul", "char/data/character/um", "char/data/character/un", "char/data/character/uo", "char/data/character/up", "char/data/character/uq", "char/data/character/ur", "char/data/character/us", "char/data/character/ut", "char/data/character/uu", "char/data/character/uv", "char/data/character/uw", "char/data/character/ux", "char/data/character/uy", "char/data/character/uz", "char/data/symbol/l-parentheses", "char/data/symbol/r-parentheses", "char/data/symbol/negative", "char/data/symbol/positive", "char/data/symbol/vertical", "char/data/symbol/slash", "char/data/symbol/exclamation", "char/data/symbol/l-brackets", "char/data/symbol/r-brackets", "char/data/symbol/colon", "char/data/symbol/quotation", "char/data/symbol/lt", "char/data/symbol/gt", "char/data/symbol/point", "char/data/symbol/l-braces", "char/data/symbol/r-braces", "char/data/symbol/comma", "char/data/symbol/times", "char/data/symbol/div", "char/data/symbol/asterisk", "char/data/symbol/dot", "char/data/symbol/eq", "char/data/symbol/infty", "char/data/symbol/to", "char/data/greek/alpha", "char/data/greek/beta", "char/data/greek/gamma", "char/data/greek/delta", "char/data/greek/epsilon", "char/data/greek/zeta", "char/data/greek/eta", "char/data/greek/theta", "char/data/greek/iota", "char/data/greek/kappa", "char/data/greek/lambda", "char/data/greek/mu", "char/data/greek/nu", "char/data/greek/xi", "char/data/greek/pi", "char/data/greek/rho", "char/data/greek/sigma", "char/data/greek/tau", "char/data/greek/upsilon", "char/data/greek/phi", "char/data/greek/chi", "char/data/greek/psi", "char/data/greek/omega", "char/data/roman/ua", "char/data/roman/ub", "char/data/greek/u-gamma", "char/data/greek/u-delta", "char/data/roman/ue", "char/data/roman/uz", "char/data/roman/uh", "char/data/greek/u-theta", "char/data/roman/ui", "char/data/roman/uk", "char/data/greek/u-lambda", "char/data/roman/um", "char/data/roman/un", "char/data/greek/u-xi", "char/data/roman/uo", "char/data/greek/u-pi", "char/data/roman/up", "char/data/greek/u-sigma", "char/data/roman/ut", "char/data/greek/u-upsilon", "char/data/greek/u-phi", "char/data/roman/ux", "char/data/greek/u-psi", "char/data/greek/u-omega", "char/data/roman/a", "char/data/roman/b", "char/data/roman/c", "char/data/roman/d", "char/data/roman/e", "char/data/roman/f", "char/data/roman/g", "char/data/roman/h", "char/data/roman/i", "char/data/roman/j", "char/data/roman/k", "char/data/roman/l", "char/data/roman/m", "char/data/roman/n", "char/data/roman/o", "char/data/roman/p", "char/data/roman/q", "char/data/roman/r", "char/data/roman/s", "char/data/roman/t", "char/data/roman/u", "char/data/roman/v", "char/data/roman/w", "char/data/roman/x", "char/data/roman/y", "char/data/roman/z", "char/data/roman/uc", "char/data/roman/ud", "char/data/roman/uf", "char/data/roman/ug", "char/data/roman/uj", "char/data/roman/ul", "char/data/roman/uq", "char/data/roman/ur", "char/data/roman/us", "char/data/roman/uu", "char/data/roman/uv", "char/data/roman/uw", "char/data/roman/uy", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), CHAR_DATA = require("char/data");
-    return kity.createClass("AsteriskOperator", {
-        base: require("operator/binary-opr/left-right"),
-        constructor: function() {
-            var opData = CHAR_DATA.std["\\ast\\"], opShape = null;
-            this.callBase("Asterisk");
-            opShape = new kity.Path(opData.path).fill("black");
-            opShape.translate(opData.offset.x, opData.offset.y);
-            // 绘制符号图形
-            this.addOperatorShape(opShape);
-            this.setBoxSize(opData.size[0], opData.size[1]);
-        }
-    });
-});
-/**
- * 除法操作符
- */
-define("operator/binary-opr/division", [ "kity", "char/data", "char/data/number/0", "char/data/number/1", "char/data/number/2", "char/data/number/3", "char/data/number/4", "char/data/number/5", "char/data/number/6", "char/data/number/7", "char/data/number/8", "char/data/number/9", "char/data/character/a", "char/data/character/b", "char/data/character/c", "char/data/character/d", "char/data/character/e", "char/data/character/f", "char/data/character/g", "char/data/character/h", "char/data/character/i", "char/data/character/j", "char/data/character/k", "char/data/character/l", "char/data/character/m", "char/data/character/n", "char/data/character/o", "char/data/character/p", "char/data/character/q", "char/data/character/r", "char/data/character/s", "char/data/character/t", "char/data/character/u", "char/data/character/v", "char/data/character/w", "char/data/character/x", "char/data/character/y", "char/data/character/z", "char/data/character/ua", "char/data/character/ub", "char/data/character/uc", "char/data/character/ud", "char/data/character/ue", "char/data/character/uf", "char/data/character/ug", "char/data/character/uh", "char/data/character/ui", "char/data/character/uj", "char/data/character/uk", "char/data/character/ul", "char/data/character/um", "char/data/character/un", "char/data/character/uo", "char/data/character/up", "char/data/character/uq", "char/data/character/ur", "char/data/character/us", "char/data/character/ut", "char/data/character/uu", "char/data/character/uv", "char/data/character/uw", "char/data/character/ux", "char/data/character/uy", "char/data/character/uz", "char/data/symbol/l-parentheses", "char/data/symbol/r-parentheses", "char/data/symbol/negative", "char/data/symbol/positive", "char/data/symbol/vertical", "char/data/symbol/slash", "char/data/symbol/exclamation", "char/data/symbol/l-brackets", "char/data/symbol/r-brackets", "char/data/symbol/colon", "char/data/symbol/quotation", "char/data/symbol/lt", "char/data/symbol/gt", "char/data/symbol/point", "char/data/symbol/l-braces", "char/data/symbol/r-braces", "char/data/symbol/comma", "char/data/symbol/times", "char/data/symbol/div", "char/data/symbol/asterisk", "char/data/symbol/dot", "char/data/symbol/eq", "char/data/symbol/infty", "char/data/symbol/to", "char/data/greek/alpha", "char/data/greek/beta", "char/data/greek/gamma", "char/data/greek/delta", "char/data/greek/epsilon", "char/data/greek/zeta", "char/data/greek/eta", "char/data/greek/theta", "char/data/greek/iota", "char/data/greek/kappa", "char/data/greek/lambda", "char/data/greek/mu", "char/data/greek/nu", "char/data/greek/xi", "char/data/greek/pi", "char/data/greek/rho", "char/data/greek/sigma", "char/data/greek/tau", "char/data/greek/upsilon", "char/data/greek/phi", "char/data/greek/chi", "char/data/greek/psi", "char/data/greek/omega", "char/data/roman/ua", "char/data/roman/ub", "char/data/greek/u-gamma", "char/data/greek/u-delta", "char/data/roman/ue", "char/data/roman/uz", "char/data/roman/uh", "char/data/greek/u-theta", "char/data/roman/ui", "char/data/roman/uk", "char/data/greek/u-lambda", "char/data/roman/um", "char/data/roman/un", "char/data/greek/u-xi", "char/data/roman/uo", "char/data/greek/u-pi", "char/data/roman/up", "char/data/greek/u-sigma", "char/data/roman/ut", "char/data/greek/u-upsilon", "char/data/greek/u-phi", "char/data/roman/ux", "char/data/greek/u-psi", "char/data/greek/u-omega", "char/data/roman/a", "char/data/roman/b", "char/data/roman/c", "char/data/roman/d", "char/data/roman/e", "char/data/roman/f", "char/data/roman/g", "char/data/roman/h", "char/data/roman/i", "char/data/roman/j", "char/data/roman/k", "char/data/roman/l", "char/data/roman/m", "char/data/roman/n", "char/data/roman/o", "char/data/roman/p", "char/data/roman/q", "char/data/roman/r", "char/data/roman/s", "char/data/roman/t", "char/data/roman/u", "char/data/roman/v", "char/data/roman/w", "char/data/roman/x", "char/data/roman/y", "char/data/roman/z", "char/data/roman/uc", "char/data/roman/ud", "char/data/roman/uf", "char/data/roman/ug", "char/data/roman/uj", "char/data/roman/ul", "char/data/roman/uq", "char/data/roman/ur", "char/data/roman/us", "char/data/roman/uu", "char/data/roman/uv", "char/data/roman/uw", "char/data/roman/uy", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), CHAR_DATA = require("char/data");
-    return kity.createClass("AdditionOperator", {
-        base: require("operator/binary-opr/left-right"),
-        constructor: function() {
-            var opData = CHAR_DATA.std["\\div\\"], opShape = null;
-            this.callBase("Division");
-            opShape = new kity.Path(opData.path).fill("black");
-            opShape.translate(opData.offset.x, opData.offset.y);
-            // 绘制符号图形
-            this.addOperatorShape(opShape);
-            this.setBoxSize(opData.size[0], opData.size[1]);
-        }
-    });
-});
-/**
- * 点积操作符
- */
-define("operator/binary-opr/dot", [ "kity", "char/data", "char/data/number/0", "char/data/number/1", "char/data/number/2", "char/data/number/3", "char/data/number/4", "char/data/number/5", "char/data/number/6", "char/data/number/7", "char/data/number/8", "char/data/number/9", "char/data/character/a", "char/data/character/b", "char/data/character/c", "char/data/character/d", "char/data/character/e", "char/data/character/f", "char/data/character/g", "char/data/character/h", "char/data/character/i", "char/data/character/j", "char/data/character/k", "char/data/character/l", "char/data/character/m", "char/data/character/n", "char/data/character/o", "char/data/character/p", "char/data/character/q", "char/data/character/r", "char/data/character/s", "char/data/character/t", "char/data/character/u", "char/data/character/v", "char/data/character/w", "char/data/character/x", "char/data/character/y", "char/data/character/z", "char/data/character/ua", "char/data/character/ub", "char/data/character/uc", "char/data/character/ud", "char/data/character/ue", "char/data/character/uf", "char/data/character/ug", "char/data/character/uh", "char/data/character/ui", "char/data/character/uj", "char/data/character/uk", "char/data/character/ul", "char/data/character/um", "char/data/character/un", "char/data/character/uo", "char/data/character/up", "char/data/character/uq", "char/data/character/ur", "char/data/character/us", "char/data/character/ut", "char/data/character/uu", "char/data/character/uv", "char/data/character/uw", "char/data/character/ux", "char/data/character/uy", "char/data/character/uz", "char/data/symbol/l-parentheses", "char/data/symbol/r-parentheses", "char/data/symbol/negative", "char/data/symbol/positive", "char/data/symbol/vertical", "char/data/symbol/slash", "char/data/symbol/exclamation", "char/data/symbol/l-brackets", "char/data/symbol/r-brackets", "char/data/symbol/colon", "char/data/symbol/quotation", "char/data/symbol/lt", "char/data/symbol/gt", "char/data/symbol/point", "char/data/symbol/l-braces", "char/data/symbol/r-braces", "char/data/symbol/comma", "char/data/symbol/times", "char/data/symbol/div", "char/data/symbol/asterisk", "char/data/symbol/dot", "char/data/symbol/eq", "char/data/symbol/infty", "char/data/symbol/to", "char/data/greek/alpha", "char/data/greek/beta", "char/data/greek/gamma", "char/data/greek/delta", "char/data/greek/epsilon", "char/data/greek/zeta", "char/data/greek/eta", "char/data/greek/theta", "char/data/greek/iota", "char/data/greek/kappa", "char/data/greek/lambda", "char/data/greek/mu", "char/data/greek/nu", "char/data/greek/xi", "char/data/greek/pi", "char/data/greek/rho", "char/data/greek/sigma", "char/data/greek/tau", "char/data/greek/upsilon", "char/data/greek/phi", "char/data/greek/chi", "char/data/greek/psi", "char/data/greek/omega", "char/data/roman/ua", "char/data/roman/ub", "char/data/greek/u-gamma", "char/data/greek/u-delta", "char/data/roman/ue", "char/data/roman/uz", "char/data/roman/uh", "char/data/greek/u-theta", "char/data/roman/ui", "char/data/roman/uk", "char/data/greek/u-lambda", "char/data/roman/um", "char/data/roman/un", "char/data/greek/u-xi", "char/data/roman/uo", "char/data/greek/u-pi", "char/data/roman/up", "char/data/greek/u-sigma", "char/data/roman/ut", "char/data/greek/u-upsilon", "char/data/greek/u-phi", "char/data/roman/ux", "char/data/greek/u-psi", "char/data/greek/u-omega", "char/data/roman/a", "char/data/roman/b", "char/data/roman/c", "char/data/roman/d", "char/data/roman/e", "char/data/roman/f", "char/data/roman/g", "char/data/roman/h", "char/data/roman/i", "char/data/roman/j", "char/data/roman/k", "char/data/roman/l", "char/data/roman/m", "char/data/roman/n", "char/data/roman/o", "char/data/roman/p", "char/data/roman/q", "char/data/roman/r", "char/data/roman/s", "char/data/roman/t", "char/data/roman/u", "char/data/roman/v", "char/data/roman/w", "char/data/roman/x", "char/data/roman/y", "char/data/roman/z", "char/data/roman/uc", "char/data/roman/ud", "char/data/roman/uf", "char/data/roman/ug", "char/data/roman/uj", "char/data/roman/ul", "char/data/roman/uq", "char/data/roman/ur", "char/data/roman/us", "char/data/roman/uu", "char/data/roman/uv", "char/data/roman/uw", "char/data/roman/uy", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), CHAR_DATA = require("char/data");
-    return kity.createClass("DotOperator", {
-        base: require("operator/binary-opr/left-right"),
-        constructor: function() {
-            var opData = CHAR_DATA.std["\\dot\\"], opShape = null;
-            this.callBase("Dot");
-            opShape = new kity.Path(opData.path).fill("black");
-            opShape.translate(opData.offset.x, opData.offset.y);
-            // 绘制符号图形
-            this.addOperatorShape(opShape);
-            this.setBoxSize(opData.size[0], opData.size[1]);
-        }
-    });
-});
-/**
- * 点积操作符
- */
-define("operator/binary-opr/dots", [ "kity", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), DATA = {
-        cdots: {
-            data: "M1.44,9.745c0.864,0,1.464,0.672,1.464,1.416c0,0.864-0.696,1.464-1.44,1.464C0.6,12.625,0,11.929,0,11.185   C0,10.369,0.624,9.745,1.44,9.745z M12.169,9.745c0.864,0,1.464,0.672,1.464,1.416c0,0.864-0.696,1.464-1.44,1.464   c-0.864,0-1.464-0.696-1.464-1.44C10.729,10.369,11.353,9.745,12.169,9.745z M22.898,9.745c0.864,0,1.464,0.672,1.464,1.416   c0,0.864-0.696,1.464-1.44,1.464c-0.864,0-1.464-0.696-1.464-1.44C21.458,10.369,22.082,9.745,22.898,9.745z",
-            box: {
-                w: 25,
-                h: 27
-            }
-        },
-        ldots: {
-            data: "M1.44,14.305c0.864,0,1.464,0.672,1.464,1.416c0,0.864-0.696,1.464-1.44,1.464C0.6,17.186,0,16.489,0,15.746   C0,14.929,0.624,14.305,1.44,14.305z M12.169,14.305c0.864,0,1.464,0.672,1.464,1.416c0,0.864-0.696,1.464-1.44,1.464   c-0.864,0-1.464-0.696-1.464-1.44C10.729,14.929,11.353,14.305,12.169,14.305z M22.898,14.305c0.864,0,1.464,0.672,1.464,1.416   c0,0.864-0.696,1.464-1.44,1.464c-0.864,0-1.464-0.696-1.464-1.44C21.458,14.929,22.082,14.305,22.898,14.305z",
-            box: {
-                w: 25,
-                h: 27
-            }
-        },
-        vdots: {
-            data: "M1.44,0c0.864,0,1.464,0.672,1.464,1.417c0,0.864-0.696,1.464-1.44,1.464C0.6,2.88,0,2.185,0,1.44C0,0.624,0.624,0,1.44,0z    M1.44,9.601c0.864,0,1.464,0.672,1.464,1.416c0,0.864-0.696,1.464-1.44,1.464C0.6,12.481,0,11.785,0,11.041   C0,10.225,0.624,9.601,1.44,9.601z M1.44,19.442c0.864,0,1.464,0.672,1.464,1.416c0,0.864-0.696,1.464-1.44,1.464   C0.6,22.322,0,21.626,0,20.882C0,20.066,0.624,19.442,1.44,19.442z",
-            box: {
-                w: 3,
-                h: 27
-            }
-        },
-        ddots: {
-            data: "M1.44,1.92c0.864,0,1.464,0.672,1.464,1.416c0,0.864-0.696,1.464-1.44,1.464C0.6,4.801,0,4.104,0,3.36   C0,2.544,0.624,1.92,1.44,1.92z M12.169,9.121c0.864,0,1.464,0.672,1.464,1.416c0,0.864-0.696,1.464-1.44,1.464   c-0.864,0-1.464-0.696-1.464-1.44C10.729,9.745,11.353,9.121,12.169,9.121z M22.898,16.322c0.864,0,1.464,0.672,1.464,1.416   c0,0.864-0.696,1.464-1.44,1.464c-0.864,0-1.464-0.696-1.464-1.44C21.458,16.946,22.082,16.322,22.898,16.322z",
-            box: {
-                w: 25,
-                h: 27
-            }
-        }
-    };
-    return kity.createClass("DotsOperator", {
-        base: require("operator/binary-opr/left-right"),
-        constructor: function() {
-            this.callBase("Dots");
-        },
-        applyOperand: function(leftOperand, rightOperand) {
-            var pathData = null, shape = null;
-            pathData = DATA[this.expression.type];
-            // 绘制符号图形
-            shape = new kity.Path(pathData.data).fill("black").translate(3);
-            this.addOperatorShape(shape);
-            this.setBoxSize(pathData.box.w + 6, pathData.box.h);
-        }
-    });
-});
-/**
  * 分数操作符
  */
 define("operator/binary-opr/fraction", [ "kity", "operator/binary-opr/up-down", "operator/binary" ], function(require, exports, modules) {
@@ -3786,12 +3621,9 @@ define("operator/binary-opr/fraction", [ "kity", "operator/binary-opr/up-down", 
         applyOperand: function(upOperand, downOperand) {
             var upWidth = upOperand.getWidth(), downWidth = downOperand.getWidth(), upHeight = upOperand.getHeight(), downHeight = downOperand.getHeight(), maxWidth = Math.max(upWidth, downWidth), maxHeight = Math.max(upHeight, downHeight), operatorShape = generateOperator(maxWidth);
             this.addOperatorShape(operatorShape);
-            // 重置操作符的偏移， 使得该操作符回归到0,0的位置
-            this.setBoxSize(0, 0);
             upOperand.translate((maxWidth - upWidth) / 2, maxHeight - upHeight);
             operatorShape.translate(0, maxHeight);
             downOperand.translate((maxWidth - downWidth) / 2, maxHeight + operatorShape.getHeight());
-            this.setBoxSize(maxWidth, 2 * maxHeight + operatorShape.getHeight());
         }
     });
     function generateOperator(width) {
@@ -3823,40 +3655,6 @@ define("operator/binary-opr/left-right", [ "kity", "operator/binary", "operator/
     });
 });
 /**
- * 逻辑与（交运算）操作符
- */
-define("operator/binary-opr/logical-conjunction", [ "kity", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), pathData = "M42.556,50.404l-2.88,1.152L22.754,8.425L2.808,51.557L0,50.116L22.97,0L42.556,50.404z";
-    return kity.createClass("LogicalConjunctionOperator", {
-        base: require("operator/binary-opr/left-right"),
-        constructor: function() {
-            var shape = null;
-            this.callBase("LogicalConjunction");
-            shape = new kity.Path(pathData).fill("black");
-            this.operatorShape.translate(0, -5);
-            // 绘制符号图形
-            this.addOperatorShape(shape);
-        }
-    });
-});
-/**
- * 逻辑或操作符
- */
-define("operator/binary-opr/logical-disjunction", [ "kity", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), pathData = "M42.484,1.368L20.306,53.141L0,1.368l2.88-1.224l17.642,44.572L39.604,0L42.484,1.368z";
-    return kity.createClass("LogicalDisjunctionOperator", {
-        base: require("operator/binary-opr/left-right"),
-        constructor: function() {
-            var shape = null;
-            this.callBase("LogicalDisjunction");
-            shape = new kity.Path(pathData).fill("black");
-            this.operatorShape.translate(0, -5);
-            // 绘制符号图形
-            this.addOperatorShape(shape);
-        }
-    });
-});
-/**
  * 负正操作符
  */
 define("operator/binary-opr/minus-plus", [ "kity", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, modules) {
@@ -3865,7 +3663,6 @@ define("operator/binary-opr/minus-plus", [ "kity", "operator/binary-opr/left-rig
         base: require("operator/binary-opr/left-right"),
         constructor: function() {
             this.callBase("Mp");
-            var pathData = "M8.497,20.234c0,0.36,0,0.888-0.48,0.888s-0.48-0.432-0.48-0.816v-6.697H0.84c-0.408,0-0.84,0-0.84-0.48   s0.432-0.48,0.84-0.48h6.697V6.097H0.84c-0.408,0-0.84,0-0.84-0.48s0.432-0.48,0.84-0.48h14.329c0.408,0,0.84,0,0.84,0.48   s-0.432,0.48-0.84,0.48H8.497v6.553h6.672c0.408,0,0.84,0,0.84,0.48s-0.432,0.48-0.84,0.48H8.497V20.234z";
             // 绘制符号图形
             this.addOperatorShape(new kity.Path(pathData).fill("black").translate(5, 2));
         }
@@ -3874,7 +3671,7 @@ define("operator/binary-opr/minus-plus", [ "kity", "operator/binary-opr/left-rig
 /**
  * 乘法操作符
  */
-define("operator/binary-opr/multiplication", [ "kity", "char/data", "char/data/number/0", "char/data/number/1", "char/data/number/2", "char/data/number/3", "char/data/number/4", "char/data/number/5", "char/data/number/6", "char/data/number/7", "char/data/number/8", "char/data/number/9", "char/data/character/a", "char/data/character/b", "char/data/character/c", "char/data/character/d", "char/data/character/e", "char/data/character/f", "char/data/character/g", "char/data/character/h", "char/data/character/i", "char/data/character/j", "char/data/character/k", "char/data/character/l", "char/data/character/m", "char/data/character/n", "char/data/character/o", "char/data/character/p", "char/data/character/q", "char/data/character/r", "char/data/character/s", "char/data/character/t", "char/data/character/u", "char/data/character/v", "char/data/character/w", "char/data/character/x", "char/data/character/y", "char/data/character/z", "char/data/character/ua", "char/data/character/ub", "char/data/character/uc", "char/data/character/ud", "char/data/character/ue", "char/data/character/uf", "char/data/character/ug", "char/data/character/uh", "char/data/character/ui", "char/data/character/uj", "char/data/character/uk", "char/data/character/ul", "char/data/character/um", "char/data/character/un", "char/data/character/uo", "char/data/character/up", "char/data/character/uq", "char/data/character/ur", "char/data/character/us", "char/data/character/ut", "char/data/character/uu", "char/data/character/uv", "char/data/character/uw", "char/data/character/ux", "char/data/character/uy", "char/data/character/uz", "char/data/symbol/l-parentheses", "char/data/symbol/r-parentheses", "char/data/symbol/negative", "char/data/symbol/positive", "char/data/symbol/vertical", "char/data/symbol/slash", "char/data/symbol/exclamation", "char/data/symbol/l-brackets", "char/data/symbol/r-brackets", "char/data/symbol/colon", "char/data/symbol/quotation", "char/data/symbol/lt", "char/data/symbol/gt", "char/data/symbol/point", "char/data/symbol/l-braces", "char/data/symbol/r-braces", "char/data/symbol/comma", "char/data/symbol/times", "char/data/symbol/div", "char/data/symbol/asterisk", "char/data/symbol/dot", "char/data/symbol/eq", "char/data/symbol/infty", "char/data/symbol/to", "char/data/greek/alpha", "char/data/greek/beta", "char/data/greek/gamma", "char/data/greek/delta", "char/data/greek/epsilon", "char/data/greek/zeta", "char/data/greek/eta", "char/data/greek/theta", "char/data/greek/iota", "char/data/greek/kappa", "char/data/greek/lambda", "char/data/greek/mu", "char/data/greek/nu", "char/data/greek/xi", "char/data/greek/pi", "char/data/greek/rho", "char/data/greek/sigma", "char/data/greek/tau", "char/data/greek/upsilon", "char/data/greek/phi", "char/data/greek/chi", "char/data/greek/psi", "char/data/greek/omega", "char/data/roman/ua", "char/data/roman/ub", "char/data/greek/u-gamma", "char/data/greek/u-delta", "char/data/roman/ue", "char/data/roman/uz", "char/data/roman/uh", "char/data/greek/u-theta", "char/data/roman/ui", "char/data/roman/uk", "char/data/greek/u-lambda", "char/data/roman/um", "char/data/roman/un", "char/data/greek/u-xi", "char/data/roman/uo", "char/data/greek/u-pi", "char/data/roman/up", "char/data/greek/u-sigma", "char/data/roman/ut", "char/data/greek/u-upsilon", "char/data/greek/u-phi", "char/data/roman/ux", "char/data/greek/u-psi", "char/data/greek/u-omega", "char/data/roman/a", "char/data/roman/b", "char/data/roman/c", "char/data/roman/d", "char/data/roman/e", "char/data/roman/f", "char/data/roman/g", "char/data/roman/h", "char/data/roman/i", "char/data/roman/j", "char/data/roman/k", "char/data/roman/l", "char/data/roman/m", "char/data/roman/n", "char/data/roman/o", "char/data/roman/p", "char/data/roman/q", "char/data/roman/r", "char/data/roman/s", "char/data/roman/t", "char/data/roman/u", "char/data/roman/v", "char/data/roman/w", "char/data/roman/x", "char/data/roman/y", "char/data/roman/z", "char/data/roman/uc", "char/data/roman/ud", "char/data/roman/uf", "char/data/roman/ug", "char/data/roman/uj", "char/data/roman/ul", "char/data/roman/uq", "char/data/roman/ur", "char/data/roman/us", "char/data/roman/uu", "char/data/roman/uv", "char/data/roman/uw", "char/data/roman/uy", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, modules) {
+define("operator/binary-opr/multiplication", [ "kity", "char/data", "char/data/number/0", "char/data/number/1", "char/data/number/2", "char/data/number/3", "char/data/number/4", "char/data/number/5", "char/data/number/6", "char/data/number/7", "char/data/number/8", "char/data/number/9", "char/data/character/a", "char/data/character/b", "char/data/character/c", "char/data/character/d", "char/data/character/e", "char/data/character/f", "char/data/character/g", "char/data/character/h", "char/data/character/i", "char/data/character/j", "char/data/character/k", "char/data/character/l", "char/data/character/m", "char/data/character/n", "char/data/character/o", "char/data/character/p", "char/data/character/q", "char/data/character/r", "char/data/character/s", "char/data/character/t", "char/data/character/u", "char/data/character/v", "char/data/character/w", "char/data/character/x", "char/data/character/y", "char/data/character/z", "char/data/character/ua", "char/data/character/ub", "char/data/character/uc", "char/data/character/ud", "char/data/character/ue", "char/data/character/uf", "char/data/character/ug", "char/data/character/uh", "char/data/character/ui", "char/data/character/uj", "char/data/character/uk", "char/data/character/ul", "char/data/character/um", "char/data/character/un", "char/data/character/uo", "char/data/character/up", "char/data/character/uq", "char/data/character/ur", "char/data/character/us", "char/data/character/ut", "char/data/character/uu", "char/data/character/uv", "char/data/character/uw", "char/data/character/ux", "char/data/character/uy", "char/data/character/uz", "char/data/symbol/l-parentheses", "char/data/symbol/r-parentheses", "char/data/symbol/negative", "char/data/symbol/relational/eq", "char/data/symbol/positive", "char/data/symbol/vertical", "char/data/symbol/slash", "char/data/symbol/exclamation", "char/data/symbol/l-brackets", "char/data/symbol/r-brackets", "char/data/symbol/colon", "char/data/symbol/quotation", "char/data/symbol/relational/lt", "char/data/symbol/relational/gt", "char/data/symbol/point", "char/data/symbol/l-braces", "char/data/symbol/r-braces", "char/data/symbol/comma", "char/data/symbol/times", "char/data/symbol/div", "char/data/symbol/pm", "char/data/symbol/mp", "char/data/symbol/ast", "char/data/symbol/cdot", "char/data/symbol/cdots", "char/data/symbol/ddots", "char/data/symbol/ldots", "char/data/symbol/vdots", "char/data/symbol/wedge", "char/data/symbol/vee", "char/data/symbol/mid", "char/data/symbol/relational/approx", "char/data/symbol/relational/equiv", "char/data/symbol/relational/geq", "char/data/symbol/relational/gg", "char/data/symbol/relational/leq", "char/data/symbol/relational/ll", "char/data/symbol/relational/sim", "char/data/symbol/relational/simeq", "char/data/symbol/set/cap", "char/data/symbol/set/cup", "char/data/symbol/set/in", "char/data/symbol/set/ni", "char/data/symbol/set/sqcap", "char/data/symbol/set/sqcup", "char/data/symbol/set/sqsubset", "char/data/symbol/set/sqsubseteq", "char/data/symbol/set/sqsupset", "char/data/symbol/set/sqsupseteq", "char/data/symbol/set/subset", "char/data/symbol/set/subseteq", "char/data/symbol/set/supset", "char/data/symbol/set/supseteq", "char/data/symbol/not/ncong", "char/data/symbol/not/neq", "char/data/symbol/not/nequiv", "char/data/symbol/not/nge", "char/data/symbol/not/ngt", "char/data/symbol/not/nlt", "char/data/symbol/not/nle", "char/data/symbol/not/nsim", "char/data/symbol/not/nsubseteq", "char/data/symbol/not/nsupseteq", "char/data/symbol/not/nin", "char/data/symbol/infty", "char/data/symbol/to", "char/data/greek/alpha", "char/data/greek/beta", "char/data/greek/gamma", "char/data/greek/delta", "char/data/greek/epsilon", "char/data/greek/varepsilon", "char/data/greek/zeta", "char/data/greek/eta", "char/data/greek/theta", "char/data/greek/iota", "char/data/greek/kappa", "char/data/greek/lambda", "char/data/greek/mu", "char/data/greek/nu", "char/data/greek/xi", "char/data/greek/pi", "char/data/greek/rho", "char/data/greek/sigma", "char/data/greek/tau", "char/data/greek/upsilon", "char/data/greek/phi", "char/data/greek/varphi", "char/data/greek/chi", "char/data/greek/psi", "char/data/greek/omega", "char/data/roman/ua", "char/data/roman/ub", "char/data/greek/u-gamma", "char/data/greek/u-delta", "char/data/roman/ue", "char/data/roman/uz", "char/data/roman/uh", "char/data/greek/u-theta", "char/data/roman/ui", "char/data/roman/uk", "char/data/greek/u-lambda", "char/data/roman/um", "char/data/roman/un", "char/data/greek/u-xi", "char/data/roman/uo", "char/data/greek/u-pi", "char/data/roman/up", "char/data/greek/u-sigma", "char/data/roman/ut", "char/data/greek/u-upsilon", "char/data/greek/u-phi", "char/data/roman/ux", "char/data/greek/u-psi", "char/data/greek/u-omega", "char/data/roman/a", "char/data/roman/b", "char/data/roman/c", "char/data/roman/d", "char/data/roman/e", "char/data/roman/f", "char/data/roman/g", "char/data/roman/h", "char/data/roman/i", "char/data/roman/j", "char/data/roman/k", "char/data/roman/l", "char/data/roman/m", "char/data/roman/n", "char/data/roman/o", "char/data/roman/p", "char/data/roman/q", "char/data/roman/r", "char/data/roman/s", "char/data/roman/t", "char/data/roman/u", "char/data/roman/v", "char/data/roman/w", "char/data/roman/x", "char/data/roman/y", "char/data/roman/z", "char/data/roman/uc", "char/data/roman/ud", "char/data/roman/uf", "char/data/roman/ug", "char/data/roman/uj", "char/data/roman/ul", "char/data/roman/uq", "char/data/roman/ur", "char/data/roman/us", "char/data/roman/uu", "char/data/roman/uv", "char/data/roman/uw", "char/data/roman/uy", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, modules) {
     var kity = require("kity"), CHAR_DATA = require("char/data");
     return kity.createClass("MultiplicationOperator", {
         base: require("operator/binary-opr/left-right"),
@@ -3885,7 +3682,6 @@ define("operator/binary-opr/multiplication", [ "kity", "char/data", "char/data/n
             opShape.translate(opData.offset.x, opData.offset.y);
             // 绘制符号图形
             this.addOperatorShape(opShape);
-            this.setBoxSize(opData.size[0], opData.size[1]);
         }
     });
 });
@@ -3906,21 +3702,6 @@ define("operator/binary-opr/parallel", [ "kity", "operator/binary-opr/left-right
     });
 });
 /**
- * 正负操作符
- */
-define("operator/binary-opr/plus-minus", [ "kity", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, modules) {
-    var kity = require("kity");
-    return kity.createClass("PlusMinusOperator", {
-        base: require("operator/binary-opr/left-right"),
-        constructor: function() {
-            var pathData = "M8.497,16.178h6.672c0.408,0,0.84,0,0.84,0.48s-0.432,0.48-0.84,0.48H0.84c-0.408,0-0.84,0-0.84-0.48s0.432-0.48,0.84-0.48   h6.697V9.625H0.84c-0.408,0-0.84,0-0.84-0.48s0.432-0.48,0.84-0.48h6.697V1.968c0-0.384,0-0.816,0.48-0.816s0.48,0.504,0.48,0.888   v6.625h6.672c0.408,0,0.84,0,0.84,0.48s-0.432,0.48-0.84,0.48H8.497V16.178z", shape = new kity.Path(pathData).fill("black");
-            this.callBase("Plus-minus");
-            shape.translate(5, 2);
-            this.addOperatorShape(shape);
-        }
-    });
-});
-/**
  * 开方操作符
  */
 define("operator/binary-opr/radical", [ "kity", "operator/binary", "operator/operator" ], function(require, exports, modules) {
@@ -3932,7 +3713,6 @@ define("operator/binary-opr/radical", [ "kity", "operator/binary", "operator/ope
         base: require("operator/binary"),
         constructor: function() {
             this.callBase("Radical");
-            this.clearTransform();
         },
         applyOperand: function(radicand, exponent) {
             generateOperator.call(this, radicand, exponent);
@@ -3946,8 +3726,7 @@ define("operator/binary-opr/radical", [ "kity", "operator/binary", "operator/ope
         this.addOperatorShape(decoration);
         this.addOperatorShape(vLine);
         this.addOperatorShape(hLine);
-        adjustmentPosition(mergeShape(decoration, vLine, hLine), this.operatorShape, radicand, exponent);
-        adjustmentBox.call(this);
+        adjustmentPosition.call(this, mergeShape(decoration, vLine, hLine), this.operatorShape, radicand, exponent);
     }
     // 生成根号中的左边装饰部分
     function generateDecoration(radicand) {
@@ -3965,13 +3744,12 @@ define("operator/binary-opr/radical", [ "kity", "operator/binary", "operator/ope
     }
     // 根据操作数生成根号的竖直线部分
     function generateVLine(operand) {
-        var shape = new kity.Path(), // 命名为a以便于精简表达式
-        a = SHAPE_DATA_WIDTH, // 表达式高度, 2 是字符集的底部填充高度
+        var shape = new kity.Path(), // 表达式高度, 2 是字符集的底部填充高度
         h = operand.getHeight() - 2, drawer = shape.getDrawer();
         drawer.moveTo(tan20 * h, 0);
         drawer.lineTo(0, h);
-        drawer.lineBy(sin20 * a * 3, cos20 * a * 3);
-        drawer.lineBy(tan20 * h + sin20 * a * 3, -(h + 3 * a * cos20));
+        drawer.lineBy(sin20 * SHAPE_DATA_WIDTH * 3, cos20 * SHAPE_DATA_WIDTH * 3);
+        drawer.lineBy(tan20 * h + sin20 * SHAPE_DATA_WIDTH * 3, -(h + 3 * SHAPE_DATA_WIDTH * cos20));
         drawer.close();
         return shape.fill("black");
     }
@@ -3996,662 +3774,30 @@ define("operator/binary-opr/radical", [ "kity", "operator/binary", "operator/ope
     }
     // 调整整个根号表达式的各个部分： 位置、操作符、被开方数、指数
     function adjustmentPosition(position, operator, radicand, exponent) {
-        var radicandBox = radicand.getRenderBox(), diff = 0, width = 0, exponentBox = null;
-        // 调整被开方数和根号的相对位置
-        radicand.translate(position.x + SHAPE_DATA_WIDTH - radicandBox.x + 5, position.y + 2 * SHAPE_DATA_WIDTH + 5);
-        operator.translate(5, 5);
-        if (!exponent) {
-            return;
-        }
+        var exponentBox = null, opOffset = {
+            x: 0,
+            y: 0
+        }, opBox = operator.getRenderBox();
         exponent.setAnchor(0, 0);
-        exponent.scale(.5);
+        exponent.scale(.7);
         exponentBox = exponent.getRenderBox();
-        // width代表适合放置指数的最小宽度
-        width = exponentBox.width + exponentBox.height * tan20;
-        // 指数宽度超过根号左边部分的宽度， 则移动根号和被开方数
-        if (width > position.x) {
-            diff = width - position.x;
-            operator.translate(diff + 5, 0);
-            radicand.translate(diff + 5, 0);
-        } else {
-            exponent.translate(position.x - width + 5, 0);
+        if (exponentBox.width > 0 && exponentBox.height > 0) {
+            opOffset.y = exponentBox.height - opBox.height / 2;
+            // 指数不超出根号， 则移动指数
+            if (opOffset.y < 0) {
+                exponent.translate(0, -opOffset.y);
+                opOffset.y = 0;
+            }
+            opOffset.x = exponentBox.width + opBox.height / 2 * tan20 - position.x;
         }
+        operator.translate(opOffset.x, opOffset.y);
+        radicand.translate(opOffset.x + position.x + SHAPE_DATA_WIDTH, opOffset.y + 2 * SHAPE_DATA_WIDTH);
     }
-    // 调整整个边框的大小
-    function adjustmentBox() {
-        this.setBoxSize(this.operatorShape.getWidth(), this.operatorShape.getHeight() + 10);
-    }
-});
-/**
- * 约等于操作符
- */
-define("operator/binary-opr/relational/approx", [ "kity", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, modules) {
-    var kity = require("kity");
-    return kity.createClass("ApproxOperator", {
-        base: require("operator/binary-opr/left-right"),
-        constructor: function() {
-            var pathData = "M12.001,10.201c-1.56,0-2.856-0.864-4.152-1.728C6.601,7.633,5.4,6.889,4.008,6.889c-1.248,0-3.216,0.72-3.336,2.736   c0,0.096-0.096,0.552-0.336,0.552C0.192,10.177,0,9.985,0,9.457c0-2.208,1.776-3.912,4.008-3.912c1.56,0,2.856,0.864,4.152,1.728   c1.248,0.84,2.448,1.584,3.84,1.584c1.56,0,3.24-0.984,3.336-2.64c0.024-0.552,0.24-0.648,0.336-0.648   c0.168,0,0.336,0.216,0.336,0.72C16.009,8.497,14.233,10.201,12.001,10.201z M12.001,15.793c-1.56,0-2.856-0.864-4.152-1.728   c-1.248-0.84-2.448-1.584-3.84-1.584c-1.248,0-3.216,0.72-3.336,2.736c0,0.096-0.096,0.552-0.336,0.552   C0.192,15.77,0,15.578,0,15.049c0-2.208,1.776-3.912,4.008-3.912c1.56,0,2.856,0.864,4.152,1.728   c1.248,0.84,2.448,1.584,3.84,1.584c1.56,0,3.24-0.984,3.336-2.64c0.024-0.528,0.24-0.648,0.336-0.648   c0.048,0,0.336,0.048,0.336,0.744C16.009,14.018,14.281,15.793,12.001,15.793z", opShape = new kity.Path(pathData).fill("black");
-            this.callBase("Approx");
-            opShape.translate(5, 2);
-            // 绘制符号图形
-            this.addOperatorShape(opShape);
-        }
-    });
-});
-/**
- * 等号操作符
- */
-define("operator/binary-opr/relational/eq", [ "kity", "char/data", "char/data/number/0", "char/data/number/1", "char/data/number/2", "char/data/number/3", "char/data/number/4", "char/data/number/5", "char/data/number/6", "char/data/number/7", "char/data/number/8", "char/data/number/9", "char/data/character/a", "char/data/character/b", "char/data/character/c", "char/data/character/d", "char/data/character/e", "char/data/character/f", "char/data/character/g", "char/data/character/h", "char/data/character/i", "char/data/character/j", "char/data/character/k", "char/data/character/l", "char/data/character/m", "char/data/character/n", "char/data/character/o", "char/data/character/p", "char/data/character/q", "char/data/character/r", "char/data/character/s", "char/data/character/t", "char/data/character/u", "char/data/character/v", "char/data/character/w", "char/data/character/x", "char/data/character/y", "char/data/character/z", "char/data/character/ua", "char/data/character/ub", "char/data/character/uc", "char/data/character/ud", "char/data/character/ue", "char/data/character/uf", "char/data/character/ug", "char/data/character/uh", "char/data/character/ui", "char/data/character/uj", "char/data/character/uk", "char/data/character/ul", "char/data/character/um", "char/data/character/un", "char/data/character/uo", "char/data/character/up", "char/data/character/uq", "char/data/character/ur", "char/data/character/us", "char/data/character/ut", "char/data/character/uu", "char/data/character/uv", "char/data/character/uw", "char/data/character/ux", "char/data/character/uy", "char/data/character/uz", "char/data/symbol/l-parentheses", "char/data/symbol/r-parentheses", "char/data/symbol/negative", "char/data/symbol/positive", "char/data/symbol/vertical", "char/data/symbol/slash", "char/data/symbol/exclamation", "char/data/symbol/l-brackets", "char/data/symbol/r-brackets", "char/data/symbol/colon", "char/data/symbol/quotation", "char/data/symbol/lt", "char/data/symbol/gt", "char/data/symbol/point", "char/data/symbol/l-braces", "char/data/symbol/r-braces", "char/data/symbol/comma", "char/data/symbol/times", "char/data/symbol/div", "char/data/symbol/asterisk", "char/data/symbol/dot", "char/data/symbol/eq", "char/data/symbol/infty", "char/data/symbol/to", "char/data/greek/alpha", "char/data/greek/beta", "char/data/greek/gamma", "char/data/greek/delta", "char/data/greek/epsilon", "char/data/greek/zeta", "char/data/greek/eta", "char/data/greek/theta", "char/data/greek/iota", "char/data/greek/kappa", "char/data/greek/lambda", "char/data/greek/mu", "char/data/greek/nu", "char/data/greek/xi", "char/data/greek/pi", "char/data/greek/rho", "char/data/greek/sigma", "char/data/greek/tau", "char/data/greek/upsilon", "char/data/greek/phi", "char/data/greek/chi", "char/data/greek/psi", "char/data/greek/omega", "char/data/roman/ua", "char/data/roman/ub", "char/data/greek/u-gamma", "char/data/greek/u-delta", "char/data/roman/ue", "char/data/roman/uz", "char/data/roman/uh", "char/data/greek/u-theta", "char/data/roman/ui", "char/data/roman/uk", "char/data/greek/u-lambda", "char/data/roman/um", "char/data/roman/un", "char/data/greek/u-xi", "char/data/roman/uo", "char/data/greek/u-pi", "char/data/roman/up", "char/data/greek/u-sigma", "char/data/roman/ut", "char/data/greek/u-upsilon", "char/data/greek/u-phi", "char/data/roman/ux", "char/data/greek/u-psi", "char/data/greek/u-omega", "char/data/roman/a", "char/data/roman/b", "char/data/roman/c", "char/data/roman/d", "char/data/roman/e", "char/data/roman/f", "char/data/roman/g", "char/data/roman/h", "char/data/roman/i", "char/data/roman/j", "char/data/roman/k", "char/data/roman/l", "char/data/roman/m", "char/data/roman/n", "char/data/roman/o", "char/data/roman/p", "char/data/roman/q", "char/data/roman/r", "char/data/roman/s", "char/data/roman/t", "char/data/roman/u", "char/data/roman/v", "char/data/roman/w", "char/data/roman/x", "char/data/roman/y", "char/data/roman/z", "char/data/roman/uc", "char/data/roman/ud", "char/data/roman/uf", "char/data/roman/ug", "char/data/roman/uj", "char/data/roman/ul", "char/data/roman/uq", "char/data/roman/ur", "char/data/roman/us", "char/data/roman/uu", "char/data/roman/uv", "char/data/roman/uw", "char/data/roman/uy", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), CHAR_DATA = require("char/data");
-    return kity.createClass("EqOperator", {
-        base: require("operator/binary-opr/left-right"),
-        constructor: function() {
-            var opData = CHAR_DATA.std["\\eq\\"], opShape = null;
-            this.callBase("Equal");
-            opShape = new kity.Path(opData.path).fill("black");
-            opShape.translate(opData.offset.x, opData.offset.y);
-            // 绘制符号图形
-            this.addOperatorShape(opShape);
-            this.setBoxSize(opData.size[0], opData.size[1]);
-        }
-    });
-});
-/**
- * "≡"操作符
- */
-define("operator/binary-opr/relational/equiv", [ "kity", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, modules) {
-    var kity = require("kity");
-    return kity.createClass("EquivOperator", {
-        base: require("operator/binary-opr/left-right"),
-        constructor: function() {
-            var pathData = "M0.864,6.961C0.48,6.961,0,6.961,0,6.481s0.432-0.48,0.84-0.48h14.329c0.408,0,0.84,0,0.84,0.48s-0.456,0.48-0.864,0.48   H0.864z M0.84,11.617c-0.408,0-0.84,0-0.84-0.48s0.432-0.48,0.84-0.48h14.329c0.408,0,0.84,0,0.84,0.48s-0.432,0.48-0.84,0.48H0.84   z M0.84,16.273c-0.408,0-0.84,0-0.84-0.48s0.48-0.48,0.864-0.48h14.281c0.408,0,0.864,0,0.864,0.48s-0.432,0.48-0.84,0.48H0.84z", opShape = new kity.Path(pathData).fill("black");
-            this.callBase("Equiv");
-            opShape.translate(5, 2);
-            // 绘制符号图形
-            this.addOperatorShape(opShape);
-        }
-    });
-});
-/**
- * 大于等于操作符
- */
-define("operator/binary-opr/relational/geq", [ "kity", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, modules) {
-    var kity = require("kity");
-    return kity.createClass("GeqOperator", {
-        base: require("operator/binary-opr/left-right"),
-        constructor: function() {
-            var pathData = "M0.912,15.602C0.6,15.77,0.552,15.77,0.48,15.77C0.216,15.77,0,15.554,0,15.29c0-0.144,0.024-0.336,0.504-0.552   l12.553-5.928L0.456,2.88C0.192,2.76,0,2.641,0,2.353c0-0.264,0.192-0.48,0.48-0.48c0.048,0,0.144,0,0.48,0.168l13.225,6.24   c0.384,0.168,0.48,0.312,0.48,0.552c0,0.216-0.144,0.384-0.48,0.528L0.912,15.602z M0.84,20.426c-0.408,0-0.84,0-0.84-0.48   s0.504-0.48,0.864-0.48h12.937c0.36,0,0.864,0,0.864,0.48s-0.432,0.48-0.84,0.48H0.84z", opShape = new kity.Path(pathData).fill("black");
-            this.callBase("Geq");
-            opShape.translate(6, 2);
-            // 绘制符号图形
-            this.addOperatorShape(opShape);
-        }
-    });
-});
-/**
- * 远大于操作符
- */
-define("operator/binary-opr/relational/gg", [ "kity", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, modules) {
-    var kity = require("kity");
-    return kity.createClass("GgOperator", {
-        base: require("operator/binary-opr/left-right"),
-        constructor: function() {
-            var pathData = "M0.624,18.722c-0.168,0-0.624,0-0.624-0.48c0-0.264,0.192-0.36,0.48-0.528l12.049-6.577L0.48,4.561   C0.192,4.393,0,4.296,0,4.033c0-0.336,0.264-0.48,0.48-0.48c0.168,0,0.336,0.096,0.432,0.144l12.649,6.913   c0.288,0.168,0.456,0.24,0.456,0.528s-0.168,0.36-0.456,0.528L0.624,18.722z M7.944,18.722c-0.168,0-0.624,0-0.624-0.48   c0-0.264,0.192-0.36,0.48-0.528l12.049-6.577L7.8,4.561C7.513,4.393,7.32,4.296,7.32,4.033c0-0.336,0.264-0.48,0.48-0.48   c0.168,0,0.336,0.096,0.432,0.144l12.649,6.913c0.288,0.168,0.456,0.24,0.456,0.528s-0.168,0.36-0.456,0.528L7.944,18.722z", opShape = new kity.Path(pathData).fill("black");
-            this.callBase("Gg");
-            opShape.translate(2.5, 2);
-            // 绘制符号图形
-            this.addOperatorShape(opShape);
-        }
-    });
-});
-/**
- * 大于操作符
- */
-define("operator/binary-opr/relational/gt", [ "kity", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, modules) {
-    var kity = require("kity");
-    return kity.createClass("GtOperator", {
-        base: require("operator/binary-opr/left-right"),
-        constructor: function() {
-            var pathData = "M0.864,17.642c-0.336,0.144-0.36,0.168-0.408,0.168C0.168,17.81,0,17.57,0,17.378c0-0.144,0-0.312,0.48-0.528l12.361-5.712   L0.504,5.449C0.192,5.305,0,5.208,0,4.92c0-0.192,0.168-0.432,0.456-0.432c0.048,0,0.096,0.024,0.408,0.168l12.985,5.977   c0.432,0.192,0.48,0.36,0.48,0.504c0,0.168-0.024,0.312-0.48,0.528L0.864,17.642z", opShape = new kity.Path(pathData).fill("black");
-            this.callBase("Gt");
-            opShape.translate(6, 2);
-            // 绘制符号图形
-            this.addOperatorShape(opShape);
-        }
-    });
-});
-/**
- * 小于等于操作符
- */
-define("operator/binary-opr/relational/leq", [ "kity", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, modules) {
-    var kity = require("kity");
-    return kity.createClass("LeqOperator", {
-        base: require("operator/binary-opr/left-right"),
-        constructor: function() {
-            var pathData = "M1.608,8.833l12.553,5.904c0.408,0.192,0.504,0.336,0.504,0.552c0,0.264-0.216,0.48-0.48,0.48c-0.072,0-0.12,0-0.432-0.168   L0.48,9.361C0.144,9.217,0,9.049,0,8.833c0-0.192,0.072-0.36,0.48-0.552l13.273-6.264c0.096-0.048,0.313-0.144,0.432-0.144   c0.288,0,0.48,0.216,0.48,0.48c0,0.288-0.192,0.408-0.456,0.528L1.608,8.833z M0.84,20.426c-0.408,0-0.84,0-0.84-0.48   s0.504-0.48,0.864-0.48h12.937c0.36,0,0.864,0,0.864,0.48s-0.432,0.48-0.84,0.48H0.84z", opShape = new kity.Path(pathData).fill("black");
-            this.callBase("Leq");
-            opShape.translate(6, 2);
-            // 绘制符号图形
-            this.addOperatorShape(opShape);
-        }
-    });
-});
-/**
- * 远小于操作符
- */
-define("operator/binary-opr/relational/ll", [ "kity", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, modules) {
-    var kity = require("kity");
-    return kity.createClass("LlOperator", {
-        base: require("operator/binary-opr/left-right"),
-        constructor: function() {
-            var pathData = "M1.488,11.137l12.049,6.577c0.288,0.168,0.48,0.264,0.48,0.528c0,0.24-0.168,0.48-0.48,0.48c-0.096,0-0.168,0-0.456-0.168   L0.456,11.665C0.168,11.497,0,11.425,0,11.137s0.168-0.36,0.456-0.528l12.649-6.913c0.096-0.048,0.264-0.144,0.432-0.144   c0.216,0,0.48,0.144,0.48,0.48c0,0.264-0.192,0.36-0.48,0.528L1.488,11.137z M8.809,11.137l12.049,6.577   c0.288,0.168,0.48,0.264,0.48,0.528c0,0.24-0.168,0.48-0.48,0.48c-0.096,0-0.168,0-0.456-0.168L7.776,11.665   c-0.288-0.168-0.456-0.24-0.456-0.528s0.168-0.36,0.456-0.528l12.649-6.913c0.096-0.048,0.264-0.144,0.432-0.144   c0.216,0,0.48,0.144,0.48,0.48c0,0.264-0.192,0.36-0.48,0.528L8.809,11.137z", opShape = new kity.Path(pathData).fill("black");
-            this.callBase("Ll");
-            opShape.translate(2.5, 2);
-            // 绘制符号图形
-            this.addOperatorShape(opShape);
-        }
-    });
-});
-/**
- * "|"操作符
- */
-define("operator/binary-opr/relational/logical/mid", [ "kity", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, modules) {
-    var kity = require("kity");
-    return kity.createClass("MidOperator", {
-        base: require("operator/binary-opr/left-right"),
-        constructor: function() {
-            var pathData = "M0.96,23.138c0,0.432,0,0.864-0.48,0.864S0,23.57,0,23.138V0.864C0,0.432,0,0,0.48,0s0.48,0.432,0.48,0.864V23.138z", opShape = new kity.Path(pathData).fill("black");
-            this.callBase("Mid");
-            opShape.translate(12.5, 0);
-            // 绘制符号图形
-            this.addOperatorShape(opShape);
-        }
-    });
-});
-/**
- * "⋁"操作符
- */
-define("operator/binary-opr/relational/logical/vee", [ "kity", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, modules) {
-    var kity = require("kity");
-    return kity.createClass("VeeOperator", {
-        base: require("operator/binary-opr/left-right"),
-        constructor: function() {
-            var pathData = "M7.2,18.025c-0.144,0.336-0.216,0.504-0.528,0.504c-0.216,0-0.36-0.096-0.552-0.504L0.144,4.512C0,4.224,0,4.176,0,4.128   c0-0.264,0.216-0.48,0.48-0.48c0.168,0,0.36,0.048,0.552,0.504l5.641,12.721l5.641-12.697c0.168-0.36,0.312-0.528,0.552-0.528   c0.264,0,0.48,0.216,0.48,0.48c0,0.12-0.024,0.168-0.168,0.48L7.2,18.025z", opShape = new kity.Path(pathData).fill("black");
-            this.callBase("Vee");
-            opShape.translate(6.5, 2);
-            // 绘制符号图形
-            this.addOperatorShape(opShape);
-        }
-    });
-});
-/**
- * ⋀操作符
- */
-define("operator/binary-opr/relational/logical/wedge", [ "kity", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, modules) {
-    var kity = require("kity");
-    return kity.createClass("WedgeOperator", {
-        base: require("operator/binary-opr/left-right"),
-        constructor: function() {
-            var pathData = "M13.201,17.666c0.144,0.288,0.144,0.336,0.144,0.384c0,0.264-0.216,0.48-0.48,0.48c-0.096,0-0.336,0-0.552-0.504   L6.672,5.304L1.032,18.025c-0.192,0.456-0.384,0.504-0.552,0.504c-0.264,0-0.48-0.216-0.48-0.48c0-0.12,0.024-0.168,0.168-0.48   L6.145,4.152C6.289,3.816,6.36,3.648,6.672,3.648c0.216,0,0.36,0.096,0.552,0.504L13.201,17.666z", opShape = new kity.Path(pathData).fill("black");
-            this.callBase("Wedge");
-            opShape.translate(6, 2);
-            // 绘制符号图形
-            this.addOperatorShape(opShape);
-        }
-    });
-});
-/**
- * 小于操作符
- */
-define("operator/binary-opr/relational/lt", [ "kity", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, modules) {
-    var kity = require("kity");
-    return kity.createClass("LtOperator", {
-        base: require("operator/binary-opr/left-right"),
-        constructor: function() {
-            var pathData = "M1.488,11.161l12.361,5.688c0.432,0.192,0.48,0.36,0.48,0.504c0,0.264-0.192,0.456-0.456,0.456   c-0.048,0-0.096-0.024-0.408-0.168L0.48,11.665C0.024,11.449,0,11.305,0,11.137c0-0.144,0.048-0.312,0.48-0.504l12.985-5.977   c0.336-0.144,0.36-0.168,0.408-0.168c0.264,0,0.456,0.192,0.456,0.456c0,0.144-0.048,0.312-0.48,0.504L1.488,11.161z", opShape = new kity.Path(pathData).fill("black");
-            this.callBase("Lt");
-            opShape.translate(6, 2);
-            // 绘制符号图形
-            this.addOperatorShape(opShape);
-        }
-    });
-});
-/**
- * "≇"操作符
- */
-define("operator/binary-opr/relational/not/not-cong", [ "kity", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, modules) {
-    var kity = require("kity");
-    return kity.createClass("NotCongOperator", {
-        base: require("operator/binary-opr/left-right"),
-        constructor: function() {
-            var pathData = "M5.736,16.01h9.337c0.432,0,0.888,0,0.888,0.48s-0.432,0.48-0.84,0.48H5.185l-1.92,3.36c-0.24,0.432-0.336,0.576-0.6,0.576   c-0.288,0-0.48-0.216-0.48-0.48c0-0.144,0.048-0.192,0.144-0.408c0.264-0.432,0.696-1.176,1.752-3.048H0.84   c-0.408,0-0.84,0-0.84-0.48s0.456-0.48,0.888-0.48h3.744l2.112-3.696H0.84c-0.408,0-0.84,0-0.84-0.48c0-0.48,0.456-0.48,0.888-0.48   h6.408l2.353-4.128C8.497,6.673,8.041,6.241,7.008,5.617c-0.912-0.576-1.872-1.08-3-1.08c-1.248,0-3.216,0.72-3.336,2.736   c0,0.12-0.072,0.552-0.336,0.552C0.168,7.825,0,7.633,0,7.105c0-2.208,1.776-3.913,4.008-3.913c1.536,0,2.904,0.912,4.2,1.776   C9.745,6,10.201,6.121,10.249,6.121c0.024,0,0.048-0.024,0.216-0.288l2.304-4.008c0.144-0.264,0.264-0.456,0.528-0.456   c0.288,0,0.48,0.216,0.48,0.48c0,0.12-0.024,0.168-0.192,0.48l-2.352,4.104c0.312,0.072,0.6,0.072,0.744,0.072   c1.632,0,3.216-1.056,3.312-2.64c0.024-0.528,0.216-0.648,0.336-0.648c0.144,0,0.336,0.168,0.336,0.744   c0,2.064-1.632,3.889-3.984,3.889c-0.24,0-0.768,0-1.44-0.24L8.4,11.353h6.673c0.432,0,0.888,0,0.888,0.48   c0,0.48-0.432,0.48-0.84,0.48H7.849L5.736,16.01z", opShape = new kity.Path(pathData).fill("black");
-            this.callBase("NotCong");
-            opShape.translate(5.5, 2);
-            // 绘制符号图形
-            this.addOperatorShape(opShape);
-        }
-    });
-});
-/**
- * 不等号操作符
- */
-define("operator/binary-opr/relational/not/not-eq", [ "kity", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, modules) {
-    var kity = require("kity");
-    return kity.createClass("NotEqOperator", {
-        base: require("operator/binary-opr/left-right"),
-        constructor: function() {
-            var pathData = "M1.376,9.745H0.56c-0.12,0-0.288,0.024-0.408-0.024c-0.048-0.024-0.096-0.072-0.12-0.12   c-0.024-0.072-0.024-0.12-0.024-0.192c0-0.144-0.048-0.384,0.096-0.504c0.144-0.096,0.384-0.048,0.552-0.048H2h4.2h1.2   c0.144,0,0.384,0.048,0.528-0.024c0.12-0.072,0.192-0.264,0.264-0.384c0.192-0.312,0.384-0.624,0.552-0.936   c0.576-0.984,1.152-1.968,1.704-2.952c0.168-0.288,0.336-0.552,0.504-0.84c0.072-0.12,0.12-0.288,0.24-0.384   c0.096-0.048,0.168-0.048,0.264-0.048c0.192,0,0.648-0.048,0.576,0.288c-0.048,0.192-0.192,0.408-0.312,0.576   c-0.192,0.36-0.408,0.744-0.624,1.104c-0.696,1.2-1.416,2.376-2.088,3.6h4.417h0.576c0.096,0,0.216,0,0.288,0.096   c0.072,0.12,0.048,0.264,0.048,0.384s0,0.24-0.072,0.312c-0.096,0.12-0.264,0.096-0.408,0.096h-1.056H9.92H9.033   c-0.144,0-0.312-0.024-0.456,0C8.48,9.793,8.408,9.865,8.36,9.961c-0.096,0.168-0.168,0.312-0.264,0.48   c-0.408,0.696-0.816,1.368-1.2,2.064h6.072h0.816c0.12,0,0.288-0.024,0.408,0.024c0.048,0.024,0.096,0.072,0.12,0.12   c0.024,0.072,0.024,0.12,0.024,0.192c0,0.144,0.048,0.384-0.096,0.504c-0.144,0.096-0.384,0.048-0.552,0.048h-1.344h-4.2h-1.2   c-0.144,0-0.384-0.048-0.528,0.024c-0.12,0.072-0.192,0.264-0.264,0.384C5.96,14.113,5.768,14.425,5.6,14.737   c-0.576,0.984-1.152,1.968-1.704,2.953c-0.168,0.288-0.336,0.552-0.504,0.84c-0.072,0.12-0.12,0.288-0.24,0.384   c-0.096,0.048-0.168,0.048-0.264,0.048c-0.192,0-0.648,0.048-0.576-0.288c0.048-0.192,0.192-0.408,0.312-0.576   c0.192-0.36,0.408-0.744,0.624-1.104c0.696-1.2,1.416-2.376,2.088-3.6H0.92H0.344c-0.096,0-0.216,0-0.288-0.096   c-0.072-0.12-0.048-0.264-0.048-0.384c0-0.12,0-0.24,0.072-0.313c0.096-0.12,0.264-0.096,0.408-0.096h1.056h2.88h0.888   c0.144,0,0.312,0.024,0.456,0c0.096-0.048,0.168-0.12,0.216-0.216c0.096-0.168,0.168-0.312,0.264-0.48   c0.408-0.696,0.816-1.368,1.2-2.064H1.376z", opShape = new kity.Path(pathData).fill("black");
-            this.callBase("NotEq");
-            opShape.translate(6, 2);
-            // 绘制符号图形
-            this.addOperatorShape(opShape);
-        }
-    });
-});
-/**
- * ""操作符
- */
-define("operator/binary-opr/relational/not/not-equiv", [ "kity", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, modules) {
-    var kity = require("kity");
-    return kity.createClass("NotEquivOperator", {
-        base: require("operator/binary-opr/left-right"),
-        constructor: function() {
-            var pathData = "M1.784,7.921H0.68c-0.168,0-0.384,0.048-0.528-0.024c-0.048-0.024-0.096-0.072-0.12-0.12   c-0.024-0.072-0.024-0.12-0.024-0.192c0-0.144-0.048-0.384,0.096-0.504C0.272,6.985,0.56,7.033,0.728,7.033h1.584h4.969h1.392   c0.168,0,0.456,0.048,0.624-0.024c0.144-0.072,0.216-0.288,0.264-0.432c0.192-0.384,0.408-0.792,0.576-1.176   c0.552-1.2,1.152-2.376,1.729-3.553c0.168-0.312,0.312-0.624,0.456-0.936c0.072-0.12,0.12-0.312,0.24-0.408   c0.096-0.048,0.192-0.048,0.288-0.048c0.192,0,0.576-0.048,0.528,0.264c-0.024,0.216-0.168,0.432-0.264,0.624   c-0.216,0.408-0.408,0.816-0.6,1.224c-0.432,0.936-0.912,1.848-1.368,2.784c-0.264,0.552-0.504,1.128-0.816,1.68h4.44h0.576   c0.096,0,0.216,0,0.288,0.096c0.072,0.12,0.048,0.264,0.048,0.384c0,0.12,0,0.24-0.072,0.312c-0.096,0.12-0.264,0.096-0.408,0.096   h-1.032h-2.904h-0.864c-0.144,0-0.312-0.024-0.432,0.024c-0.096,0.024-0.12,0.12-0.168,0.192c-0.096,0.168-0.168,0.336-0.24,0.504   c-0.336,0.672-0.648,1.392-1.008,2.04h5.736h0.912c0.12,0,0.288-0.024,0.384,0.072c0.12,0.096,0.096,0.264,0.096,0.384   s0.024,0.264-0.072,0.336c-0.12,0.144-0.36,0.096-0.504,0.096h-1.392h-3.84H8.745c-0.168,0-0.384-0.048-0.552,0.024   C8.097,11.617,8.049,11.713,8,11.809c-0.072,0.168-0.144,0.312-0.216,0.48c-0.336,0.672-0.648,1.392-1.008,2.041h7.128h1.104   c0.168,0,0.384-0.048,0.528,0.024c0.048,0.024,0.096,0.072,0.12,0.12c0.024,0.072,0.024,0.12,0.024,0.192   c0,0.144,0.048,0.384-0.096,0.504c-0.168,0.096-0.456,0.048-0.624,0.048h-1.584H8.409H7.017c-0.168,0-0.456-0.048-0.624,0.024   c-0.144,0.072-0.216,0.288-0.264,0.432l-0.576,1.152c-0.552,1.2-1.152,2.4-1.729,3.576c-0.168,0.312-0.312,0.624-0.456,0.936   c-0.072,0.12-0.12,0.312-0.24,0.408c-0.096,0.048-0.192,0.048-0.288,0.048c-0.192,0-0.576,0.048-0.528-0.264   c0.024-0.216,0.168-0.432,0.264-0.624c0.216-0.408,0.408-0.816,0.6-1.224c0.432-0.937,0.912-1.848,1.368-2.785   c0.264-0.552,0.504-1.128,0.816-1.68H0.92H0.344c-0.096,0-0.216,0-0.288-0.096c-0.072-0.12-0.048-0.264-0.048-0.384   c0-0.12,0-0.24,0.072-0.312c0.096-0.12,0.264-0.096,0.408-0.096H1.52h2.904h0.864c0.144,0,0.312,0.024,0.432-0.024   c0.096-0.024,0.12-0.12,0.168-0.192c0.096-0.168,0.168-0.336,0.24-0.504c0.336-0.672,0.648-1.392,1.008-2.04H1.4H0.488   c-0.12,0-0.288,0.024-0.384-0.072c-0.12-0.096-0.096-0.264-0.096-0.384s-0.024-0.264,0.072-0.336   c0.12-0.144,0.36-0.096,0.504-0.096h1.392h3.84h1.128c0.168,0,0.384,0.048,0.552-0.024c0.096-0.024,0.144-0.12,0.192-0.216   c0.072-0.168,0.144-0.312,0.216-0.48c0.336-0.672,0.648-1.392,1.008-2.04H1.784z", opShape = new kity.Path(pathData).fill("black");
-            this.callBase("NotEquiv");
-            opShape.translate(5, 2);
-            // 绘制符号图形
-            this.addOperatorShape(opShape);
-        }
-    });
-});
-/**
- * "≱"操作符
- */
-define("operator/binary-opr/relational/not/not-ge", [ "kity", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, modules) {
-    var kity = require("kity");
-    return kity.createClass("NotGeOperator", {
-        base: require("operator/binary-opr/left-right"),
-        constructor: function() {
-            var pathData = "M4.393,21.602h9.433c0.432,0,0.84,0,0.84,0.48s-0.48,0.48-0.888,0.48H3.984L2.568,25.97   c-0.144,0.336-0.24,0.576-0.552,0.576c-0.288,0-0.48-0.216-0.48-0.48c0-0.24,1.2-3,1.416-3.504H0.888c-0.408,0-0.888,0-0.888-0.48   s0.408-0.48,0.84-0.48h2.497l2.616-6.24l-5.088,2.4c-0.24,0.12-0.288,0.144-0.384,0.144c-0.264,0-0.48-0.24-0.48-0.48   c0-0.192,0.072-0.36,0.48-0.552l6-2.832l2.16-5.185l-8.113-3.84C0.144,4.848,0,4.776,0,4.488s0.216-0.48,0.48-0.48   c0.168,0,0.36,0.096,0.504,0.168l8.041,3.792l3.264-7.825C12.385,0.048,12.505,0,12.649,0c0.288,0,0.48,0.216,0.48,0.48   c0,0.12-0.024,0.168-0.144,0.456L9.889,8.4l4.32,2.016c0.24,0.12,0.456,0.264,0.456,0.528c0,0.312-0.168,0.384-0.528,0.552   l-6.913,3.265L4.393,21.602z M7.777,13.441l5.28-2.496l-3.552-1.68L7.777,13.441z", opShape = new kity.Path(pathData).fill("black");
-            this.callBase("NotGe");
-            opShape.translate(6, 2);
-            // 绘制符号图形
-            this.addOperatorShape(opShape);
-        }
-    });
-});
-/**
- * "≯"操作符
- */
-define("operator/binary-opr/relational/not/not-gt", [ "kity", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, modules) {
-    var kity = require("kity");
-    return kity.createClass("NotGtOperator", {
-        base: require("operator/binary-opr/left-right"),
-        constructor: function() {
-            var pathData = "M5.521,15.77l-2.952,5.785c-0.192,0.336-0.216,0.36-0.288,0.432c-0.096,0.072-0.168,0.096-0.264,0.096   c-0.264,0-0.48-0.192-0.48-0.48s2.208-4.488,2.568-5.161L2.16,17.33c-0.168,0.096-1.512,0.744-1.68,0.744   c-0.24,0-0.48-0.216-0.48-0.456c0-0.192,0.072-0.36,0.48-0.552l4.344-2.041l3.192-6.265L0.48,5.208C0.072,5.017,0,4.849,0,4.657   c0-0.24,0.24-0.456,0.48-0.456c0.096,0,0.192,0.024,0.432,0.144l7.537,3.552l3.696-7.249c0.168-0.312,0.24-0.456,0.504-0.456   c0.264,0,0.48,0.192,0.48,0.48c0,0.096,0,0.144-0.192,0.48L9.313,8.305l4.872,2.304c0.288,0.144,0.48,0.216,0.48,0.528   c0,0.264-0.168,0.408-0.456,0.528L5.521,15.77z M6.216,14.354l6.841-3.216L8.881,9.169L6.216,14.354z", opShape = new kity.Path(pathData).fill("black");
-            this.callBase("NotGt");
-            opShape.translate(6, 2);
-            // 绘制符号图形
-            this.addOperatorShape(opShape);
-        }
-    });
-});
-/**
- * "≰"操作符
- */
-define("operator/binary-opr/relational/not/not-in", [ "kity", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, modules) {
-    var kity = require("kity");
-    return kity.createClass("NotInOperator", {
-        base: require("operator/binary-opr/left-right"),
-        constructor: function() {
-            var pathData = "M7.061,3.957c0.288-0.937,0.576-1.896,0.84-2.833l0.144-0.432C8.069,0.597,8.117,0.5,8.189,0.453   c0.12-0.072,0.288-0.048,0.432-0.048c0.12,0,0.264,0,0.336,0.096c0.096,0.096,0.048,0.264,0,0.384L8.693,1.772   c-0.24,0.816-0.48,1.608-0.72,2.424C7.829,4.653,7.685,5.109,7.565,5.565c0.552,0,1.128,0.072,1.68,0.144   c0.288,0.048,0.6,0.072,0.888,0.168c0.264,0.096,0.168,0.36,0.12,0.576c-0.024,0.096-0.048,0.216-0.12,0.288   c-0.096,0.072-0.216,0.048-0.312,0.024C9.677,6.741,9.509,6.717,9.365,6.693c-0.456-0.072-0.912-0.12-1.368-0.168   c-0.24-0.024-0.48,0-0.72-0.048l-0.36,1.2l-0.864,2.928h2.616h0.864c0.144,0,0.312-0.024,0.456,0   c0.288,0.048,0.24,0.336,0.24,0.552c0,0.144,0,0.288-0.144,0.36c-0.096,0.048-0.24,0.024-0.336,0.024H9.125H6.869H6.101   c-0.096,0-0.24-0.024-0.312,0.048c-0.096,0.072-0.096,0.24-0.144,0.336l-0.216,0.744c-0.192,0.672-0.408,1.32-0.6,1.992   c-0.096,0.336-0.24,0.672-0.288,1.032c0.984,0,1.992,0.024,2.976-0.072c0.336-0.048,0.672-0.072,1.008-0.144   c0.216-0.024,0.432-0.12,0.648-0.12c0.072,0,0.144,0.024,0.192,0.096c0.048,0.072,0.072,0.168,0.096,0.24   c0.024,0.168,0.144,0.408-0.048,0.528c-0.096,0.072-0.24,0.096-0.336,0.12c-0.24,0.048-0.48,0.096-0.72,0.12   c-0.888,0.12-1.8,0.168-2.688,0.168H4.661c-0.12,0-0.288-0.048-0.384,0.024c-0.096,0.072-0.12,0.24-0.144,0.336l-0.24,0.84   c-0.288,0.912-0.552,1.8-0.816,2.712l-0.24,0.744c-0.024,0.12-0.048,0.264-0.144,0.36c-0.096,0.096-0.216,0.096-0.336,0.096   c-0.216,0-0.576,0.024-0.528-0.288c0.024-0.168,0.096-0.336,0.144-0.504l0.288-0.96c0.216-0.768,0.456-1.512,0.672-2.28   c0.12-0.432,0.264-0.864,0.384-1.296c-0.336-0.072-0.672-0.216-0.984-0.408c-0.24-0.12-0.456-0.264-0.648-0.432   c-1.416-1.248-1.8-3.288-1.656-5.088c0.024-0.432,0.072-0.864,0.192-1.296c0.144-0.6,0.384-1.176,0.744-1.68   c0.192-0.288,0.456-0.576,0.72-0.816c0.864-0.792,2.064-1.104,3.216-1.176c0.552-0.024,1.128,0,1.704,0   C6.701,4.989,6.917,4.461,7.061,3.957z M3.917,10.605h0.768l0.336-0.048l0.144-0.312l0.24-0.768l0.912-3.024   c-0.912,0-1.848-0.048-2.736,0.24c-0.648,0.216-1.224,0.6-1.656,1.128c-0.624,0.744-0.96,1.824-0.96,2.784H3.917z M3.965,14.278   l0.816-2.736H0.964c0,1.704,0.888,3.528,2.641,3.984L3.965,14.278z", opShape = new kity.Path(pathData).fill("black");
-            this.callBase("NotIn");
-            opShape.translate(7.5, 2);
-            // 绘制符号图形
-            this.addOperatorShape(opShape);
-        }
-    });
-});
-/**
- * "≰"操作符
- */
-define("operator/binary-opr/relational/not/not-le", [ "kity", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, modules) {
-    var kity = require("kity");
-    return kity.createClass("NotLeOperator", {
-        base: require("operator/binary-opr/left-right"),
-        constructor: function() {
-            var pathData = "M4.393,21.602h9.433c0.432,0,0.84,0,0.84,0.48s-0.48,0.48-0.888,0.48H3.984L2.568,25.97   c-0.144,0.336-0.24,0.576-0.552,0.576c-0.288,0-0.48-0.216-0.48-0.48c0-0.24,1.2-3,1.416-3.504H0.888c-0.408,0-0.888,0-0.888-0.48   s0.408-0.48,0.84-0.48h2.497l3.072-7.321l-5.905-2.784C0.24,11.377,0,11.257,0,10.945c0-0.264,0.192-0.408,0.504-0.552L9.841,6   l2.448-5.857C12.385,0.048,12.505,0,12.649,0c0.288,0,0.48,0.216,0.48,0.48c0,0.12-0.024,0.168-0.144,0.456L11.137,5.4l2.592-1.248   c0.12-0.072,0.288-0.144,0.456-0.144c0.264,0,0.48,0.192,0.48,0.48s-0.144,0.336-0.528,0.528L10.585,6.72l-2.952,7.081l6.504,3.048   c0.36,0.192,0.528,0.264,0.528,0.576c0,0.24-0.216,0.48-0.48,0.48c-0.144,0-1.176-0.504-3.288-1.512l-3.648-1.704L4.393,21.602z    M1.608,10.945l5.161,2.448l2.52-6.073L1.608,10.945z", opShape = new kity.Path(pathData).fill("black");
-            this.callBase("NotLe");
-            opShape.translate(6, 2);
-            // 绘制符号图形
-            this.addOperatorShape(opShape);
-        }
-    });
-});
-/**
- * "≮"操作符
- */
-define("operator/binary-opr/relational/not/not-lt", [ "kity", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, modules) {
-    var kity = require("kity");
-    return kity.createClass("NotLtOperator", {
-        base: require("operator/binary-opr/left-right"),
-        constructor: function() {
-            var pathData = "M6.672,13.513c1.2,0.6,7.441,3.504,7.753,3.672c0.024,0.024,0.24,0.168,0.24,0.408c0,0.336-0.288,0.48-0.48,0.48   c-0.096,0-0.144,0-0.6-0.216l-0.864-0.408l-6.505-3.072c-0.528,1.056-3.648,7.297-3.864,7.537c-0.12,0.168-0.312,0.168-0.336,0.168   c-0.264,0-0.48-0.192-0.48-0.48c0-0.12,0-0.168,0.336-0.792l3.48-6.841L0.48,11.665C0.192,11.521,0,11.449,0,11.137   c0-0.264,0.168-0.384,0.456-0.528l8.689-4.08l3-5.88c0.168-0.312,0.24-0.456,0.504-0.456c0.264,0,0.48,0.192,0.48,0.48   c0,0.096,0,0.144-0.192,0.48l-2.376,4.705l3.24-1.536c0.168-0.072,0.264-0.12,0.384-0.12c0.192,0,0.48,0.144,0.48,0.48   c0,0.192-0.096,0.36-0.48,0.528L9.841,7.249L6.672,13.513z M1.608,11.137l4.177,1.968l2.664-5.185L1.608,11.137z", opShape = new kity.Path(pathData).fill("black");
-            this.callBase("NotLt");
-            opShape.translate(6, 2);
-            // 绘制符号图形
-            this.addOperatorShape(opShape);
-        }
-    });
-});
-/**
- * "≁"操作符
- */
-define("operator/binary-opr/relational/not/not-sim", [ "kity", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, modules) {
-    var kity = require("kity");
-    return kity.createClass("NotSimOperator", {
-        base: require("operator/binary-opr/left-right"),
-        constructor: function() {
-            var pathData = "M4.512,18.146c-0.24,0.288-0.288,0.36-0.528,0.36c-0.336,0-0.48-0.312-0.48-0.48c0-0.096,0.024-0.216,0.288-0.528   l3.313-3.96c-1.128-0.84-2.064-1.272-3.096-1.272c-1.224,0-1.992,0.624-2.304,0.912c-0.864,0.84-0.912,1.584-0.936,2.16   c-0.024,0.24-0.12,0.72-0.384,0.72C0.288,16.057,0,15.913,0,15.097c0-2.424,1.608-4.632,4.008-4.632c1.56,0,2.808,0.96,4.08,1.944   l3.36-4.008c0.24-0.288,0.288-0.36,0.528-0.36c0.336,0,0.48,0.312,0.48,0.48c0,0.096-0.024,0.216-0.288,0.528l-3.313,3.96   c1.128,0.84,2.064,1.272,3.097,1.272c1.224,0,1.992-0.624,2.304-0.912c0.864-0.84,0.912-1.608,0.936-2.161   c0.024-0.312,0.168-0.72,0.384-0.72c0.168,0,0.384,0.216,0.384,0.96c0,2.424-1.608,4.632-4.008,4.632   c-1.561,0-2.809-0.96-4.081-1.944L4.512,18.146z", opShape = new kity.Path(pathData).fill("black");
-            this.callBase("NotSim");
-            opShape.translate(5.5, 0);
-            // 绘制符号图形
-            this.addOperatorShape(opShape);
-        }
-    });
-});
-/**
- * "⊈"操作符
- */
-define("operator/binary-opr/relational/not/not-subseteq", [ "kity", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, modules) {
-    var kity = require("kity");
-    return kity.createClass("NotSubseteqOperator", {
-        base: require("operator/binary-opr/left-right"),
-        constructor: function() {
-            var pathData = "M6.36,16.873c0.48,0.072,0.912,0.072,1.08,0.072h6.385c0.408,0,0.84,0,0.84,0.48s-0.432,0.48-0.84,0.48H7.369   c-0.144,0-0.768,0-1.392-0.12l-1.584,3.816h9.433c0.408,0,0.84,0,0.84,0.48s-0.432,0.48-0.84,0.48H3.984L2.568,25.97   c-0.144,0.336-0.24,0.576-0.552,0.576c-0.288,0-0.48-0.216-0.48-0.48c0-0.24,1.2-3,1.416-3.504H1.32c-0.408,0-0.84,0-0.84-0.48   s0.432-0.48,0.84-0.48h2.016l1.704-4.056C2.496,16.825,0,14.377,0,10.945c0-3.889,3.313-6.937,7.345-6.937h3.312l1.632-3.865   C12.385,0.048,12.505,0,12.649,0c0.288,0,0.48,0.216,0.48,0.48c0,0.12-0.024,0.168-0.144,0.456l-1.272,3.072h2.112   c0.408,0,0.84,0,0.84,0.48s-0.432,0.48-0.84,0.48h-2.52L6.36,16.873z M7.417,4.968c-3.72,0-6.457,2.736-6.457,6   c0,2.808,2.016,4.992,4.44,5.688l4.873-11.689H7.417z", opShape = new kity.Path(pathData).fill("black");
-            this.callBase("NotSubseteq");
-            opShape.translate(6, 0);
-            // 绘制符号图形
-            this.addOperatorShape(opShape);
-        }
-    });
-});
-/**
- * "⊉"操作符
- */
-define("operator/binary-opr/relational/not/not-supseteq", [ "kity", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, modules) {
-    var kity = require("kity");
-    return kity.createClass("NotSupseteqOperator", {
-        base: require("operator/binary-opr/left-right"),
-        constructor: function() {
-            var pathData = "M11.257,5.088c1.704,0.984,3.408,3.072,3.408,5.88c0,3.888-3.312,6.937-7.344,6.937H5.929l-1.536,3.696h8.953   c0.408,0,0.84,0,0.84,0.48s-0.432,0.48-0.84,0.48H3.984L2.568,25.97c-0.144,0.336-0.24,0.576-0.552,0.576   c-0.288,0-0.48-0.216-0.48-0.48c0-0.24,1.2-3,1.416-3.504H0.84c-0.408,0-0.84,0-0.84-0.48s0.432-0.48,0.84-0.48h2.497l1.56-3.696   H0.84c-0.408,0-0.84,0-0.84-0.48s0.432-0.48,0.84-0.48h4.44L10.033,5.52c-1.2-0.504-2.232-0.552-2.808-0.552H0.84   c-0.408,0-0.84,0-0.84-0.48s0.432-0.48,0.84-0.48h6.457c1.056,0,2.136,0.192,3.121,0.648l1.872-4.513   C12.385,0.048,12.505,0,12.649,0c0.288,0,0.48,0.216,0.48,0.48c0,0.12-0.024,0.168-0.144,0.456L11.257,5.088z M6.336,16.945   c1.68,0,3.48,0,5.281-1.56c1.32-1.128,2.088-2.665,2.088-4.44c0-1.632-0.72-3.625-2.832-4.969L6.336,16.945z", opShape = new kity.Path(pathData).fill("black");
-            this.callBase("NotSupseteq");
-            opShape.translate(6, 0);
-            // 绘制符号图形
-            this.addOperatorShape(opShape);
-        }
-    });
-});
-/**
- * ⋂
- */
-define("operator/binary-opr/relational/set/cap", [ "kity", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, modules) {
-    var kity = require("kity");
-    return kity.createClass("CapOperator", {
-        base: require("operator/binary-opr/left-right"),
-        constructor: function() {
-            var pathData = "M13.345,16.802c0,0.432,0,0.864-0.48,0.864s-0.48-0.432-0.48-0.864V8.137c0-0.648,0-2.184-1.848-3.36   C9.265,3.96,7.752,3.745,6.672,3.745c-1.8,0-5.712,0.768-5.712,4.368v8.689c0,0.432,0,0.864-0.48,0.864S0,17.234,0,16.802V7.993   c0-3.528,3.552-5.208,6.672-5.208c3,0,6.672,1.584,6.672,5.232V16.802z", opShape = new kity.Path(pathData).fill("black");
-            this.callBase("Cap");
-            opShape.translate(6.5, 2);
-            // 绘制符号图形
-            this.addOperatorShape(opShape);
-        }
-    });
-});
-/**
- * ⋃
- */
-define("operator/binary-opr/relational/set/cup", [ "kity", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, modules) {
-    var kity = require("kity");
-    return kity.createClass("CupOperator", {
-        base: require("operator/binary-opr/left-right"),
-        constructor: function() {
-            var pathData = "M13.345,12.458c0,3.528-3.552,5.208-6.672,5.208c-3,0-6.672-1.584-6.672-5.232V3.648c0-0.432,0-0.864,0.48-0.864   s0.48,0.432,0.48,0.864v8.665c0,0.648,0,2.184,1.848,3.36c1.272,0.816,2.784,1.032,3.864,1.032c1.8,0,5.712-0.768,5.712-4.368   V3.648c0-0.432,0-0.864,0.48-0.864s0.48,0.432,0.48,0.864V12.458z", opShape = new kity.Path(pathData).fill("black");
-            this.callBase("Cup");
-            opShape.translate(6.5, 2);
-            // 绘制符号图形
-            this.addOperatorShape(opShape);
-        }
-    });
-});
-/**
- * in: ∈
- */
-define("operator/binary-opr/relational/set/in", [ "kity", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, modules) {
-    var kity = require("kity");
-    return kity.createClass("InOperator", {
-        base: require("operator/binary-opr/left-right"),
-        constructor: function() {
-            var pathData = "M0.984,11.617c0.288,3.216,3.048,5.521,6.433,5.521h3.745c0.408,0,0.84,0,0.84,0.48s-0.432,0.48-0.84,0.48H7.369   c-4.104,0-7.369-3.12-7.369-6.96s3.264-6.96,7.369-6.96h3.792c0.408,0,0.84,0,0.84,0.48s-0.432,0.48-0.84,0.48H7.417   c-3.384,0-6.145,2.304-6.433,5.521h10.177c0.408,0,0.84,0,0.84,0.48s-0.432,0.48-0.84,0.48H0.984z", opShape = new kity.Path(pathData).fill("black");
-            this.callBase("In");
-            opShape.translate(7, 2);
-            // 绘制符号图形
-            this.addOperatorShape(opShape);
-        }
-    });
-});
-/**
- * ni: ∋
- */
-define("operator/binary-opr/relational/set/ni", [ "kity", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, modules) {
-    var kity = require("kity");
-    return kity.createClass("NiOperator", {
-        base: require("operator/binary-opr/left-right"),
-        constructor: function() {
-            var pathData = "M0.84,5.137c-0.408,0-0.84,0-0.84-0.48s0.432-0.48,0.84-0.48h3.792c4.104,0,7.369,3.12,7.369,6.96s-3.264,6.96-7.369,6.96   H0.84c-0.408,0-0.84,0-0.84-0.48s0.432-0.48,0.84-0.48h3.745c3.384,0,6.145-2.304,6.433-5.521H0.84c-0.408,0-0.84,0-0.84-0.48   s0.432-0.48,0.84-0.48h10.177c-0.288-3.216-3.048-5.521-6.433-5.521H0.84z", opShape = new kity.Path(pathData).fill("black");
-            this.callBase("Ni");
-            opShape.translate(7, 2);
-            // 绘制符号图形
-            this.addOperatorShape(opShape);
-        }
-    });
-});
-/**
- * ⊓
- */
-define("operator/binary-opr/relational/set/sqcap", [ "kity", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, modules) {
-    var kity = require("kity");
-    return kity.createClass("SqcapOperator", {
-        base: require("operator/binary-opr/left-right"),
-        constructor: function() {
-            var pathData = "M13.057,16.273c0,0.432,0,0.864-0.48,0.864c-0.48,0-0.48-0.504-0.48-0.864V3.745H0.96v12.529c0,0.432,0,0.864-0.48,0.864   S0,16.634,0,16.273V3.648c0-0.792,0.072-0.864,0.84-0.864h11.377c0.768,0,0.84,0.072,0.84,0.864V16.273z", opShape = new kity.Path(pathData).fill("black");
-            this.callBase("Sqcap");
-            opShape.translate(6.5, 2);
-            // 绘制符号图形
-            this.addOperatorShape(opShape);
-        }
-    });
-});
-/**
- * ⊔
- */
-define("operator/binary-opr/relational/set/sqcup", [ "kity", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, modules) {
-    var kity = require("kity");
-    return kity.createClass("SqcupOperator", {
-        base: require("operator/binary-opr/left-right"),
-        constructor: function() {
-            var pathData = "M13.057,16.273c0,0.792-0.072,0.864-0.864,0.864H0.864C0.096,17.138,0,17.042,0,16.273V3.648c0-0.432,0-0.864,0.48-0.864   s0.48,0.432,0.48,0.864v12.529h11.137V3.648c0-0.432,0-0.864,0.48-0.864c0.48,0,0.48,0.432,0.48,0.864V16.273z", opShape = new kity.Path(pathData).fill("black");
-            this.callBase("Sqcup");
-            opShape.translate(6.5, 2);
-            // 绘制符号图形
-            this.addOperatorShape(opShape);
-        }
-    });
-});
-/**
- * "⊏"操作符
- */
-define("operator/binary-opr/relational/set/sqsubset", [ "kity", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, modules) {
-    var kity = require("kity");
-    return kity.createClass("SqsubsetOperator", {
-        base: require("operator/binary-opr/left-right"),
-        constructor: function() {
-            var pathData = "M0.96,5.161v11.977h12.841c0.408,0,0.864,0,0.864,0.48s-0.432,0.48-0.84,0.48H0.84c-0.768,0-0.84-0.096-0.84-0.84V5.064   c0-0.792,0.096-0.864,0.864-0.864h12.961c0.408,0,0.84,0,0.84,0.48s-0.432,0.48-0.84,0.48H0.96z", opShape = new kity.Path(pathData).fill("black");
-            this.callBase("Sqsubset");
-            opShape.translate(6, 2);
-            // 绘制符号图形
-            this.addOperatorShape(opShape);
-        }
-    });
-});
-/**
- * "⊑"操作符
- */
-define("operator/binary-opr/relational/set/sqsubseteq", [ "kity", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, modules) {
-    var kity = require("kity");
-    return kity.createClass("SqsubseteqOperator", {
-        base: require("operator/binary-opr/left-right"),
-        constructor: function() {
-            var pathData = "M0.84,20.426c-0.408,0-0.84,0-0.84-0.48s0.48-0.48,0.864-0.48h13.417c0.36,0,0.864,0,0.864,0.48s-0.432,0.48-0.84,0.48   H0.84z M1.224,2.833V14.81h13.057c0.408,0,0.864,0,0.864,0.48s-0.432,0.48-0.84,0.48H1.104c-0.768,0-0.84-0.072-0.84-0.864V2.736   c0-0.768,0.096-0.864,0.864-0.864h13.177c0.408,0,0.84,0,0.84,0.48s-0.432,0.48-0.84,0.48H1.224z", opShape = new kity.Path(pathData).fill("black");
-            this.callBase("Sqsubseteq");
-            opShape.translate(5.5, 2);
-            // 绘制符号图形
-            this.addOperatorShape(opShape);
-        }
-    });
-});
-/**
- * "⊐"操作符
- */
-define("operator/binary-opr/relational/set/sqsupset", [ "kity", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, modules) {
-    var kity = require("kity");
-    return kity.createClass("SqsupsetOperator", {
-        base: require("operator/binary-opr/left-right"),
-        constructor: function() {
-            var pathData = "M15.625,17.603c0,0.768-0.096,0.84-0.84,0.84H0.84c-0.408,0-0.84,0-0.84-0.48s0.456-0.48,0.864-0.48h13.801V5.506H0.84   c-0.408,0-0.84,0-0.84-0.48s0.432-0.48,0.84-0.48h13.945c0.768,0,0.84,0.096,0.84,0.84V17.603z", opShape = new kity.Path(pathData).fill("black");
-            this.callBase("Sqsupset");
-            opShape.translate(5.5, 2);
-            // 绘制符号图形
-            this.addOperatorShape(opShape);
-        }
-    });
-});
-/**
- * "⊒"操作符
- */
-define("operator/binary-opr/relational/set/sqsupseteq", [ "kity", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, modules) {
-    var kity = require("kity");
-    return kity.createClass("SqsupseteqOperator", {
-        base: require("operator/binary-opr/left-right"),
-        constructor: function() {
-            var pathData = "M14.881,14.905c0,0.792-0.072,0.864-0.84,0.864H0.84c-0.408,0-0.84,0-0.84-0.48s0.48-0.48,0.864-0.48h13.057V2.833H0.84   c-0.408,0-0.84,0-0.84-0.48s0.432-0.48,0.84-0.48h13.201c0.768,0,0.84,0.072,0.84,0.864V14.905z M14.281,19.466   c0.408,0,0.864,0,0.864,0.48s-0.432,0.48-0.84,0.48H0.84c-0.408,0-0.84,0-0.84-0.48s0.504-0.48,0.864-0.48H14.281z", opShape = new kity.Path(pathData).fill("black");
-            this.callBase("Sqsupseteq");
-            opShape.translate(5.5, 2);
-            // 绘制符号图形
-            this.addOperatorShape(opShape);
-        }
-    });
-});
-/**
- * 子集: ⊂
- */
-define("operator/binary-opr/relational/set/subset", [ "kity", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, modules) {
-    var kity = require("kity");
-    return kity.createClass("SubsetOperator", {
-        base: require("operator/binary-opr/left-right"),
-        constructor: function() {
-            var pathData = "M7.417,5.137c-3.744,0-6.457,2.784-6.457,6s2.712,6,6.457,6h6.409c0.408,0,0.84,0,0.84,0.48s-0.432,0.48-0.84,0.48H7.369   c-4.104,0-7.369-3.12-7.369-6.96s3.264-6.96,7.369-6.96h6.457c0.408,0,0.84,0,0.84,0.48s-0.432,0.48-0.84,0.48H7.417z", opShape = new kity.Path(pathData).fill("black");
-            this.callBase("Subset");
-            opShape.translate(6, 2);
-            // 绘制符号图形
-            this.addOperatorShape(opShape);
-        }
-    });
-});
-/**
- * 真子集: ⊆
- */
-define("operator/binary-opr/relational/set/subseteq", [ "kity", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, modules) {
-    var kity = require("kity");
-    return kity.createClass("SubseteqOperator", {
-        base: require("operator/binary-opr/left-right"),
-        constructor: function() {
-            var pathData = "M7.417,2.833c-3.72,0-6.457,2.736-6.457,6c0,3.168,2.665,5.977,6.457,5.977h6.409c0.408,0,0.84,0,0.84,0.48   s-0.432,0.48-0.84,0.48H7.369C3.313,15.77,0,12.673,0,8.809c0-3.792,3.24-6.937,7.369-6.937h6.457c0.408,0,0.84,0,0.84,0.48   s-0.432,0.48-0.84,0.48H7.417z M13.825,19.466c0.408,0,0.84,0,0.84,0.48s-0.432,0.48-0.84,0.48H1.32c-0.408,0-0.84,0-0.84-0.48   s0.432-0.48,0.84-0.48H13.825z", opShape = new kity.Path(pathData).fill("black");
-            this.callBase("Subseteq");
-            opShape.translate(6, 2);
-            // 绘制符号图形
-            this.addOperatorShape(opShape);
-        }
-    });
-});
-/**
- * 超集: ⊃
- */
-define("operator/binary-opr/relational/set/supset", [ "kity", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, modules) {
-    var kity = require("kity");
-    return kity.createClass("SupsetOperator", {
-        base: require("operator/binary-opr/left-right"),
-        constructor: function() {
-            var pathData = "M0.84,5.137c-0.408,0-0.84,0-0.84-0.48s0.432-0.48,0.84-0.48h6.457c4.104,0,7.369,3.12,7.369,6.96s-3.264,6.96-7.369,6.96   H0.84c-0.408,0-0.84,0-0.84-0.48s0.432-0.48,0.84-0.48h6.409c3.745,0,6.457-2.784,6.457-6s-2.712-6-6.457-6H0.84z", opShape = new kity.Path(pathData).fill("black");
-            this.callBase("Supset");
-            opShape.translate(6, 2);
-            // 绘制符号图形
-            this.addOperatorShape(opShape);
-        }
-    });
-});
-/**
- * 真超集: ⊇
- */
-define("operator/binary-opr/relational/set/supseteq", [ "kity", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, modules) {
-    var kity = require("kity");
-    return kity.createClass("SupseteqOperator", {
-        base: require("operator/binary-opr/left-right"),
-        constructor: function() {
-            var pathData = "M0.84,2.833c-0.408,0-0.84,0-0.84-0.48s0.432-0.48,0.84-0.48h6.457c4.057,0,7.369,3.096,7.369,6.96   c0,3.792-3.24,6.937-7.369,6.937H0.84c-0.408,0-0.84,0-0.84-0.48s0.432-0.48,0.84-0.48h6.409c3.72,0,6.457-2.736,6.457-6   c0-3.168-2.664-5.977-6.457-5.977H0.84z M0.84,20.426c-0.408,0-0.84,0-0.84-0.48s0.432-0.48,0.84-0.48h12.505   c0.408,0,0.84,0,0.84,0.48s-0.432,0.48-0.84,0.48H0.84z", opShape = new kity.Path(pathData).fill("black");
-            this.callBase("Supseteq");
-            opShape.translate(6, 2);
-            // 绘制符号图形
-            this.addOperatorShape(opShape);
-        }
-    });
-});
-/**
- * sim操作符
- */
-define("operator/binary-opr/relational/sim", [ "kity", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, modules) {
-    var kity = require("kity");
-    return kity.createClass("SimOperator", {
-        base: require("operator/binary-opr/left-right"),
-        constructor: function() {
-            var pathData = "M11.977,13.945c-1.632,0-2.88-1.104-4.104-2.208c-1.176-1.032-2.328-2.064-3.84-2.064c-1.464,0-3.264,1.056-3.36,3.696   c0,0.072-0.072,0.552-0.336,0.552c-0.024,0-0.336,0-0.336-0.768c0-2.184,1.416-4.824,4.032-4.824c1.632,0,2.88,1.104,4.104,2.208   c1.176,1.032,2.328,2.064,3.84,2.064c1.68,0,3.264-1.32,3.36-3.624c0.024-0.456,0.216-0.624,0.336-0.624   c0.192,0,0.336,0.24,0.336,0.768C16.009,11.305,14.593,13.945,11.977,13.945z", opShape = new kity.Path(pathData).fill("black");
-            this.callBase("Sim");
-            opShape.translate(5, 2);
-            // 绘制符号图形
-            this.addOperatorShape(opShape);
-        }
-    });
-});
-/**
- * simeq操作符
- */
-define("operator/binary-opr/relational/simeq", [ "kity", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, modules) {
-    var kity = require("kity");
-    return kity.createClass("SimeqOperator", {
-        base: require("operator/binary-opr/left-right"),
-        constructor: function() {
-            var pathData = "M12.001,11.137c-1.608,0-2.88-0.984-4.152-1.992c-1.248-0.96-2.4-1.8-3.84-1.8c-1.296,0-3.216,0.864-3.336,3.216   c0,0.072-0.072,0.552-0.336,0.552C0.312,11.113,0,11.089,0,10.369c0-2.256,1.656-4.368,4.008-4.368c1.608,0,2.88,0.984,4.152,1.992   c1.248,0.96,2.4,1.8,3.84,1.8c1.56,0,3.24-1.128,3.336-3.12c0.024-0.552,0.24-0.648,0.336-0.648c0.168,0,0.336,0.216,0.336,0.744   C16.009,9.025,14.353,11.137,12.001,11.137z M15.145,15.313c0.408,0,0.864,0,0.864,0.48s-0.432,0.48-0.84,0.48H0.84   c-0.408,0-0.84,0-0.84-0.48s0.48-0.48,0.864-0.48H15.145z", opShape = new kity.Path(pathData).fill("black");
-            this.callBase("Simeq");
-            opShape.translate(5, 2);
-            // 绘制符号图形
-            this.addOperatorShape(opShape);
-        }
-    });
 });
 /**
  * 减法操作符
  */
-define("operator/binary-opr/subtraction", [ "kity", "char/data", "char/data/number/0", "char/data/number/1", "char/data/number/2", "char/data/number/3", "char/data/number/4", "char/data/number/5", "char/data/number/6", "char/data/number/7", "char/data/number/8", "char/data/number/9", "char/data/character/a", "char/data/character/b", "char/data/character/c", "char/data/character/d", "char/data/character/e", "char/data/character/f", "char/data/character/g", "char/data/character/h", "char/data/character/i", "char/data/character/j", "char/data/character/k", "char/data/character/l", "char/data/character/m", "char/data/character/n", "char/data/character/o", "char/data/character/p", "char/data/character/q", "char/data/character/r", "char/data/character/s", "char/data/character/t", "char/data/character/u", "char/data/character/v", "char/data/character/w", "char/data/character/x", "char/data/character/y", "char/data/character/z", "char/data/character/ua", "char/data/character/ub", "char/data/character/uc", "char/data/character/ud", "char/data/character/ue", "char/data/character/uf", "char/data/character/ug", "char/data/character/uh", "char/data/character/ui", "char/data/character/uj", "char/data/character/uk", "char/data/character/ul", "char/data/character/um", "char/data/character/un", "char/data/character/uo", "char/data/character/up", "char/data/character/uq", "char/data/character/ur", "char/data/character/us", "char/data/character/ut", "char/data/character/uu", "char/data/character/uv", "char/data/character/uw", "char/data/character/ux", "char/data/character/uy", "char/data/character/uz", "char/data/symbol/l-parentheses", "char/data/symbol/r-parentheses", "char/data/symbol/negative", "char/data/symbol/positive", "char/data/symbol/vertical", "char/data/symbol/slash", "char/data/symbol/exclamation", "char/data/symbol/l-brackets", "char/data/symbol/r-brackets", "char/data/symbol/colon", "char/data/symbol/quotation", "char/data/symbol/lt", "char/data/symbol/gt", "char/data/symbol/point", "char/data/symbol/l-braces", "char/data/symbol/r-braces", "char/data/symbol/comma", "char/data/symbol/times", "char/data/symbol/div", "char/data/symbol/asterisk", "char/data/symbol/dot", "char/data/symbol/eq", "char/data/symbol/infty", "char/data/symbol/to", "char/data/greek/alpha", "char/data/greek/beta", "char/data/greek/gamma", "char/data/greek/delta", "char/data/greek/epsilon", "char/data/greek/zeta", "char/data/greek/eta", "char/data/greek/theta", "char/data/greek/iota", "char/data/greek/kappa", "char/data/greek/lambda", "char/data/greek/mu", "char/data/greek/nu", "char/data/greek/xi", "char/data/greek/pi", "char/data/greek/rho", "char/data/greek/sigma", "char/data/greek/tau", "char/data/greek/upsilon", "char/data/greek/phi", "char/data/greek/chi", "char/data/greek/psi", "char/data/greek/omega", "char/data/roman/ua", "char/data/roman/ub", "char/data/greek/u-gamma", "char/data/greek/u-delta", "char/data/roman/ue", "char/data/roman/uz", "char/data/roman/uh", "char/data/greek/u-theta", "char/data/roman/ui", "char/data/roman/uk", "char/data/greek/u-lambda", "char/data/roman/um", "char/data/roman/un", "char/data/greek/u-xi", "char/data/roman/uo", "char/data/greek/u-pi", "char/data/roman/up", "char/data/greek/u-sigma", "char/data/roman/ut", "char/data/greek/u-upsilon", "char/data/greek/u-phi", "char/data/roman/ux", "char/data/greek/u-psi", "char/data/greek/u-omega", "char/data/roman/a", "char/data/roman/b", "char/data/roman/c", "char/data/roman/d", "char/data/roman/e", "char/data/roman/f", "char/data/roman/g", "char/data/roman/h", "char/data/roman/i", "char/data/roman/j", "char/data/roman/k", "char/data/roman/l", "char/data/roman/m", "char/data/roman/n", "char/data/roman/o", "char/data/roman/p", "char/data/roman/q", "char/data/roman/r", "char/data/roman/s", "char/data/roman/t", "char/data/roman/u", "char/data/roman/v", "char/data/roman/w", "char/data/roman/x", "char/data/roman/y", "char/data/roman/z", "char/data/roman/uc", "char/data/roman/ud", "char/data/roman/uf", "char/data/roman/ug", "char/data/roman/uj", "char/data/roman/ul", "char/data/roman/uq", "char/data/roman/ur", "char/data/roman/us", "char/data/roman/uu", "char/data/roman/uv", "char/data/roman/uw", "char/data/roman/uy", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, module) {
+define("operator/binary-opr/subtraction", [ "kity", "char/data", "char/data/number/0", "char/data/number/1", "char/data/number/2", "char/data/number/3", "char/data/number/4", "char/data/number/5", "char/data/number/6", "char/data/number/7", "char/data/number/8", "char/data/number/9", "char/data/character/a", "char/data/character/b", "char/data/character/c", "char/data/character/d", "char/data/character/e", "char/data/character/f", "char/data/character/g", "char/data/character/h", "char/data/character/i", "char/data/character/j", "char/data/character/k", "char/data/character/l", "char/data/character/m", "char/data/character/n", "char/data/character/o", "char/data/character/p", "char/data/character/q", "char/data/character/r", "char/data/character/s", "char/data/character/t", "char/data/character/u", "char/data/character/v", "char/data/character/w", "char/data/character/x", "char/data/character/y", "char/data/character/z", "char/data/character/ua", "char/data/character/ub", "char/data/character/uc", "char/data/character/ud", "char/data/character/ue", "char/data/character/uf", "char/data/character/ug", "char/data/character/uh", "char/data/character/ui", "char/data/character/uj", "char/data/character/uk", "char/data/character/ul", "char/data/character/um", "char/data/character/un", "char/data/character/uo", "char/data/character/up", "char/data/character/uq", "char/data/character/ur", "char/data/character/us", "char/data/character/ut", "char/data/character/uu", "char/data/character/uv", "char/data/character/uw", "char/data/character/ux", "char/data/character/uy", "char/data/character/uz", "char/data/symbol/l-parentheses", "char/data/symbol/r-parentheses", "char/data/symbol/negative", "char/data/symbol/relational/eq", "char/data/symbol/positive", "char/data/symbol/vertical", "char/data/symbol/slash", "char/data/symbol/exclamation", "char/data/symbol/l-brackets", "char/data/symbol/r-brackets", "char/data/symbol/colon", "char/data/symbol/quotation", "char/data/symbol/relational/lt", "char/data/symbol/relational/gt", "char/data/symbol/point", "char/data/symbol/l-braces", "char/data/symbol/r-braces", "char/data/symbol/comma", "char/data/symbol/times", "char/data/symbol/div", "char/data/symbol/pm", "char/data/symbol/mp", "char/data/symbol/ast", "char/data/symbol/cdot", "char/data/symbol/cdots", "char/data/symbol/ddots", "char/data/symbol/ldots", "char/data/symbol/vdots", "char/data/symbol/wedge", "char/data/symbol/vee", "char/data/symbol/mid", "char/data/symbol/relational/approx", "char/data/symbol/relational/equiv", "char/data/symbol/relational/geq", "char/data/symbol/relational/gg", "char/data/symbol/relational/leq", "char/data/symbol/relational/ll", "char/data/symbol/relational/sim", "char/data/symbol/relational/simeq", "char/data/symbol/set/cap", "char/data/symbol/set/cup", "char/data/symbol/set/in", "char/data/symbol/set/ni", "char/data/symbol/set/sqcap", "char/data/symbol/set/sqcup", "char/data/symbol/set/sqsubset", "char/data/symbol/set/sqsubseteq", "char/data/symbol/set/sqsupset", "char/data/symbol/set/sqsupseteq", "char/data/symbol/set/subset", "char/data/symbol/set/subseteq", "char/data/symbol/set/supset", "char/data/symbol/set/supseteq", "char/data/symbol/not/ncong", "char/data/symbol/not/neq", "char/data/symbol/not/nequiv", "char/data/symbol/not/nge", "char/data/symbol/not/ngt", "char/data/symbol/not/nlt", "char/data/symbol/not/nle", "char/data/symbol/not/nsim", "char/data/symbol/not/nsubseteq", "char/data/symbol/not/nsupseteq", "char/data/symbol/not/nin", "char/data/symbol/infty", "char/data/symbol/to", "char/data/greek/alpha", "char/data/greek/beta", "char/data/greek/gamma", "char/data/greek/delta", "char/data/greek/epsilon", "char/data/greek/varepsilon", "char/data/greek/zeta", "char/data/greek/eta", "char/data/greek/theta", "char/data/greek/iota", "char/data/greek/kappa", "char/data/greek/lambda", "char/data/greek/mu", "char/data/greek/nu", "char/data/greek/xi", "char/data/greek/pi", "char/data/greek/rho", "char/data/greek/sigma", "char/data/greek/tau", "char/data/greek/upsilon", "char/data/greek/phi", "char/data/greek/varphi", "char/data/greek/chi", "char/data/greek/psi", "char/data/greek/omega", "char/data/roman/ua", "char/data/roman/ub", "char/data/greek/u-gamma", "char/data/greek/u-delta", "char/data/roman/ue", "char/data/roman/uz", "char/data/roman/uh", "char/data/greek/u-theta", "char/data/roman/ui", "char/data/roman/uk", "char/data/greek/u-lambda", "char/data/roman/um", "char/data/roman/un", "char/data/greek/u-xi", "char/data/roman/uo", "char/data/greek/u-pi", "char/data/roman/up", "char/data/greek/u-sigma", "char/data/roman/ut", "char/data/greek/u-upsilon", "char/data/greek/u-phi", "char/data/roman/ux", "char/data/greek/u-psi", "char/data/greek/u-omega", "char/data/roman/a", "char/data/roman/b", "char/data/roman/c", "char/data/roman/d", "char/data/roman/e", "char/data/roman/f", "char/data/roman/g", "char/data/roman/h", "char/data/roman/i", "char/data/roman/j", "char/data/roman/k", "char/data/roman/l", "char/data/roman/m", "char/data/roman/n", "char/data/roman/o", "char/data/roman/p", "char/data/roman/q", "char/data/roman/r", "char/data/roman/s", "char/data/roman/t", "char/data/roman/u", "char/data/roman/v", "char/data/roman/w", "char/data/roman/x", "char/data/roman/y", "char/data/roman/z", "char/data/roman/uc", "char/data/roman/ud", "char/data/roman/uf", "char/data/roman/ug", "char/data/roman/uj", "char/data/roman/ul", "char/data/roman/uq", "char/data/roman/ur", "char/data/roman/us", "char/data/roman/uu", "char/data/roman/uv", "char/data/roman/uw", "char/data/roman/uy", "operator/binary-opr/left-right", "operator/binary" ], function(require, exports, module) {
     var kity = require("kity"), CHAR_DATA = require("char/data");
     return kity.createClass("SubtractionOperator", {
         base: require("operator/binary-opr/left-right"),
@@ -4662,7 +3808,6 @@ define("operator/binary-opr/subtraction", [ "kity", "char/data", "char/data/numb
             opShape.translate(opData.offset.x, opData.offset.y);
             // 绘制符号图形
             this.addOperatorShape(opShape);
-            this.setBoxSize(opData.size[0], opData.size[1]);
         }
     });
 });
@@ -4683,25 +3828,19 @@ define("operator/binary-opr/up-down", [ "kity", "operator/binary", "operator/ope
  * 二元操作符抽象类
  * @abstract
  */
-define("operator/binary", [ "kity", "operator/operator", "signgroup" ], function(require, exports, modules) {
+define("operator/binary", [ "kity", "operator/operator", "def/gtype", "signgroup" ], function(require, exports, modules) {
     var kity = require("kity");
     return kity.createClass("BinaryOperator", {
         base: require("operator/operator"),
-        constructor: function(operatorName) {
-            this.callBase(operatorName);
-            // box
-            this.setBoxSize(27, 27);
-        },
-        // 清理操作符的偏移
-        clearTransform: function() {
-            this.operatorShape.setTransform(new kity.Matrix(1, 0, 0, 1, 0, 0));
+        setParentExpression: function(exp) {
+            this.callBase(exp);
         }
     });
 });
 /**
  * 小括号操作符：()
  */
-define("operator/brackets", [ "kity", "char/data", "char/data/number/0", "char/data/number/1", "char/data/number/2", "char/data/number/3", "char/data/number/4", "char/data/number/5", "char/data/number/6", "char/data/number/7", "char/data/number/8", "char/data/number/9", "char/data/character/a", "char/data/character/b", "char/data/character/c", "char/data/character/d", "char/data/character/e", "char/data/character/f", "char/data/character/g", "char/data/character/h", "char/data/character/i", "char/data/character/j", "char/data/character/k", "char/data/character/l", "char/data/character/m", "char/data/character/n", "char/data/character/o", "char/data/character/p", "char/data/character/q", "char/data/character/r", "char/data/character/s", "char/data/character/t", "char/data/character/u", "char/data/character/v", "char/data/character/w", "char/data/character/x", "char/data/character/y", "char/data/character/z", "char/data/character/ua", "char/data/character/ub", "char/data/character/uc", "char/data/character/ud", "char/data/character/ue", "char/data/character/uf", "char/data/character/ug", "char/data/character/uh", "char/data/character/ui", "char/data/character/uj", "char/data/character/uk", "char/data/character/ul", "char/data/character/um", "char/data/character/un", "char/data/character/uo", "char/data/character/up", "char/data/character/uq", "char/data/character/ur", "char/data/character/us", "char/data/character/ut", "char/data/character/uu", "char/data/character/uv", "char/data/character/uw", "char/data/character/ux", "char/data/character/uy", "char/data/character/uz", "char/data/symbol/l-parentheses", "char/data/symbol/r-parentheses", "char/data/symbol/negative", "char/data/symbol/positive", "char/data/symbol/vertical", "char/data/symbol/slash", "char/data/symbol/exclamation", "char/data/symbol/l-brackets", "char/data/symbol/r-brackets", "char/data/symbol/colon", "char/data/symbol/quotation", "char/data/symbol/lt", "char/data/symbol/gt", "char/data/symbol/point", "char/data/symbol/l-braces", "char/data/symbol/r-braces", "char/data/symbol/comma", "char/data/symbol/times", "char/data/symbol/div", "char/data/symbol/asterisk", "char/data/symbol/dot", "char/data/symbol/eq", "char/data/symbol/infty", "char/data/symbol/to", "char/data/greek/alpha", "char/data/greek/beta", "char/data/greek/gamma", "char/data/greek/delta", "char/data/greek/epsilon", "char/data/greek/zeta", "char/data/greek/eta", "char/data/greek/theta", "char/data/greek/iota", "char/data/greek/kappa", "char/data/greek/lambda", "char/data/greek/mu", "char/data/greek/nu", "char/data/greek/xi", "char/data/greek/pi", "char/data/greek/rho", "char/data/greek/sigma", "char/data/greek/tau", "char/data/greek/upsilon", "char/data/greek/phi", "char/data/greek/chi", "char/data/greek/psi", "char/data/greek/omega", "char/data/roman/ua", "char/data/roman/ub", "char/data/greek/u-gamma", "char/data/greek/u-delta", "char/data/roman/ue", "char/data/roman/uz", "char/data/roman/uh", "char/data/greek/u-theta", "char/data/roman/ui", "char/data/roman/uk", "char/data/greek/u-lambda", "char/data/roman/um", "char/data/roman/un", "char/data/greek/u-xi", "char/data/roman/uo", "char/data/greek/u-pi", "char/data/roman/up", "char/data/greek/u-sigma", "char/data/roman/ut", "char/data/greek/u-upsilon", "char/data/greek/u-phi", "char/data/roman/ux", "char/data/greek/u-psi", "char/data/greek/u-omega", "char/data/roman/a", "char/data/roman/b", "char/data/roman/c", "char/data/roman/d", "char/data/roman/e", "char/data/roman/f", "char/data/roman/g", "char/data/roman/h", "char/data/roman/i", "char/data/roman/j", "char/data/roman/k", "char/data/roman/l", "char/data/roman/m", "char/data/roman/n", "char/data/roman/o", "char/data/roman/p", "char/data/roman/q", "char/data/roman/r", "char/data/roman/s", "char/data/roman/t", "char/data/roman/u", "char/data/roman/v", "char/data/roman/w", "char/data/roman/x", "char/data/roman/y", "char/data/roman/z", "char/data/roman/uc", "char/data/roman/ud", "char/data/roman/uf", "char/data/roman/ug", "char/data/roman/uj", "char/data/roman/ul", "char/data/roman/uq", "char/data/roman/ur", "char/data/roman/us", "char/data/roman/uu", "char/data/roman/uv", "char/data/roman/uw", "char/data/roman/uy", "operator/operator", "signgroup" ], function(require, exports, modules) {
+define("operator/brackets", [ "kity", "char/data", "char/data/number/0", "char/data/number/1", "char/data/number/2", "char/data/number/3", "char/data/number/4", "char/data/number/5", "char/data/number/6", "char/data/number/7", "char/data/number/8", "char/data/number/9", "char/data/character/a", "char/data/character/b", "char/data/character/c", "char/data/character/d", "char/data/character/e", "char/data/character/f", "char/data/character/g", "char/data/character/h", "char/data/character/i", "char/data/character/j", "char/data/character/k", "char/data/character/l", "char/data/character/m", "char/data/character/n", "char/data/character/o", "char/data/character/p", "char/data/character/q", "char/data/character/r", "char/data/character/s", "char/data/character/t", "char/data/character/u", "char/data/character/v", "char/data/character/w", "char/data/character/x", "char/data/character/y", "char/data/character/z", "char/data/character/ua", "char/data/character/ub", "char/data/character/uc", "char/data/character/ud", "char/data/character/ue", "char/data/character/uf", "char/data/character/ug", "char/data/character/uh", "char/data/character/ui", "char/data/character/uj", "char/data/character/uk", "char/data/character/ul", "char/data/character/um", "char/data/character/un", "char/data/character/uo", "char/data/character/up", "char/data/character/uq", "char/data/character/ur", "char/data/character/us", "char/data/character/ut", "char/data/character/uu", "char/data/character/uv", "char/data/character/uw", "char/data/character/ux", "char/data/character/uy", "char/data/character/uz", "char/data/symbol/l-parentheses", "char/data/symbol/r-parentheses", "char/data/symbol/negative", "char/data/symbol/relational/eq", "char/data/symbol/positive", "char/data/symbol/vertical", "char/data/symbol/slash", "char/data/symbol/exclamation", "char/data/symbol/l-brackets", "char/data/symbol/r-brackets", "char/data/symbol/colon", "char/data/symbol/quotation", "char/data/symbol/relational/lt", "char/data/symbol/relational/gt", "char/data/symbol/point", "char/data/symbol/l-braces", "char/data/symbol/r-braces", "char/data/symbol/comma", "char/data/symbol/times", "char/data/symbol/div", "char/data/symbol/pm", "char/data/symbol/mp", "char/data/symbol/ast", "char/data/symbol/cdot", "char/data/symbol/cdots", "char/data/symbol/ddots", "char/data/symbol/ldots", "char/data/symbol/vdots", "char/data/symbol/wedge", "char/data/symbol/vee", "char/data/symbol/mid", "char/data/symbol/relational/approx", "char/data/symbol/relational/equiv", "char/data/symbol/relational/geq", "char/data/symbol/relational/gg", "char/data/symbol/relational/leq", "char/data/symbol/relational/ll", "char/data/symbol/relational/sim", "char/data/symbol/relational/simeq", "char/data/symbol/set/cap", "char/data/symbol/set/cup", "char/data/symbol/set/in", "char/data/symbol/set/ni", "char/data/symbol/set/sqcap", "char/data/symbol/set/sqcup", "char/data/symbol/set/sqsubset", "char/data/symbol/set/sqsubseteq", "char/data/symbol/set/sqsupset", "char/data/symbol/set/sqsupseteq", "char/data/symbol/set/subset", "char/data/symbol/set/subseteq", "char/data/symbol/set/supset", "char/data/symbol/set/supseteq", "char/data/symbol/not/ncong", "char/data/symbol/not/neq", "char/data/symbol/not/nequiv", "char/data/symbol/not/nge", "char/data/symbol/not/ngt", "char/data/symbol/not/nlt", "char/data/symbol/not/nle", "char/data/symbol/not/nsim", "char/data/symbol/not/nsubseteq", "char/data/symbol/not/nsupseteq", "char/data/symbol/not/nin", "char/data/symbol/infty", "char/data/symbol/to", "char/data/greek/alpha", "char/data/greek/beta", "char/data/greek/gamma", "char/data/greek/delta", "char/data/greek/epsilon", "char/data/greek/varepsilon", "char/data/greek/zeta", "char/data/greek/eta", "char/data/greek/theta", "char/data/greek/iota", "char/data/greek/kappa", "char/data/greek/lambda", "char/data/greek/mu", "char/data/greek/nu", "char/data/greek/xi", "char/data/greek/pi", "char/data/greek/rho", "char/data/greek/sigma", "char/data/greek/tau", "char/data/greek/upsilon", "char/data/greek/phi", "char/data/greek/varphi", "char/data/greek/chi", "char/data/greek/psi", "char/data/greek/omega", "char/data/roman/ua", "char/data/roman/ub", "char/data/greek/u-gamma", "char/data/greek/u-delta", "char/data/roman/ue", "char/data/roman/uz", "char/data/roman/uh", "char/data/greek/u-theta", "char/data/roman/ui", "char/data/roman/uk", "char/data/greek/u-lambda", "char/data/roman/um", "char/data/roman/un", "char/data/greek/u-xi", "char/data/roman/uo", "char/data/greek/u-pi", "char/data/roman/up", "char/data/greek/u-sigma", "char/data/roman/ut", "char/data/greek/u-upsilon", "char/data/greek/u-phi", "char/data/roman/ux", "char/data/greek/u-psi", "char/data/greek/u-omega", "char/data/roman/a", "char/data/roman/b", "char/data/roman/c", "char/data/roman/d", "char/data/roman/e", "char/data/roman/f", "char/data/roman/g", "char/data/roman/h", "char/data/roman/i", "char/data/roman/j", "char/data/roman/k", "char/data/roman/l", "char/data/roman/m", "char/data/roman/n", "char/data/roman/o", "char/data/roman/p", "char/data/roman/q", "char/data/roman/r", "char/data/roman/s", "char/data/roman/t", "char/data/roman/u", "char/data/roman/v", "char/data/roman/w", "char/data/roman/x", "char/data/roman/y", "char/data/roman/z", "char/data/roman/uc", "char/data/roman/ud", "char/data/roman/uf", "char/data/roman/ug", "char/data/roman/uj", "char/data/roman/ul", "char/data/roman/uq", "char/data/roman/ur", "char/data/roman/us", "char/data/roman/uu", "char/data/roman/uv", "char/data/roman/uw", "char/data/roman/uy", "operator/operator", "def/gtype", "signgroup" ], function(require, exports, modules) {
     var kity = require("kity"), SYMBOL_DATA = require("char/data");
     return kity.createClass("BracketsOperator", {
         base: require("operator/operator"),
@@ -4735,14 +3874,13 @@ define("operator/brackets", [ "kity", "char/data", "char/data/number/0", "char/d
         exp.translate(offset, 0);
         offset += SPACE + expSpaceSize.width;
         rightOp.translate(offset, 0);
-        this.setBoxSize(offset + rightOpSize.width + SPACE, expSpaceSize.height);
     }
 });
 /**
  * 组合操作符
  * 操作多个表达式组合在一起
  */
-define("operator/combination", [ "kity", "operator/operator", "signgroup" ], function(require, exports, modules) {
+define("operator/combination", [ "kity", "operator/operator", "def/gtype", "signgroup" ], function(require, exports, modules) {
     var kity = require("kity");
     return kity.createClass("CombinationOperator", {
         base: require("operator/operator"),
@@ -4770,7 +3908,7 @@ define("operator/combination", [ "kity", "operator/operator", "signgroup" ], fun
 /**
  * 函数操作符
  */
-define("operator/func", [ "kity", "char/roman", "char/char", "signgroup", "operator/operator" ], function(require, exports, modules) {
+define("operator/func", [ "kity", "char/roman", "char/char", "signgroup", "operator/operator", "def/gtype" ], function(require, exports, modules) {
     var kity = require("kity"), RomanText = require("char/roman");
     return kity.createClass("FunctionOperator", {
         base: require("operator/operator"),
@@ -4809,7 +3947,7 @@ define("operator/func", [ "kity", "char/roman", "char/char", "signgroup", "opera
 /**
  * 积分操作符：∫
  */
-define("operator/integration", [ "kity", "operator/operator", "signgroup" ], function(require, exports, modules) {
+define("operator/integration", [ "kity", "operator/operator", "def/gtype", "signgroup" ], function(require, exports, modules) {
     var kity = require("kity");
     return kity.createClass("IntegrationOperator", {
         base: require("operator/operator"),
@@ -4960,21 +4098,19 @@ define("operator/integration", [ "kity", "operator/operator", "signgroup" ], fun
  * 操作符抽象类
  * @abstract
  */
-define("operator/operator", [ "kity", "signgroup" ], function(require, exports, modules) {
-    var kity = require("kity");
+define("operator/operator", [ "kity", "def/gtype", "signgroup" ], function(require, exports, modules) {
+    var kity = require("kity"), GTYPE = require("def/gtype");
     return kity.createClass("Operator", {
         base: require("signgroup"),
         constructor: function(operatorName) {
             this.callBase();
+            this.type = GTYPE.OP;
             // 该操作符所属的表达式
             this.parentExpression = null;
             // 操作符名称
             this.operatorName = operatorName;
             // 操作符图形
             this.operatorShape = new kity.Group();
-            // 操作符边框, 根据具体的操作符， 可调用setBoxSize接口自定义大小
-            this.box = new kity.Rect(0, 0, 0, 0).fill("transparent");
-            this.addShape(this.box);
             this.addShape(this.operatorShape);
         },
         applyOperand: function() {
@@ -4983,17 +4119,11 @@ define("operator/operator", [ "kity", "signgroup" ], function(require, exports, 
         setParentExpression: function(exp) {
             this.parentExpression = exp;
         },
+        getParentExpression: function() {
+            return this.parentExpression;
+        },
         clearParentExpression: function() {
             this.parentExpression = null;
-        },
-        setBoxSize: function(w, h) {
-            return this.box.setSize(w, h);
-        },
-        setBoxWidth: function(w) {
-            return this.box.setWidth(w);
-        },
-        setBoxHeight: function(h) {
-            return this.box.setHeight(h);
         },
         // 提供给具体实现类附加其绘制的操作符图形的接口
         addOperatorShape: function(shpae) {
@@ -5004,7 +4134,7 @@ define("operator/operator", [ "kity", "signgroup" ], function(require, exports, 
 /**
  * 上下标操作符
  */
-define("operator/script", [ "kity", "operator/operator", "signgroup" ], function(require, exports, module) {
+define("operator/script", [ "kity", "operator/operator", "def/gtype", "signgroup" ], function(require, exports, module) {
     var kity = require("kity");
     return kity.createClass("SubtractionOperator", {
         base: require("operator/operator"),
@@ -5062,7 +4192,7 @@ define("operator/script", [ "kity", "operator/operator", "signgroup" ], function
 /**
  * 求和操作符：∑
  */
-define("operator/summation", [ "kity", "operator/operator", "signgroup" ], function(require, exports, modules) {
+define("operator/summation", [ "kity", "operator/operator", "def/gtype", "signgroup" ], function(require, exports, modules) {
     var kity = require("kity");
     return kity.createClass("SummationOperator", {
         base: require("operator/operator"),
@@ -5103,20 +4233,16 @@ define("operator/summation", [ "kity", "operator/operator", "signgroup" ], funct
 /**
  * Created by hn on 13-12-3.
  */
-define("signgroup", [ "kity" ], function(require, exports, module) {
-    var kity = require("kity");
+define("signgroup", [ "kity", "def/gtype" ], function(require, exports, module) {
+    var kity = require("kity"), GTYPE = require("def/gtype");
     return kity.createClass("SignGroup", {
         base: kity.Group,
         constructor: function() {
             this.callBase();
-            this.children = [];
+            this.type = GTYPE.UNKNOWN;
+            this.box = new kity.Rect(0, 0, 0, 0);
+            this.addShape(this.box);
             this.zoom = 1;
-        },
-        getChildren: function() {
-            return this.children;
-        },
-        getChild: function(index) {
-            return this.children[index] || null;
         },
         setZoom: function(zoom) {
             this.zoom = zoom;
@@ -5124,13 +4250,17 @@ define("signgroup", [ "kity" ], function(require, exports, module) {
         getZoom: function() {
             return this.zoom;
         },
-        setChildren: function(index, exp) {
-            // 首先清理掉之前的表达式
-            if (this.children[index]) {
-                this.children[index].remove();
-            }
-            this.children[index] = exp;
-            this.addShape(exp);
+        setBoxSize: function(w, h) {
+            return this.box.setSize(w, h);
+        },
+        setBoxWidth: function(w) {
+            return this.box.setWidth(w);
+        },
+        setBoxHeight: function(h) {
+            return this.box.setHeight(h);
+        },
+        getType: function() {
+            return this.type;
         },
         addedCall: function() {}
     });
@@ -5148,84 +4278,29 @@ define("signgroup", [ "kity" ], function(require, exports, module) {
 
             // base
             Formula: require( "formula" ),
+            Operator: require( "operator/operator" ),
 
             // expression
+            Expression: require( "expression/expression" ),
+            CompoundExpression: require( "expression/compound" ),
             TextExpression: require( "expression/text" ),
             RomanTextExpression: require( "expression/roman" ),
             EmptyExpression: require( "expression/empty" ),
             CombinationExpression: require( "expression/compound-exp/combination" ),
             FunctionExpression: require( "expression/compound-exp/func" ),
 
-            AdditionExpression: require( "expression/compound-exp/binary-exp/addition" ),
-            AsteriskExpression: require( "expression/compound-exp/binary-exp/asterisk" ),
-            DivisionExpression: require( "expression/compound-exp/binary-exp/division" ),
-            DotExpression: require( "expression/compound-exp/binary-exp/dot" ),
-            DotsExpression: require( "expression/compound-exp/binary-exp/dots" ),
             FractionExpression: require( "expression/compound-exp/binary-exp/fraction" ),
             IntegrationExpression: require( "expression/compound-exp/integration" ),
-            MultiplicationExpression: require( "expression/compound-exp/binary-exp/multiplication" ),
             RadicalExpression: require( "expression/compound-exp/binary-exp/radical" ),
             ScriptExpression: require( "expression/compound-exp/script" ),
             SuperscriptExpression: require( "expression/compound-exp/binary-exp/superscript" ),
             SubscriptExpression: require( "expression/compound-exp/binary-exp/subscript" ),
             SubtractionExpression: require( "expression/compound-exp/binary-exp/subtraction" ),
             SummationExpression: require( "expression/compound-exp/summation" ),
-            PlusMinusExpression: require( "expression/compound-exp/binary-exp/plus-minus" ),
-            MinusPlusExpression: require( "expression/compound-exp/binary-exp/minus-plus"),
             ParallelExpression: require( "expression/compound-exp/binary-exp/parallel"),
 
             // Brackets expressoin
             BracketsExpression: require( "expression/compound-exp/brackets" ),
-
-            /********* relational expression start *********/
-
-            LtExpression: require( "expression/compound-exp/binary-exp/relational/lt" ),
-            GtExpression: require( "expression/compound-exp/binary-exp/relational/gt" ),
-            LeqExpression: require( "expression/compound-exp/binary-exp/relational/leq" ),
-            GeqExpression: require( "expression/compound-exp/binary-exp/relational/geq" ),
-            SimExpression: require( "expression/compound-exp/binary-exp/relational/sim" ),
-            SimeqExpression: require( "expression/compound-exp/binary-exp/relational/simeq" ),
-            ApproxExpression: require( "expression/compound-exp/binary-exp/relational/approx" ),
-            LiExpression: require( "expression/compound-exp/binary-exp/relational/ll" ),
-            GgExpression: require( "expression/compound-exp/binary-exp/relational/gg" ),
-            EqExpression: require( "expression/compound-exp/binary-exp/relational/eq" ),
-            EquivExpression: require( "expression/compound-exp/binary-exp/relational/equiv" ),
-
-            // set expression
-            CapExpression: require( "expression/compound-exp/binary-exp/relational/set/cap" ),
-            CupExpression: require( "expression/compound-exp/binary-exp/relational/set/cup" ),
-            SubsetExpression: require( "expression/compound-exp/binary-exp/relational/set/subset" ),
-            SupsetExpression: require( "expression/compound-exp/binary-exp/relational/set/supset" ),
-            SubseteqExpression: require( "expression/compound-exp/binary-exp/relational/set/subseteq" ),
-            SupseteqExpression: require( "expression/compound-exp/binary-exp/relational/set/supseteq" ),
-            InExpression: require( "expression/compound-exp/binary-exp/relational/set/in" ),
-            NiExpression: require( "expression/compound-exp/binary-exp/relational/set/ni" ),
-            SqsubsetExpression: require( "expression/compound-exp/binary-exp/relational/set/sqsubset" ),
-            SqsupsetExpression: require( "expression/compound-exp/binary-exp/relational/set/sqsupset" ),
-            SqsupseteqExpression: require( "expression/compound-exp/binary-exp/relational/set/sqsupseteq" ),
-            SqsubseteqExpression: require( "expression/compound-exp/binary-exp/relational/set/sqsubseteq" ),
-            SqcapExpression: require( "expression/compound-exp/binary-exp/relational/set/sqcap" ),
-            SqcupExpression: require( "expression/compound-exp/binary-exp/relational/set/sqcup" ),
-
-            // logical
-            WedgeExpression: require( "expression/compound-exp/binary-exp/relational/logical/wedge" ),
-            VeeExpression: require( "expression/compound-exp/binary-exp/relational/logical/vee" ),
-            MidExpression: require( "expression/compound-exp/binary-exp/relational/logical/mid" ),
-
-            // not
-            NotEqExpression: require( "expression/compound-exp/binary-exp/relational/not/not-eq" ),
-            NotEquivExpression: require( "expression/compound-exp/binary-exp/relational/not/not-equiv" ),
-            NotLtExpression: require( "expression/compound-exp/binary-exp/relational/not/not-lt" ),
-            NotGtExpression: require( "expression/compound-exp/binary-exp/relational/not/not-gt" ),
-            NotLeExpression: require( "expression/compound-exp/binary-exp/relational/not/not-le" ),
-            NotGeExpression: require( "expression/compound-exp/binary-exp/relational/not/not-ge" ),
-            NotSubseteqExpression: require( "expression/compound-exp/binary-exp/relational/not/not-subseteq" ),
-            NotSupseteqExpression: require( "expression/compound-exp/binary-exp/relational/not/not-supseteq" ),
-            NotSimExpression: require( "expression/compound-exp/binary-exp/relational/not/not-sim" ),
-            NotInExpression: require( "expression/compound-exp/binary-exp/relational/not/not-in" ),
-            NotCongExpression: require( "expression/compound-exp/binary-exp/relational/not/not-cong" ),
-
-            /********* relational expression end *********/
 
         };
 

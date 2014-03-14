@@ -1,6 +1,6 @@
 /*!
  * ====================================================
- * kityformula-editor - v1.0.0 - 2014-03-10
+ * kityformula-editor - v1.0.0 - 2014-03-14
  * https://github.com/HanCong03/kityformula-editor
  * GitHub: https://github.com/kitygraph/kityformula-editor.git 
  * Copyright (c) 2014 Baidu Kity Group; Licensed MIT
@@ -134,6 +134,9 @@ define("assembly", [], function(require, exports, module) {
                 continue;
             }
             exp[fn].apply(exp, tree.callFn[fn]);
+        }
+        if (tree.attr) {
+            exp.setAttr(tree.attr);
         }
         return exp;
     }
@@ -339,140 +342,6 @@ define("impl/latex/define/func", [], function(require, exports, module) {
 define("impl/latex/define/operator", [ "impl/latex/handler/script", "impl/latex/handler/func", "impl/latex/handler/lib/int-extract", "impl/latex/define/type", "impl/latex/handler/fraction", "impl/latex/handler/sqrt", "impl/latex/handler/summation", "impl/latex/handler/integration", "impl/latex/handler/brackets", "impl/latex/define/brackets" ], function(require, exports, module) {
     var scriptHandler = require("impl/latex/handler/script"), funcHandler = require("impl/latex/handler/func"), TYPE = require("impl/latex/define/type");
     return {
-        "+": {
-            name: "addition"
-        },
-        "-": {
-            name: "subtraction"
-        },
-        times: {
-            name: "multiplication"
-        },
-        div: {
-            name: "division"
-        },
-        cdot: {
-            name: "dot"
-        },
-        cdots: {
-            name: "dots"
-        },
-        ldots: {
-            name: "dots",
-            callFn: {
-                setType: [ "ldots" ]
-            }
-        },
-        vdots: {
-            name: "dots",
-            callFn: {
-                setType: [ "vdots" ]
-            }
-        },
-        ddots: {
-            name: "dots",
-            callFn: {
-                setType: [ "ddots" ]
-            }
-        },
-        "*": {
-            name: "asterisk"
-        },
-        pm: {
-            name: "plus-minus"
-        },
-        mp: {
-            name: "minus-plus"
-        },
-        // 关系函数， 比较
-        "<": {
-            name: "lt"
-        },
-        ">": {
-            name: "gt"
-        },
-        leq: {
-            name: "leq"
-        },
-        geq: {
-            name: "geq"
-        },
-        sim: {
-            name: "sim"
-        },
-        simeq: {
-            name: "simeq"
-        },
-        approx: {
-            name: "approx"
-        },
-        li: {
-            name: "li"
-        },
-        ge: {
-            name: "ge"
-        },
-        "=": {
-            name: "eq"
-        },
-        equiv: {
-            name: "equiv"
-        },
-        // 关系函数， 集合
-        cap: {
-            name: "cap"
-        },
-        cup: {
-            name: "cup"
-        },
-        subset: {
-            name: "subset"
-        },
-        supset: {
-            name: "supset"
-        },
-        subseteq: {
-            name: "subseteq"
-        },
-        supseteq: {
-            name: "supseteq"
-        },
-        "in": {
-            name: "in"
-        },
-        ni: {
-            name: "ni"
-        },
-        sqsupset: {
-            name: "sqsupset"
-        },
-        sqsubset: {
-            name: "sqsubset"
-        },
-        sqsupseteq: {
-            name: "sqsupseteq"
-        },
-        sqsubseteq: {
-            name: "sqsubseteq"
-        },
-        sqcap: {
-            name: "sqcap"
-        },
-        sqcup: {
-            name: "sqcup"
-        },
-        // 关系函数， 逻辑
-        wedge: {
-            name: "wedge"
-        },
-        vee: {
-            name: "vee"
-        },
-        mid: {
-            name: "mid"
-        },
-        // 关系函数， 否定
-        // TODO 需补充
         "^": {
             name: "superscript",
             type: TYPE.OP,
@@ -558,6 +427,9 @@ define("impl/latex/handler/brackets", [ "impl/latex/define/brackets" ], function
  */
 define("impl/latex/handler/combination", [], function(require, exports, module) {
     return function() {
+        if (arguments[0].length === 0) {
+            return null;
+        }
         return {
             name: "combination",
             operand: arguments[0]
@@ -573,7 +445,7 @@ define("impl/latex/handler/fraction", [], function(require, exports, module) {
         var numerator = unprocessedStack.shift(), // 分子
         denominator = unprocessedStack.shift();
         // 分母
-        if (!numerator || !denominator) {
+        if (numerator === undefined || denominator === undefined) {
             throw new Error("Frac: Syntax Error");
         }
         info.operand = [ numerator, denominator ];
@@ -721,7 +593,7 @@ define("impl/latex/handler/summation", [ "impl/latex/handler/lib/int-extract" ],
 /**
  * Kity Formula Latex解析器实现
  */
-define("impl/latex/latex", [ "parser", "impl/latex/latex", "impl/latex/base/latex-utils", "impl/latex/base/rpn", "impl/latex/base/tree", "impl/latex/define/pre", "impl/latex/pre/sqrt", "impl/latex/pre/int", "impl/latex/base/utils", "impl/latex/base/checker", "impl/latex/define/operator", "impl/latex/define/func", "impl/latex/handler/func" ], function(require, exports, module) {
+define("impl/latex/latex", [ "parser", "impl/latex/base/latex-utils", "impl/latex/base/rpn", "impl/latex/base/tree", "impl/latex/define/pre", "impl/latex/pre/sqrt", "impl/latex/pre/int", "impl/latex/base/utils", "impl/latex/base/checker", "impl/latex/define/operator", "impl/latex/define/func", "impl/latex/handler/func" ], function(require, exports, module) {
     var Parser = require("parser").Parser, LatexUtils = require("impl/latex/base/latex-utils"), PRE_HANDLER = require("impl/latex/define/pre"), Utils = require("impl/latex/base/utils");
     // data
     var leftChar = "￸", rightChar = "￼", clearCharPattern = new RegExp(leftChar + "|" + rightChar, "g"), leftCharPattern = new RegExp(leftChar, "g"), rightCharPattern = new RegExp(rightChar, "g");
@@ -795,8 +667,9 @@ define("impl/latex/latex", [ "parser", "impl/latex/latex", "impl/latex/base/late
                     case "\\left":
                     bracketsCount++;
                     groupStack.push(group);
-                    group.push([]);
-                    group = group[group.length - 1];
+                    // 进入两层
+                    group.push([ [] ]);
+                    group = group[group.length - 1][0];
                     group.type = "brackets";
                     // 读取左括号
                     i++;
@@ -898,7 +771,7 @@ define("impl/latex/pre/sqrt", [], function(require) {
 /*!
  * Kity Formula 公式表示法Parser接口
  */
-define("parser", [ "impl/latex/latex", "parser", "impl/latex/base/latex-utils", "impl/latex/define/pre", "impl/latex/base/utils" ], function(require, exports, module) {
+define("parser", [], function(require, exports, module) {
     // Parser 配置列表
     var CONF = {}, IMPL_POLL = {}, // 内部简单工具类
     Utils = {
@@ -938,9 +811,6 @@ define("parser", [ "impl/latex/latex", "parser", "impl/latex/base/latex-utils", 
                 throw new Error("unknown parser type");
             }
             return this.proxy(IMPL_POLL[type]);
-        },
-        init: function() {
-            require("impl/latex/latex");
         },
         config: function(key, value) {
             Utils.setData(CONF, key, value);
@@ -1044,11 +914,12 @@ define("parser", [ "impl/latex/latex", "parser", "impl/latex/base/latex-utils", 
 
 ( function ( global ) {
 
-    var Parser = require( "parser" ).Parser;
-
-    Parser.init();
-
     define( 'kf.start', function ( require ) {
+
+        var Parser = require( "parser" ).Parser;
+
+        // 初始化组件
+        require( "impl/latex/latex" );
 
         global.kf.Parser = Parser;
         global.kf.Assembly = require( "assembly" );
