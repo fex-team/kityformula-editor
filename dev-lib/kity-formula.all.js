@@ -2945,6 +2945,12 @@ define("expression/compound-exp/binary-exp/fraction", [ "kity", "operator/binary
         constructor: function(upOperand, downOperand) {
             this.callBase(upOperand, downOperand);
             this.setOperator(new FractionOperator());
+        },
+        addedCall: function() {
+            this.callBase();
+            var renderBox = this.expContent.getRenderBox();
+            this.setBoxSize(renderBox.width + 6, renderBox.height + 6);
+            this.expContent.translate(3, 3);
         }
     });
 });
