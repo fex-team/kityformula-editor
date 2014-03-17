@@ -8,8 +8,12 @@
 
         var KFEditor = require( "editor/editor" );
 
-        // 注册parser组件
+        // 注册组件
+        KFEditor.registerComponents( "ui", require( "ui/ui" ) );
         KFEditor.registerComponents( "parser", require( "parse/parser" ) );
+        KFEditor.registerComponents( "render", require( "render/render" ) );
+
+        kf.Editor = KFEditor;
 
     } );
 

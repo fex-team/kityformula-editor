@@ -9,42 +9,26 @@ define( function ( require ) {
         COMPARISON_TABLE = require( "parse/def" ),
         PID_PREFIX = "_kf_editor_",
         GROUP_TYPE = "kf-editor-group",
-        PID = 0,
-        Utils = require( "base/utils" );
-
-    var COMPONENTS = {};
+        PID = 0;
 
     var Parser = kity.createClass( "Parser", {
 
-        constructor: function () {
+        constructor: function ( kfEditor ) {
 
-//            // kityformula 解析器
-//            this.kfParser = KFParser.use( "latex" );
-//
-//            this.initKFormulExtension();
-//
-//            this.pid = generateId();
-//            this.groupRecord = 0;
-//
-//            this.tree = null;
+            this.kfEditor = kfEditor;
 
-        },
+            this.callBase();
+            // kityformula 解析器
+            this.kfParser = KFParser.use( "latex" );
 
-        initComponents: function () {
+            this.initKFormulExtension();
 
-            var _self = this;
+            this.pid = generateId();
+            this.groupRecord = 0;
 
-            Utils.each( COMPONENTS, function ( component ) {
+            this.tree = null;
 
-                new component( _self );
-
-            } );
-
-        },
-
-        registerComponents: function ( name, component ) {
-
-            COMPONENTS[ name ] = component;
+            this.initServices();
 
         },
 
@@ -57,6 +41,14 @@ define( function ( require ) {
             this.updateTree( parsedResult.tree );
 
             return parsedResult;
+
+        },
+
+        initServices: function () {
+
+            this.kfEditor.registerService( "parser.parse", this, {
+                parse: this.parse
+            } );
 
         },
 

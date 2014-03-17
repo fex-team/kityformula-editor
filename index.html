@@ -6,75 +6,62 @@
     <script src="dev-lib/kitygraph.all.js"></script>
     <script src="dev-lib/kity-formula.all.js"></script>
     <script src="dev-lib/kityformula-parser.all.js"></script>
-    <script src="dev-lib/sea-debug.js"></script>
+    <script src="dev-lib/dev-define.js"></script>
     <script>
-
-        seajs.config( {
-            base: "./src"
-        } );
-
+        inc.config({
+            base: './src'
+        });
     </script>
+    <script src="dev-lib/exports.js"></script>
+    <script src="dev-lib/dev-start.js"></script>
     <script>
-
-        define( 'start', function ( require ) {
-
-            var Editor = require( "editor/editor" ),
-                editor = new Editor( document.getElementsByClassName( "kf-editor-container" )[ 0 ], {
-                    formula: {
-                        fontsize: 30
-                    }
-                } );
-
-//            initCapture();
-
-            var currentLatexStr = 'a+b-3\\div 4 + c = \\sqrt[]{} ';
-
-            editor.render( currentLatexStr );
-
-        } );
-
         window.onload = function () {
 
-            seajs.use( 'start' );
+            var KFEditor = kf.Editor;
+
+            var editor = new KFEditor( document.getElementById( "kfEditorContainer" ) );
+
+            editor.execCommand( 'render', 'a+b-c-\\frac{}{}' );
+
+            var evt = editor.request( "ui.canvas.container.event" );
+
+            evt.on( "mousedown", function ( e ) {
+
+                var target = e.target,
+                    group = getGroup( target );
+
+                console.log(group)
+
+
+            } );
+
+            function getGroup ( node ) {
+
+                var tagName = null;
+
+                node = node.parentNode;
+                tagName = node.tagName.toLowerCase();
+
+                if ( node && tagName !== "body" && tagName !== "svg" ) {
+
+                    if ( node.getAttribute( "data-type" ) === "kf-editor-group" ) {
+                        return node;
+                    }
+
+                    return getGroup( node );
+
+                } else {
+                    return null;
+                }
+
+            }
 
         };
-
-        function initCapture () {
-
-            document.getElementsByTagName( "svg" )[0].onmousedown = function ( e ) {
-
-                var group = getGroup( e.target );
-
-                debugger;
-
-            };
-
-        }
-
-        function getGroup ( node ) {
-
-            var tagName = node.tagName.toLowerCase();
-
-            if ( tagName === "svg" ) {
-                return null;
-            }
-
-            if ( tagName === "g" && node.getAttribute( "data-type" ) === "kf-editor-group" ) {
-                return node;
-            } else {
-                return getGroup( node.parentNode );
-            }
-
-        }
-
     </script>
     <link rel="stylesheet" href="assets/styles/page.css">
     <link rel="stylesheet" href="assets/styles/base.css">
 </head>
 <body>
-    <div class="kf-editor">
-        <div class="kf-editor-toolbar"></div>
-        <div class="kf-editor-container"></div>
-    </div>
+    <div id="kfEditorContainer" class="kf-editor"></div>
 </body>
 </html>

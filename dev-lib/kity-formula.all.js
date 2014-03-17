@@ -1,6 +1,6 @@
 /*!
  * ====================================================
- * Kity Formula - v1.0.0 - 2014-03-14
+ * Kity Formula - v1.0.0 - 2014-03-17
  * https://github.com/kitygraph/formula
  * GitHub: https://github.com/kitygraph/formula.git 
  * Copyright (c) 2014 Baidu Kity Group; Licensed MIT
@@ -3384,7 +3384,7 @@ define("expression/expression", [ "kity", "def/gtype", "signgroup" ], function(r
             this.callBase();
             this.type = GTYPE.EXP;
             this.children = [];
-            this.box.setAttr("data-type", "kf-editor-exp-box");
+            this.box.fill("white").setAttr("data-type", "kf-editor-exp-box");
             this.expContent = new kity.Group();
             this.addShape(this.expContent);
         },

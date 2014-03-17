@@ -4,10 +4,8 @@
 
 define( function ( require ) {
 
-    var Assembly = require( "kf" ).Assembly,
-        Parser = require( "parse/parser" ),
+    var kity = require( "kity" ),
         Utils = require( "base/utils" ),
-        kity = require( "kity" ),
         defaultOpt = {
             controller: {
                 zoom: true,
@@ -21,88 +19,124 @@ define( function ( require ) {
             }
         };
 
-    var Editor = kity.createClass( 'Editor', {
+    var COMPONENTS = {};
+
+    var KFEditor = kity.createClass( 'KFEditor', {
 
         constructor: function ( container, opt ) {
 
             this.options = Utils.extend( true, {}, defaultOpt, opt );
 
-            this.originContainer = container;
-            this.assembly = createAssembly( container, this.options.formula );
-            this.formula = this.assembly.formula;
-            this.parser = createParser();
+            this.container = container;
+            this.services = {};
+            this.commands = {};
 
-            // 数据
-            this.currentStr = null;
-
-            this.initController();
+            this.initComponents();
 
         },
 
-        initController: function () {
+        getContainer: function () {
+            return this.container;
+        },
 
-            var _self = this,
-                RESIZE_TIMER = null,
-                formula = this.formula,
-                controller = require( "editor/control/controller" );
+        getOptions: function () {
+            return this.options;
+        },
 
-            // 缩放控制
-            if ( this.options.controller.zoom ) {
-                controller.zoom( this.formula, this.options.controller );
-            }
+        initComponents: function () {
 
-            // 重定位
-            formula.node.ownerDocument.defaultView.onresize = function () {
+            var _self = this;
 
-                window.clearTimeout( RESIZE_TIMER );
+            Utils.each( COMPONENTS, function ( component ) {
 
-                if ( !_self.currentStr ) {
-                    return;
+                new component( _self );
+
+            } );
+
+        },
+
+        requestService: function ( serviceName, args ) {
+
+            var serviceObject =  getService.call( this, serviceName );
+
+            return serviceObject.service[ serviceObject.key ].apply( serviceObject.provider, [].slice.call( arguments, 1 ) );
+
+        },
+
+        request: function ( serviceName ) {
+
+            var serviceObject = getService.call( this, serviceName );
+
+            return serviceObject.service;
+
+        },
+
+        registerService: function ( serviceName, provider, serviceObject ) {
+
+            var key = null;
+
+            for ( key in serviceObject ) {
+
+                if ( serviceObject[ key ] && serviceObject.hasOwnProperty( key ) ) {
+                    serviceObject[ key ] = Utils.proxy( serviceObject[ key ], provider );
                 }
 
-                RESIZE_TIMER = window.setTimeout( function () {
+            }
 
-                    _self.relocation();
-
-                }, 100 );
-
+            this.services[ serviceName ] = {
+                provider: provider,
+                key: key,
+                service: serviceObject
             };
 
         },
 
-        render: function ( latexStr ) {
+        registerCommand: function ( commandName, executor, execFn ) {
 
-            this.currentStr = latexStr;
-
-            this.assembly.regenerateBy( this.parser.parse( latexStr ) );
-
-            this.relocation();
+            this.commands[ commandName ] = {
+                executor: executor,
+                execFn: execFn
+            };
 
         },
 
-        relocation: function () {
+        execCommand: function ( commandName, args ) {
 
-            var formulaSpace = this.formula.container.getRenderBox(),
-                viewPort = this.formula.getViewPort();
+            var commandObject =  this.commands[ commandName ];
 
-            viewPort.center.x = formulaSpace.width / 2;
-            viewPort.center.y = formulaSpace.height / 2;
+            if ( !commandObject ) {
+                throw new Error( 'KFEditor: not found command, ' + commandName );
+            }
 
-            this.formula.setViewPort( viewPort );
+            return commandObject.execFn.apply( commandObject.executor, [].slice.call( arguments, 1 ) );
 
         }
 
     } );
 
-    function createAssembly ( container, opt ) {
-        return Assembly.use( container, opt );
+    function getService ( serviceName ) {
+
+        var serviceObject =  this.services[ serviceName ];
+
+        if ( !serviceObject ) {
+            throw new Error( 'KFEditor: not found service, ' + serviceName );
+        }
+
+        return serviceObject;
+
     }
 
-    function createParser () {
-        return new Parser();
-    }
+    Utils.extend( KFEditor, {
+
+        registerComponents: function ( name, component ) {
+
+            COMPONENTS[ name ] = component;
+
+        }
+
+    } );
 
 
-    return Editor;
+    return KFEditor;
 
 } );
