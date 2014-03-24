@@ -13,10 +13,10 @@ define( function ( require ) {
                 minzoom: 0.5
             },
             formula: {
-
                 fontsize: 50,
                 autoresize: false
             }
+
         };
 
     var COMPONENTS = {};

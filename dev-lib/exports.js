@@ -12,6 +12,8 @@
         KFEditor.registerComponents( "ui", require( "ui/ui" ) );
         KFEditor.registerComponents( "parser", require( "parse/parser" ) );
         KFEditor.registerComponents( "render", require( "render/render" ) );
+        KFEditor.registerComponents( "position", require( "position/position" ) );
+        KFEditor.registerComponents( "syntax", require( "syntax/syntax" ) );
 
         kf.Editor = KFEditor;
 

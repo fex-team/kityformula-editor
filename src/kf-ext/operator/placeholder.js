@@ -4,7 +4,9 @@
 
 define( function ( require, exports, modules ) {
 
-    var kity = require( "kity" );
+    var kity = require( "kity" ),
+        SELECT_COLOR = require( "kf-ext/def" ).selectColor,
+        ALL_SELECT_COLOR = require( "kf-ext/def" ).allSelectColor;
 
     return kity.createClass( 'PlaceholderOperator', {
 
@@ -12,6 +14,7 @@ define( function ( require, exports, modules ) {
 
         constructor: function () {
 
+            this.opShape = null;
             this.callBase( "Placeholder" );
 
         },
@@ -19,7 +22,26 @@ define( function ( require, exports, modules ) {
         applyOperand: function () {
 
             this.setBoxSize( 17, 27 );
-            this.addOperatorShape( generateOPShape() );
+            this.opShape = generateOPShape();
+            this.addOperatorShape( this.opShape );
+
+        },
+
+        select: function () {
+
+            this.opShape.fill( SELECT_COLOR );
+
+        },
+
+        selectAll: function () {
+
+            this.opShape.fill( ALL_SELECT_COLOR );
+
+        },
+
+        unselect: function () {
+
+            this.opShape.fill( "transparent" );
 
         }
 
@@ -31,8 +53,8 @@ define( function ( require, exports, modules ) {
             h = 17,
             shape = null;
 
-        shape =  new kity.Rect( w, h, 0, 0 ).stroke( "black" ).translate( 2, 6 );
-        shape.setAttr( "stroke-dasharray", "2, 2" );
+        shape =  new kity.Rect( w, h, 0, 0 ).stroke( "black" ).fill( "transparent" ).translate( 2, 6 );
+        shape.setAttr( "stroke-dasharray", "1, 2" );
 
         return shape;
 

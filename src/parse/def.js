@@ -4,15 +4,13 @@
 
 define( function () {
 
-    var a = true;
-
     return {
 
-        "combination": a,
-        "radical": a,
-        "fraction": a,
-        "summation": a,
-        "integration": a
+        "radical": true,
+        "fraction": true,
+        "summation": true,
+        "integration": true,
+        "placeholder": true
 
     };
 

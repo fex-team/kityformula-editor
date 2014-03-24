@@ -19,8 +19,27 @@ define( function ( require, exports, module ) {
 
             this.callBase();
 
+            this.setFlag( "Placeholder" );
+
+            this.box.setAttr( "data-type", null );
             this.setOperator( new PlaceholderOperator() );
 
+        },
+
+        select: function () {
+
+            this.getOperator().select();
+
+        },
+
+        selectAll: function () {
+
+            this.getOperator().selectAll();
+
+        },
+
+        unselect: function () {
+            this.getOperator().unselect();
         }
 
     } );

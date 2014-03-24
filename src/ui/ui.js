@@ -8,25 +8,40 @@ define( function ( require, exports, modules ) {
 
         Utils = require( "base/utils" ),
 
+        Toolbar = require( "ui/toolbar/toolbar" ),
+        // 控制组件
+        ScrollZoom = require( "ui/control/zoom" ),
+
         UIComponent = kity.createClass( 'UIComponent', {
 
             constructor: function ( kfEditor ) {
 
-                var container = kfEditor.getContainer(),
-                    currentDocument = container.ownerDocument;
+                var currentDocument = null;
+
+                this.container = kfEditor.getContainer();
+
+                currentDocument = this.container.ownerDocument;
+
+                // ui组件实例集合
+                this.components = [];
 
                 this.kfEditor = kfEditor;
 
                 this.resizeTimer = null;
 
                 this.toolbarContainer = createToolbarContainer( currentDocument );
+                this.editArea = createEditArea( currentDocument );
                 this.canvasContainer = createCanvasContainer( currentDocument );
 
-                container.appendChild( this.toolbarContainer );
-                container.appendChild( this.canvasContainer );
+                this.updateContainerSize( this.container, this.toolbarContainer, this.editArea, this.canvasContainer );
+
+                this.container.appendChild( this.toolbarContainer );
+                this.editArea.appendChild( this.canvasContainer );
+                this.container.appendChild( this.editArea );
 
                 this.initToolbar();
                 this.initCanvas();
+                this.initScrollZoom();
 
                 this.initServices();
 
@@ -36,9 +51,33 @@ define( function ( require, exports, modules ) {
 
             initToolbar: function () {
 
+                // 工具栏组件
+                this.components.push( new Toolbar( this.kfEditor, this ) );
+
             },
 
             initCanvas: function () {
+
+            },
+
+            // 滚动控制
+            initScrollZoom: function () {
+
+                // 实例化组件
+                this.components.push( new ScrollZoom( this.kfEditor, this.canvasContainer ) );
+
+            },
+
+            updateContainerSize: function ( container, toolbar, editArea, canvasContainer ) {
+
+                var containerBox = container.getBoundingClientRect();
+
+                toolbar.style.width = containerBox.width + "px";
+                toolbar.style.height = 50 + "px";
+
+                editArea.style.width = containerBox.width + "px";
+                editArea.style.height = containerBox.height - 50 + "px";
+
 
             },
 
@@ -107,10 +146,18 @@ define( function ( require, exports, modules ) {
         return container;
     }
 
+    function createEditArea ( doc ) {
+        var container = doc.createElement( "div" );
+        container.className = "kf-editor-edit-area";
+        container.style.width = "100%";
+        container.style.height = "1000px";
+        return container;
+    }
+
     function createCanvasContainer ( doc ) {
-        var area = doc.createElement( "div" );
-        area.className = "kf-editor-canvas-container";
-        return area;
+        var container = doc.createElement( "div" );
+        container.className = "kf-editor-canvas-container";
+        return container;
     }
 
     return UIComponent;
