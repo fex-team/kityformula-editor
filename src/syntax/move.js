@@ -4,15 +4,81 @@
 
 define( function ( require, exports, module ) {
 
-    function leftMove ( kfEditor, syntaxComponent ) {
-        updateCursorGoLeft( kfEditor, syntaxComponent );
-    }
+    var kity = require( "kity" );
+
+    return kity.createClass( "MoveComponent", {
+
+        constructor: function ( parentComponent, kfEditor ) {
+
+            this.parentComponent = parentComponent;
+            this.kfEditor = kfEditor;
+
+        },
+
+        leftMove: function () {
+
+            var cursorInfo = this.parentComponent.getCursorRecord();
+
+            cursorInfo = updateCursorGoLeft.call( this, cursorInfo );
+
+            this.parentComponent.updateCursor( cursorInfo.groupId, cursorInfo.startOffset, cursorInfo.endOffset );
+
+        }
+
+    } );
+
 
     function rightMove ( kfEditor, syntaxComponent ) {
         updateCursorGoRight( kfEditor, syntaxComponent );
     }
 
-    function updateCursorGoLeft ( kfEditor, syntaxComponent ) {
+    function updateCursorGoLeft ( cursorInfo ) {
+
+        var prevGroupNode = null,
+            syntaxComponent = this.parentComponent,
+            containerInfo = null;
+
+        if ( cursorInfo.startOffset === cursorInfo.endOffset ) {
+
+            if ( cursorInfo.startOffset > 0 ) {
+
+                containerInfo = syntaxComponent.getGroupContent( cursorInfo.groupId );                prevWrap =
+                prevGroupNode = containerInfo.content[ cursorInfo.startOffset - 1 ];
+
+                if ( isGroupNode( prevGroupNode ) ) {
+
+                    // 组内定位
+                    cursorInfo = locateInnerGroup.call( this, prevGroupNode );
+
+                } else {
+
+                    cursorInfo.startOffset -= 1;
+
+                }
+
+            } else {
+
+                // 当前容器节点
+                prevGroupNode = syntaxComponent.getGroupContent( cursorInfo.groupId ).groupObj;
+
+                cursorInfo = locateOuterGroup.call( this, prevGroupNode );
+
+            }
+
+            cursorInfo.endOffset = cursorInfo.startOffset;
+
+        } else {
+
+            // 收缩
+            cursorInfo.endOffset = cursorInfo.startOffset;
+
+        }
+
+        return cursorInfo;
+
+    }
+
+    /*function updateCursorGoLeft ( syntaxComponent, kfEditor ) {
 
         var cursorInfo = syntaxComponent.record.cursor,
             groupObject = null,
@@ -99,7 +165,7 @@ define( function ( require, exports, module ) {
 
         }
 
-    }
+    }*/
 
     function updateCursorGoRight ( kfEditor, syntaxComponent ) {
 
@@ -189,11 +255,11 @@ define( function ( require, exports, module ) {
 
     }
 
-    function isGroupNode ( node ) {
+    function isContainerNode ( node ) {
         return node.getAttribute( "data-type" ) === "kf-editor-group"
     }
 
-    function isParentNode ( node ) {
+    function isGroupNode ( node ) {
         var dataType = node.getAttribute( "data-type" );
         return dataType === "kf-editor-group" || dataType === "kf-editor-virtual-group";
     }
@@ -206,9 +272,69 @@ define( function ( require, exports, module ) {
         return node.getAttribute( "data-flag" ) === "Empty";
     }
 
-    return {
-        leftMove: leftMove,
-        rightMove: rightMove
-    };
+
+    // 组内定位， 定位到容器内部
+    function locateInnerGroup ( groupNode ) {
+
+        var locationInfo = {},
+            containerInfo = null;
+
+        if ( isContainerNode( groupNode ) ) {
+
+            locationInfo.groupId = groupNode.id;
+
+        } else {
+
+            containerInfo = this.parentComponent.getGroupContent( groupNode.id );
+            groupNode = containerInfo.content[ containerInfo.content.length - 1 ];
+
+            while ( !isContainerNode( groupNode ) ) {
+                groupNode = containerInfo.content[ containerInfo.content.length - 1 ];
+                containerInfo = this.parentComponent.getGroupContent( groupNode.id );
+            }
+
+            locationInfo.groupId = groupNode.id;
+            containerInfo = this.parentComponent.getGroupContent( groupNode.id );
+
+        }
+
+        locationInfo.startOffset = containerInfo.content.length;
+        locationInfo.endOffset = locationInfo.startOffset;
+
+        return locationInfo;
+
+    }
+
+    // 组外定位
+    function locateOuterGroup ( groupNode ) {
+
+        var locationInfo = {},
+            nextContainer = null,
+            containerInfo = null,
+            groupLocationInfo = this.kfEditor.requestService( "position.get.parent.info", groupNode );
+
+        if ( groupLocationInfo.index > 0 ) {
+            nextContainer = groupLocationInfo.group.content[ groupLocationInfo.index - 1 ];
+        } else {
+            return locateOuterGroup.call( this, groupLocationInfo.group.groupObj );
+        }
+
+        containerInfo = this.parentComponent.getGroupContent( nextContainer.id );
+        groupNode = containerInfo.groupObj;
+
+        while ( !isContainerNode( groupNode ) ) {
+            groupNode = containerInfo.content[ containerInfo.content.length - 1 ];
+            containerInfo = this.parentComponent.getGroupContent( groupNode.id );
+        }
+
+        locationInfo = {
+            groupId: groupNode.id,
+            startOffset: containerInfo.content.length,
+            endOffset: containerInfo.content.length
+        };
+
+        return locationInfo;
+
+    }
 
 } );

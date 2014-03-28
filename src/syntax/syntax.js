@@ -6,7 +6,7 @@ define( function ( require ) {
 
     var kity = require( "kity" ),
 
-        CTRL = require( "syntax/ctrl" ),
+        MoveComponent = require( "syntax/move" ),
 
         CURSOR_CHAR = "\uF155",
 
@@ -27,10 +27,20 @@ define( function ( require ) {
                     }
 
                 };
+
+                // 子组件结构
+                this.components = {};
+
                 // 对象树
                 this.objTree = null;
+
+                this.initComponents();
                 this.initServices();
 
+            },
+
+            initComponents: function () {
+                this.components[ 'move' ] = new MoveComponent( this, this.kfEditor );
             },
 
             initServices: function () {
@@ -122,7 +132,7 @@ define( function ( require ) {
 
             getCursorRecord: function () {
 
-                return this.record.cursor || null;
+                return kity.Utils.extend( {}, this.record.cursor ) || null;
 
             },
 
@@ -317,11 +327,11 @@ define( function ( require ) {
             },
 
             leftMove: function () {
-                CTRL.leftMove( this.kfEditor, this );
+                this.components.move.leftMove();
             },
 
             rightMove: function () {
-                CTRL.rightMove( this.kfEditor, this );
+                this.components.move.rightMove();
             }
 
         });
