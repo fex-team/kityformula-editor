@@ -6,6 +6,8 @@ define( function ( require ) {
 
     var kity = require( "kity" ),
 
+        CTRL = require( "syntax/ctrl" ),
+
         CURSOR_CHAR = "\uF155",
 
         SyntaxComponenet = kity.createClass( 'SyntaxComponenet', {
@@ -20,7 +22,8 @@ define( function ( require ) {
                     // 光标位置
                     cursor: {
                         group: null,
-                        index: -1
+                        startOffset: -1,
+                        endOffset: -1
                     }
 
                 };
@@ -36,11 +39,23 @@ define( function ( require ) {
                     updateObjTree: this.updateObjTree
                 } );
 
+                this.kfEditor.registerService( "syntax.get.objtree", this, {
+                    getObjectTree: this.getObjectTree
+                } );
+
                 this.kfEditor.registerService( "syntax.get.group.object", this, {
                     getGroupObject: this.getGroupObject
                 } );
 
-                this.kfEditor.registerService( "syntax.update.cursor", this, {
+                this.kfEditor.registerService( "syntax.valid.placeholder", this, {
+                    isPlaceholder: this.isPlaceholder
+                } );
+
+                this.kfEditor.registerService( "syntax.get.group.content", this, {
+                    getGroupContent: this.getGroupContent
+                } );
+
+                this.kfEditor.registerService( "syntax.update.record.cursor", this, {
                     updateCursor: this.updateCursor
                 } );
 
@@ -52,8 +67,8 @@ define( function ( require ) {
                     getCursorRecord: this.getCursorRecord
                 } );
 
-                this.kfEditor.registerService( "syntax.update.cursor.index", this, {
-                    updateCursorIndex: this.updateCursorIndex
+                this.kfEditor.registerService( "syntax.get.latex.info", this, {
+                    getLatexInfo: this.getLatexInfo
                 } );
 
                 this.kfEditor.registerService( "syntax.insert.string", this, {
@@ -68,6 +83,14 @@ define( function ( require ) {
                     serialization: this.serialization
                 } );
 
+                this.kfEditor.registerService( "syntax.cursor.move.left", this, {
+                    leftMove: this.leftMove
+                } );
+
+                this.kfEditor.registerService( "syntax.cursor.move.right", this, {
+                    rightMove: this.rightMove
+                } );
+
             },
 
             updateObjTree: function ( objTree ) {
@@ -75,12 +98,20 @@ define( function ( require ) {
                 var selectInfo = objTree.select;
 
                 if ( selectInfo && selectInfo.groupId ) {
-                    this.record.cursor.index = selectInfo.index;
-                    this.record.cursor.groupId = selectInfo.groupId;
+                    this.updateCursor( selectInfo.groupId, selectInfo.startOffset, selectInfo.endOffset );
                 }
 
                 this.objTree = objTree;
 
+            },
+
+            // 验证给定ID的组是否是占位符
+            isPlaceholder: function ( groupId ) {
+                return !!this.objTree.mapping[ groupId ].objGroup.node.getAttribute( "data-placeholder" );
+            },
+
+            getObjectTree: function () {
+                return this.objTree;
             },
 
             getGroupObject: function ( id ) {
@@ -95,10 +126,23 @@ define( function ( require ) {
 
             },
 
-            // 仅更新光标的位置信息
-            updateCursorIndex: function ( index ) {
+            getGroupContent: function ( groupId ) {
 
-                this.record.cursor.index = index;
+                var groupInfo = this.objTree.mapping[ groupId ],
+                    content = [],
+                    operands = groupInfo.objGroup.operands;
+
+                kity.Utils.each( operands, function ( operand, i ) {
+
+                    content.push( operand.node );
+
+                } );
+
+                return {
+                    id: groupId,
+                    groupObj: groupInfo.objGroup.node,
+                    content: content
+                };
 
             },
 
@@ -172,29 +216,28 @@ define( function ( require ) {
 
             },
 
-            // 更新光标记录， 同时更新数据
-            updateCursor: function ( group, index ) {
+            getLatexInfo: function () {
 
-                var curStrGroup = this.objTree.mapping[ group.id ].strGroup,
+                var cursor = this.record.cursor,
+                    objGroup = this.objTree.mapping[ cursor.groupId ],
+                    curStrGroup = objGroup.strGroup,
                     resultStr = null,
-                    isPlaceholder = !!curStrGroup.attr[ "data-placeholder" ],
-                    startOffset = -1,
-                    endOffset = -1;
+                    strStartIndex = -1,
+                    strEndIndex = -1,
+                    isPlaceholder = !!curStrGroup.attr[ "data-placeholder" ];
 
-                this.record.cursor = {
-                    groupId: group.id,
-                    startOffset: index,
-                    endOffset: index
-                };
+                // 格式化偏移值， 保证在处理操作数时， 标记位置不会出错
+                strStartIndex = Math.min( cursor.endOffset, cursor.startOffset );
+                strEndIndex = Math.max( cursor.endOffset, cursor.startOffset );
 
                 if ( !isPlaceholder ) {
-                    curStrGroup.operand.splice( index, 0, CURSOR_CHAR );
+                    curStrGroup.operand.splice( strEndIndex, 0, CURSOR_CHAR );
+                    curStrGroup.operand.splice( strStartIndex, 0, CURSOR_CHAR );
+                    // 由于插入了strStartIndex， 所以需要加1
+                    strEndIndex += 1;
                 } else {
                     curStrGroup.operand.unshift( CURSOR_CHAR );
                     curStrGroup.operand.push( CURSOR_CHAR );
-                    // 占位符的索引是固定的
-                    this.record.cursor.startOffset = 1;
-                    this.record.cursor.endOffset = 1;
                 }
 
                 // 返回结构树进过序列化后所对应的latex表达式， 同时包含有当前光标定位点信息
@@ -202,25 +245,45 @@ define( function ( require ) {
 
                 if ( !isPlaceholder ) {
 
-                    startOffset = resultStr.indexOf( CURSOR_CHAR );
-                    endOffset = startOffset;
-                    curStrGroup.operand.splice( index, 1 );
+                    curStrGroup.operand.splice( strEndIndex, 1 );
+                    curStrGroup.operand.splice( strStartIndex, 1 );
 
                 } else {
-
-                    startOffset = resultStr.indexOf( CURSOR_CHAR );
-                    resultStr = resultStr.replace( CURSOR_CHAR, "" );
-                    endOffset = resultStr.indexOf( CURSOR_CHAR );
-
                     curStrGroup.operand.shift();
                     curStrGroup.operand.pop();
-
                 }
+
+                strStartIndex = resultStr.indexOf( CURSOR_CHAR );
+                strEndIndex = resultStr.lastIndexOf( CURSOR_CHAR );
 
                 return {
                     str: resultStr,
+                    startOffset: strStartIndex,
+                    endOffset: strEndIndex
+                }
+
+            },
+
+            // 更新光标记录， 同时更新数据
+            updateCursor: function ( groupId, startOffset, endOffset ) {
+
+                var curStrGroup = this.objTree.mapping[ groupId ].strGroup,
+                    resultStr = null,
+                    isPlaceholder = !!curStrGroup.attr[ "data-placeholder" ];
+
+                if ( endOffset === undefined ) {
+                    endOffset = startOffset;
+                }
+
+                this.record.cursor = {
+                    groupId: groupId,
                     startOffset: startOffset,
                     endOffset: endOffset
+                };
+
+                if ( isPlaceholder ) {
+                    this.record.cursor.startOffset = 1;
+                    this.record.cursor.endOffset = 1;
                 }
 
             },
@@ -251,6 +314,14 @@ define( function ( require ) {
                 // 返回结构树进过序列化后所对应的latex表达式， 同时包含有当前光标定位点信息
                 return this.kfEditor.requestService( "parser.latex.serialization", this.objTree.parsedTree );
 
+            },
+
+            leftMove: function () {
+                CTRL.leftMove( this.kfEditor, this );
+            },
+
+            rightMove: function () {
+                CTRL.rightMove( this.kfEditor, this );
             }
 
         });

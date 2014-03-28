@@ -49,12 +49,16 @@ define( function ( require ) {
                     relocation: this.relocation
                 } );
 
-                this.kfEditor.registerService( "render.select.group", this, {
-                    selectGroup: this.selectGroup
+                this.kfEditor.registerService( "render.select.group.content", this, {
+                    selectGroupContent: this.selectGroupContent
                 } );
 
                 this.kfEditor.registerService( "render.select.group.all", this, {
                     selectAllGroup: this.selectAllGroup
+                } );
+
+                this.kfEditor.registerService( "render.select.current.cursor", this, {
+                    selectCurrentCursor: this.selectCurrentCursor
                 } );
 
                 this.kfEditor.registerService( "render.reselect", this, {
@@ -101,7 +105,7 @@ define( function ( require ) {
 
             },
 
-            selectGroup: function ( group ) {
+            selectGroupContent: function ( group ) {
 
                 // 处理占位符
                 if ( group.groupObj.getAttribute( "data-placeholder" ) !== null ) {
@@ -116,6 +120,10 @@ define( function ( require ) {
 
                 this.record.select.lastSelect = groupObject;
 
+                if ( groupObject.node.getAttribute( "data-root" ) ) {
+                    // 根节点不着色
+                    return;
+                }
                 groupObject.select();
 
             },
@@ -139,30 +147,81 @@ define( function ( require ) {
 
             },
 
+            selectCurrentCursor: function () {
+
+                var cursorInfo = this.kfEditor.requestService( "syntax.get.record.cursor" ),
+                    group = this.kfEditor.requestService( "syntax.get.group.object", cursorInfo.groupId ),
+                    box = null,
+                    offset = -1,
+                    width = 0,
+                    height = group.getRenderBox().height,
+                    startIndex = Math.min( cursorInfo.startOffset, cursorInfo.endOffset ),
+                    endIndex = Math.max( cursorInfo.startOffset, cursorInfo.endOffset );
+
+                this.clearSelect();
+
+                // 更新记录
+                this.record.select.lastSelect = group;
+
+                for ( var i = startIndex, len = endIndex; i < len; i++ ) {
+
+                    box = group.getOperand( i ).getRenderBox();
+
+                    if ( offset == -1 ) {
+                        offset = box.x;
+                    }
+
+                    width += box.width;
+
+                }
+
+                group.setBoxSize( width, height );
+                group.selectAll();
+                group.getBox().translate( offset, 0 );
+
+            },
+
             reselect: function () {
 
                 var cursorInfo = this.kfEditor.requestService( "syntax.get.record.cursor" ),
                     groupObject = null;
-
-                if ( !cursorInfo || !cursorInfo.hasOwnProperty( "index" ) ) {
-                    // 未找到光标的记录信息
-                    throw new Error( 'render: not found cursor!' );
-                }
 
                 groupObject = this.kfEditor.requestService( "syntax.get.group.object", cursorInfo.groupId );
 
                 this.clearSelect();
 
                 this.record.select.lastSelect = groupObject;
+
+                if ( groupObject.node.getAttribute( "data-root" ) ) {
+                    // 根节点不着色
+                    return;
+                }
                 groupObject.select();
 
             },
 
             clearSelect: function () {
 
-                if ( this.record.select.lastSelect ) {
-                      this.record.select.lastSelect.unselect();
+                var box = null,
+                    transform = null,
+                    currentSelect = this.record.select.lastSelect;
+
+                if ( !currentSelect ) {
+                    return;
                 }
+
+                currentSelect.unselect();
+                box = currentSelect.getRenderBox();
+                currentSelect.setBoxSize( box.width, box.height );
+
+                transform = currentSelect.getBox().getTransform();
+
+                if ( transform ) {
+                    transform.m.e = 0;
+                    transform.m.f = 0;
+                }
+
+                currentSelect.getBox().setTransform( transform );
 
             },
 

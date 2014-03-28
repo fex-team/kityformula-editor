@@ -3,6 +3,18 @@
 <head>
     <title>公式编辑器</title>
     <meta charset="UTF-8">
+    <style type="text/css">
+        .virtual-cursor {
+            width: 2px;
+            height: 20px;
+            background: black;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 999999999;
+            /*display: none;*/
+        }
+    </style>
     <script src="dev-lib/jquery-1.11.0.min.js"></script>
     <script src="dev-lib/kitygraph.all.js"></script>
     <script src="dev-lib/kitygraph.all.js"></script>
@@ -24,7 +36,7 @@
 
             var editor = new KFEditor( $( "#kfEditorContainer" )[ 0 ] );
 
-            editor.execCommand( 'render', 'abcdef+b-c-\\frac {adasdfasd}b+\\frac \\placeholder b\\div \\sqrt \\placeholder' );
+            editor.execCommand( 'render', 'abc+abcdef+b-c-\\frac {adasdfasd\\sum^a_bc}b+\\frac \\placeholder b\\div \\sqrt \\placeholder + b' );
 
 //            editor.execCommand( 'render', 'abcdef+b-c-{\\frac {asdfadasdfasd} {b}}+{\\frac {\\placeholder} {b}}\\div {\\sqrt {\\placeholder}}' );
             c.start( editor );
@@ -36,6 +48,7 @@
 </head>
 <body>
     <div id="kfEditorContainer" class="kf-editor"></div>
-    <input style="position: fixed; top: 0; left: 0;width: 100%;" id="hiddenInput" type="text">
+    <input style="position: fixed; top: -1000000px; left: -10000px;" id="hiddenInput" type="text">
+    <div id="cursor" class="virtual-cursor"></div>
 </body>
 </html>

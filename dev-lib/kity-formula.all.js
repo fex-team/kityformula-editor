@@ -1,6 +1,6 @@
 /*!
  * ====================================================
- * Kity Formula - v1.0.0 - 2014-03-24
+ * Kity Formula - v1.0.0 - 2014-03-25
  * https://github.com/kitygraph/formula
  * GitHub: https://github.com/kitygraph/formula.git 
  * Copyright (c) 2014 Baidu Kity Group; Licensed MIT
@@ -2550,8 +2550,7 @@ define("char/data/symbol/relational/eq", [], {
         x: 3,
         y: 2
     },
-    size: [ 22, 27 ],
-    box: "M 0 0 L 22 0 L 22 27 L 0 27 Z"
+    size: [ 16, 27 ]
 });
 /**
  * 字符data: equiv
@@ -3437,6 +3436,9 @@ define("expression/expression", [ "kity", "def/gtype", "signgroup" ], function(r
         updateBoxSize: function() {
             var renderBox = this.expContent.getRenderBox();
             this.setBoxSize(renderBox.width, renderBox.height);
+        },
+        getBox: function() {
+            return this.box;
         }
     });
     // 表达式自动打包

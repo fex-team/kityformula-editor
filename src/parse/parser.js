@@ -104,6 +104,10 @@ define( function ( require ) {
             tree.attr[ "data-type" ] = V_GROUP_TYPE;
         }
 
+        if ( isRoot ) {
+            tree.attr[ "data-root" ] = "true";
+        }
+
         // 占位符特殊处理
 
         if ( tree.name === "placeholder" && parentTree ) {
@@ -163,7 +167,7 @@ define( function ( require ) {
                         tree.operand[ i ] = currentOperand;
                     } else {
                         // 重置组类型
-                        if ( !isRoot ) {
+                        if ( !isRoot && tree.operand.length === 1 ) {
                             tree.attr[ "data-type" ] = V_GROUP_TYPE;
                         }
                         tree.operand[ i ] = supplementTree( parser, currentOperand, tree );

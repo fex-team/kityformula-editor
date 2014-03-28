@@ -30,69 +30,93 @@ define( function ( require ) {
                     getParentGroupByTarget: this.getParentGroupByTarget
                 } );
 
+                this.kfEditor.registerService( "position.get.wrap", this, {
+                    getWrap: this.getWrap
+                } );
+
+                this.kfEditor.registerService( "position.get.group.info", this, {
+                    getGroupInfoByNode: this.getGroupInfoByNode
+                } );
+
+                this.kfEditor.registerService( "position.get.parent.info", this, {
+                    getParentInfoByNode: this.getParentInfoByNode
+                } );
+
             },
 
             getGroupByTarget: function ( target ) {
 
-                var group = null;
+                var groupDom = getGroup( target, false, false );
 
-                if ( !target.ownerSVGElement ) {
-                    return null;
+                if ( groupDom ) {
+                    return this.kfEditor.requestService( "syntax.get.group.content", groupDom.id );
                 }
 
-                group = getGroup( target, false );
-
-                if ( group ) {
-                    return this.wrap( group );
-                } else {
-                    return null;
-                }
+                return null;
 
             },
 
             getParentGroupByTarget: function ( target ) {
 
-                var group = null;
+                var groupDom = getGroup( target, true, false );
 
-                if ( !target.ownerSVGElement ) {
-                    return null;
+                if ( groupDom ) {
+                    return this.kfEditor.requestService( "syntax.get.group.content", groupDom.id );
                 }
 
-                group = getGroup( target, true );
-
-                if ( group ) {
-                    return this.wrap( group );
-                } else {
-                    return null;
-                }
+                return null;
 
             },
 
-            wrap: function ( group ) {
+            getWrap: function ( node ) {
 
-                var node = group.firstChild,
-                    operands = null;
+                return  getGroup( node, true, true );
 
-                while ( node ) {
+            },
 
-                    if ( node.nodeType === 1 && node.getAttribute( "data-type" ) === CONTENT_DATA_TYPE ) {
+            /**
+             * 给定一个节点， 获取其节点所属的组及其在该组内的偏移
+             * @param target 目标节点
+             */
+            getGroupInfoByNode: function ( target ) {
+
+                var result = null,
+                    oldTarget = null;
+
+                oldTarget = target;
+                while ( target = getGroup( target, true, false ) ) {
+
+                    if ( target.getAttribute( "data-type" ) === "kf-editor-group" ) {
                         break;
                     }
 
-                    node = node.nextSibling;
+                    oldTarget = target
 
                 }
 
-                operands = node.childNodes[ 1 ];
+                result = {
+                    group: this.kfEditor.requestService( "syntax.get.group.content", target.id )
+                };
 
-                if ( !operands || operands.getAttribute( "data-type" ) !== "kf-editor-exp-operand-box" ) {
-                    throw new Error( "position: not found content group" );
-                }
+                result.index = result.group.content.indexOf( oldTarget );
+
+                return result;
+
+            },
+
+            /**
+             * 给定一个节点， 获取其节点所属的直接包含组及其在该直接包含组内的偏移
+             * @param target 目标节点
+             */
+            getParentInfoByNode: function ( target ) {
+
+                var group = getGroup( target, true, false );
+
+                group = this.kfEditor.requestService( "syntax.get.group.content", group.id );
 
                 return {
-                    id: group.id,
-                    groupObj: group,
-                    content: operands.childNodes
+                    group: group,
+                    index: group.content.indexOf( target )
                 };
 
             }
@@ -100,14 +124,19 @@ define( function ( require ) {
         } );
 
     /**
-     * 获取当前点击的节点元素所属的组
+     * 获取给定节点元素所属的组
      * @param node 当前点击的节点
      * @param isAllowVirtual 是否允许选择虚拟组
+     * @param isAllowWrap 是否允许选择目标节点的最小包裹单位
      * @returns {*}
      */
-    function getGroup ( node, isAllowVirtual ) {
+    function getGroup ( node, isAllowVirtual, isAllowWrap ) {
 
         var tagName = null;
+
+        if ( !node.ownerSVGElement ) {
+            return null;
+        }
 
         node = node.parentNode;
 
@@ -115,15 +144,27 @@ define( function ( require ) {
 
         if ( node && tagName !== "body" && tagName !== "svg" ) {
 
-            if ( node.getAttribute( "data-type" ) === "kf-editor-group" || node.getAttribute( "data-placeholder" ) !== null || ( isAllowVirtual && node.getAttribute( "data-type" ) === "kf-editor-virtual-group" ) ) {
+            if ( node.getAttribute( "data-type" ) === "kf-editor-group" || node.getAttribute( "data-placeholder" ) !== null ) {
                 return node;
             }
 
-            return getGroup( node, isAllowVirtual );
+            if ( isAllowVirtual && node.getAttribute( "data-type" ) === "kf-editor-virtual-group" ) {
+                return node;
+            }
+
+            if ( isAllowWrap && node.getAttribute( "data-flag" ) !== null ) {
+                return node;
+            }
+
+            return getGroup( node, isAllowVirtual, isAllowWrap );
 
         } else {
             return null;
         }
+
+    }
+
+    function getWrap ( isAllowWrap ) {
 
     }
 

@@ -1,6 +1,6 @@
 /*!
  * ====================================================
- * kityformula-editor - v1.0.0 - 2014-03-24
+ * kityformula-editor - v1.0.0 - 2014-03-25
  * https://github.com/HanCong03/kityformula-editor
  * GitHub: https://github.com/kitygraph/kityformula-editor.git 
  * Copyright (c) 2014 Baidu Kity Group; Licensed MIT
@@ -128,7 +128,10 @@ define("assembly", [], function(require, exports, module) {
                 //TODO 光标定位， 配合编辑器， 后期应该考虑是否有更佳的方案来实现
                 if (currentOperand === CURSOR_CHAR) {
                     hasCursor = true;
-                    selectInfo.index = i;
+                    if (!selectInfo.hasOwnProperty("startOffset")) {
+                        selectInfo.startOffset = i;
+                    }
+                    selectInfo.endOffset = i;
                     if (tree.attr && tree.attr.id) {
                         selectInfo.groupId = tree.attr.id;
                     }
