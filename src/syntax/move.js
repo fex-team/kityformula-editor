@@ -4,7 +4,11 @@
 
 define( function ( require, exports, module ) {
 
-    var kity = require( "kity" );
+    var kity = require( "kity" ),
+        DIRECTION = {
+            LEFT: 'left',
+            RIGHT: 'right'
+        };
 
     return kity.createClass( "MoveComponent", {
 
@@ -21,16 +25,28 @@ define( function ( require, exports, module ) {
 
             cursorInfo = updateCursorGoLeft.call( this, cursorInfo );
 
-            this.parentComponent.updateCursor( cursorInfo.groupId, cursorInfo.startOffset, cursorInfo.endOffset );
+            // cursorInfo 为null则不用处理
+            if ( cursorInfo ) {
+                this.parentComponent.updateCursor( cursorInfo.groupId, cursorInfo.startOffset, cursorInfo.endOffset );
+            }
+
+        },
+
+        rightMove: function () {
+
+            var cursorInfo = this.parentComponent.getCursorRecord();
+
+            cursorInfo = updateCursorGoRight.call( this, cursorInfo );
+
+            // cursorInfo 为null则不用处理
+            if ( cursorInfo ) {
+                this.parentComponent.updateCursor( cursorInfo.groupId, cursorInfo.startOffset, cursorInfo.endOffset );
+            }
 
         }
 
     } );
 
-
-    function rightMove ( kfEditor, syntaxComponent ) {
-        updateCursorGoRight( kfEditor, syntaxComponent );
-    }
 
     function updateCursorGoLeft ( cursorInfo ) {
 
@@ -40,35 +56,29 @@ define( function ( require, exports, module ) {
 
         if ( cursorInfo.startOffset === cursorInfo.endOffset ) {
 
+            containerInfo = syntaxComponent.getGroupContent( cursorInfo.groupId );
+
             if ( cursorInfo.startOffset > 0 ) {
 
-                containerInfo = syntaxComponent.getGroupContent( cursorInfo.groupId );                prevWrap =
                 prevGroupNode = containerInfo.content[ cursorInfo.startOffset - 1 ];
 
                 if ( isGroupNode( prevGroupNode ) ) {
-
-                    // 组内定位
-                    cursorInfo = locateInnerGroup.call( this, prevGroupNode );
-
+                    cursorInfo = locateIndex( this, prevGroupNode, DIRECTION.LEFT );
                 } else {
-
                     cursorInfo.startOffset -= 1;
-
+                    cursorInfo.endOffset = cursorInfo.startOffset;
                 }
 
+            // 跳出当前容器， 回溯
             } else {
 
-                // 当前容器节点
-                prevGroupNode = syntaxComponent.getGroupContent( cursorInfo.groupId ).groupObj;
-
-                cursorInfo = locateOuterGroup.call( this, prevGroupNode );
+                cursorInfo = locateOuterIndex( this, containerInfo.groupObj, DIRECTION.LEFT );
 
             }
 
-            cursorInfo.endOffset = cursorInfo.startOffset;
-
         } else {
 
+            cursorInfo.startOffset = Math.min( cursorInfo.startOffset, cursorInfo.endOffset );
             // 收缩
             cursorInfo.endOffset = cursorInfo.startOffset;
 
@@ -78,174 +88,274 @@ define( function ( require, exports, module ) {
 
     }
 
-    /*function updateCursorGoLeft ( syntaxComponent, kfEditor ) {
+    function updateCursorGoRight ( cursorInfo ) {
 
-        var cursorInfo = syntaxComponent.record.cursor,
-            groupObject = null,
-            newCursorInfo = null,
-            group = null,
-            isPh = false,
-            index = -1,
-            prevNode = null;
+        var nextGroupNode = null,
+            syntaxComponent = this.parentComponent,
+            containerInfo = null;
 
         if ( cursorInfo.startOffset === cursorInfo.endOffset ) {
 
-            group = syntaxComponent.getGroupContent( cursorInfo.groupId );
+            containerInfo = syntaxComponent.getGroupContent( cursorInfo.groupId );
 
-            isPh = isPlaceholderNode( group.groupObj );
+            if ( cursorInfo.startOffset < containerInfo.content.length ) {
 
-            if ( !isPh && cursorInfo.startOffset > 0 ) {
+                nextGroupNode = containerInfo.content[ cursorInfo.startOffset ];
 
-                prevNode = group.content[ cursorInfo.startOffset - 1 ];
-
-                // 更新光标到内部的最后节点上
-                if ( isParentNode( prevNode ) ) {
-
-                    group = syntaxComponent.getGroupContent( prevNode.id );
-
-                    index = group.content.length-1;
-                    // 对空节点的过滤
-                    while ( group.content[ index ] && isEmptyNode ( group.content[ index ] ) ) {
-                        index--;
-                    }
-
-                    // 溢出, 回溯
-                    if ( index < 0 ) {
-
-                        debugger;
-
-                    } else {
-                        group = syntaxComponent.getGroupContent( group.content[ index ].id );
-                        cursorInfo.groupId = group.id;
-                        cursorInfo.startOffset = group.content.length;
-                    }
-
-
+                // 进入容器内部
+                if ( isGroupNode( nextGroupNode ) ) {
+                    cursorInfo = locateIndex( this, nextGroupNode, DIRECTION.RIGHT );
                 } else {
-                    cursorInfo.startOffset--;
+                    cursorInfo.startOffset += 1;
+                    cursorInfo.endOffset = cursorInfo.startOffset;
                 }
 
+            // 跳出当前容器， 回溯
             } else {
 
-                group = syntaxComponent.getGroupContent( cursorInfo.groupId );
-
-                // 根节点， 已到末尾
-                if ( isRootNode( group.groupObj ) ) {
-                    return;
-                }
-
-                // 回溯到最近的组
-                newCursorInfo = kfEditor.requestService( "position.get.parent.info", group.groupObj );
-
-                // 已经遍历过当前组内的所有元素，结束当前组, 回溯到更上层的位置上
-                if ( newCursorInfo.index === 0 ) {
-
-                    newCursorInfo = kfEditor.requestService( "position.get.parent.info", newCursorInfo.group.groupObj );
-                    cursorInfo.groupId = newCursorInfo.group.id;
-                    cursorInfo.startOffset = newCursorInfo.index;
-
-                // 仍然在当前组处理， 光标前移
-                } else {
-
-                    group = newCursorInfo.group.content[ newCursorInfo.index - 1 ];
-                    group = syntaxComponent.getGroupContent( group.id );
-
-                    cursorInfo.groupId = group.id;
-                    cursorInfo.startOffset = group.content.length;
-
-                }
+                cursorInfo = locateOuterIndex( this, containerInfo.groupObj, DIRECTION.RIGHT );
 
             }
 
-            cursorInfo.endOffset = cursorInfo.startOffset;
-
         } else {
 
-            cursorInfo.endOffset = cursorInfo.startOffset;
-
-        }
-
-    }*/
-
-    function updateCursorGoRight ( kfEditor, syntaxComponent ) {
-
-        var cursorInfo = syntaxComponent.record.cursor,
-            group = null,
-            nextNode = null,
-            isPh = false,
-            newCursorInfo = null;
-
-        if ( cursorInfo.startOffset === cursorInfo.endOffset ) {
-
-            group = syntaxComponent.getGroupContent( cursorInfo.groupId );
-
-            // 占位符检测
-            isPh = isPlaceholderNode( group.groupObj );
-
-            if ( !isPh && cursorInfo.startOffset < group.content.length ) {
-
-                nextNode = group.content[ cursorInfo.startOffset ];
-
-                // 是包裹元素， 更新光标到其内部第一个成员内
-                if ( isParentNode( nextNode ) ) {
-                    group = syntaxComponent.getGroupContent( nextNode.id );
-                    // 必须是组元素才能作为光标定位容器
-                    while ( !isGroupNode( group.groupObj ) ) {
-                        group = syntaxComponent.getGroupContent( group.content[ 0 ].id );
-                    }
-                    cursorInfo.groupId = group.id;
-                    cursorInfo.startOffset = 0;
-                } else {
-                    cursorInfo.startOffset++;
-                }
-
-            } else {
-
-                // 根节点， 已到末尾
-                if ( isRootNode( group.groupObj ) ) {
-                    return;
-                }
-
-                newCursorInfo = kfEditor.requestService( "position.get.parent.info", group.groupObj );
-                group = newCursorInfo.group;
-
-                // 对空节点的过滤
-                while ( group.content[ newCursorInfo.index+1 ] && isEmptyNode ( group.content[ newCursorInfo.index+1 ] ) ) {
-                    newCursorInfo.index++;
-                }
-
-                // 已到当前直接属组的末尾
-                if ( group.content.length <= newCursorInfo.index + 1 ) {
-
-                    // 跳出当前直属组
-                    newCursorInfo = kfEditor.requestService( "position.get.group.info", group.groupObj );
-
-                    cursorInfo.groupId = newCursorInfo.group.id;
-                    cursorInfo.startOffset = newCursorInfo.index + 1;
-
-                } else {
-
-                    // 继续处理当前直接属组里剩下的元素
-//                    cursorInfo.groupId = group.content[ newCursorInfo.index + 1 ].id;
-                    // 继续处理当前直接属组里剩下的元素
-                    // 验证当前直属组里的下一个元素是否是组节点
-                    group = syntaxComponent.getGroupContent( group.content[ newCursorInfo.index + 1 ].id );
-                    while ( !isGroupNode( group.groupObj ) ) {
-                        group = syntaxComponent.getGroupContent( group.content[ 0 ].id );
-                    }
-                    cursorInfo.groupId = group.id;
-                    cursorInfo.startOffset = 0;
-                }
-
-            }
-
-            cursorInfo.endOffset = cursorInfo.startOffset;
-
-        } else {
-
+            cursorInfo.endOffset = Math.max( cursorInfo.startOffset, cursorInfo.endOffset );
+            // 收缩
             cursorInfo.startOffset = cursorInfo.endOffset;
 
         }
+
+        return cursorInfo;
+
+    }
+
+    /**
+     * 组内寻址, 入组
+     */
+    function locateIndex ( moveComponent, groupNode, dir ) {
+
+        switch ( dir ) {
+
+            case DIRECTION.LEFT:
+                return locateLeftIndex( moveComponent, groupNode );
+
+            case DIRECTION.RIGHT:
+                return locateRightIndex( moveComponent, groupNode );
+
+        }
+
+        throw new Error( "undefined move direction!" );
+
+    }
+
+    /**
+     * 组外寻址, 出组
+     */
+    function locateOuterIndex ( moveComponent, groupNode, dir ) {
+
+        switch ( dir ) {
+
+            case DIRECTION.LEFT:
+                return locateOuterLeftIndex( moveComponent, groupNode );
+
+            case DIRECTION.RIGHT:
+                return locateOuterRightIndex( moveComponent, groupNode );
+
+        }
+
+        throw new Error( "undefined move direction!" );
+
+    }
+
+    // 左移内部定位
+    function locateLeftIndex ( moveComponent, groupNode ) {
+
+        var syntaxComponent = moveComponent.parentComponent,
+            groupInfo = null,
+            groupElement = null;
+
+        if ( isPlaceholderNode( groupNode ) ) {
+            return locateOuterLeftIndex( moveComponent, groupNode );
+        }
+
+        if ( isGroupNode( groupNode ) ) {
+
+            groupInfo = syntaxComponent.getGroupContent( groupNode.id );
+            // 容器内部中末尾的元素
+            groupElement = groupInfo.content[ groupInfo.content.length - 1 ];
+
+            // 空检测
+            if ( isEmptyNode( groupElement ) ) {
+
+                // 做跳出处理
+                return locateOuterLeftIndex( moveComponent, groupElement );
+
+            }
+
+            // 待定位的组本身就是一个容器, 则检测其内部结构是否还包含容器
+            if ( isContainerNode( groupNode ) ) {
+
+                // 内部元素仍然是一个容器
+                if ( isContainerNode( groupElement ) ) {
+                    // 递归处理
+                    return locateLeftIndex( moveComponent, groupElement );
+                }
+
+                return {
+                    groupId: groupNode.id,
+                    startOffset: groupInfo.content.length,
+                    endOffset: groupInfo.content.length
+                };
+
+            // 仅是一个组， 进入组内部处理, 找到目标容器
+            } else {
+
+                while ( !isContainerNode( groupElement ) ) {
+                    groupInfo = syntaxComponent.getGroupContent( groupElement.id );
+                    groupElement = groupInfo.content[ groupInfo.content.length - 1 ];
+                }
+
+                return locateLeftIndex( moveComponent, groupElement );
+
+            }
+
+        }
+
+        return null;
+
+    }
+
+    // 左移外部定位
+    function locateOuterLeftIndex ( moveComponent, groupNode ) {
+
+        var kfEditor = moveComponent.kfEditor,
+            syntaxComponent = moveComponent.parentComponent,
+            outerGroupInfo = null,
+            groupInfo = null;
+
+        // 根容器， 不用再跳出
+        if ( isRootNode( groupNode ) ) {
+            return null;
+        }
+
+        outerGroupInfo = kfEditor.requestService( "position.get.parent.info", groupNode );
+
+        while ( outerGroupInfo.index === 0 ) {
+            outerGroupInfo = kfEditor.requestService( "position.get.parent.info", outerGroupInfo.group.groupObj );
+        }
+
+        groupNode = outerGroupInfo.group.content[ outerGroupInfo.index - 1 ];
+
+        // 定位到的组是一个容器， 则定位到容器尾部
+        if ( isContainerNode( groupNode ) ) {
+
+            groupInfo = syntaxComponent.getGroupContent( groupNode.id );
+
+            return {
+                groupId: groupNode.id,
+                startOffset: groupInfo.content.length,
+                endOffset: groupInfo.content.length
+            };
+
+        }
+
+        return {
+            groupId: outerGroupInfo.group.id,
+            startOffset: outerGroupInfo.index,
+            endOffset: outerGroupInfo.index
+        };
+
+    }
+
+    // 右移内部定位
+    function locateRightIndex ( moveComponent, groupNode ) {
+
+        var syntaxComponent = moveComponent.parentComponent,
+            groupInfo = null,
+            groupElement = null;
+
+        if ( isGroupNode( groupNode ) ) {
+
+            groupInfo = syntaxComponent.getGroupContent( groupNode.id );
+            // 容器内部中末尾的元素
+            groupElement = groupInfo.content[ 0 ];
+
+            // 待定位的组本身就是一个容器, 则检测其内部结构是否还包含容器
+            if ( isContainerNode( groupNode ) ) {
+
+                // 内部元素仍然是一个容器
+                if ( isContainerNode( groupElement ) ) {
+                    // 递归处理
+                    return locateRightIndex( moveComponent, groupElement );
+                }
+
+                return {
+                    groupId: groupNode.id,
+                    startOffset: 0,
+                    endOffset: 0
+                };
+
+                // 仅是一个组， 进入组内部处理, 找到目标容器
+            } else {
+
+                while ( !isContainerNode( groupElement ) ) {
+                    groupInfo = syntaxComponent.getGroupContent( groupElement.id );
+                    groupElement = groupInfo.content[ 0 ];
+                }
+
+                return locateRightIndex( moveComponent, groupElement );
+
+            }
+
+        }
+
+        return null;
+
+    }
+
+    // 右移外部定位
+    function locateOuterRightIndex ( moveComponent, groupNode ) {
+
+        var kfEditor = moveComponent.kfEditor,
+            syntaxComponent = moveComponent.parentComponent,
+            outerGroupInfo = null,
+            groupInfo = null;
+
+        // 根容器， 不用再跳出
+        if ( isRootNode( groupNode ) ) {
+            return null;
+        }
+
+        outerGroupInfo = kfEditor.requestService( "position.get.parent.info", groupNode );
+
+        // 仍然需要回溯
+        while ( outerGroupInfo.index === outerGroupInfo.group.content.length - 1 ) {
+            outerGroupInfo = kfEditor.requestService( "position.get.parent.info", outerGroupInfo.group.groupObj );
+        }
+
+        groupNode = outerGroupInfo.group.content[ outerGroupInfo.index + 1 ];
+
+        // 空节点处理
+        if ( isEmptyNode( groupNode ) ) {
+            return locateOuterRightIndex( moveComponent, groupNode );
+        }
+
+        // 定位到的组是一个容器， 则定位到容器内部开头位置上
+        if ( isContainerNode( groupNode ) ) {
+
+            return {
+                groupId: groupNode.id,
+                startOffset: 0,
+                endOffset: 0
+            };
+
+        }
+
+        return {
+            groupId: outerGroupInfo.group.id,
+            startOffset: outerGroupInfo.index + 1,
+            endOffset: outerGroupInfo.index + 1
+        };
 
     }
 
@@ -265,76 +375,11 @@ define( function ( require, exports, module ) {
     }
 
     function isPlaceholderNode ( node ) {
-        return !!node.getAttribute( "data-placeholder" );
+        return !!node.getAttribute( "data-placeholder" ) || node.getAttribute( "data-flag" ) === "Placeholder";
     }
 
     function isEmptyNode ( node ) {
         return node.getAttribute( "data-flag" ) === "Empty";
-    }
-
-
-    // 组内定位， 定位到容器内部
-    function locateInnerGroup ( groupNode ) {
-
-        var locationInfo = {},
-            containerInfo = null;
-
-        if ( isContainerNode( groupNode ) ) {
-
-            locationInfo.groupId = groupNode.id;
-
-        } else {
-
-            containerInfo = this.parentComponent.getGroupContent( groupNode.id );
-            groupNode = containerInfo.content[ containerInfo.content.length - 1 ];
-
-            while ( !isContainerNode( groupNode ) ) {
-                groupNode = containerInfo.content[ containerInfo.content.length - 1 ];
-                containerInfo = this.parentComponent.getGroupContent( groupNode.id );
-            }
-
-            locationInfo.groupId = groupNode.id;
-            containerInfo = this.parentComponent.getGroupContent( groupNode.id );
-
-        }
-
-        locationInfo.startOffset = containerInfo.content.length;
-        locationInfo.endOffset = locationInfo.startOffset;
-
-        return locationInfo;
-
-    }
-
-    // 组外定位
-    function locateOuterGroup ( groupNode ) {
-
-        var locationInfo = {},
-            nextContainer = null,
-            containerInfo = null,
-            groupLocationInfo = this.kfEditor.requestService( "position.get.parent.info", groupNode );
-
-        if ( groupLocationInfo.index > 0 ) {
-            nextContainer = groupLocationInfo.group.content[ groupLocationInfo.index - 1 ];
-        } else {
-            return locateOuterGroup.call( this, groupLocationInfo.group.groupObj );
-        }
-
-        containerInfo = this.parentComponent.getGroupContent( nextContainer.id );
-        groupNode = containerInfo.groupObj;
-
-        while ( !isContainerNode( groupNode ) ) {
-            groupNode = containerInfo.content[ containerInfo.content.length - 1 ];
-            containerInfo = this.parentComponent.getGroupContent( groupNode.id );
-        }
-
-        locationInfo = {
-            groupId: groupNode.id,
-            startOffset: containerInfo.content.length,
-            endOffset: containerInfo.content.length
-        };
-
-        return locationInfo;
-
     }
 
 } );
