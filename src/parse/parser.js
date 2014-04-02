@@ -33,11 +33,16 @@ define( function ( require ) {
 
         },
 
-        parse: function ( str ) {
+        parse: function ( str, isResetId ) {
 
-            var parsedResult = this.kfParser.parse( str );
+            var parsedResult = null;
 
-            this.resetGroupId();
+            if ( isResetId ) {
+                this.resetGroupId();
+            }
+
+            parsedResult = this.kfParser.parse( str );
+
             // 对解析出来的结果树做适当的处理，使得编辑器能够更容易地识别当前表达式的语义
             supplementTree( this, parsedResult.tree );
 
@@ -98,20 +103,18 @@ define( function ( require ) {
 
         tree.attr.id = parser.getGroupId();
 
-        tree.attr[ "data-type" ] = GROUP_TYPE;
-
-        if ( COMPARISON_TABLE[ tree.name ] ) {
+//        tree.attr[ "data-type" ] = GROUP_TYPE;
+        if ( !tree.attr[ "data-type" ] ) {
             tree.attr[ "data-type" ] = V_GROUP_TYPE;
         }
 
+//        if ( COMPARISON_TABLE[ tree.name ] ) {
+//            tree.attr[ "data-type" ] = V_GROUP_TYPE;
+//        }
+
         if ( isRoot ) {
             tree.attr[ "data-root" ] = "true";
-        }
-
-        // 占位符特殊处理
-
-        if ( tree.name === "placeholder" && parentTree ) {
-            parentTree.attr[ "data-placeholder" ] = "true";
+            tree.attr[ "data-type" ] = GROUP_TYPE;
         }
 
         for ( var i = 0, len= tree.operand.length; i < len; i++ ) {
@@ -151,9 +154,29 @@ define( function ( require ) {
                                 }
                             };
 
-                            tree.operand[ i ].operand[ 0 ] = supplementTree( parser, currentOperand, tree.operand[ i ] );
+                            // 占位符特殊处理
+                            if ( currentOperand.name === "placeholder" ) {
+                                tree.operand[ i ].operand[ 0 ] = {
+                                    name: "combination",
+                                    operand: [ currentOperand ],
+                                    attr: {
+                                        id: parser.getGroupId(),
+                                        "data-type": GROUP_TYPE,
+                                        "data-placeholder": "true"
+                                    }
+                                };
+                                currentOperand.attr = {
+                                    id: parser.getGroupId()
+                                };
+                            } else {
+                                tree.operand[ i ].operand[ 0 ] = supplementTree( parser, currentOperand, tree.operand[ i ] );
+                            }
 
                         } else {
+
+                            currentOperand.attr = {
+                                "data-type": GROUP_TYPE
+                            };
 
                             tree.operand[ i ] = supplementTree( parser, currentOperand, tree );
 
@@ -168,9 +191,27 @@ define( function ( require ) {
                     } else {
                         // 重置组类型
                         if ( !isRoot && tree.operand.length === 1 ) {
-                            tree.attr[ "data-type" ] = V_GROUP_TYPE;
+//                            tree.attr[ "data-type" ] = V_GROUP_TYPE;
                         }
-                        tree.operand[ i ] = supplementTree( parser, currentOperand, tree );
+
+                        // 占位符附加包裹
+                        if ( currentOperand.name === "placeholder" ) {
+                            tree.operand[ i ] = {
+                                name: "combination",
+                                operand: [ currentOperand ],
+                                attr: {
+                                    id: parser.getGroupId(),
+                                    "data-type": GROUP_TYPE,
+                                    "data-placeholder": "true"
+                                }
+                            };
+                            currentOperand.attr = {
+                                id: parser.getGroupId()
+                            };
+                        } else {
+                            tree.operand[ i ] = supplementTree( parser, currentOperand, tree );
+                        }
+
                     }
 
                 }

@@ -144,7 +144,7 @@ define( function ( require ) {
 
         if ( node && tagName !== "body" && tagName !== "svg" ) {
 
-            if ( node.getAttribute( "data-type" ) === "kf-editor-group" || node.getAttribute( "data-placeholder" ) !== null ) {
+            if ( node.getAttribute( "data-type" ) === "kf-editor-group" ) {
                 return node;
             }
 

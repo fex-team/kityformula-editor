@@ -1,6 +1,6 @@
 /*!
  * ====================================================
- * kityformula-editor - v1.0.0 - 2014-03-25
+ * kityformula-editor - v1.0.0 - 2014-04-02
  * https://github.com/HanCong03/kityformula-editor
  * GitHub: https://github.com/kitygraph/kityformula-editor.git 
  * Copyright (c) 2014 Baidu Kity Group; Licensed MIT
@@ -109,7 +109,7 @@ define("assembly", [], function(require, exports, module) {
         }
     };
     Assembly.prototype.regenerateBy = function(data) {
-        this.formula.clear();
+        this.formula.clearExpressions();
         return this.generateBy(data);
     };
     /**
@@ -118,24 +118,25 @@ define("assembly", [], function(require, exports, module) {
      * @return {kf.Expression} 生成的表达式
      */
     function generateExpression(originTree, tree, objTree, mapping, selectInfo) {
-        var currentOperand = null, exp = null, hasCursor = false, operand = tree.operand || [], constructor = null, constructorProxy;
+        var currentOperand = null, exp = null, // 记录光标位置
+        cursorLocation = [], operand = tree.operand || [], constructor = null, constructorProxy;
         objTree.operand = [];
         // 文本表达式已经不需要再处理了
         if (tree.name.indexOf("text") === -1) {
             // 处理操作数
-            for (var i = 0, j = 0, len = operand.length; j < len; j++) {
-                currentOperand = operand[j];
+            for (var i = 0, len = operand.length; i < len; i++) {
+                currentOperand = operand[i];
                 //TODO 光标定位， 配合编辑器， 后期应该考虑是否有更佳的方案来实现
                 if (currentOperand === CURSOR_CHAR) {
-                    hasCursor = true;
+                    cursorLocation.push(i);
                     if (!selectInfo.hasOwnProperty("startOffset")) {
+                        // 字符串中的开始偏移是需要修正的
                         selectInfo.startOffset = i;
                     }
                     selectInfo.endOffset = i;
                     if (tree.attr && tree.attr.id) {
                         selectInfo.groupId = tree.attr.id;
                     }
-                    originTree.operand.splice(i, 1);
                     continue;
                 }
                 if (!currentOperand) {
@@ -148,10 +149,12 @@ define("assembly", [], function(require, exports, module) {
                     objTree.operand.push({});
                     operand[i] = arguments.callee(originTree.operand[i], currentOperand, objTree.operand[objTree.operand.length - 1], mapping, selectInfo);
                 }
-                i++;
             }
-            if (hasCursor) {
-                operand.length = operand.length - 1;
+            while (i = cursorLocation.length) {
+                i = cursorLocation[i - 1];
+                operand.splice(i, 1);
+                cursorLocation.length--;
+                originTree.operand.splice(i, 1);
             }
         }
         constructor = getConstructor(tree.name);
@@ -233,10 +236,6 @@ define("assembly", [], function(require, exports, module) {
     };
 });
 /**
- * 类型检测器
- */
-define("impl/latex/base/checker", [], function(require, exports, module) {});
-/**
  * latex实现工具包
  */
 define("impl/latex/base/latex-utils", [ "impl/latex/base/rpn", "impl/latex/base/utils", "impl/latex/define/type", "impl/latex/base/tree", "impl/latex/handler/combination" ], function(require, exports, module) {
@@ -248,7 +247,7 @@ define("impl/latex/base/latex-utils", [ "impl/latex/base/rpn", "impl/latex/base/
 /**
  * 逆波兰表达式转换函数
  */
-define("impl/latex/base/rpn", [ "impl/latex/base/utils", "impl/latex/base/checker", "impl/latex/define/operator", "impl/latex/define/func", "impl/latex/handler/func", "impl/latex/define/type" ], function(require) {
+define("impl/latex/base/rpn", [ "impl/latex/base/utils", "impl/latex/define/operator", "impl/latex/define/func", "impl/latex/handler/func", "impl/latex/define/type" ], function(require) {
     var Utils = require("impl/latex/base/utils");
     return function(units) {
         var signStack = [], TYPE = require("impl/latex/define/type"), currentUnit = null;
@@ -286,7 +285,7 @@ define("impl/latex/base/rpn", [ "impl/latex/base/utils", "impl/latex/base/checke
 /**
  * 从单元组构建树
  */
-define("impl/latex/base/tree", [ "impl/latex/define/type", "impl/latex/handler/combination", "impl/latex/base/utils", "impl/latex/base/checker", "impl/latex/define/operator", "impl/latex/define/func", "impl/latex/handler/func" ], function(require) {
+define("impl/latex/base/tree", [ "impl/latex/define/type", "impl/latex/handler/combination", "impl/latex/base/utils", "impl/latex/define/operator", "impl/latex/define/func", "impl/latex/handler/func" ], function(require) {
     var TYPE = require("impl/latex/define/type"), mergeHandler = require("impl/latex/handler/combination"), Utils = require("impl/latex/base/utils");
     return function(units) {
         var currentUnit = null, nextUnit = null, tree = [];
@@ -309,8 +308,8 @@ define("impl/latex/base/tree", [ "impl/latex/define/type", "impl/latex/handler/c
 /**
  * 通用工具包
  */
-define("impl/latex/base/utils", [ "impl/latex/base/checker", "impl/latex/define/operator", "impl/latex/handler/script", "impl/latex/handler/func", "impl/latex/define/type", "impl/latex/handler/fraction", "impl/latex/handler/sqrt", "impl/latex/handler/summation", "impl/latex/handler/integration", "impl/latex/handler/brackets", "impl/latex/define/func", "impl/latex/handler/lib/int-extract" ], function(require, exports, module) {
-    var Checker = require("impl/latex/base/checker"), OPERATOR_LIST = require("impl/latex/define/operator"), FUNCTION_LIST = require("impl/latex/define/func"), FUNCTION_HANDLER = require("impl/latex/handler/func"), Utils = {
+define("impl/latex/base/utils", [ "impl/latex/define/operator", "impl/latex/handler/script", "impl/latex/handler/func", "impl/latex/define/type", "impl/latex/handler/fraction", "impl/latex/handler/sqrt", "impl/latex/handler/summation", "impl/latex/handler/integration", "impl/latex/handler/brackets", "impl/latex/define/func", "impl/latex/handler/lib/int-extract" ], function(require, exports, module) {
+    var OPERATOR_LIST = require("impl/latex/define/operator"), FUNCTION_LIST = require("impl/latex/define/func"), FUNCTION_HANDLER = require("impl/latex/handler/func"), Utils = {
         // 根据输入的latex字符串， 检测出该字符串所对应的kf的类型
         getLatexType: function(str) {
             str = str.replace(/^\\/, "");
@@ -350,12 +349,6 @@ define("impl/latex/base/utils", [ "impl/latex/base/checker", "impl/latex/define/
             return target;
         }
     };
-    // 附加功能到Utils对象
-    for (var key in Checker) {
-        if (Checker[key] && Checker.hasOwnProperty(key)) {
-            Utils[key] = Checker[key];
-        }
-    }
     return Utils;
 });
 /**
@@ -445,11 +438,13 @@ define("impl/latex/define/operator", [ "impl/latex/handler/script", "impl/latex/
         sum: {
             name: "summation",
             type: TYPE.FN,
+            traversal: "rtl",
             handler: require("impl/latex/handler/summation")
         },
         "int": {
             name: "integration",
             type: TYPE.FN,
+            traversal: "rtl",
             handler: require("impl/latex/handler/integration")
         },
         brackets: {
@@ -686,7 +681,7 @@ define("impl/latex/handler/summation", [ "impl/latex/handler/lib/int-extract" ],
 /**
  * Kity Formula Latex解析器实现
  */
-define("impl/latex/latex", [ "parser", "impl/latex/base/latex-utils", "impl/latex/base/rpn", "impl/latex/base/tree", "impl/latex/define/pre", "impl/latex/pre/sqrt", "impl/latex/pre/int", "impl/latex/serialization", "impl/latex/define/reverse", "impl/latex/define/operator", "impl/latex/handler/script", "impl/latex/handler/func", "impl/latex/define/type", "impl/latex/handler/fraction", "impl/latex/handler/sqrt", "impl/latex/handler/summation", "impl/latex/handler/integration", "impl/latex/handler/brackets", "impl/latex/reverse/combination", "impl/latex/reverse/fraction", "impl/latex/reverse/func", "impl/latex/reverse/integration", "impl/latex/reverse/subscript", "impl/latex/reverse/superscript", "impl/latex/reverse/script", "impl/latex/reverse/sqrt", "impl/latex/reverse/summation", "impl/latex/reverse/brackets", "impl/latex/base/utils", "impl/latex/base/checker", "impl/latex/define/func" ], function(require, exports, module) {
+define("impl/latex/latex", [ "parser", "impl/latex/base/latex-utils", "impl/latex/base/rpn", "impl/latex/base/tree", "impl/latex/define/pre", "impl/latex/pre/sqrt", "impl/latex/pre/int", "impl/latex/serialization", "impl/latex/define/reverse", "impl/latex/define/operator", "impl/latex/handler/script", "impl/latex/handler/func", "impl/latex/define/type", "impl/latex/handler/fraction", "impl/latex/handler/sqrt", "impl/latex/handler/summation", "impl/latex/handler/integration", "impl/latex/handler/brackets", "impl/latex/reverse/combination", "impl/latex/reverse/fraction", "impl/latex/reverse/func", "impl/latex/reverse/integration", "impl/latex/reverse/subscript", "impl/latex/reverse/superscript", "impl/latex/reverse/script", "impl/latex/reverse/sqrt", "impl/latex/reverse/summation", "impl/latex/reverse/brackets", "impl/latex/base/utils", "impl/latex/define/func" ], function(require, exports, module) {
     var Parser = require("parser").Parser, LatexUtils = require("impl/latex/base/latex-utils"), PRE_HANDLER = require("impl/latex/define/pre"), serialization = require("impl/latex/serialization"), OP_DEFINE = require("impl/latex/define/operator"), REVERSE_DEFINE = require("impl/latex/define/reverse"), Utils = require("impl/latex/base/utils");
     // data
     var leftChar = "￸", rightChar = "￼", clearCharPattern = new RegExp(leftChar + "|" + rightChar, "g"), leftCharPattern = new RegExp(leftChar, "g"), rightCharPattern = new RegExp(rightChar, "g");
@@ -909,7 +904,7 @@ define("impl/latex/reverse/brackets", [], function() {
 define("impl/latex/reverse/combination", [], function() {
     var pattern = new RegExp("", "g");
     return function(operands) {
-        if (/^{([\s\S]*)}$/g.test(operands.join("").replace(pattern, ""))) {
+        if (this.attr["data-root"] || this.attr["data-placeholder"] || /^{([\s\S]*)}$/g.test(operands.join("").replace(pattern, ""))) {
             return operands.join("");
         }
         return "{" + operands.join("") + "}";
@@ -1061,7 +1056,7 @@ define("impl/latex/reverse/superscript", [], function() {
 define("impl/latex/serialization", [ "impl/latex/define/reverse", "impl/latex/reverse/combination", "impl/latex/reverse/fraction", "impl/latex/reverse/func", "impl/latex/reverse/integration", "impl/latex/reverse/subscript", "impl/latex/reverse/superscript", "impl/latex/reverse/script", "impl/latex/reverse/sqrt", "impl/latex/reverse/summation", "impl/latex/reverse/brackets" ], function(require) {
     var reverseHandlerTable = require("impl/latex/define/reverse"), specialCharPattern = /(\\[\w]+)\\/g;
     return function(tree) {
-        return reverseParse(tree).replace(/^{|}$/g, "");
+        return reverseParse(tree);
     };
     function reverseParse(tree) {
         var operands = [], originalOperands = null;
@@ -1079,7 +1074,7 @@ define("impl/latex/serialization", [ "impl/latex/define/reverse", "impl/latex/re
                 operands.push(originalOperands[i]);
             }
         }
-        return reverseHandlerTable[tree.name](operands);
+        return reverseHandlerTable[tree.name].call(tree, operands);
     }
 });
 /*!

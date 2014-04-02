@@ -1,0 +1,108 @@
+/* 按钮 */
+.kf-editor-ui-button {
+    width: 50px;
+    height: 100%;
+    font-size: 14px;
+    display: inline-block;
+    border: 1px solid transparent;
+    cursor: default;
+    position: relative;
+    top: 0;
+    left: 0;
+    vertical-align: top;
+}
+
+.kf-editor-ui-button-icon {
+    width: 32px;
+    height: 32px;
+    margin: 2px auto;
+}
+
+.kf-editor-ui-button-label {
+    text-align: center;
+    display: block;
+    padding: 8px 0;
+}
+
+.kf-editor-ui-button-sign {
+    border: 5px solid transparent;
+    border-top-color: #2d2d2d;
+    width: 0;
+    height: 0;
+    margin: 0 auto;
+}
+
+.kf-editor-ui-button-mount-point {
+    display: none;
+    position: absolute;
+    top: 81px;
+    left: -1px;
+}
+
+.kf-editor-ui-button:HOVER {
+    background: rgba(255, 180, 11, 0.61);
+    border: 1px solid #ffbf00;
+    box-shadow: inset 0 0 1px 1px white;
+}
+
+.kf-editor-toolbar .kf-editor-ui-button-in {
+    background: #ffb41e;
+    border-color: #b88212;
+    box-shadow: none;
+}
+
+/* 分割符 */
+.kf-editor-ui-delimiter {
+    width: 11px;
+    height: 100%;
+    display: inline-block;
+}
+
+.kf-editor-ui-delimiter-line {
+    width: 1px;
+    height: 100%;
+    margin: 0 auto;
+    background: -webkit-linear-gradient(top, rgba(233, 233, 233, 0.11), rgba(92, 92, 92, 0.20) 60%, rgba(92, 92, 92, 0.41) 80%, rgba(123, 123, 123, 0.50));
+}
+
+/* box */
+.kf-editor-ui-box {
+    border: 1px solid #c2c2c2;
+    box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.13);
+    background: white;
+}
+
+.kf-editor-ui-box-group-title {
+    background: #e1e1e1;
+    padding: 5px;
+}
+
+.kf-editor-ui-box-group-item-container {
+    padding: 5px;
+}
+
+.kf-editor-ui-box-item {
+    border: 1px solid transparent;
+    padding: 5px;
+    display: inline-block;
+}
+
+.kf-editor-ui-box-item:HOVER {
+    background: rgba(255, 180, 11, 0.61);
+    border: 1px solid #ffbf00;
+    box-shadow: inset 0 0 1px 1px white;
+}
+
+.kf-editor-ui-box-item-label {
+    margin-bottom: 5px;
+}
+
+.kf-editor-ui-box-item-content {
+    background: white;
+    border: 1px solid black;
+}
+
+.kf-editor-ui-box-item-val {
+    padding: 5px;
+    margin-bottom: 5px;
+}

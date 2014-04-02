@@ -98,6 +98,10 @@ define( function ( require, exports, module ) {
 
             containerInfo = syntaxComponent.getGroupContent( cursorInfo.groupId );
 
+            if ( isPlaceholderNode( containerInfo.groupObj ) ) {
+                return locateOuterIndex( this, containerInfo.groupObj, DIRECTION.RIGHT );
+            }
+
             if ( cursorInfo.startOffset < containerInfo.content.length ) {
 
                 nextGroupNode = containerInfo.content[ cursorInfo.startOffset ];
@@ -174,7 +178,7 @@ define( function ( require, exports, module ) {
             groupInfo = null,
             groupElement = null;
 
-        if ( isPlaceholderNode( groupNode ) ) {
+        if ( isPlaceholderNode( groupNode ) || isEmptyNode( groupNode ) ) {
             return locateOuterLeftIndex( moveComponent, groupNode );
         }
 
@@ -195,9 +199,17 @@ define( function ( require, exports, module ) {
             // 待定位的组本身就是一个容器, 则检测其内部结构是否还包含容器
             if ( isContainerNode( groupNode ) ) {
 
-                // 内部元素仍然是一个容器
-                if ( isContainerNode( groupElement ) ) {
-                    // 递归处理
+                // 进入到占位符包裹容器内
+                if ( isPlaceholderNode( groupElement ) ) {
+
+                    return {
+                        groupId: groupElement.id,
+                        startOffset: 0,
+                        endOffset: 0
+                    };
+
+                // 内部元素仍然是一个容器则进行递归处理
+                } else if ( isContainerNode( groupElement ) ) {
                     return locateLeftIndex( moveComponent, groupElement );
                 }
 
@@ -210,9 +222,21 @@ define( function ( require, exports, module ) {
             // 仅是一个组， 进入组内部处理, 找到目标容器
             } else {
 
-                while ( !isContainerNode( groupElement ) ) {
+                while ( !isContainerNode( groupElement ) && !isEmptyNode( groupElement ) && !isPlaceholderNode( groupElement ) ) {
                     groupInfo = syntaxComponent.getGroupContent( groupElement.id );
                     groupElement = groupInfo.content[ groupInfo.content.length - 1 ];
+                }
+
+                if ( isEmptyNode( groupElement ) ) {
+                    return locateOuterLeftIndex( moveComponent, groupElement );
+                }
+
+                if ( isPlaceholderNode( groupElement ) ) {
+                    return {
+                        groupId: groupInfo.id,
+                        startOffset: groupInfo.content.length,
+                        endOffset: groupInfo.content.length
+                    };
                 }
 
                 return locateLeftIndex( moveComponent, groupElement );
@@ -241,15 +265,36 @@ define( function ( require, exports, module ) {
         outerGroupInfo = kfEditor.requestService( "position.get.parent.info", groupNode );
 
         while ( outerGroupInfo.index === 0 ) {
+
+            if ( isRootNode( outerGroupInfo.group.groupObj ) ) {
+                return {
+                    groupId: outerGroupInfo.group.id,
+                    startOffset: 0,
+                    endOffset: 0
+                };
+            }
+
             outerGroupInfo = kfEditor.requestService( "position.get.parent.info", outerGroupInfo.group.groupObj );
+
         }
 
         groupNode = outerGroupInfo.group.content[ outerGroupInfo.index - 1 ];
 
         // 定位到的组是一个容器， 则定位到容器尾部
-        if ( isContainerNode( groupNode ) ) {
+        if ( isGroupNode( groupNode ) ) {
 
-            groupInfo = syntaxComponent.getGroupContent( groupNode.id );
+            // 容器节点
+            if ( isContainerNode( groupNode ) ) {
+
+                // 进入容器内部
+                return locateLeftIndex( moveComponent, groupNode );
+
+            // 组节点
+            } else {
+
+                return locateLeftIndex( moveComponent, groupNode );
+
+            }
 
             return {
                 groupId: groupNode.id,
@@ -298,12 +343,20 @@ define( function ( require, exports, module ) {
                 // 仅是一个组， 进入组内部处理, 找到目标容器
             } else {
 
-                while ( !isContainerNode( groupElement ) ) {
+                while ( !isContainerNode( groupElement ) && !isPlaceholderNode( groupElement ) ) {
                     groupInfo = syntaxComponent.getGroupContent( groupElement.id );
                     groupElement = groupInfo.content[ 0 ];
                 }
 
-                return locateRightIndex( moveComponent, groupElement );
+                if ( isPlaceholderNode( groupElement ) ) {
+                    return {
+                        groupId: groupInfo.id,
+                        startOffset: 0,
+                        endOffset: 0
+                    };
+                } else {
+                    return locateRightIndex( moveComponent, groupElement );
+                }
 
             }
 
@@ -330,7 +383,17 @@ define( function ( require, exports, module ) {
 
         // 仍然需要回溯
         while ( outerGroupInfo.index === outerGroupInfo.group.content.length - 1 ) {
+
+            if ( isRootNode( outerGroupInfo.group.groupObj ) ) {
+                return {
+                    groupId: outerGroupInfo.group.id,
+                    startOffset: outerGroupInfo.group.content.length,
+                    endOffset: outerGroupInfo.group.content.length
+                };
+            }
+
             outerGroupInfo = kfEditor.requestService( "position.get.parent.info", outerGroupInfo.group.groupObj );
+
         }
 
         groupNode = outerGroupInfo.group.content[ outerGroupInfo.index + 1 ];
@@ -375,7 +438,7 @@ define( function ( require, exports, module ) {
     }
 
     function isPlaceholderNode ( node ) {
-        return !!node.getAttribute( "data-placeholder" ) || node.getAttribute( "data-flag" ) === "Placeholder";
+        return !!node.getAttribute( "data-placeholder" );
     }
 
     function isEmptyNode ( node ) {

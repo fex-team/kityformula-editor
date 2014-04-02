@@ -2992,7 +2992,7 @@ define("graphic/paper", [ "core/class", "core/config", "core/utils", "graphic/sv
             matrix.translate(-cx, -cy);
             matrix.scale(zoom);
             matrix.translate(cx, cy);
-            matrix.translate(dx, dy);
+            matrix.translate(dx, dy)
             this.shapeNode.setAttribute("transform", matrix);
             this.viewport = {
                 center: {

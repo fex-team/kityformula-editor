@@ -140,16 +140,23 @@ define( function ( require ) {
 
                 var groupInfo = this.objTree.mapping[ groupId ],
                     content = [],
-                    operands = groupInfo.objGroup.operands;
+                    operands = groupInfo.objGroup.operands,
+                    offset = operands.length - 1,
+                    isLtr = groupInfo.strGroup.traversal !== "rtl";
 
                 kity.Utils.each( operands, function ( operand, i ) {
 
-                    content.push( operand.node );
+                    if ( isLtr ) {
+                        content.push( operand.node );
+                    } else {
+                        content[ offset - i ] = operand.node;
+                    }
 
                 } );
 
                 return {
                     id: groupId,
+                    traversal: groupInfo.strGroup.traversal || "ltr",
                     groupObj: groupInfo.objGroup.node,
                     content: content
                 };
@@ -241,11 +248,15 @@ define( function ( require ) {
                 strEndIndex = Math.max( cursor.endOffset, cursor.startOffset );
 
                 if ( !isPlaceholder ) {
+
                     curStrGroup.operand.splice( strEndIndex, 0, CURSOR_CHAR );
                     curStrGroup.operand.splice( strStartIndex, 0, CURSOR_CHAR );
-                    // 由于插入了strStartIndex， 所以需要加1
                     strEndIndex += 1;
+
                 } else {
+                    // 找到占位符的包裹元素
+                    curStrGroup = this.kfEditor.requestService( "position.get.parent.group", objGroup.objGroup.node )
+                    curStrGroup = this.objTree.mapping[ curStrGroup.id ].strGroup;
                     curStrGroup.operand.unshift( CURSOR_CHAR );
                     curStrGroup.operand.push( CURSOR_CHAR );
                 }
@@ -254,16 +265,16 @@ define( function ( require ) {
                 resultStr = this.kfEditor.requestService( "parser.latex.serialization", this.objTree.parsedTree );
 
                 if ( !isPlaceholder ) {
-
                     curStrGroup.operand.splice( strEndIndex, 1 );
                     curStrGroup.operand.splice( strStartIndex, 1 );
-
                 } else {
                     curStrGroup.operand.shift();
                     curStrGroup.operand.pop();
                 }
 
                 strStartIndex = resultStr.indexOf( CURSOR_CHAR );
+                // 清除掉一个符号
+                resultStr = resultStr.replace( CURSOR_CHAR, "" );
                 strEndIndex = resultStr.lastIndexOf( CURSOR_CHAR );
 
                 return {
@@ -277,10 +288,6 @@ define( function ( require ) {
             // 更新光标记录， 同时更新数据
             updateCursor: function ( groupId, startOffset, endOffset ) {
 
-                var curStrGroup = this.objTree.mapping[ groupId ].strGroup,
-                    resultStr = null,
-                    isPlaceholder = !!curStrGroup.attr[ "data-placeholder" ];
-
                 if ( endOffset === undefined ) {
                     endOffset = startOffset;
                 }
@@ -291,31 +298,7 @@ define( function ( require ) {
                     endOffset: endOffset
                 };
 
-                if ( isPlaceholder ) {
-                    this.record.cursor.startOffset = 1;
-                    this.record.cursor.endOffset = 1;
-                }
-
-            },
-
-            insertString: function ( str ) {
-
-                var curStrGroup = this.objTree.mapping[ this.record.cursor.groupId ].strGroup,
-                    charArr = str.split( "" );
-
-                charArr = [ this.record.cursor.index, 0 ].concat( charArr );
-
-                [].splice.apply( curStrGroup.operand, charArr );
-
-            },
-
-            insertGroup: function ( str ) {
-
-                var curStrGroup = this.objTree.mapping[ this.record.cursor.groupId ].strGroup;
-
-                str = "{" + str + "}";
-
-                curStrGroup.operand.splice( this.record.cursor.index, 0, str );
+                window.tt = this.record.cursor;
 
             },
 
@@ -323,6 +306,7 @@ define( function ( require ) {
 
                 // 返回结构树进过序列化后所对应的latex表达式， 同时包含有当前光标定位点信息
                 return this.kfEditor.requestService( "parser.latex.serialization", this.objTree.parsedTree );
+
 
             },
 

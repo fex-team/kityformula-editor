@@ -14,7 +14,7 @@ define( function ( require ) {
 
         ScrollZoomController = kity.createClass( 'ScrollZoomController', {
 
-            constructor: function ( kfEditor, target, options ) {
+            constructor: function ( parentComponent, kfEditor, target, options ) {
 
                 this.kfEditor = kfEditor;
                 this.target = target;
@@ -49,7 +49,7 @@ define( function ( require ) {
                     _self.zoom = Math.max( _self.zoom, min );
                     _self.zoom = Math.min( _self.zoom, max );
 
-                    kfEditor.requestService( "render.canvas.zoom", _self.zoom );
+                    kfEditor.requestService( "render.set.canvas.zoom", _self.zoom );
 
                 } );
 

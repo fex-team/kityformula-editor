@@ -22,6 +22,8 @@ define( function ( require ) {
                 this.assembly = null;
                 this.formula = null;
 
+                this.canvasZoom = 1;
+
                 this.record = {
                     select: {},
                     cursor: {}
@@ -53,6 +55,10 @@ define( function ( require ) {
                     selectGroupContent: this.selectGroupContent
                 } );
 
+                this.kfEditor.registerService( "render.select.group", this, {
+                    selectGroup: this.selectGroup
+                } );
+
                 this.kfEditor.registerService( "render.select.group.all", this, {
                     selectAllGroup: this.selectAllGroup
                 } );
@@ -69,8 +75,16 @@ define( function ( require ) {
                     clearSelect: this.clearSelect
                 } );
 
-                this.kfEditor.registerService( "render.canvas.zoom", this, {
+                this.kfEditor.registerService( "render.set.canvas.zoom", this, {
                     setCanvasZoom: this.setCanvasZoom
+                } );
+
+                this.kfEditor.registerService( "render.get.canvas.zoom", this, {
+                    getCanvasZoom: this.getCanvasZoom
+                } );
+
+                this.kfEditor.registerService( "render.get.paper.offset", this, {
+                    getPaperOffset: this.getPaperOffset
                 } );
 
                 this.kfEditor.registerService( "render.draw", this, {
@@ -85,11 +99,17 @@ define( function ( require ) {
                     insertGroup: this.insertGroup
                 } );
 
+                this.kfEditor.registerService( "render.get.paper", this, {
+                    getPaper: this.getPaper
+                } );
+
             },
 
             initCommands: function () {
 
                 this.kfEditor.registerCommand( "render", this, this.render );
+
+                this.kfEditor.registerCommand( "getPaper", this, this.getPaper );
 
             },
 
@@ -102,6 +122,30 @@ define( function ( require ) {
                 viewPort.center.y = formulaSpace.height / 2;
 
                 this.formula.setViewPort( viewPort );
+
+            },
+
+            selectGroup: function ( groupId ) {
+
+                var groupObject = this.kfEditor.requestService( "syntax.get.group.object", groupId ),
+                    isPlaceholder = this.kfEditor.requestService( "syntax.valid.placeholder", groupId );
+
+                this.clearSelect();
+
+                if ( groupObject.node.getAttribute( "data-root" ) ) {
+                    // 根节点不着色
+                    return;
+                }
+
+                // 占位符着色
+                if ( isPlaceholder ) {
+                    // 替换占位符包裹组为占位符本身
+                    groupObject = this.kfEditor.requestService( "syntax.get.group.object", groupObject.operands[ 0 ].node.id );
+                }
+
+                this.record.select.lastSelect = groupObject;
+
+                groupObject.select();
 
             },
 
@@ -225,9 +269,13 @@ define( function ( require ) {
 
             },
 
+            getPaper: function () {
+                return this.formula;
+            },
+
             render: function ( latexStr ) {
 
-                var parsedTree = this.kfEditor.requestService( "parser.parse", latexStr),
+                var parsedTree = this.kfEditor.requestService( "parser.parse", latexStr, true ),
                     objTree = this.assembly.regenerateBy( parsedTree );
 
                 // 更新语法模块所维护的树
@@ -239,25 +287,16 @@ define( function ( require ) {
             setCanvasZoom: function ( zoom ) {
 
                 var viewPort = this.formula.getViewPort();
+
+                this.canvasZoom = zoom;
                 viewPort.zoom = zoom;
+
                 this.formula.setViewPort( viewPort );
 
             },
 
-            insertString: function ( str ) {
-
-                this.kfEditor.requestService( "syntax.insert.string", str )
-                var tt = this.kfEditor.requestService( "syntax.serialization" );
-                this.render( tt );
-
-            },
-
-            insertGroup: function ( str ) {
-
-                this.kfEditor.requestService( "syntax.insert.group", str )
-                var tt = this.kfEditor.requestService( "syntax.serialization" );
-                this.render( tt );
-
+            getCanvasZoom: function () {
+                return this.canvasZoom;
             }
 
         } );

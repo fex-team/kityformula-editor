@@ -10,7 +10,8 @@ define( function () {
         "fraction": true,
         "summation": true,
         "integration": true,
-        "placeholder": true
+        "placeholder": true,
+        "script": true
 
     };
 

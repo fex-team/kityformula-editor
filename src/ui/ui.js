@@ -12,6 +12,8 @@ define( function ( require, exports, modules ) {
         // 控制组件
         ScrollZoom = require( "ui/control/zoom" ),
 
+        ELEMENT_LIST = require( "ui/toolbar-ele-list" ),
+
         UIComponent = kity.createClass( 'UIComponent', {
 
             constructor: function ( kfEditor ) {
@@ -23,7 +25,7 @@ define( function ( require, exports, modules ) {
                 currentDocument = this.container.ownerDocument;
 
                 // ui组件实例集合
-                this.components = [];
+                this.components = {};
 
                 this.kfEditor = kfEditor;
 
@@ -39,9 +41,8 @@ define( function ( require, exports, modules ) {
                 this.editArea.appendChild( this.canvasContainer );
                 this.container.appendChild( this.editArea );
 
-                this.initToolbar();
                 this.initCanvas();
-                this.initScrollZoom();
+                this.initComponents();
 
                 this.initServices();
 
@@ -49,22 +50,16 @@ define( function ( require, exports, modules ) {
 
             },
 
-            initToolbar: function () {
+            // 组件实例化
+            initComponents: function () {
 
                 // 工具栏组件
-                this.components.push( new Toolbar( this.kfEditor, this ) );
+                this.components.toolbar = new Toolbar( this.kfEditor, this, ELEMENT_LIST );
+                this.components.scrollZoom = new ScrollZoom( this, this.kfEditor, this.canvasContainer );
 
             },
 
             initCanvas: function () {
-
-            },
-
-            // 滚动控制
-            initScrollZoom: function () {
-
-                // 实例化组件
-                this.components.push( new ScrollZoom( this.kfEditor, this.canvasContainer ) );
 
             },
 
@@ -73,11 +68,11 @@ define( function ( require, exports, modules ) {
                 var containerBox = container.getBoundingClientRect();
 
                 toolbar.style.width = containerBox.width + "px";
-                toolbar.style.height = 50 + "px";
+                toolbar.style.height = 80 + "px";
 
+                editArea.style.marginTop = 80 + "px";
                 editArea.style.width = containerBox.width + "px";
-                editArea.style.height = containerBox.height - 50 + "px";
-
+                editArea.style.height = containerBox.height - 80 + "px";
 
             },
 
@@ -107,7 +102,7 @@ define( function ( require, exports, modules ) {
 
                     _self.resizeTimer = window.setTimeout( function () {
                         _self.kfEditor.requestService( "render.relocation" );
-                    }, 100 );
+                    }, 80 );
 
                 };
 
@@ -149,8 +144,8 @@ define( function ( require, exports, modules ) {
     function createEditArea ( doc ) {
         var container = doc.createElement( "div" );
         container.className = "kf-editor-edit-area";
-        container.style.width = "100%";
-        container.style.height = "1000px";
+        container.style.width = "80%";
+        container.style.height = "800px";
         return container;
     }
 

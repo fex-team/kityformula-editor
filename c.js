@@ -8,15 +8,17 @@
             start: function ( editor ) {
                 kfEditor = editor;
 
-                vCursor = document.getElementById( "cursor" );
+                window.kfEditor = kfEditor;
 
-                initvCursorHack();
+                vCursor = createVCursor( kfEditor );
 
                 inp = document.getElementById( "hiddenInput" );
 
                 initClick();
+
             }
         },
+        isShowCursor = false,
         inp = null,
         vCursor = null,
         lastCount = -1,
@@ -33,6 +35,7 @@
         mousedownPoint = { x: 0, y: 0 },
         MAX_COUNT = 1000,
         CALL_COUNT = 0,
+        CURSOR_BLINKS = null,
         // 移动阀值
         dragThreshold = 10,
         kfEditor = null;
@@ -46,6 +49,10 @@
 
             e.preventDefault();
 
+            if (e.which !== 1 ) {
+                return;
+            }
+
             isMousedown = true;
             isDrag = false;
             mousedownPoint = { x: e.clientX, y: e.clientY };
@@ -55,10 +62,15 @@
             cursorIndex = 0;
 
             var target = e.target,
-                group = kfEditor.requestService( "position.get.group", target );
+                group = kfEditor.requestService( "position.get.group", target ),
+                parentGroup = kfEditor.requestService( "position.get.parent.group", target );
 
             if ( !group ) {
                 group = kfEditor.requestService( "syntax.get.group.content", "_kf_editor_1_1" );
+            }
+
+            if ( !parentGroup ) {
+                parentGroup = group;
             }
 
             currentGroup = group;
@@ -70,13 +82,22 @@
             ctrlStartOffset = currentStartOffset;
 
             if ( group ) {
+
                 kfEditor.requestService( "render.select.group.content", group );
+
                 kfEditor.requestService( "syntax.update.record.cursor", group.id, currentStartOffset );
 
+                // group的选中
                 var cursorInfo = kfEditor.requestService( "syntax.get.record.cursor" );
 
-                if ( cursorInfo.startOffset === cursorInfo.endOffset && !kfEditor.requestService( "syntax.valid.placeholder", group.id ) ) {
-                    drawCursor( group, cursorInfo.startOffset );
+                if ( cursorInfo.startOffset === cursorInfo.endOffset ) {
+                    // 点击的是占位符， 则进行着色
+                    if ( kfEditor.requestService( "syntax.valid.placeholder", parentGroup.id ) ) {
+                        kfEditor.requestService( "render.select.group", parentGroup.id );
+                    // 否则， 绘制光标
+                    } else {
+                        drawCursor( group, cursorInfo.startOffset );
+                    }
                 }
 
                 var result = kfEditor.requestService( "syntax.get.latex.info" );
@@ -116,8 +137,18 @@
 
             e.preventDefault();
 
-            isMousedown = false;
+            var _isDrag = isDrag;
+
             isDrag = false;
+            isMousedown = false;
+
+            if ( _isDrag ) {
+
+                var result = kfEditor.requestService( "syntax.get.latex.info" );
+
+                updateInput( result );
+
+            }
 
         } );
 
@@ -148,6 +179,35 @@
 
         }, false );
 
+        kfEditor.registerService( "control.insert.group", null, {
+            insertGroup: insertGroup
+        } );
+
+        function insertGroup ( val ) {
+
+            var latexStr = inp.value,
+                startOffset = inp.selectionStart,
+                endOffset = inp.selectionEnd;
+
+            val = "{" + val + "}";
+
+            startOffset = latexStr.substring( 0, startOffset );
+            endOffset = latexStr.substring( endOffset );
+
+            latexStr = startOffset + val + endOffset;
+
+            updateInput( {
+                str: latexStr,
+                startOffset: ( startOffset + val ).length,
+                endOffset: ( startOffset + val ).length
+            } );
+
+            kfEditor.requestService( "render.draw", latexStr );
+
+            drawCursorService();
+
+        }
+
         function update () {
 
             var cursorInfo = kfEditor.requestService( "syntax.get.record.cursor" ),
@@ -161,6 +221,16 @@
             var result = kfEditor.requestService( "syntax.get.latex.info" );
 
             updateInput( result );
+
+        }
+
+        function updateLatexValue ( latexResult ) {
+
+            kfEditor.requestService( "render.reselect" );
+
+            drawCursorService();
+
+            updateInput( latexResult );
 
         }
 
@@ -194,40 +264,43 @@
             kfEditor.requestService( "syntax.update.record.cursor", currentEndContainer.id, currentStartOffset, currentEndOffset );
             kfEditor.requestService( "render.select.current.cursor" );
 
-            var result = kfEditor.requestService( "syntax.get.latex.info" );
-
-            updateInput( result );
-
             if ( currentStartOffset === currentEndOffset ) {
-                drawCursor( currentEndContainer, currentEndOffset );
+
+                // 起点是占位符， 则选中占位符
+                if ( kfEditor.requestService( "syntax.valid.placeholder", group.id ) ) {
+                    kfEditor.requestService( "render.select.group", group.id );
+                // 否则， 绘制光标
+                } else {
+                    drawCursor( currentEndContainer, currentEndOffset );
+                }
             }
 
         } );
 
         inp.oninput = function ( e ) {
 
-            hideCursor();
-
             cursorIndex += inp.value.length - lastCount;
             kfEditor.requestService( "render.draw", inp.value );
             kfEditor.requestService( "render.reselect" );
+
+            drawCursorService();
+
+        };
+
+        function drawCursorService () {
 
             var cursorInfo = kfEditor.requestService( "syntax.get.record.cursor" ),
                 group = kfEditor.requestService( "syntax.get.group.content", cursorInfo.groupId );
 
             drawCursor( group, cursorInfo.startOffset );
 
-        };
-
+        }
 
         function updateInput ( result ) {
 
             inp.value = result.str;
-            inp.startOffset = result.startOffset;
-            inp.endOffset = result.endOffset;
-            lastCount = result.str.length;
-            inp.selectionStart = inp.startOffset;
-            inp.selectionEnd = inp.endOffset;
+            inp.selectionStart = result.startOffset;
+            inp.selectionEnd = result.endOffset;
             inp.focus();
 
         }
@@ -402,7 +475,9 @@
         }
 
         function hideCursor () {
-            vCursor.style.display = 'none';
+            isShowCursor = false;
+            stopCursorBlinks();
+            vCursor.node.style.display = 'none';
         }
 
         function drawCursor ( group, index ) {
@@ -410,7 +485,14 @@
             var target = null,
                 isBefore = true,
                 prevBox = null,
-                box = null;
+                box = null,
+                cursorTransform = null;
+
+            var paper = kfEditor.requestService( "render.get.paper" ),
+                offset = paper.getViewPort().offset,
+                offsetLeft = 0,
+                canvasZoom = kfEditor.requestService( "render.get.canvas.zoom" ),
+                formulaZoom = paper.getZoom();
 
             // 定位到最后
             if ( index === group.content.length ) {
@@ -425,26 +507,29 @@
             prevBox = group.content[ index - 1 ] || target;
             prevBox = prevBox.getBoundingClientRect();
 
+            // 更新transform
+            cursorTransform = vCursor.getTransform();
+
             if ( isBefore ) {
-                vCursor.style.left = box.left - 1 + "px";
+                offsetLeft = box.left - paper.container.node.getBoundingClientRect().left;
             } else {
-                vCursor.style.left = box.left + box.width + 1 + "px";
+                offsetLeft = box.left - paper.container.node.getBoundingClientRect().left + box.width;
             }
 
-            vCursor.style.height = prevBox.height + "px";
-            vCursor.style.top = prevBox.top + "px";
-            vCursor.style.display = "block";
+            cursorTransform.m.e = offsetLeft / canvasZoom/ formulaZoom;
+
+            cursorTransform.m.f = ( prevBox.top - paper.container.node.getBoundingClientRect().top ) / canvasZoom / formulaZoom;
+
+            vCursor.setHeight( prevBox.height / canvasZoom / formulaZoom );
+
+            vCursor.setTransform( cursorTransform );
+            vCursor.node.style.display = "block";
+
+            isShowCursor = true;
+
+            startCursorBlinks();
 
         }
-
-    }
-
-    function initvCursorHack () {
-
-        vCursor.addEventListener( "mouseup", function () {
-            isMousedown = false;
-            isDrag = false;
-        } );
 
     }
 
@@ -457,6 +542,36 @@
         if ( CALL_COUNT > MAX_COUNT ) {
             throw new Error("stack overflow");
         }
+    }
+
+
+    function createVCursor ( editor ) {
+
+        var paper = editor.execCommand( "getPaper" ),
+            vCursor = new kity.Rect( 1, 27, 0, 0 ).fill( "black" );
+
+        vCursor.node.style.display = "none";
+
+        paper.addShape( vCursor );
+
+        return vCursor;
+
+    }
+
+    function startCursorBlinks () {
+        if ( CURSOR_BLINKS ) {
+            window.clearInterval( CURSOR_BLINKS );
+        }
+        CURSOR_BLINKS = window.setInterval( toggleCursor, 800 );
+    }
+
+    function stopCursorBlinks () {
+        window.clearInterval( CURSOR_BLINKS );
+    }
+
+    function toggleCursor () {
+        vCursor.node.style.display = isShowCursor ? "none" : "block";
+        isShowCursor = !isShowCursor;
     }
 
     window.c = c;
