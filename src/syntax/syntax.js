@@ -318,12 +318,69 @@ define( function ( require ) {
 
             },
 
+            insertGroup: function ( latexStr ) {
+
+                var parsedResult = this.kfEditor.requestService( "parser.parse", latexStr ),
+                    subtree = parsedResult.tree;
+
+                this.insertSubtree( subtree );
+
+            },
+
             leftMove: function () {
                 this.components.move.leftMove();
             },
 
             rightMove: function () {
                 this.components.move.rightMove();
+            },
+
+            insertSubtree: function ( subtree ) {
+
+                var cursorInfo = this.record.cursor,
+                    // 当前光标信息所在的子树
+                    startOffset = 0,
+                    endOffset = 0,
+                    currentTree = null,
+                    diff = 0;
+
+                if ( this.isPlaceholder( cursorInfo.groupId ) ) {
+                    // 当前在占位符内，所以用子树替换占位符
+                    this.replaceTree( subtree );
+
+                } else {
+
+                    startOffset = Math.min( cursorInfo.startOffset, cursorInfo.endOffset );
+                    endOffset = Math.max( cursorInfo.startOffset, cursorInfo.endOffset );
+                    diff = endOffset - startOffset;
+
+                    currentTree = this.objTree.mapping[ cursorInfo.groupId ].strGroup;
+
+                    // 插入子树
+                    currentTree.operand.splice( startOffset, diff, subtree );
+
+                    // 更新光标记录
+                    cursorInfo.startOffset += 1;
+                    cursorInfo.endOffset = cursorInfo.startOffset;
+                }
+
+            },
+
+            replaceTree: function ( subtree ) {
+
+                var cursorInfo = this.record.cursor,
+                    groupNode = this.objTree.mapping[ cursorInfo.groupId ].objGroup.node,
+                    parentInfo = this.kfEditor.requestService( "position.get.parent.info", groupNode ),
+                    currentTree = this.objTree.mapping[ parentInfo.group.id ].strGroup;
+
+                // 替换占位符为子树
+                currentTree.operand[ parentInfo.index ] = subtree;
+
+                // 更新光标
+                cursorInfo.groupId = parentInfo.group.id;
+                cursorInfo.startOffset = parentInfo.index + 1;
+                cursorInfo.endOffset = parentInfo.index + 1;
+
             }
 
         });

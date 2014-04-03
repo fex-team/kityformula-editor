@@ -259,12 +259,17 @@ define("impl/latex/base/rpn", [ "impl/latex/base/utils", "impl/latex/define/oper
         // 先处理函数
         units = processFunction(units);
         while (currentUnit = units.shift()) {
+            // 移除brackets中外层包裹的combination节点
+            if (currentUnit.name === "combination" && currentUnit.operand.length === 1 && currentUnit.operand[0].name === "brackets") {
+                currentUnit = currentUnit.operand[0];
+            }
             if (Utils.isArray(currentUnit)) {
                 signStack.push(arguments.callee(currentUnit));
                 continue;
             }
             signStack.push(currentUnit);
         }
+        // 要处理brackets被附加的包裹元素
         return signStack;
     };
     /**
@@ -698,8 +703,8 @@ define("impl/latex/latex", [ "parser", "impl/latex/base/latex-utils", "impl/late
             units = this.parseToStruct(units);
             return this.generateTree(units);
         },
-        serialization: function(tree) {
-            return serialization(tree);
+        serialization: function(tree, options) {
+            return serialization(tree, options);
         },
         expand: function(expandObj) {
             var parseObj = expandObj.parse, formatKey = null, preObj = expandObj.pre, reverseObj = expandObj.reverse;
@@ -909,8 +914,8 @@ define("impl/latex/reverse/brackets", [], function() {
  */
 define("impl/latex/reverse/combination", [], function() {
     var pattern = new RegExp("", "g");
-    return function(operands) {
-        if (this.attr["data-root"] || this.attr["data-placeholder"] || /^{([\s\S]*)}$/g.test(operands.join("").replace(pattern, ""))) {
+    return function(operands, options) {
+        if (this.attr["data-root"] || this.attr["data-placeholder"]) {
             return operands.join("");
         }
         return "{" + operands.join("") + "}";
@@ -921,7 +926,7 @@ define("impl/latex/reverse/combination", [], function() {
  */
 define("impl/latex/reverse/fraction", [], function() {
     return function(operands) {
-        return "{\\frac " + operands[0] + " " + operands[1] + "}";
+        return "\\frac " + operands[0] + " " + operands[1];
     };
 });
 /*!
@@ -946,7 +951,7 @@ define("impl/latex/reverse/func", [], function() {
             result.push("_" + operands[3]);
         }
         result.push(" " + operands[1]);
-        return "{" + result.join("") + "}";
+        return result.join("");
     };
 });
 /*!
@@ -970,7 +975,7 @@ define("impl/latex/reverse/integration", [], function() {
             result.push("_" + operands[2]);
         }
         result.push(" " + operands[0]);
-        return "{" + operands.join("") + "}";
+        return operands.join("");
     };
 });
 /*!
@@ -984,7 +989,7 @@ define("impl/latex/reverse/script", [], function() {
      * 2: 下标
      */
     return function(operands) {
-        return "{" + operands[0] + "^" + operands[1] + "_" + operands[2] + "}";
+        return operands[0] + "^" + operands[1] + "_" + operands[2];
     };
 });
 /*!
@@ -1003,7 +1008,7 @@ define("impl/latex/reverse/sqrt", [], function() {
             result.push("[" + operands[1] + "]");
         }
         result.push(" " + operands[0]);
-        return "{" + result.join("") + "}";
+        return result.join("");
     };
 });
 /*!
@@ -1040,7 +1045,7 @@ define("impl/latex/reverse/summation", [], function() {
             result.push("_" + operands[2]);
         }
         result.push(" " + operands[0]);
-        return "{" + result.join("") + "}";
+        return result.join("");
     };
 });
 /*!
@@ -1061,16 +1066,20 @@ define("impl/latex/reverse/superscript", [], function() {
  */
 define("impl/latex/serialization", [ "impl/latex/define/reverse", "impl/latex/reverse/combination", "impl/latex/reverse/fraction", "impl/latex/reverse/func", "impl/latex/reverse/integration", "impl/latex/reverse/subscript", "impl/latex/reverse/superscript", "impl/latex/reverse/script", "impl/latex/reverse/sqrt", "impl/latex/reverse/summation", "impl/latex/reverse/brackets" ], function(require) {
     var reverseHandlerTable = require("impl/latex/define/reverse"), specialCharPattern = /(\\[\w]+)\\/g;
-    return function(tree) {
-        return reverseParse(tree);
+    return function(tree, options) {
+        return reverseParse(tree, options);
     };
-    function reverseParse(tree) {
+    function reverseParse(tree, options) {
         var operands = [], originalOperands = null;
         // 字符串处理， 需要处理特殊字符
         if (typeof tree !== "object") {
             return tree.replace(specialCharPattern, function(match, group) {
                 return group + " ";
             });
+        }
+        // combination需要特殊处理, 重复嵌套的combination节点要删除
+        if (tree.name === "combination" && tree.operand.length === 1 && tree.operand[0].name === "combination") {
+            tree = tree.operand[0];
         }
         originalOperands = tree.operand;
         for (var i = 0, len = originalOperands.length; i < len; i++) {
@@ -1080,7 +1089,7 @@ define("impl/latex/serialization", [ "impl/latex/define/reverse", "impl/latex/re
                 operands.push(originalOperands[i]);
             }
         }
-        return reverseHandlerTable[tree.name].call(tree, operands);
+        return reverseHandlerTable[tree.name].call(tree, operands, options);
     }
 });
 /*!
@@ -1195,8 +1204,8 @@ define("parser", [], function(require, exports, module) {
             Utils.extend(result.config, CONF, this.conf);
             return result;
         },
-        serialization: function(tree) {
-            return this.impl.serialization(tree);
+        serialization: function(tree, options) {
+            return this.impl.serialization(tree, options);
         },
         expand: function(obj) {
             this.impl.expand(obj);

@@ -52,7 +52,7 @@ define( function ( require ) {
                 this.buttonElement.initEvent();
                 this.boxElement.initEvent();
 
-                this.boxElement.onSelect( function ( val ) {
+                this.boxElement.setSelectHandler( function ( val ) {
                     // 发布
                     $$.publish( "data.select", val );
                     _self.buttonElement.hide();

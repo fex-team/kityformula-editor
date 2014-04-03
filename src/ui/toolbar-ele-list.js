@@ -27,7 +27,7 @@ define( function ( require ) {
                         label: "二项式定理",
                         item: {
                             show: '<img src="assets/images/toolbar/ys/2.png">',
-                            val: "(x+a)^2=\\sum^n_{k=0}{\\left(^n_k\\right)x^ka^{n-k}}"
+                            val: "{\\left(x+a\\right)}^2=\\sum^n_{k=0}{\\left(^n_k\\right)x^ka^{n-k}}"
                         }
                     }, {
                         label: "勾股定理",
@@ -55,12 +55,12 @@ define( function ( require ) {
                     content: [ {
                         item: {
                             show: '<img src="assets/images/toolbar/frac/1.png">',
-                            val: "\\frac {\\placeholder}{\\placeholder}"
+                            val: "\\frac \\placeholder\\placeholder"
                         }
                     }, {
                         item: {
                             show: '<img src="assets/images/toolbar/frac/2.png">',
-                            val: "{\\placeholder} / {\\placeholder}"
+                            val: "\\placeholder/\\placeholder"
                         }
                     } ]
                 }, {
@@ -68,7 +68,7 @@ define( function ( require ) {
                     content: [ {
                         item: {
                             show: '<img src="assets/images/toolbar/frac/c1.png">',
-                            val: "\\frac {dx}{dy}"
+                            val: "\\frac {dy}{dx}"
                         }
                     }, {
                         item: {
@@ -115,9 +115,14 @@ define( function ( require ) {
                             show: '<img src="assets/images/toolbar/script/3.png">',
                             val: "\\placeholder^\\placeholder_\\placeholder"
                         }
+                    }, {
+                        item: {
+                            show: '<img src="assets/images/toolbar/script/4.png">',
+                            val: "^\\placeholder_\\placeholder\\placeholder"
+                        }
                     } ]
                 }, {
-                    title: "常用上下标",
+                    title: "常用的上标和下标",
                     content: [ {
                         item: {
                             show: '<img src="assets/images/toolbar/script/c1.png">',
@@ -127,6 +132,94 @@ define( function ( require ) {
                         item: {
                             show: '<img src="assets/images/toolbar/script/c2.png">',
                             val: "x^2"
+                        }
+                    }, {
+                        item: {
+                            show: '<img src="assets/images/toolbar/script/c3.png">',
+                            val: "^n_1Y"
+                        }
+                    } ]
+                } ]
+            }
+        }
+    }, {
+        type: UI_ELE_TYPE.DRAPDOWN_BOX,
+        options: {
+            button: {
+                label: "根式",
+                icon: "assets/images/toolbar/button/sqrt.png"
+            },
+            box: {
+                width: 332,
+                group: [ {
+                    title: "根式",
+                    content: [ {
+                        item: {
+                            show: '<img src="assets/images/toolbar/sqrt/1.png">',
+                            val: "\\sqrt \\placeholder"
+                        }
+                    }, {
+                        item: {
+                            show: '<img src="assets/images/toolbar/sqrt/2.png">',
+                            val: "\\sqrt [\\placeholder] \\placeholder"
+                        }
+                    }, {
+                        item: {
+                            show: '<img src="assets/images/toolbar/sqrt/3.png">',
+                            val: "\\sqrt [2] \\placeholder"
+                        }
+                    }, {
+                        item: {
+                            show: '<img src="assets/images/toolbar/sqrt/4.png">',
+                            val: "\\sqrt [3] \\placeholder"
+                        }
+                    } ]
+                }, {
+                    title: "常用根式",
+                    content: [ {
+                        item: {
+                            show: '<img src="assets/images/toolbar/sqrt/c1.png">',
+                            val: "\\frac {-b\\pm\\sqrt{b^2-4ac}}{2a}"
+                        }
+                    }, {
+                        item: {
+                            show: '<img src="assets/images/toolbar/sqrt/c2.png">',
+                            val: "\\sqrt {a^2+b^2}"
+                        }
+                    } ]
+                } ]
+            }
+        }
+    }, {
+        type: UI_ELE_TYPE.DRAPDOWN_BOX,
+        options: {
+            button: {
+                label: "括号",
+                icon: "assets/images/toolbar/button/brackets.png"
+            },
+            box: {
+                width: 332,
+                group: [ {
+                    title: "方括号",
+                    content: [ {
+                        item: {
+                            show: '<img src="assets/images/toolbar/brackets/1.png">',
+                            val: "\\left(\\placeholder\\right)"
+                        }
+                    }, {
+                        item: {
+                            show: '<img src="assets/images/toolbar/brackets/2.png">',
+                            val: "\\left[\\placeholder\\right]"
+                        }
+                    }, {
+                        item: {
+                            show: '<img src="assets/images/toolbar/brackets/3.png">',
+                            val: "\\left\\{\\placeholder\\right\\}"
+                        }
+                    }, {
+                        item: {
+                            show: '<img src="assets/images/toolbar/brackets/4.png">',
+                            val: "\\left|\\placeholder\\right|"
                         }
                     } ]
                 } ]

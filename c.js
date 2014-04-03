@@ -20,6 +20,7 @@
         },
         isShowCursor = false,
         inp = null,
+        isAllowInput = false,
         vCursor = null,
         lastCount = -1,
         cursorIndex = -1,
@@ -69,12 +70,6 @@
                 group = kfEditor.requestService( "syntax.get.group.content", "_kf_editor_1_1" );
             }
 
-            // 对brackets组特殊处理, 容器取其内部元素
-            if ( kfEditor.requestService( "syntax.valid.brackets", group.id ) ) {
-                group = kfEditor.requestService( "syntax.get.group.content", group.id );
-                group = kfEditor.requestService( "syntax.get.group.content", group.content[ 0 ].id )
-            }
-
             if ( !parentGroup ) {
                 parentGroup = group;
             }
@@ -96,6 +91,10 @@
                 // group的选中
                 var cursorInfo = kfEditor.requestService( "syntax.get.record.cursor" );
 
+                var result = kfEditor.requestService( "syntax.get.latex.info" );
+
+                updateInput( result );
+
                 if ( cursorInfo.startOffset === cursorInfo.endOffset ) {
                     // 点击的是占位符， 则进行着色
                     if ( kfEditor.requestService( "syntax.valid.placeholder", parentGroup.id ) ) {
@@ -105,10 +104,6 @@
                         drawCursor( group, cursorInfo.startOffset );
                     }
                 }
-
-                var result = kfEditor.requestService( "syntax.get.latex.info" );
-
-                updateInput( result );
 
             } else {
                 kfEditor.requestService( "render.clear.select" );
@@ -193,22 +188,36 @@
 
             var latexStr = inp.value,
                 startOffset = inp.selectionStart,
-                endOffset = inp.selectionEnd;
+                endOffset = inp.selectionEnd,
+                latexInfo = null;
 
-            startOffset = latexStr.substring( 0, startOffset );
-            endOffset = latexStr.substring( endOffset );
+            kfEditor.requestService( "syntax.insert.group", val );
 
-            latexStr = startOffset + val + endOffset;
+            latexInfo = kfEditor.requestService( "syntax.get.latex.info" );
 
-            updateInput( {
-                str: latexStr,
-                startOffset: ( startOffset + val ).length,
-                endOffset: ( startOffset + val ).length
-            } );
+            updateInput( latexInfo );
 
-            kfEditor.requestService( "render.draw", latexStr );
+            kfEditor.requestService( "render.draw", latexInfo.str );
 
             drawCursorService();
+
+//
+//            val = "{" + val + "}"
+//
+//            startOffset = latexStr.substring( 0, startOffset );
+//            endOffset = latexStr.substring( endOffset );
+//
+//            latexStr = startOffset + val + endOffset;
+//
+//            updateInput( {
+//                str: latexStr,
+//                startOffset: ( startOffset + val ).length + 1,
+//                endOffset: ( startOffset + val ).length + 1
+//            } );
+//
+//            kfEditor.requestService( "render.draw", latexStr );
+//
+//            drawCursorService();
 
         }
 
@@ -218,13 +227,16 @@
                 group = kfEditor.requestService( "syntax.get.group.content", cursorInfo.groupId );
 
             kfEditor.requestService( "render.select.group.content", group );
-            if ( cursorInfo.startOffset === cursorInfo.endOffset && !kfEditor.requestService( "syntax.valid.placeholder", cursorInfo.groupId ) ) {
-                drawCursor( group, cursorInfo.startOffset );
-            }
 
             var result = kfEditor.requestService( "syntax.get.latex.info" );
 
             updateInput( result );
+
+            if ( cursorInfo.startOffset === cursorInfo.endOffset && !kfEditor.requestService( "syntax.valid.placeholder", cursorInfo.groupId ) ) {
+                drawCursor( group, cursorInfo.startOffset );
+            }
+
+            return result;
 
         }
 
@@ -232,9 +244,9 @@
 
             kfEditor.requestService( "render.reselect" );
 
-            drawCursorService();
-
             updateInput( latexResult );
+
+            drawCursorService();
 
         }
 
@@ -298,6 +310,8 @@
 
             drawCursor( group, cursorInfo.startOffset );
 
+            kfEditor.requestService( "render.select.group", cursorInfo.groupId );
+
         }
 
         function updateInput ( result ) {
@@ -307,7 +321,14 @@
             inp.selectionEnd = result.endOffset;
             inp.focus();
 
+            isAllowInput = true;
+
         }
+
+        inp.onblur = function () {
+            isAllowInput = false;
+            hideCursor();
+        };
 
         // 修正起始容器和结束容器指向不统一的情况
         function updateContainer ( startContainer, endContainer, offset ) {
@@ -491,6 +512,10 @@
                 prevBox = null,
                 box = null,
                 cursorTransform = null;
+
+            if ( !isAllowInput ) {
+                return;
+            }
 
             var paper = kfEditor.requestService( "render.get.paper" ),
                 offset = paper.getViewPort().offset,

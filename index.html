@@ -31,7 +31,8 @@
 //            editor.execCommand( 'render', "a^2_3+ab+\\sqrt{{\\frac ab}^2_3}+a^2_3" );
 //            editor.execCommand( 'render', 'abcdef+b-c-{\\frac {asdfadasdfasd} {b}}+{\\frac {\\placeholder} {b}}\\div {\\sqrt {\\placeholder}}' );
 //            editor.execCommand( "render", 'e=\\sum _{n\\to \\infty }\\left(1+\\frac{1233}{n}\\right)' );
-            editor.execCommand( "render", 'abc\\left(a+b\\right)def' );
+            editor.execCommand( "render", "\\placeholder" )
+//            editor.execCommand( "render", 'abc\\left(a+b\\right)def' );
             c.start( editor );
 
         } );
@@ -42,7 +43,7 @@
 </head>
 <body>
     <div id="kfEditorContainer" class="kf-editor"></div>
-    <input style="position: fixed; top: 0; left: 0; width: 1000px; z-index: 9999;" id="hiddenInput" type="text">
+    <input style="position: fixed; top: 0; left: 1000000px; width: 1000px; z-index: 9999;" id="hiddenInput" type="text">
     <div id="cursor" class="virtual-cursor"></div>
 </body>
 </html>

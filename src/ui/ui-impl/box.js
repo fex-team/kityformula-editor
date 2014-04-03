@@ -71,7 +71,7 @@ define( function ( require ) {
                 return this.element;
             },
 
-            onSelect: function ( onselectHandler ) {
+            setSelectHandler: function ( onselectHandler ) {
                 this.onselectHandler = onselectHandler;
             },
 

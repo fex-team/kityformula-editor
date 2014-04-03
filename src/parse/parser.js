@@ -29,6 +29,8 @@ define( function ( require ) {
 
             this.tree = null;
 
+            this.isResetId = true;
+
             this.initServices();
 
         },
@@ -37,7 +39,9 @@ define( function ( require ) {
 
             var parsedResult = null;
 
-            if ( isResetId ) {
+            this.isResetId = !!isResetId;
+
+            if ( this.isResetId ) {
                 this.resetGroupId();
             }
 
@@ -103,14 +107,25 @@ define( function ( require ) {
 
         tree.attr.id = parser.getGroupId();
 
-        tree.attr[ "data-type" ] = GROUP_TYPE;
+        // 组类型已经存在则不用再处理
+        if ( !tree.attr[ "data-type" ] ) {
 
-        if ( COMPARISON_TABLE[ tree.name ] ) {
-            tree.attr[ "data-type" ] = V_GROUP_TYPE;
+            tree.attr[ "data-type" ] = GROUP_TYPE;
+
+            if ( COMPARISON_TABLE[ tree.name ] ) {
+                tree.attr[ "data-type" ] = V_GROUP_TYPE;
+            }
+
         }
 
         if ( isRoot ) {
-            tree.attr[ "data-root" ] = "true";
+            // 如果isResetId为false， 表示当前生成的是子树
+            // 则不做data-root标记， 同时更改该包裹的类型为V_GROUP_TYPE
+            if ( !parser.isResetId ) {
+                tree.attr[ "data-type" ] = V_GROUP_TYPE;
+            } else {
+                tree.attr[ "data-root" ] = "true";
+            }
         }
 
         if ( tree.name === "brackets" ) {
@@ -131,14 +146,17 @@ define( function ( require ) {
 
                     if ( typeof currentOperand === "string" ) {
 
-                        tree.operand[ i ] = {
-                            name: "combination",
-                            operand: [ currentOperand ],
-                            attr: {
-                                id: parser.getGroupId(),
-                                "data-type": GROUP_TYPE
-                            }
-                        };
+                        // brackets树的前两个节点不用处理
+                        if ( tree.name !== "brackets" || i > 1 ) {
+                            tree.operand[ i ] = {
+                                name: "combination",
+                                operand: [ currentOperand ],
+                                attr: {
+                                    id: parser.getGroupId(),
+                                    "data-type": GROUP_TYPE
+                                }
+                            };
+                        }
 
                     } else {
 
@@ -190,10 +208,10 @@ define( function ( require ) {
                         tree.operand[ i ] = currentOperand;
                     } else {
 
-                        // 重置组类型
-                        if ( !isRoot && tree.operand.length === 1 ) {
-                            tree.attr[ "data-type" ] = V_GROUP_TYPE;
-                        }
+//                        // 重置组类型
+//                        if ( !isRoot && tree.operand.length === 1 ) {
+//                            tree.attr[ "data-type" ] = V_GROUP_TYPE;
+//                        }
 
                         // 占位符附加包裹
                         if ( currentOperand.name === "placeholder" ) {

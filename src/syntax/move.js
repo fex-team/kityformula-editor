@@ -317,6 +317,10 @@ define( function ( require, exports, module ) {
 
         }
 
+        if ( isEmptyNode( groupNode ) ) {
+            return locateOuterLeftIndex( moveComponent, groupNode );
+        }
+
         return {
             groupId: outerGroupInfo.group.id,
             startOffset: outerGroupInfo.index,
@@ -356,7 +360,7 @@ define( function ( require, exports, module ) {
                 // 仅是一个组， 进入组内部处理, 找到目标容器
             } else {
 
-                while ( !isContainerNode( groupElement ) && !isPlaceholderNode( groupElement ) ) {
+                while ( !isContainerNode( groupElement ) && !isPlaceholderNode( groupElement ) && !isEmptyNode( groupElement ) ) {
                     groupInfo = syntaxComponent.getGroupContent( groupElement.id );
                     groupElement = groupInfo.content[ 0 ];
                 }
@@ -368,6 +372,8 @@ define( function ( require, exports, module ) {
                         startOffset: 0,
                         endOffset: 0
                     };
+                } else if ( isEmptyNode( groupElement ) ) {
+                    return locateOuterRightIndex( moveComponent, groupElement );
                 } else {
                     return locateRightIndex( moveComponent, groupElement );
                 }

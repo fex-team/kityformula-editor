@@ -3939,8 +3939,8 @@ define("operator/brackets", [ "kity", "char/data", "char/data/number/0", "char/d
         constructor: function() {
             this.callBase("Brackets");
         },
-        applyOperand: function(leftBrackets, rightBrackets, exp) {
-            generate.call(this, leftBrackets, rightBrackets, exp);
+        applyOperand: function(exp) {
+            generate.call(this, exp);
         }
     });
     function generate(exp) {

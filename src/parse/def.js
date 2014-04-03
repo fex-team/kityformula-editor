@@ -13,7 +13,8 @@ define( function () {
         "placeholder": true,
         "script": true,
         "superscript": true,
-        "subscript": true
+        "subscript": true,
+        "brackets": true
 
     };
 
