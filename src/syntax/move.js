@@ -208,8 +208,8 @@ define( function ( require, exports, module ) {
                         endOffset: 0
                     };
 
-                // 内部元素仍然是一个容器则进行递归处理
-                } else if ( isContainerNode( groupElement ) ) {
+                // 内部元素仍然是一个容器并且只有这一个内部元素，则进行递归处理
+                } else if ( isContainerNode( groupElement ) && groupInfo.content.length === 1 ) {
                     return locateLeftIndex( moveComponent, groupElement );
                 }
 

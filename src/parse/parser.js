@@ -103,18 +103,17 @@ define( function ( require ) {
 
         tree.attr.id = parser.getGroupId();
 
-//        tree.attr[ "data-type" ] = GROUP_TYPE;
-        if ( !tree.attr[ "data-type" ] ) {
-            tree.attr[ "data-type" ] = V_GROUP_TYPE;
-        }
-
-//        if ( COMPARISON_TABLE[ tree.name ] ) {
+        tree.attr[ "data-type" ] = GROUP_TYPE;
+//        if ( !tree.attr[ "data-type" ] ) {
 //            tree.attr[ "data-type" ] = V_GROUP_TYPE;
 //        }
 
+        if ( COMPARISON_TABLE[ tree.name ] ) {
+            tree.attr[ "data-type" ] = V_GROUP_TYPE;
+        }
+
         if ( isRoot ) {
             tree.attr[ "data-root" ] = "true";
-            tree.attr[ "data-type" ] = GROUP_TYPE;
         }
 
         for ( var i = 0, len= tree.operand.length; i < len; i++ ) {
@@ -189,9 +188,10 @@ define( function ( require ) {
                     if ( typeof currentOperand === "string" ) {
                         tree.operand[ i ] = currentOperand;
                     } else {
+
                         // 重置组类型
                         if ( !isRoot && tree.operand.length === 1 ) {
-//                            tree.attr[ "data-type" ] = V_GROUP_TYPE;
+                            tree.attr[ "data-type" ] = V_GROUP_TYPE;
                         }
 
                         // 占位符附加包裹

@@ -11,7 +11,9 @@ define( function () {
         "summation": true,
         "integration": true,
         "placeholder": true,
-        "script": true
+        "script": true,
+        "superscript": true,
+        "subscript": true
 
     };
 

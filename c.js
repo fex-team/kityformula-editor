@@ -189,8 +189,6 @@
                 startOffset = inp.selectionStart,
                 endOffset = inp.selectionEnd;
 
-            val = "{" + val + "}";
-
             startOffset = latexStr.substring( 0, startOffset );
             endOffset = latexStr.substring( endOffset );
 
