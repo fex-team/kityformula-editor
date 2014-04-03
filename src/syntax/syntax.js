@@ -61,6 +61,10 @@ define( function ( require ) {
                     isPlaceholder: this.isPlaceholder
                 } );
 
+                this.kfEditor.registerService( "syntax.valid.brackets", this, {
+                    isBrackets: this.isBrackets
+                } );
+
                 this.kfEditor.registerService( "syntax.get.group.content", this, {
                     getGroupContent: this.getGroupContent
                 } );
@@ -118,6 +122,10 @@ define( function ( require ) {
             // 验证给定ID的组是否是占位符
             isPlaceholder: function ( groupId ) {
                 return !!this.objTree.mapping[ groupId ].objGroup.node.getAttribute( "data-placeholder" );
+            },
+
+            isBrackets: function ( groupId ) {
+                return !!this.objTree.mapping[ groupId ].objGroup.node.getAttribute( "data-brackets" );
             },
 
             getObjectTree: function () {

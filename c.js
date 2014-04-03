@@ -69,6 +69,12 @@
                 group = kfEditor.requestService( "syntax.get.group.content", "_kf_editor_1_1" );
             }
 
+            // 对brackets组特殊处理, 容器取其内部元素
+            if ( kfEditor.requestService( "syntax.valid.brackets", group.id ) ) {
+                group = kfEditor.requestService( "syntax.get.group.content", group.id );
+                group = kfEditor.requestService( "syntax.get.group.content", group.content[ 0 ].id )
+            }
+
             if ( !parentGroup ) {
                 parentGroup = group;
             }

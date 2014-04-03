@@ -104,9 +104,6 @@ define( function ( require ) {
         tree.attr.id = parser.getGroupId();
 
         tree.attr[ "data-type" ] = GROUP_TYPE;
-//        if ( !tree.attr[ "data-type" ] ) {
-//            tree.attr[ "data-type" ] = V_GROUP_TYPE;
-//        }
 
         if ( COMPARISON_TABLE[ tree.name ] ) {
             tree.attr[ "data-type" ] = V_GROUP_TYPE;
@@ -114,6 +111,10 @@ define( function ( require ) {
 
         if ( isRoot ) {
             tree.attr[ "data-root" ] = "true";
+        }
+
+        if ( tree.name === "brackets" ) {
+            tree.attr[ "data-brackets" ] = "true";
         }
 
         for ( var i = 0, len= tree.operand.length; i < len; i++ ) {
