@@ -2,7 +2,7 @@
 .kf-editor-ui-button {
     width: 50px;
     height: 100%;
-    font-size: 14px;
+    font-size: 10px;
     display: inline-block;
     border: 1px solid transparent;
     cursor: default;
@@ -40,13 +40,13 @@
 }
 
 .kf-editor-ui-button:HOVER {
-    background: rgba(255, 180, 11, 0.61);
+    background: -webkit-linear-gradient( top, rgba(255, 180, 11, 0.41), rgba(255, 180, 11, 0.61), rgba(255, 180, 11, 0.41) );
     border: 1px solid #ffbf00;
     box-shadow: inset 0 0 1px 1px white;
 }
 
 .kf-editor-toolbar .kf-editor-ui-button-in {
-    background: #ffb41e;
+    background: -webkit-linear-gradient( top, rgba(255, 180, 30, 0.81), rgba(255, 177, 24, 0.91), rgba(255, 180, 30, 0.81) );
     border-color: #b88212;
     box-shadow: none;
 }
@@ -88,7 +88,7 @@
 }
 
 .kf-editor-ui-box-item:HOVER {
-    background: rgba(255, 180, 11, 0.61);
+    background: -webkit-linear-gradient( top, rgba(255, 180, 11, 0.41), rgba(255, 180, 11, 0.61), rgba(255, 180, 11, 0.41) );
     border: 1px solid #ffbf00;
     box-shadow: inset 0 0 1px 1px white;
 }

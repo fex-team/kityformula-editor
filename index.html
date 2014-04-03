@@ -27,9 +27,11 @@
 //            editor.execCommand( 'render', 'abc+abcdef+b-c-\\frac {adasdfasd\\sum^a_bc}b+\\frac \\placeholder b\\div \\sqrt {\\placeholder} + b' );
 //            editor.execCommand( 'render', "{\\placeholder}" );
 
-            editor.execCommand( 'render', "ab{x=\\frac {-b\\pm\\sqrt {b^2-4ac}}{2a}}cd" );
+//            editor.execCommand( 'render', "ab{x=\\frac {-b\\pm\\sqrt {b^2-4ac}}{2a}}cd" );
 //            editor.execCommand( 'render', "a^2_3+ab+\\sqrt{{\\frac ab}^2_3}+a^2_3" );
 //            editor.execCommand( 'render', 'abcdef+b-c-{\\frac {asdfadasdfasd} {b}}+{\\frac {\\placeholder} {b}}\\div {\\sqrt {\\placeholder}}' );
+//            editor.execCommand( "render", 'e=\\sum _{n\\to \\infty }\\left(1+\\frac{1233}{n}\\right)' );
+            editor.execCommand( "render", 'abc\\left(a+b\\right)def' );
             c.start( editor );
 
         } );

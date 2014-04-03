@@ -48,6 +48,10 @@ define( function ( require ) {
                     e.preventDefault();
                     e.stopPropagation();
 
+                    if ( e.which !== 1 ) {
+                        return;
+                    }
+
                     _self.toggleSelect();
                     _self.toggleMountElement();
 

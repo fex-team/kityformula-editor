@@ -58,6 +58,10 @@ define( function ( require, exports, module ) {
 
             containerInfo = syntaxComponent.getGroupContent( cursorInfo.groupId );
 
+            if ( isPlaceholderNode( containerInfo.groupObj ) ) {
+                return locateOuterIndex( this, containerInfo.groupObj, DIRECTION.LEFT );
+            }
+
             if ( cursorInfo.startOffset > 0 ) {
 
                 prevGroupNode = containerInfo.content[ cursorInfo.startOffset - 1 ];
@@ -233,7 +237,7 @@ define( function ( require, exports, module ) {
 
                 if ( isPlaceholderNode( groupElement ) ) {
                     return {
-                        groupId: groupInfo.id,
+                        groupId: groupElement.id,
                         startOffset: groupInfo.content.length,
                         endOffset: groupInfo.content.length
                     };
@@ -267,6 +271,15 @@ define( function ( require, exports, module ) {
         while ( outerGroupInfo.index === 0 ) {
 
             if ( isRootNode( outerGroupInfo.group.groupObj ) ) {
+                return {
+                    groupId: outerGroupInfo.group.id,
+                    startOffset: 0,
+                    endOffset: 0
+                };
+            }
+
+            // 如果父组是一个容器， 并且该容器包含不止一个节点， 则跳到父组开头
+            if ( isContainerNode( outerGroupInfo.group.groupObj ) && outerGroupInfo.group.content.length > 1 ) {
                 return {
                     groupId: outerGroupInfo.group.id,
                     startOffset: 0,
@@ -348,9 +361,10 @@ define( function ( require, exports, module ) {
                     groupElement = groupInfo.content[ 0 ];
                 }
 
+                // 定位到占位符内部
                 if ( isPlaceholderNode( groupElement ) ) {
                     return {
-                        groupId: groupInfo.id,
+                        groupId: groupElement.id,
                         startOffset: 0,
                         endOffset: 0
                     };
@@ -385,6 +399,15 @@ define( function ( require, exports, module ) {
         while ( outerGroupInfo.index === outerGroupInfo.group.content.length - 1 ) {
 
             if ( isRootNode( outerGroupInfo.group.groupObj ) ) {
+                return {
+                    groupId: outerGroupInfo.group.id,
+                    startOffset: outerGroupInfo.group.content.length,
+                    endOffset: outerGroupInfo.group.content.length
+                };
+            }
+
+            // 如果父组是一个容器， 并且该容器包含不止一个节点， 则跳到父组末尾
+            if ( isContainerNode( outerGroupInfo.group.groupObj ) && outerGroupInfo.group.content.length > 1 ) {
                 return {
                     groupId: outerGroupInfo.group.id,
                     startOffset: outerGroupInfo.group.content.length,

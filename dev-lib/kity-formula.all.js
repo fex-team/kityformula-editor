@@ -1,6 +1,6 @@
 /*!
  * ====================================================
- * Kity Formula - v1.0.0 - 2014-04-01
+ * Kity Formula - v1.0.0 - 2014-04-03
  * https://github.com/kitygraph/formula
  * GitHub: https://github.com/kitygraph/formula.git 
  * Copyright (c) 2014 Baidu Kity Group; Licensed MIT
@@ -3122,10 +3122,16 @@ define("expression/compound-exp/brackets", [ "kity", "operator/brackets", "char/
                 exp = right;
                 right = left;
             }
+            this.leftSymbol = left;
+            this.rightSymbol = right;
             this.setOperator(new BracketsOperator());
-            this.setOperand(left, 0, false);
-            this.setOperand(right, 1, false);
-            this.setOperand(exp, 2);
+            this.setOperand(exp, 0);
+        },
+        getLeftSymbol: function() {
+            return this.leftSymbol;
+        },
+        getRightSymbol: function() {
+            return this.rightSymbol;
         }
     });
 });
@@ -3937,8 +3943,8 @@ define("operator/brackets", [ "kity", "char/data", "char/data/number/0", "char/d
             generate.call(this, leftBrackets, rightBrackets, exp);
         }
     });
-    function generate(left, right, exp) {
-        var leftPath = SYMBOL_DATA.std[left].path, rightPath = SYMBOL_DATA.std[right].path, group = new kity.Group(), leftOp = new kity.Path(leftPath).fill("black"), rightOp = new kity.Path(rightPath).fill("black"), expSpaceSize = exp.getRenderBox(), leftOpSize = null, rightOpSize = null, leftZoom = 1, rightZoom = 1, // 左右空间大小
+    function generate(exp) {
+        var left = this.getParentExpression().getLeftSymbol(), right = this.getParentExpression().getRightSymbol(), leftPath = SYMBOL_DATA.std[left].path, rightPath = SYMBOL_DATA.std[right].path, group = new kity.Group(), leftOp = new kity.Path(leftPath).fill("black"), rightOp = new kity.Path(rightPath).fill("black"), expSpaceSize = exp.getRenderBox(), leftOpSize = null, rightOpSize = null, leftZoom = 1, rightZoom = 1, // 左右空间大小
         SPACE = 2, offset = 0;
         this.addOperatorShape(group.addShape(leftOp).addShape(rightOp));
         leftOpSize = leftOp.getRenderBox();

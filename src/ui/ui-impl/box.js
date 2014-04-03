@@ -50,7 +50,18 @@ define( function ( require ) {
 
                     e.preventDefault();
 
-                    $$.publish( "data.select", this.getAttribute( "data-value" ) );
+                    if ( e.which !== 1 ) {
+                        return;
+                    }
+
+                    _self.onselectHandler && _self.onselectHandler( this.getAttribute( "data-value" ) );
+
+                } );
+
+                $$.on( this.element, "mousedown", function ( e ) {
+
+                    e.stopPropagation();
+                    e.preventDefault();
 
                 } );
 
@@ -58,6 +69,10 @@ define( function ( require ) {
 
             getNode: function () {
                 return this.element;
+            },
+
+            onSelect: function ( onselectHandler ) {
+                this.onselectHandler = onselectHandler;
             },
 
             createGroupContainer: function () {

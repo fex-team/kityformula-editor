@@ -1,6 +1,6 @@
 /*!
  * ====================================================
- * kityformula-editor - v1.0.0 - 2014-04-02
+ * kityformula-editor - v1.0.0 - 2014-04-03
  * https://github.com/HanCong03/kityformula-editor
  * GitHub: https://github.com/kitygraph/kityformula-editor.git 
  * Copyright (c) 2014 Baidu Kity Group; Licensed MIT
@@ -143,7 +143,12 @@ define("assembly", [], function(require, exports, module) {
                     operand[i] = createObject("empty");
                     objTree.operand.push(operand[i]);
                 } else if (typeof currentOperand === "string") {
-                    operand[i] = createObject("text", currentOperand);
+                    // 括号表达式不能对前2个参数做处理， 这两个参数是代表括号类型
+                    if (tree.name === "brackets" && i < 2) {
+                        operand[i] = currentOperand;
+                    } else {
+                        operand[i] = createObject("text", currentOperand);
+                    }
                     objTree.operand.push(operand[i]);
                 } else {
                     objTree.operand.push({});
@@ -633,6 +638,7 @@ define("impl/latex/handler/script", [], function(require, exports, module) {
         if (!script) {
             throw new Error("Missing script");
         }
+        base = base || "";
         if (base.name === info.name || base.name === "script") {
             throw new Error("script error");
         }
