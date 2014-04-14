@@ -12,6 +12,15 @@
     vertical-align: top;
 }
 
+.kf-editor-ui-overlap-button {
+    width: 100%;
+    background: #8f8f8f;
+    position: relative;
+    top: 0;
+    left: 0;
+    z-index: 2;
+}
+
 .kf-editor-ui-button-icon {
     width: 32px;
     height: 32px;
@@ -22,6 +31,17 @@
     text-align: center;
     display: block;
     padding: 8px 0;
+}
+
+.kf-editor-ui-overlap-button .kf-editor-ui-button-label {
+    padding: 5px 5px;
+    text-align: left;
+    color: white;
+    font-size: 14px;
+}
+
+.kf-editor-ui-overlap-button .kf-editor-ui-button-label:HOVER {
+    color: #ffbf00;
 }
 
 .kf-editor-ui-button-sign {
@@ -39,10 +59,31 @@
     left: -1px;
 }
 
+.kf-editor-ui-overlap-button .kf-editor-ui-button-mount-point {
+    width: 100%;
+    height: 1000px;
+}
+
+.kf-editor-ui-overlap-button .kf-editor-ui-button-mount-point {
+    top: 27px;
+}
+
 .kf-editor-ui-button:HOVER {
     background: -webkit-linear-gradient( top, rgba(255, 180, 11, 0.41), rgba(255, 180, 11, 0.61), rgba(255, 180, 11, 0.41) );
     border: 1px solid #ffbf00;
     box-shadow: inset 0 0 1px 1px white;
+}
+
+.kf-editor-ui-overlap-button:HOVER {
+    background: #8f8f8f;
+    border-color: transparent;
+    box-shadow: none;
+}
+
+.kf-editor-ui-overlap-button.kf-editor-ui-button-in {
+    background: #8f8f8f!important;
+    border-color: transparent!important;
+    box-shadow: none!important;
 }
 
 .kf-editor-toolbar .kf-editor-ui-button-in {
@@ -81,6 +122,10 @@
     padding: 5px;
 }
 
+.kf-editor-ui-overlap-container {
+    overflow: hidden;
+}
+
 .kf-editor-ui-box-item {
     border: 1px solid transparent;
     padding: 5px;
@@ -93,6 +138,24 @@
     box-shadow: inset 0 0 1px 1px white;
 }
 
+.kf-editor-ui-area .kf-editor-ui-box-item {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 32px;
+    height: 32px;
+    border: 0;
+    margin: 0 5px 5px 0;
+    padding: 0;
+    z-index: 1;
+}
+
+.kf-editor-ui-area .kf-editor-ui-box-item img {
+    width: 32px;
+    height: 32px;
+}
+
+
 .kf-editor-ui-box-item-label {
     margin-bottom: 5px;
 }
@@ -102,7 +165,151 @@
     border: 1px solid black;
 }
 
+.kf-editor-ui-area .kf-editor-ui-box-item-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.kf-editor-ui-area .kf-editor-ui-box-item-content:HOVER {
+    border: 2px solid #ffbd19;
+    top: -1px;
+    left: -1px;
+}
+
 .kf-editor-ui-box-item-val {
     padding: 5px;
     margin-bottom: 5px;
+    line-height: 0;
+}
+
+.kf-editor-ui-area .kf-editor-ui-box-item-val {
+    padding: 0;
+    margin: 0;
+}
+
+/* area */
+.kf-editor-ui-area {
+    height: 90%;
+    display: inline-block;
+    cursor: default;
+    position: relative;
+    top: 0;
+    left: 0;
+    vertical-align: top;
+}
+
+.kf-editor-ui-area-container {
+    width: 510px;
+    height: 100%;
+    display: inline-block;
+    border: 1px solid #D3D3D3;
+    border-right: 0;
+    vertical-align: top;
+}
+
+.kf-editor-ui-area-button {
+    width: 15px;
+    height: 100%;
+    line-height: 70px;
+    text-align: center;
+    color: #5c5c5c;
+    display: inline-block;
+    border: 1px solid #D3D3D3;
+}
+
+.kf-editor-ui-area-button:HOVER {
+    border-color: #ffbf00;
+    background: rgba(255, 207, 15, 0.5);
+}
+
+.kf-editor-ui-area-mount {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+}
+
+.kf-editor-ui-overlap-title {
+    width: 100%;
+    line-height: 1.5;
+}
+
+/* list */
+.kf-editor-ui-list {
+    background: white;
+    padding: 5px;
+    border: 1px solid #b1b1b1;
+    position: relative;
+    top: 0;
+    left: 0;
+}
+
+.kf-editor-ui-list-bg {
+    width: 1px;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 34px;
+    background: rgba(238, 238, 238, 0.84);
+    box-shadow: 0px 0 1px 1px rgba(224, 224, 224, 0.16);
+    z-index: 1;
+}
+
+.kf-editor-ui-list-item-container {
+    position: relative;
+    top: 0;
+    left: 0;
+    z-index: 2;
+}
+
+.kf-editor-ui-list-item {
+    line-height: 16px;
+    padding: 2px 5px;
+    border: 1px solid transparent;
+}
+
+.kf-editor-ui-list-item:HOVER {
+    border-color: #ffbd19;
+    background: rgba(255, 207, 15, 0.5);
+}
+
+.kf-editor-ui-list-item-icon {
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    vertical-align: bottom;
+    margin-right: 10px;
+    border: 1px solid rgba(255, 207, 15, 0.8);
+    visibility: hidden;
+}
+
+/* area 内容区 */
+.kf-editor-ui-area-item {
+    width: 24px;
+    height: 24px;
+    margin: 5px 0 0 5px;
+    position: relative;
+    top: 0;
+    left: 0;
+    display: inline-block;
+}
+
+.kf-editor-ui-area-item-content {
+    border: 1px solid black;
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    line-height: 0;
+}
+
+.kf-editor-ui-area-item-content:HOVER {
+    border: 2px solid #ffbd19;
+    top: -2px;
+    left: -2px;
+}
+
+.kf-editor-ui-area-item-content img {
+    width: 24px;
+    height: 24px;
 }

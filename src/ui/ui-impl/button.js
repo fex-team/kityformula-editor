@@ -66,6 +66,10 @@ define( function ( require ) {
 
             },
 
+            setLabel: function ( labelText ) {
+                this.label.innerHTML = labelText;
+            },
+
             toggleSelect: function () {
                 this.element.classList.toggle( PREFIX + "button-in" );
             },
@@ -110,11 +114,20 @@ define( function ( require ) {
                     className: PREFIX + "button"
                 } );
 
+                // 附加className
+                if ( this.options.className ) {
+                    buttonNode.className += " " + PREFIX + this.options.className;
+                }
+
                 return buttonNode;
 
             },
 
             createIcon: function () {
+
+                if ( !this.options.icon ) {
+                    return null;
+                }
 
                 var iconNode = $$.ele( this.doc, "div", {
                     className: PREFIX + "button-icon"
@@ -140,6 +153,10 @@ define( function ( require ) {
 
             createSign: function () {
 
+                if ( !this.options.sign ) {
+                    return null;
+                }
+
                 return $$.ele( this.doc, "div", {
                     className: PREFIX + "button-sign"
                 } );
@@ -156,9 +173,9 @@ define( function ( require ) {
 
             mergeElement: function () {
 
-                this.element.appendChild( this.icon );
+                this.icon && this.element.appendChild( this.icon );
                 this.element.appendChild( this.label );
-                this.element.appendChild( this.sign );
+                this.sign && this.element.appendChild( this.sign );
                 this.element.appendChild( this.mountPoint );
 
             }

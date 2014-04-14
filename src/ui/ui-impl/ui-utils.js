@@ -11,7 +11,14 @@ define( function ( require ) {
     return {
 
         ele: function ( doc, name, options ) {
-            var node =  doc.createElement( name );
+
+            var node = null;
+
+            if ( name === "text" ) {
+                return doc.createTextNode( options );
+            }
+
+            node =  doc.createElement( name );
             options.className && ( node.className = options.className );
 
             if ( options.content ) {
