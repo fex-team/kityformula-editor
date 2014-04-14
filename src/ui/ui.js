@@ -67,7 +67,7 @@ define( function ( require, exports, modules ) {
 
                 var containerBox = container.getBoundingClientRect();
 
-                toolbar.style.width = containerBox.width + "px";
+                toolbar.style.width = containerBox.width -  12 + "px";
                 toolbar.style.height = 80 + "px";
 
                 editArea.style.marginTop = 80 + "px";
