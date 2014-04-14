@@ -48,6 +48,18 @@ define( function ( require ) {
 
                 } );
 
+                $$.delegate( this.container, ".kf-editor-ui-area-item", "mousedown", function ( e ) {
+
+                    e.preventDefault();
+
+                    if ( e.which !== 1 ) {
+                        return;
+                    }
+
+                    $$.publish( "data.select", this.getAttribute( "data-value" ) );
+
+                } );
+
                 this.boxObject.initEvent();
 
             },
@@ -58,13 +70,12 @@ define( function ( require ) {
 
                 this.boxObject.setSelectHandler( function ( val ) {
                     // 发布
-//                    $$.publish( "data.select", val );
+                    $$.publish( "data.select", val );
                     _self.hide();
                 } );
 
                 // 内容面板切换
                 this.boxObject.setChangeHandler( function ( index ) {
-                    // 发布
                     _self.updateContent();
                 } );
 
@@ -96,7 +107,7 @@ define( function ( require ) {
 
                     item = item.item;
 
-                    newContent.push( '<div class="'+ PREFIX +'area-item" data-val="'+ item.val +'"><div class="'+ PREFIX +'area-item-content">'+ item.show +'</div></div>' );
+                    newContent.push( '<div class="'+ PREFIX +'area-item" data-value="'+ item.val +'"><div class="'+ PREFIX +'area-item-content">'+ item.show +'</div></div>' );
 
                 } );
 
