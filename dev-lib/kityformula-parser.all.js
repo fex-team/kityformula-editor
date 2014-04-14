@@ -1,6 +1,6 @@
 /*!
  * ====================================================
- * kityformula-editor - v1.0.0 - 2014-04-03
+ * kityformula-editor - v1.0.0 - 2014-04-13
  * https://github.com/HanCong03/kityformula-editor
  * GitHub: https://github.com/kitygraph/kityformula-editor.git 
  * Copyright (c) 2014 Baidu Kity Group; Licensed MIT
@@ -146,6 +146,8 @@ define("assembly", [], function(require, exports, module) {
                     // 括号表达式不能对前2个参数做处理， 这两个参数是代表括号类型
                     if (tree.name === "brackets" && i < 2) {
                         operand[i] = currentOperand;
+                    } else if (tree.name === "function" && i === 0) {
+                        operand[i] = currentOperand;
                     } else {
                         operand[i] = createObject("text", currentOperand);
                     }
@@ -181,6 +183,12 @@ define("assembly", [], function(require, exports, module) {
         if (tree.attr) {
             if (tree.attr.id) {
                 mapping[tree.attr.id] = {
+                    objGroup: exp,
+                    strGroup: originTree
+                };
+            }
+            if (tree.attr["data-root"]) {
+                mapping["root"] = {
                     objGroup: exp,
                     strGroup: originTree
                 };
@@ -420,7 +428,7 @@ define("impl/latex/define/func", [], function(require, exports, module) {
 /**
  * 操作符列表
  */
-define("impl/latex/define/operator", [ "impl/latex/handler/script", "impl/latex/handler/func", "impl/latex/handler/lib/int-extract", "impl/latex/define/type", "impl/latex/handler/fraction", "impl/latex/handler/sqrt", "impl/latex/handler/summation", "impl/latex/handler/integration", "impl/latex/handler/brackets", "impl/latex/define/brackets" ], function(require, exports, module) {
+define("impl/latex/define/operator", [ "impl/latex/handler/script", "impl/latex/handler/func", "impl/latex/handler/lib/int-extract", "impl/latex/define/type", "impl/latex/handler/fraction", "impl/latex/handler/sqrt", "impl/latex/handler/combination", "impl/latex/handler/summation", "impl/latex/handler/integration", "impl/latex/handler/brackets", "impl/latex/define/brackets" ], function(require, exports, module) {
     var scriptHandler = require("impl/latex/handler/script"), funcHandler = require("impl/latex/handler/func"), TYPE = require("impl/latex/define/type");
     return {
         "^": {
@@ -467,10 +475,8 @@ define("impl/latex/define/operator", [ "impl/latex/handler/script", "impl/latex/
 /**
  * 预处理器列表
  */
-define("impl/latex/define/pre", [ "impl/latex/pre/sqrt", "impl/latex/pre/int" ], function(require, exports, module) {
+define("impl/latex/define/pre", [ "impl/latex/pre/int" ], function(require, exports, module) {
     return {
-        // 方根预处理器
-        sqrt: require("impl/latex/pre/sqrt"),
         // 积分预处理器
         "int": require("impl/latex/pre/int")
     };
@@ -525,12 +531,9 @@ define("impl/latex/handler/brackets", [ "impl/latex/define/brackets" ], function
  */
 define("impl/latex/handler/combination", [], function(require, exports, module) {
     return function() {
-        if (arguments[0].length === 0) {
-            return null;
-        }
         return {
             name: "combination",
-            operand: arguments[0]
+            operand: arguments[0] || []
         };
     };
 });
@@ -667,11 +670,30 @@ define("impl/latex/handler/script", [], function(require, exports, module) {
 /*!
  * 方根函数处理器
  */
-define("impl/latex/handler/sqrt", [], function(require, exports, module) {
+define("impl/latex/handler/sqrt", [ "impl/latex/handler/combination" ], function(require, exports, module) {
+    var mergeHandler = require("impl/latex/handler/combination");
     // 处理函数接口
     return function(info, processedStack, unprocessedStack) {
-        var exponent = unprocessedStack.shift(), // 被开方数
-        radicand = unprocessedStack.shift();
+        var exponent = unprocessedStack.shift(), tmp = null, // 被开方数
+        radicand = null;
+        if (exponent === "[") {
+            exponent = [];
+            while (tmp = unprocessedStack.shift()) {
+                if (tmp === "]") {
+                    break;
+                }
+                exponent.push(tmp);
+            }
+            if (exponent.length === 0) {
+                exponent = null;
+            } else {
+                exponent = mergeHandler(exponent);
+            }
+            radicand = unprocessedStack.shift();
+        } else {
+            radicand = exponent;
+            exponent = null;
+        }
         info.operand = [ radicand, exponent ];
         delete info.handler;
         return info;
@@ -692,7 +714,7 @@ define("impl/latex/handler/summation", [ "impl/latex/handler/lib/int-extract" ],
 /**
  * Kity Formula Latex解析器实现
  */
-define("impl/latex/latex", [ "parser", "impl/latex/base/latex-utils", "impl/latex/base/rpn", "impl/latex/base/tree", "impl/latex/define/pre", "impl/latex/pre/sqrt", "impl/latex/pre/int", "impl/latex/serialization", "impl/latex/define/reverse", "impl/latex/define/operator", "impl/latex/handler/script", "impl/latex/handler/func", "impl/latex/define/type", "impl/latex/handler/fraction", "impl/latex/handler/sqrt", "impl/latex/handler/summation", "impl/latex/handler/integration", "impl/latex/handler/brackets", "impl/latex/reverse/combination", "impl/latex/reverse/fraction", "impl/latex/reverse/func", "impl/latex/reverse/integration", "impl/latex/reverse/subscript", "impl/latex/reverse/superscript", "impl/latex/reverse/script", "impl/latex/reverse/sqrt", "impl/latex/reverse/summation", "impl/latex/reverse/brackets", "impl/latex/base/utils", "impl/latex/define/func" ], function(require, exports, module) {
+define("impl/latex/latex", [ "parser", "impl/latex/base/latex-utils", "impl/latex/base/rpn", "impl/latex/base/tree", "impl/latex/define/pre", "impl/latex/pre/int", "impl/latex/serialization", "impl/latex/define/reverse", "impl/latex/define/operator", "impl/latex/handler/script", "impl/latex/handler/func", "impl/latex/define/type", "impl/latex/handler/fraction", "impl/latex/handler/sqrt", "impl/latex/handler/summation", "impl/latex/handler/integration", "impl/latex/handler/brackets", "impl/latex/reverse/combination", "impl/latex/reverse/fraction", "impl/latex/reverse/func", "impl/latex/reverse/integration", "impl/latex/reverse/subscript", "impl/latex/reverse/superscript", "impl/latex/reverse/script", "impl/latex/reverse/sqrt", "impl/latex/reverse/summation", "impl/latex/reverse/brackets", "impl/latex/base/utils", "impl/latex/define/func" ], function(require, exports, module) {
     var Parser = require("parser").Parser, LatexUtils = require("impl/latex/base/latex-utils"), PRE_HANDLER = require("impl/latex/define/pre"), serialization = require("impl/latex/serialization"), OP_DEFINE = require("impl/latex/define/operator"), REVERSE_DEFINE = require("impl/latex/define/reverse"), Utils = require("impl/latex/base/utils");
     // data
     var leftChar = "￸", rightChar = "￼", clearCharPattern = new RegExp(leftChar + "|" + rightChar, "g"), leftCharPattern = new RegExp(leftChar, "g"), rightCharPattern = new RegExp(rightChar, "g");

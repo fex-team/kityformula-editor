@@ -39,6 +39,10 @@ define( function ( require ) {
             return this.container;
         },
 
+        getDocument: function () {
+            return this.container.ownerDocument;
+        },
+
         getOptions: function () {
             return this.options;
         },

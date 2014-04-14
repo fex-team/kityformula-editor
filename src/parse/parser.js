@@ -7,6 +7,7 @@ define( function ( require ) {
     var KFParser = require( "kf" ).Parser,
         kity = require( "kity" ),
         COMPARISON_TABLE = require( "parse/def" ),
+        COMBINATION_NAME = "combination",
         PID_PREFIX = "_kf_editor_",
         GROUP_TYPE = "kf-editor-group",
         V_GROUP_TYPE = "kf-editor-virtual-group",
@@ -107,134 +108,23 @@ define( function ( require ) {
 
         tree.attr.id = parser.getGroupId();
 
-        // 组类型已经存在则不用再处理
-        if ( !tree.attr[ "data-type" ] ) {
-
-            tree.attr[ "data-type" ] = GROUP_TYPE;
-
-            if ( COMPARISON_TABLE[ tree.name ] ) {
-                tree.attr[ "data-type" ] = V_GROUP_TYPE;
-            }
-
-        }
-
         if ( isRoot ) {
-            // 如果isResetId为false， 表示当前生成的是子树
-            // 则不做data-root标记， 同时更改该包裹的类型为V_GROUP_TYPE
-            if ( !parser.isResetId ) {
-                tree.attr[ "data-type" ] = V_GROUP_TYPE;
-            } else {
-                tree.attr[ "data-root" ] = "true";
-            }
+            processRootGroup( parser, tree );
         }
 
-        if ( tree.name === "brackets" ) {
-            tree.attr[ "data-brackets" ] = "true";
-        }
-
+        // 处理所有子结点
         for ( var i = 0, len= tree.operand.length; i < len; i++ ) {
 
             currentOperand = tree.operand[ i ];
 
-            if ( !currentOperand ) {
-
-                tree.operand[ i ] = currentOperand;
-
+            if ( isPlaceholder( tree ) ) {
+                // 占位符处理
+                currentOperand.attr[ "data-placeholder" ] = "true";
+            } else if ( isVirtualGroup( tree ) ) {
+                // 虚拟组处理
+                processVirtualGroup( parser, i, tree, currentOperand );
             } else {
-
-                if ( COMPARISON_TABLE[ tree.name ] ) {
-
-                    if ( typeof currentOperand === "string" ) {
-
-                        // brackets树的前两个节点不用处理
-                        if ( tree.name !== "brackets" || i > 1 ) {
-                            tree.operand[ i ] = {
-                                name: "combination",
-                                operand: [ currentOperand ],
-                                attr: {
-                                    id: parser.getGroupId(),
-                                    "data-type": GROUP_TYPE
-                                }
-                            };
-                        }
-
-                    } else {
-
-                        // 包裹函数的参数
-                        if ( currentOperand.name !== "combination" ) {
-
-                            tree.operand[ i ] = {
-                                name: "combination",
-                                operand: [ null ],
-                                attr: {
-                                    id: parser.getGroupId(),
-                                    "data-type": GROUP_TYPE
-                                }
-                            };
-
-                            // 占位符特殊处理
-                            if ( currentOperand.name === "placeholder" ) {
-                                tree.operand[ i ].operand[ 0 ] = {
-                                    name: "combination",
-                                    operand: [ currentOperand ],
-                                    attr: {
-                                        id: parser.getGroupId(),
-                                        "data-type": GROUP_TYPE,
-                                        "data-placeholder": "true"
-                                    }
-                                };
-                                currentOperand.attr = {
-                                    id: parser.getGroupId()
-                                };
-                            } else {
-                                tree.operand[ i ].operand[ 0 ] = supplementTree( parser, currentOperand, tree.operand[ i ] );
-                            }
-
-                        } else {
-
-                            currentOperand.attr = {
-                                "data-type": GROUP_TYPE
-                            };
-
-                            tree.operand[ i ] = supplementTree( parser, currentOperand, tree );
-
-                        }
-
-                    }
-
-                } else {
-
-                    if ( typeof currentOperand === "string" ) {
-                        tree.operand[ i ] = currentOperand;
-                    } else {
-
-//                        // 重置组类型
-//                        if ( !isRoot && tree.operand.length === 1 ) {
-//                            tree.attr[ "data-type" ] = V_GROUP_TYPE;
-//                        }
-
-                        // 占位符附加包裹
-                        if ( currentOperand.name === "placeholder" ) {
-                            tree.operand[ i ] = {
-                                name: "combination",
-                                operand: [ currentOperand ],
-                                attr: {
-                                    id: parser.getGroupId(),
-                                    "data-type": GROUP_TYPE,
-                                    "data-placeholder": "true"
-                                }
-                            };
-                            currentOperand.attr = {
-                                id: parser.getGroupId()
-                            };
-                        } else {
-                            tree.operand[ i ] = supplementTree( parser, currentOperand, tree );
-                        }
-
-                    }
-
-                }
-
+                processGroup( parser, i, tree, currentOperand );
             }
 
         }
@@ -245,6 +135,91 @@ define( function ( require ) {
 
     function generateId () {
         return PID_PREFIX + ( ++PID );
+    }
+
+    function processRootGroup ( parser, tree ) {
+
+        // 如果isResetId为false， 表示当前生成的是子树
+        // 则不做data-root标记， 同时更改该包裹的类型为V_GROUP_TYPE
+        if ( !parser.isResetId ) {
+            tree.attr[ "data-type" ] = V_GROUP_TYPE;
+        } else {
+            tree.attr[ "data-root" ] = "true";
+        }
+
+    }
+
+    /**
+     * 虚拟组处理
+     * @param parser 解析器实例
+     * @param index 当前处理的子树所在其父节点的索引位置
+     * @param tree 需要处理的树父树
+     * @param subtree 当前需要处理的树
+     */
+    function processVirtualGroup ( parser, index, tree, subtree ) {
+
+        tree.attr[ "data-type" ] = V_GROUP_TYPE;
+
+        if ( !subtree ) {
+
+            tree.operand[ index ] = subtree;
+
+        } else if ( typeof subtree === "string" ) {
+
+            tree.operand[ index ] = createGroup( parser );
+
+            tree.operand[ index ].operand[ 0 ] = subtree;
+
+        } else {
+
+            tree.operand[ index ] = supplementTree( parser, subtree, tree );
+
+        }
+
+    }
+
+    function processGroup ( parser, index, tree, subtree ) {
+
+        tree.attr[ "data-type" ] = GROUP_TYPE;
+
+        if ( !subtree || typeof subtree === "string" ) {
+
+            tree.operand[ index ] = subtree;
+
+        } else {
+
+            tree.operand[ index ] = supplementTree( parser, subtree, tree );
+
+        }
+
+    }
+
+    // 判断给定的树是否是一个虚拟组
+    function isVirtualGroup ( tree ) {
+
+        return !!COMPARISON_TABLE[ tree.name ];
+
+    }
+
+    // 判断给定的树是否是一个占位符
+    function isPlaceholder ( tree ) {
+
+        return tree.name === COMBINATION_NAME && tree.operand.length === 0;
+
+    }
+
+    // 创建一个新组， 组的内容是空
+    function createGroup ( parser ) {
+
+        return {
+            name: COMBINATION_NAME,
+            attr: {
+                "data-type": GROUP_TYPE,
+                id: parser.getGroupId()
+            },
+            operand: []
+        };
+
     }
 
     return Parser;

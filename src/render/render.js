@@ -63,6 +63,10 @@ define( function ( require ) {
                     selectAllGroup: this.selectAllGroup
                 } );
 
+                this.kfEditor.registerService( "render.tint.current.cursor", this, {
+                    tintCurrentGroup: this.tintCurrentGroup
+                } );
+
                 this.kfEditor.registerService( "render.select.current.cursor", this, {
                     selectCurrentCursor: this.selectCurrentCursor
                 } );
@@ -191,6 +195,10 @@ define( function ( require ) {
 
             },
 
+            /**
+             * 根据当前光标信息绘制选区， 参数isAllSelect控制当前选区的类型
+             * @param isAllSelect 为ture则表示全选， 否则为普通选区
+             */
             selectCurrentCursor: function () {
 
                 var cursorInfo = this.kfEditor.requestService( "syntax.get.record.cursor" ),
@@ -222,6 +230,34 @@ define( function ( require ) {
                 group.setBoxSize( width, height );
                 group.selectAll();
                 group.getBox().translate( offset, 0 );
+
+            },
+
+            /**
+             * 根据当前的光标信息，对当前光标所在的容器进行着色
+             */
+            tintCurrentGroup: function () {
+
+                var groupId = this.kfEditor.requestService( "syntax.get.record.cursor" ).groupId,
+                    groupObject = this.kfEditor.requestService( "syntax.get.group.object", groupId ),
+                    isPlaceholder = this.kfEditor.requestService( "syntax.valid.placeholder", groupId );
+
+                this.clearSelect();
+
+                if ( groupObject.node.getAttribute( "data-root" ) ) {
+                    // 根节点不着色
+                    return;
+                }
+
+                // 占位符着色
+                if ( isPlaceholder ) {
+                    // 替换占位符包裹组为占位符本身
+                    groupObject = this.kfEditor.requestService( "syntax.get.group.object", groupObject.operands[ 0 ].node.id );
+                }
+
+                this.record.select.lastSelect = groupObject;
+
+                groupObject.select();
 
             },
 

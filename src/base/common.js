@@ -38,6 +38,10 @@ define( function ( require ) {
 
             },
 
+            getRect: function ( node ) {
+                return node.getBoundingClientRect();
+            },
+
             isArray: function ( obj ) {
                 return obj && ({}).toString.call( obj ) === "[object Array]";
             },

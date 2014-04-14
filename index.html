@@ -16,7 +16,11 @@
     </script>
     <script src="dev-lib/exports.js"></script>
     <script src="dev-lib/dev-start.js"></script>
-    <script src="c.js"></script>
+    <script>
+
+
+
+    </script>
     <script>
         jQuery( function ($) {
 
@@ -24,16 +28,9 @@
 
             var editor = new KFEditor( $( "#kfEditorContainer" )[ 0 ] );
 
-//            editor.execCommand( 'render', 'abc+abcdef+b-c-\\frac {adasdfasd\\sum^a_bc}b+\\frac \\placeholder b\\div \\sqrt {\\placeholder} + b' );
-//            editor.execCommand( 'render', "{\\placeholder}" );
-
-//            editor.execCommand( 'render', "ab{x=\\frac {-b\\pm\\sqrt {b^2-4ac}}{2a}}cd" );
-//            editor.execCommand( 'render', "a^2_3+ab+\\sqrt{{\\frac ab}^2_3}+a^2_3" );
-//            editor.execCommand( 'render', 'abcdef+b-c-{\\frac {asdfadasdfasd} {b}}+{\\frac {\\placeholder} {b}}\\div {\\sqrt {\\placeholder}}' );
-//            editor.execCommand( "render", 'e=\\sum _{n\\to \\infty }\\left(1+\\frac{1233}{n}\\right)' );
-            editor.execCommand( "render", "\\placeholder" )
-//            editor.execCommand( "render", 'abc\\left(a+b\\right)def' );
-            c.start( editor );
+            editor.execCommand( "render", "a+\\sum^{a+b}_{c-d}{a\\div a\\times bcd}" );
+//            editor.execCommand( "render", "a+\\sqrt {abcd+bcde}bc-c" );
+//            editor.execCommand( "render", "abcde+\\frac ab\\frac {abcde}{cdefas}-cadads" )
 
         } );
     </script>
@@ -43,7 +40,6 @@
 </head>
 <body>
     <div id="kfEditorContainer" class="kf-editor"></div>
-    <input style="position: fixed; top: 0; left: 1000000px; width: 1000px; z-index: 9999;" id="hiddenInput" type="text">
     <div id="cursor" class="virtual-cursor"></div>
 </body>
 </html>

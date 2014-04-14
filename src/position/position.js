@@ -7,6 +7,8 @@ define( function ( require ) {
 
     var kity = require( "kity" ),
 
+        kfUtils = require( "base/utils" ),
+
         // 表达式的内容组"标签"
         CONTENT_DATA_TYPE = "kf-editor-exp-content-box",
 
@@ -26,12 +28,24 @@ define( function ( require ) {
                     getGroupByTarget: this.getGroupByTarget
                 } );
 
+                this.kfEditor.registerService( "position.get.index", this, {
+                    getIndexByTargetInGroup: this.getIndexByTargetInGroup
+                } );
+
+                this.kfEditor.registerService( "position.get.location.info", this, {
+                    getLocationInfo: this.getLocationInfo
+                } );
+
                 this.kfEditor.registerService( "position.get.parent.group", this, {
                     getParentGroupByTarget: this.getParentGroupByTarget
                 } );
 
                 this.kfEditor.registerService( "position.get.wrap", this, {
                     getWrap: this.getWrap
+                } );
+
+                this.kfEditor.registerService( "position.get.area", this, {
+                    getAreaByCursorInGroup: this.getAreaByCursorInGroup
                 } );
 
                 this.kfEditor.registerService( "position.get.group.info", this, {
@@ -53,6 +67,74 @@ define( function ( require ) {
                 }
 
                 return null;
+
+            },
+
+            /**
+             * 根据给定的组节点和目标节点， 获取目标节点在组节点内部的索引
+             * @param groupNode 组节点
+             * @param targetNode 目标节点
+             */
+            getIndexByTargetInGroup: function ( groupNode, targetNode ) {
+
+                var groupInfo = this.kfEditor.requestService( "syntax.get.group.content", groupNode.id ),
+                    index = -1;
+
+                kity.Utils.each( groupInfo.content, function ( child, i ) {
+
+                    index = i;
+
+                    if ( child.contains( targetNode ) ) {
+                        return false;
+                    }
+
+                } );
+
+                return index;
+
+            },
+
+            /**
+             * 根据给定的组节点和给定的偏移值，获取当前偏移值在组中的区域值。
+             * 该区域值的取值为true时， 表示在右区域， 反之则在左区域
+             * @param groupNode 组节点
+             * @param offset 偏移值
+             */
+            getAreaByCursorInGroup: function ( groupNode, offset ) {
+
+                var groupRect = kfUtils.getRect( groupNode );
+
+                return groupRect.left + groupRect.width / 2 < offset;
+
+            },
+
+            getLocationInfo: function ( distance, groupInfo ) {
+
+                var index = -1,
+                    children = groupInfo.content,
+                    boundingRect = null;
+
+                for ( var i = children.length - 1, child = null; i >= 0; i-- ) {
+
+                    index = i;
+
+                    child = children[ i ];
+
+                    boundingRect = kfUtils.getRect( child );
+
+                    if ( boundingRect.left < distance ) {
+
+                        if ( boundingRect.left + boundingRect.width / 2 < distance ) {
+                            index += 1;
+                        }
+
+                        break;
+
+                    }
+
+                }
+
+                return index;
 
             },
 

@@ -8,7 +8,8 @@ define( function ( require ) {
 
         MoveComponent = require( "syntax/move" ),
 
-        CURSOR_CHAR = "\uF155",
+//        CURSOR_CHAR = "\uF155",
+        CURSOR_CHAR = "@",
 
         SyntaxComponenet = kity.createClass( 'SyntaxComponenet', {
 
@@ -69,6 +70,10 @@ define( function ( require ) {
                     getGroupContent: this.getGroupContent
                 } );
 
+                this.kfEditor.registerService( "syntax.get.root.group.info", this, {
+                    getRootGroupInfo: this.getRootGroupInfo
+                } );
+
                 this.kfEditor.registerService( "syntax.update.record.cursor", this, {
                     updateCursor: this.updateCursor
                 } );
@@ -81,8 +86,8 @@ define( function ( require ) {
                     getCursorRecord: this.getCursorRecord
                 } );
 
-                this.kfEditor.registerService( "syntax.get.latex.info", this, {
-                    getLatexInfo: this.getLatexInfo
+                this.kfEditor.registerService( "syntax.serialization", this, {
+                    serialization: this.serialization
                 } );
 
                 this.kfEditor.registerService( "syntax.insert.string", this, {
@@ -91,10 +96,6 @@ define( function ( require ) {
 
                 this.kfEditor.registerService( "syntax.insert.group", this, {
                     insertGroup: this.insertGroup
-                } );
-
-                this.kfEditor.registerService( "syntax.serialization", this, {
-                    serialization: this.serialization
                 } );
 
                 this.kfEditor.registerService( "syntax.cursor.move.left", this, {
@@ -171,6 +172,14 @@ define( function ( require ) {
 
             },
 
+            getRootGroupInfo: function () {
+
+                var rootGroupId = this.objTree.mapping.root.strGroup.attr.id;
+
+                return this.getGroupContent( rootGroupId );
+
+            },
+
             updateSelection: function ( group ) {
 
                 var groupObj = this.objTree.mapping[ group.id ],
@@ -241,7 +250,7 @@ define( function ( require ) {
 
             },
 
-            getLatexInfo: function () {
+            serialization: function () {
 
                 var cursor = this.record.cursor,
                     objGroup = this.objTree.mapping[ cursor.groupId ],
@@ -262,11 +271,11 @@ define( function ( require ) {
                     strEndIndex += 1;
 
                 } else {
-                    // 找到占位符的包裹元素
-                    curStrGroup = this.kfEditor.requestService( "position.get.parent.group", objGroup.objGroup.node )
-                    curStrGroup = this.objTree.mapping[ curStrGroup.id ].strGroup;
-                    curStrGroup.operand.unshift( CURSOR_CHAR );
-                    curStrGroup.operand.push( CURSOR_CHAR );
+//                    // 找到占位符的包裹元素
+//                    curStrGroup = this.kfEditor.requestService( "position.get.parent.group", objGroup.objGroup.node )
+//                    curStrGroup = this.objTree.mapping[ curStrGroup.id ].strGroup;
+//                    curStrGroup.operand.unshift( CURSOR_CHAR );
+//                    curStrGroup.operand.push( CURSOR_CHAR );
                 }
 
                 // 返回结构树进过序列化后所对应的latex表达式， 同时包含有当前光标定位点信息
@@ -276,14 +285,12 @@ define( function ( require ) {
                     curStrGroup.operand.splice( strEndIndex, 1 );
                     curStrGroup.operand.splice( strStartIndex, 1 );
                 } else {
-                    curStrGroup.operand.shift();
-                    curStrGroup.operand.pop();
+//                    curStrGroup.operand.shift();
+//                    curStrGroup.operand.pop();
                 }
 
                 strStartIndex = resultStr.indexOf( CURSOR_CHAR );
-                // 清除掉一个符号
-                resultStr = resultStr.replace( CURSOR_CHAR, "" );
-                strEndIndex = resultStr.lastIndexOf( CURSOR_CHAR );
+                strEndIndex = resultStr.indexOf( CURSOR_CHAR );
 
                 return {
                     str: resultStr,
@@ -296,6 +303,13 @@ define( function ( require ) {
             // 更新光标记录， 同时更新数据
             updateCursor: function ( groupId, startOffset, endOffset ) {
 
+                // 支持一个cursorinfo对象
+                if ( arguments.length === 1 ) {
+                    endOffset = groupId.endOffset;
+                    startOffset = groupId.startOffset;
+                    groupId = groupId.groupId;
+                }
+
                 if ( endOffset === undefined ) {
                     endOffset = startOffset;
                 }
@@ -307,14 +321,6 @@ define( function ( require ) {
                 };
 
                 window.tt = this.record.cursor;
-
-            },
-
-            serialization: function () {
-
-                // 返回结构树进过序列化后所对应的latex表达式， 同时包含有当前光标定位点信息
-                return this.kfEditor.requestService( "parser.latex.serialization", this.objTree.parsedTree );
-
 
             },
 
