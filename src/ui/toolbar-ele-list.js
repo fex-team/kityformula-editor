@@ -150,7 +150,7 @@ define( function ( require ) {
                 icon: "assets/images/toolbar/button/frac.png"
             },
             box: {
-                width: 332,
+                width: 378,
                 group: [ {
                     title: "分数",
                     content: [ {
@@ -198,7 +198,7 @@ define( function ( require ) {
                 icon: "assets/images/toolbar/button/script.png"
             },
             box: {
-                width: 332,
+                width: 378,
                 group: [ {
                     title: "上标和下标",
                     content: [ {
@@ -251,7 +251,7 @@ define( function ( require ) {
                 icon: "assets/images/toolbar/button/sqrt.png"
             },
             box: {
-                width: 332,
+                width: 378,
                 group: [ {
                     title: "根式",
                     content: [ {
@@ -299,7 +299,7 @@ define( function ( require ) {
                 icon: "assets/images/toolbar/button/brackets.png"
             },
             box: {
-                width: 332,
+                width: 378,
                 group: [ {
                     title: "方括号",
                     content: [ {

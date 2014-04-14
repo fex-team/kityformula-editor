@@ -38,6 +38,8 @@ define( function ( require ) {
 
                 Utils.addEvent( this.target, 'mousewheel', function ( e ) {
 
+                    e.preventDefault();
+
                     if ( e.wheelDelta  < 0 ) {
                         // 缩小
                         _self.zoom -= _self.zoom * step;
