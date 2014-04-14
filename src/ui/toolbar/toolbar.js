@@ -50,7 +50,7 @@ define( function ( require ) {
 
             insertSource: function ( val ) {
 
-                this.kfEditor.requestService( "control.insert.group", val );
+                this.kfEditor.requestService( "control.insert.string", val );
 
             },
 
@@ -119,6 +119,9 @@ define( function ( require ) {
             case UI_ELE_TYPE.DELIMITER:
                 return createDelimiter( doc );
 
+            case UI_ELE_TYPE.AREA:
+                return createArea( doc, options );
+
 
         }
 
@@ -132,6 +135,10 @@ define( function ( require ) {
 
     function createDelimiter ( doc ) {
         return new UiImpl.Delimiter( doc );
+    }
+
+    function createArea ( doc, options ) {
+        return new UiImpl.Area( doc, options );
     }
 
     return Tollbar;

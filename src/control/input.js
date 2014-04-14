@@ -34,6 +34,10 @@ define( function ( require, exports, module ) {
                 updateInput: this.updateInput
             } );
 
+            this.kfEditor.registerService( "control.insert.string", this, {
+                insertStr: this.insertStr
+            } );
+
         },
 
         createInputBox: function () {
@@ -43,6 +47,7 @@ define( function ( require, exports, module ) {
 
             box.className = "kf-editor-input-box";
             box.type = "text";
+            box.style.display = "none";
 
             editorContainer.appendChild( box );
 
@@ -58,6 +63,18 @@ define( function ( require, exports, module ) {
             this.inputBox.selectionStart = latexInfo.startOffset;
             this.inputBox.selectionEnd = latexInfo.endOffset;
             this.inputBox.focus();
+
+        },
+
+        insertStr: function ( str ) {
+
+            var latexInfo = this.kfEditor.requestService( "syntax.serialization" ),
+                originString = latexInfo.str;
+
+            // 拼接latex字符串
+            originString = originString.substring( 0, latexInfo.startOffset ) + " " + str + " " + originString.substring( latexInfo.endOffset );
+
+            this.restruct( originString );
 
         },
 
@@ -90,7 +107,7 @@ define( function ( require, exports, module ) {
             // 用户输入
             kfUtils.addEvent( this.inputBox, "input", function ( e ) {
 
-
+                _self.processingInput();
 
             } );
 
@@ -106,6 +123,21 @@ define( function ( require, exports, module ) {
         rightMove: function () {
 
             this.kfEditor.requestService( "syntax.cursor.move.right" );
+            this.update();
+
+        },
+
+        processingInput: function () {
+
+            this.restruct( this.inputBox.value );
+
+        },
+
+        // 根据给定的字符串重新进行构造公式
+        restruct: function ( latexStr ) {
+
+            this.kfEditor.requestService( "render.draw", latexStr );
+
             this.update();
 
         },

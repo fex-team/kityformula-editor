@@ -4,9 +4,11 @@
 
 define( function ( require ) {
 
-    var UI_ELE_TYPE = require( "ui/ui-impl/def/ele-type" );
+    var UI_ELE_TYPE = require( "ui/ui-impl/def/ele-type" ),
+        BOX_TYPE = require( "ui/ui-impl/def/box-type" ),
+        kity = require( "kity" );
 
-    return [ {
+    var config = [ {
         type: UI_ELE_TYPE.DRAPDOWN_BOX,
         options: {
             button: {
@@ -14,7 +16,6 @@ define( function ( require ) {
                 icon: "assets/images/toolbar/button/pi.png"
             },
             box: {
-//                width: 400,
                 group: [ {
                     title: "预设公式",
                     content: [ {
@@ -36,6 +37,106 @@ define( function ( require ) {
                             val: "a^2+b^2=c^2"
                         }
                     } ]
+                } ]
+            }
+        }
+    }, {
+        type: UI_ELE_TYPE.DELIMITER
+    }, {
+        type: UI_ELE_TYPE.AREA,
+        options: {
+            button: {
+                icon: "assets/images/toolbar/char/button.png"
+            },
+            box: {
+                width: 527,
+                type: BOX_TYPE.OVERLAP,
+                group: [ {
+                    title: "基础数学",
+                    content: [ {
+                        item: {
+                            show: '<img src="assets/images/toolbar/char/math/pm.png">',
+                            val: "\\pm"
+                        }
+                    }, {
+                        item: {
+                            show: '<img src="assets/images/toolbar/char/math/infty.png">',
+                            val: "\\infty"
+                        }
+                    }, {
+                        item: {
+                            show: '<img src="assets/images/toolbar/char/math/eq.png">',
+                            val: "="
+                        }
+                    }, {
+                        item: {
+                            show: '<img src="assets/images/toolbar/char/math/sim.png">',
+                            val: "\\sim"
+                        }
+                    }, {
+                        item: {
+                            show: '<img src="assets/images/toolbar/char/math/times.png">',
+                            val: "\\times"
+                        }
+                    }, {
+                        item: {
+                            show: '<img src="assets/images/toolbar/char/math/div.png">',
+                            val: "\\div"
+                        }
+                    }, {
+                        item: {
+                            show: '<img src="assets/images/toolbar/char/math/tanhao.png">',
+                            val: "!"
+                        }
+                    }, {
+                        item: {
+                            show: '<img src="assets/images/toolbar/char/math/lt.png">',
+                            val: "<"
+                        }
+                    }, {
+                        item: {
+                            show: '<img src="assets/images/toolbar/char/math/ll.png">',
+                            val: "\\ll"
+                        }
+                    }, {
+                        item: {
+                            show: '<img src="assets/images/toolbar/char/math/gt.png">',
+                            val: ">"
+                        }
+                    }, {
+                        item: {
+                            show: '<img src="assets/images/toolbar/char/math/gg.png">',
+                            val: "\\gg"
+                        }
+                    }, {
+                        item: {
+                            show: '<img src="assets/images/toolbar/char/math/leq.png">',
+                            val: "\\leq"
+                        }
+                    }, {
+                        item: {
+                            show: '<img src="assets/images/toolbar/char/math/geq.png">',
+                            val: "\\geq"
+                        }
+                    }, {
+                        item: {
+                            show: '<img src="assets/images/toolbar/char/math/mp.png">',
+                            val: "\\mp"
+                        }
+                    }, {
+                        item: {
+                            show: '<img src="assets/images/toolbar/char/math/simeq.png">',
+                            val: "\\simeq"
+                        }
+                    }, {
+                        item: {
+                            show: '<img src="assets/images/toolbar/char/math/equiv.png">',
+                            val: "\\equiv"
+                        }
+                    } ]
+                }, {
+                    title: "希腊字母",
+                    content: []
                 } ]
             }
         }
@@ -226,5 +327,26 @@ define( function ( require ) {
             }
         }
     } ];
+
+    // 初始化希腊字符配置
+    ( function () {
+
+        var greekList = [ "alpha", "beta", "gamma", "delta", "epsilon", "zeta", "eta", "theta", "iota", "kappa", "lambda", "mu", "nu", "xi", "omicron", "pi", "rho", "sigma", "tau", "upsilon", "phi", "chi", "psi", "omega" ],
+            greekConf = config[ 2 ].options.box.group[ 1 ].content;
+
+        kity.Utils.each( greekList, function ( greekChar, index ) {
+
+            greekConf.push( {
+                item: {
+                    show: '<img src="assets/images/toolbar/char/greek/'+ greekChar +'.png">',
+                    val: "\\" + greekChar
+                }
+            } );
+
+        } );
+
+    } )();
+
+    return config;
 
 } );

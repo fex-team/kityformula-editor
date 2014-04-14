@@ -6,7 +6,8 @@ define( function ( require ) {
 
     return {
         "DRAPDOWN_BOX": 1,
-        "DELIMITER": 2
+        "AREA": 2,
+        "DELIMITER": 3
     };
 
 } );

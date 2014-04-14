@@ -8,8 +8,7 @@ define( function ( require ) {
 
         MoveComponent = require( "syntax/move" ),
 
-//        CURSOR_CHAR = "\uF155",
-        CURSOR_CHAR = "@",
+        CURSOR_CHAR = "\uF155",
 
         SyntaxComponenet = kity.createClass( 'SyntaxComponenet', {
 
@@ -290,7 +289,13 @@ define( function ( require ) {
                 }
 
                 strStartIndex = resultStr.indexOf( CURSOR_CHAR );
-                strEndIndex = resultStr.indexOf( CURSOR_CHAR );
+
+                // 选区长度为0, 则只使用一个标记位
+                if ( cursor.startOffset === cursor.endOffset ) {
+                    resultStr = resultStr.replace( CURSOR_CHAR, "" );
+                }
+
+                strEndIndex = resultStr.lastIndexOf( CURSOR_CHAR );
 
                 return {
                     str: resultStr,
