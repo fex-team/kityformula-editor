@@ -42,27 +42,37 @@ define( function ( require, exports, module ) {
                 } else {
 
                     // 还有更多剩余内容， 则直接删除前一个组
-
                     if ( currentTree.operand.length > 1 ) {
 
                         cursorInfo = this.deletePrevGroup( currentTree, cursorInfo );
 
-                    // 无内容， 则替换成占位符
+                    // 仅有一个需要删除的组存在时的处理
                     } else {
 
                         // 更新光标位置
                         cursorInfo.startOffset = 0;
                         cursorInfo.endOffset = 1;
 
-                        // 替换成占位符
-                        currentTree.operand[ 0 ] = {
-                            name: "placeholder",
-                            operand: []
-                        };
+                        // 处理组类型， 选中该组即可
+                        if ( currentTree.operand[ 0 ].attr && this.parentComponent.isGroupNode( currentTree.operand[ 0 ].attr.id ) ) {
 
-                        this.parentComponent.updateCursor( cursorInfo );
+                            this.parentComponent.updateCursor( cursorInfo );
 
-                        return true;
+                            return false;
+
+                        // 普通元素处理
+                        } else {
+
+                            // 替换成占位符
+                            currentTree.operand[ 0 ] = {
+                                name: "placeholder",
+                                operand: []
+                            };
+                            this.parentComponent.updateCursor( cursorInfo );
+
+                            return true;
+
+                        }
 
                     }
 
@@ -91,7 +101,9 @@ define( function ( require, exports, module ) {
 
                 // 其他选区正常删除
                 } else {
-                    cursorInfo = this.deleteSelection( currentTree, cursorInfo );
+
+                    return this.deleteSelection( currentTree, cursorInfo );
+
                 }
 
             }
@@ -135,7 +147,24 @@ define( function ( require, exports, module ) {
         // 删除选区内容
         deleteSelection: function ( tree, cursorInfo ) {
 
-            // 更新树
+            // 选中的是容器内的所有内容
+            if ( cursorInfo.startOffset === 0 && cursorInfo.endOffset === tree.operand.length ) {
+
+                tree.operand.length = 1;
+
+                tree.operand[ 0 ] = {
+                    name: "placeholder",
+                    operand: []
+                };
+
+                cursorInfo.endOffset = 1;
+                this.parentComponent.updateCursor( cursorInfo );
+
+                return true;
+
+            }
+
+            // 否则可以删除当前选中内容
             tree.operand.splice( cursorInfo.startOffset, cursorInfo.endOffset - cursorInfo.startOffset );
             cursorInfo.endOffset = cursorInfo.startOffset;
 

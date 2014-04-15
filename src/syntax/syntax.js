@@ -64,6 +64,10 @@ define( function ( require ) {
                     isRootNode: this.isRootNode
                 } );
 
+                this.kfEditor.registerService( "syntax.is.group.node", this, {
+                    isGroupNode: this.isGroupNode
+                } );
+
                 this.kfEditor.registerService( "syntax.is.virtual.node", this, {
                     isVirtualNode: this.isVirtualNode
                 } );
@@ -137,6 +141,12 @@ define( function ( require ) {
             // 验证给定ID的组是否是根节点
             isRootNode: function ( groupId ) {
                 return this.objTree.mapping.root.strGroup.attr.id === groupId;
+            },
+
+            // 验证给定ID的组是否是组节点
+            isGroupNode: function ( groupId ) {
+                var type = this.objTree.mapping[ groupId ].strGroup.attr[ "data-type" ];
+                return type === GROUP_TYPE.GROUP || type === GROUP_TYPE.VIRTUAL;
             },
 
             isVirtualNode: function ( groupId ) {

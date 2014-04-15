@@ -161,7 +161,7 @@ define( function ( require ) {
                     }, {
                         item: {
                             show: '<img src="assets/images/toolbar/frac/2.png">',
-                            val: "\\placeholder/\\placeholder"
+                            val: "{\\placeholder/\\placeholder}"
                         }
                     } ]
                 }, {
@@ -219,7 +219,7 @@ define( function ( require ) {
                     }, {
                         item: {
                             show: '<img src="assets/images/toolbar/script/4.png">',
-                            val: "^\\placeholder_\\placeholder\\placeholder"
+                            val: "{^\\placeholder_\\placeholder\\placeholder}"
                         }
                     } ]
                 }, {
