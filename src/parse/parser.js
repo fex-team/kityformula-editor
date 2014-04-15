@@ -115,7 +115,6 @@ define( function ( require ) {
             tree.attr.label = ROOT_P_TEXT;
         }
 
-        // 处理所有子结点
         for ( var i = 0, len= tree.operand.length; i < len; i++ ) {
 
             currentOperand = tree.operand[ i ];
@@ -124,9 +123,7 @@ define( function ( require ) {
                 // 虚拟组处理
                 processVirtualGroup( parser, i, tree, currentOperand );
             } else {
-
                 processGroup( parser, i, tree, currentOperand );
-
             }
 
         }
@@ -159,6 +156,11 @@ define( function ( require ) {
      * @param subtree 当前需要处理的树
      */
     function processVirtualGroup ( parser, index, tree, subtree ) {
+
+        // 括号组的前两个元素不用处理
+        if ( tree.name === "brackets" && index < 2 ) {
+            return;
+        }
 
         tree.attr[ "data-type" ] = GROUP_TYPE.VIRTUAL;
 
