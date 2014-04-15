@@ -25,6 +25,9 @@ define( function ( require, exports, module ) {
                 y: -1
             };
 
+            // 起始位置是占位符
+            this.startGroupIsPlaceholder = false;
+
             this.startGroup = {};
 
             this.initEvent();
@@ -40,6 +43,11 @@ define( function ( require, exports, module ) {
             eventServiceObject.on( "mousedown", function ( e ) {
 
                 e.preventDefault();
+
+                // 存在根占位符， 禁止拖动
+                if ( _self.kfEditor.requestService( "syntax.has.root.placeholder" ) ) {
+                    return false;
+                }
 
                 _self.isMousedown = true;
                 _self.updateStartPoint( e.clientX, e.clientY );
@@ -106,6 +114,8 @@ define( function ( require, exports, module ) {
 
             var cursorInfo = this.kfEditor.requestService( "syntax.get.record.cursor" );
 
+            this.startGroupIsPlaceholder = this.kfEditor.requestService( "syntax.is.select.placeholder" );
+
             this.startGroup = {
                 groupInfo: this.kfEditor.requestService( "syntax.get.group.content", cursorInfo.groupId ),
                 offset: cursorInfo.startOffset
@@ -145,6 +155,7 @@ define( function ( require, exports, module ) {
                 currentGroupNode = null,
                 currentGroupInfo = this.getGroupInof( x, target );
 
+
             if ( currentGroupInfo.groupInfo.id === startGroupInfo.groupInfo.id ) {
 
                 cursorInfo = {
@@ -152,6 +163,19 @@ define( function ( require, exports, module ) {
                     startOffset: startGroupInfo.offset,
                     endOffset: currentGroupInfo.offset
                 };
+
+                // 如果起始点是占位符， 要根据移动方向修正偏移
+                if ( this.startGroupIsPlaceholder ) {
+
+                    // 左移修正
+                    if ( !dir ) {
+                        cursorInfo.startOffset += 1;
+                    // 右移修正
+                    } else if ( cursorInfo.startOffset === cursorInfo.endOffset ) {
+                        cursorInfo.endOffset += 1;
+                    }
+
+                }
 
             } else {
 
@@ -221,31 +245,61 @@ define( function ( require, exports, module ) {
             // 更新光标信息
             this.kfEditor.requestService( "syntax.update.record.cursor", cursorInfo.groupId, cursorInfo.startOffset, cursorInfo.endOffset );
 
-            this.kfEditor.requestService( "render.select.current.cursor" );
+            // 仅重新选中就可以，不用更新输入框内容
+            this.kfEditor.requestService( "control.reselect" );
 
         },
 
         updateSelectionByTarget: function ( target ) {
 
-            var groupInfo = this.kfEditor.requestService( "position.get.group", target ),
+            var parentGroupInfo = this.kfEditor.requestService( "position.get.parent.group", target ),
+                containerInfo = null,
                 cursorInfo = {};
 
-            if ( groupInfo === null ) {
+            if ( parentGroupInfo === null ) {
                 return;
             }
 
-            // 更新光标信息
-            cursorInfo = {
-                groupId: groupInfo.id,
-                startOffset: 0,
-                endOffset: groupInfo.content.length
-            };
+            // 如果是根节点， 则直接选中其内容
+            if ( this.kfEditor.requestService( "syntax.is.root.node", parentGroupInfo.id ) ) {
+
+                cursorInfo = {
+                    groupId: parentGroupInfo.id,
+                    startOffset: 0,
+                    endOffset: parentGroupInfo.content.length
+                };
+
+            // 否则，仅选中该组
+            } else {
+
+                // 当前组可以是容器， 则选中该容器的内容
+                if ( !this.kfEditor.requestService( "syntax.is.virtual.node", parentGroupInfo.id ) ) {
+
+                    cursorInfo = {
+                        groupId: parentGroupInfo.id,
+                        startOffset: 0,
+                        endOffset: parentGroupInfo.content.length
+                    };
+
+                // 否则 直接选中该组的所有内容
+                } else {
+
+                    // 获取包含父组的容器
+                    containerInfo = this.kfEditor.requestService( "position.get.group.info", parentGroupInfo.groupObj );
+
+                    cursorInfo = {
+                        groupId: containerInfo.group.id,
+                        startOffset: containerInfo.index,
+                        endOffset: containerInfo.index + 1
+                    };
+
+                }
+
+            }
 
             this.kfEditor.requestService( "syntax.update.record.cursor", cursorInfo );
-            this.kfEditor.requestService( "render.select.current.cursor" );
-            this.kfEditor.requestService( "control.cursor.hide" );
+            this.kfEditor.requestService( "control.reselect" );
             this.kfEditor.requestService( "control.update.input" );
-
 
         },
 
@@ -296,6 +350,8 @@ define( function ( require, exports, module ) {
                 cursorInfo = {};
 
             while ( bigBoundingGroup = this.kfEditor.requestService( "position.get.group.info", targetGroup ) ) {
+
+                targetGroup = bigBoundingGroup.group.groupObj;
 
                 if ( bigBoundingGroup.group.groupObj.contains( endGroupInfo.groupObj ) ) {
                     break;

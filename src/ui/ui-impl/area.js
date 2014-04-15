@@ -42,9 +42,17 @@ define( function ( require ) {
 
                 var _self = this;
 
-                $$.on( this.button, "click", function () {
+                $$.on( this.button, "mousedown", function ( e ) {
+
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    if ( e.which !== 1 ) {
+                        return;
+                    }
 
                     _self.showMount();
+                    _self.toolbar.notify( "closeOther", _self );
 
                 } );
 

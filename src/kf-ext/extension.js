@@ -51,7 +51,7 @@ define( function ( require ) {
 
                 "placeholder": function () {
 
-                    return "\\placeholder";
+                    return "\\placeholder ";
 
                 }
 

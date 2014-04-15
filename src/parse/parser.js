@@ -6,11 +6,11 @@ define( function ( require ) {
 
     var KFParser = require( "kf" ).Parser,
         kity = require( "kity" ),
-        COMPARISON_TABLE = require( "parse/def" ),
+        VGROUP_LIST = require( "parse/vgroup-def" ),
+        ROOT_P_TEXT = require( "parse/root-p-text" ),
         COMBINATION_NAME = "combination",
         PID_PREFIX = "_kf_editor_",
-        GROUP_TYPE = "kf-editor-group",
-        V_GROUP_TYPE = "kf-editor-virtual-group",
+        GROUP_TYPE = require( "def/group-type" ),
         PID = 0;
 
     var Parser = kity.createClass( "Parser", {
@@ -110,6 +110,9 @@ define( function ( require ) {
 
         if ( isRoot ) {
             processRootGroup( parser, tree );
+        // 根占位符处理, 附加label
+        } else if ( parentTree.attr[ "data-root" ] && tree.name === "placeholder" ) {
+            tree.attr.label = ROOT_P_TEXT;
         }
 
         // 处理所有子结点
@@ -117,14 +120,13 @@ define( function ( require ) {
 
             currentOperand = tree.operand[ i ];
 
-            if ( isPlaceholder( tree ) ) {
-                // 占位符处理
-                currentOperand.attr[ "data-placeholder" ] = "true";
-            } else if ( isVirtualGroup( tree ) ) {
+            if ( isVirtualGroup( tree ) ) {
                 // 虚拟组处理
                 processVirtualGroup( parser, i, tree, currentOperand );
             } else {
+
                 processGroup( parser, i, tree, currentOperand );
+
             }
 
         }
@@ -140,9 +142,9 @@ define( function ( require ) {
     function processRootGroup ( parser, tree ) {
 
         // 如果isResetId为false， 表示当前生成的是子树
-        // 则不做data-root标记， 同时更改该包裹的类型为V_GROUP_TYPE
+        // 则不做data-root标记， 同时更改该包裹的类型为GROUP_TYPE.VIRTUAL
         if ( !parser.isResetId ) {
-            tree.attr[ "data-type" ] = V_GROUP_TYPE;
+            tree.attr[ "data-type" ] = GROUP_TYPE.VIRTUAL;
         } else {
             tree.attr[ "data-root" ] = "true";
         }
@@ -158,7 +160,7 @@ define( function ( require ) {
      */
     function processVirtualGroup ( parser, index, tree, subtree ) {
 
-        tree.attr[ "data-type" ] = V_GROUP_TYPE;
+        tree.attr[ "data-type" ] = GROUP_TYPE.VIRTUAL;
 
         if ( !subtree ) {
 
@@ -170,6 +172,12 @@ define( function ( require ) {
 
             tree.operand[ index ].operand[ 0 ] = subtree;
 
+        } else if ( isPlaceholder( subtree ) ) {
+
+            tree.operand[ index ] = createGroup( parser );
+
+            tree.operand[ index ].operand[ 0 ] = supplementTree( parser, subtree, tree.operand[ index ] );
+
         } else {
 
             tree.operand[ index ] = supplementTree( parser, subtree, tree );
@@ -180,7 +188,7 @@ define( function ( require ) {
 
     function processGroup ( parser, index, tree, subtree ) {
 
-        tree.attr[ "data-type" ] = GROUP_TYPE;
+        tree.attr[ "data-type" ] = GROUP_TYPE.GROUP;
 
         if ( !subtree || typeof subtree === "string" ) {
 
@@ -197,14 +205,14 @@ define( function ( require ) {
     // 判断给定的树是否是一个虚拟组
     function isVirtualGroup ( tree ) {
 
-        return !!COMPARISON_TABLE[ tree.name ];
+        return !!VGROUP_LIST[ tree.name ];
 
     }
 
     // 判断给定的树是否是一个占位符
     function isPlaceholder ( tree ) {
 
-        return tree.name === COMBINATION_NAME && tree.operand.length === 0;
+        return tree.name === "placeholder";
 
     }
 
@@ -214,7 +222,7 @@ define( function ( require ) {
         return {
             name: COMBINATION_NAME,
             attr: {
-                "data-type": GROUP_TYPE,
+                "data-type": GROUP_TYPE.GROUP,
                 id: parser.getGroupId()
             },
             operand: []

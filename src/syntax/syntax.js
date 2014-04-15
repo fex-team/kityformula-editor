@@ -7,8 +7,10 @@ define( function ( require ) {
     var kity = require( "kity" ),
 
         MoveComponent = require( "syntax/move" ),
+        DeleteComponent = require( "syntax/delete" ),
 
         CURSOR_CHAR = "\uF155",
+        GROUP_TYPE = require( "def/group-type" ),
 
         SyntaxComponenet = kity.createClass( 'SyntaxComponenet', {
 
@@ -41,6 +43,7 @@ define( function ( require ) {
 
             initComponents: function () {
                 this.components[ 'move' ] = new MoveComponent( this, this.kfEditor );
+                this.components[ 'delete' ] = new DeleteComponent( this, this.kfEditor );
             },
 
             initServices: function () {
@@ -57,8 +60,24 @@ define( function ( require ) {
                     getGroupObject: this.getGroupObject
                 } );
 
-                this.kfEditor.registerService( "syntax.valid.placeholder", this, {
+                this.kfEditor.registerService( "syntax.is.root.node", this, {
+                    isRootNode: this.isRootNode
+                } );
+
+                this.kfEditor.registerService( "syntax.is.virtual.node", this, {
+                    isVirtualNode: this.isVirtualNode
+                } );
+
+                this.kfEditor.registerService( "syntax.is.placeholder.node", this, {
                     isPlaceholder: this.isPlaceholder
+                } );
+
+                this.kfEditor.registerService( "syntax.is.select.placeholder", this, {
+                    isSelectPlaceholder: this.isSelectPlaceholder
+                } );
+
+                this.kfEditor.registerService( "syntax.has.root.placeholder", this, {
+                    hasRootplaceholder: this.hasRootplaceholder
                 } );
 
                 this.kfEditor.registerService( "syntax.valid.brackets", this, {
@@ -89,20 +108,16 @@ define( function ( require ) {
                     serialization: this.serialization
                 } );
 
-                this.kfEditor.registerService( "syntax.insert.string", this, {
-                    insertString: this.insertString
-                } );
-
-                this.kfEditor.registerService( "syntax.insert.group", this, {
-                    insertGroup: this.insertGroup
-                } );
-
                 this.kfEditor.registerService( "syntax.cursor.move.left", this, {
                     leftMove: this.leftMove
                 } );
 
                 this.kfEditor.registerService( "syntax.cursor.move.right", this, {
                     rightMove: this.rightMove
+                } );
+
+                this.kfEditor.registerService( "syntax.delete.group", this, {
+                    deleteGroup: this.deleteGroup
                 } );
 
             },
@@ -119,13 +134,67 @@ define( function ( require ) {
 
             },
 
+            // 验证给定ID的组是否是根节点
+            isRootNode: function ( groupId ) {
+                return this.objTree.mapping.root.strGroup.attr.id === groupId;
+            },
+
+            isVirtualNode: function ( groupId ) {
+                return this.objTree.mapping[ groupId ].strGroup.attr[ "data-type" ] === GROUP_TYPE.VIRTUAL;
+            },
+
             // 验证给定ID的组是否是占位符
             isPlaceholder: function ( groupId ) {
-                return !!this.objTree.mapping[ groupId ].objGroup.node.getAttribute( "data-placeholder" );
+                var currentNode = this.objTree.mapping[ groupId ];
+
+                if ( !currentNode ) {
+                    return false;
+                }
+
+                currentNode = currentNode.objGroup.node;
+                return currentNode.getAttribute( "data-flag" ) === "Placeholder";
             },
 
             isBrackets: function ( groupId ) {
                 return !!this.objTree.mapping[ groupId ].objGroup.node.getAttribute( "data-brackets" );
+            },
+
+
+            // 当前是否存在“根占位符”
+            hasRootplaceholder: function () {
+
+                return this.objTree.mapping.root.strGroup.operand[ 0 ].name === "placeholder";
+
+            },
+
+            // 当前光标选中的是否是占位符
+            isSelectPlaceholder: function () {
+
+                var cursorInfo = this.record.cursor,
+                    groupInfo = null;
+
+                if ( cursorInfo.endOffset - cursorInfo.startOffset !== 1) {
+                    return false;
+                }
+
+                groupInfo = this.getGroupContent( cursorInfo.groupId );
+
+                if ( !this.isPlaceholder( groupInfo.content[ cursorInfo.startOffset ].id ) ) {
+                    return false;
+                }
+
+                return true;
+
+            },
+
+            // 给定的子树是否是一个叶子节点
+            isLeafTree: function ( tree ) {
+                return typeof tree === "string";
+            },
+
+            // 给定的子树是否是根节点
+            isRootTree: function ( tree ) {
+                return tree.attr && tree.attr[ "data-root" ];
             },
 
             getObjectTree: function () {
@@ -256,37 +325,21 @@ define( function ( require ) {
                     curStrGroup = objGroup.strGroup,
                     resultStr = null,
                     strStartIndex = -1,
-                    strEndIndex = -1,
-                    isPlaceholder = !!curStrGroup.attr[ "data-placeholder" ];
+                    strEndIndex = -1;
 
                 // 格式化偏移值， 保证在处理操作数时， 标记位置不会出错
                 strStartIndex = Math.min( cursor.endOffset, cursor.startOffset );
                 strEndIndex = Math.max( cursor.endOffset, cursor.startOffset );
 
-                if ( !isPlaceholder ) {
-
-                    curStrGroup.operand.splice( strEndIndex, 0, CURSOR_CHAR );
-                    curStrGroup.operand.splice( strStartIndex, 0, CURSOR_CHAR );
-                    strEndIndex += 1;
-
-                } else {
-//                    // 找到占位符的包裹元素
-//                    curStrGroup = this.kfEditor.requestService( "position.get.parent.group", objGroup.objGroup.node )
-//                    curStrGroup = this.objTree.mapping[ curStrGroup.id ].strGroup;
-//                    curStrGroup.operand.unshift( CURSOR_CHAR );
-//                    curStrGroup.operand.push( CURSOR_CHAR );
-                }
+                curStrGroup.operand.splice( strEndIndex, 0, CURSOR_CHAR );
+                curStrGroup.operand.splice( strStartIndex, 0, CURSOR_CHAR );
+                strEndIndex += 1;
 
                 // 返回结构树进过序列化后所对应的latex表达式， 同时包含有当前光标定位点信息
                 resultStr = this.kfEditor.requestService( "parser.latex.serialization", this.objTree.parsedTree );
 
-                if ( !isPlaceholder ) {
-                    curStrGroup.operand.splice( strEndIndex, 1 );
-                    curStrGroup.operand.splice( strStartIndex, 1 );
-                } else {
-//                    curStrGroup.operand.shift();
-//                    curStrGroup.operand.pop();
-                }
+                curStrGroup.operand.splice( strEndIndex, 1 );
+                curStrGroup.operand.splice( strStartIndex, 1 );
 
                 strStartIndex = resultStr.indexOf( CURSOR_CHAR );
 
@@ -308,6 +361,8 @@ define( function ( require ) {
             // 更新光标记录， 同时更新数据
             updateCursor: function ( groupId, startOffset, endOffset ) {
 
+                var tmp = null;
+
                 // 支持一个cursorinfo对象
                 if ( arguments.length === 1 ) {
                     endOffset = groupId.endOffset;
@@ -319,22 +374,17 @@ define( function ( require ) {
                     endOffset = startOffset;
                 }
 
+                if ( startOffset > endOffset ) {
+                    tmp = endOffset;
+                    endOffset = startOffset;
+                    startOffset = tmp;
+                }
+
                 this.record.cursor = {
                     groupId: groupId,
                     startOffset: startOffset,
                     endOffset: endOffset
                 };
-
-                window.tt = this.record.cursor;
-
-            },
-
-            insertGroup: function ( latexStr ) {
-
-                var parsedResult = this.kfEditor.requestService( "parser.parse", latexStr ),
-                    subtree = parsedResult.tree;
-
-                this.insertSubtree( subtree );
 
             },
 
@@ -344,6 +394,13 @@ define( function ( require ) {
 
             rightMove: function () {
                 this.components.move.rightMove();
+            },
+
+            // 根据当前光标的信息，删除组
+            deleteGroup: function () {
+
+                return this.components.delete.deleteGroup();
+
             },
 
             insertSubtree: function ( subtree ) {

@@ -34,6 +34,10 @@ define( function ( require ) {
 
                 var _self = this;
 
+                $$.on( this.uiComponent.toolbarContainer, "mousedown", function ( e ) {
+                    e.preventDefault();
+                } );
+
                 // 通知所有组件关闭
                 $$.on( this.kfEditor.getContainer(), "mousedown", function () {
                     _self.notify( "closeAll" );

@@ -131,20 +131,13 @@ define( function ( require ) {
 
             selectGroup: function ( groupId ) {
 
-                var groupObject = this.kfEditor.requestService( "syntax.get.group.object", groupId ),
-                    isPlaceholder = this.kfEditor.requestService( "syntax.valid.placeholder", groupId );
+                var groupObject = this.kfEditor.requestService( "syntax.get.group.object", groupId );
 
                 this.clearSelect();
 
                 if ( groupObject.node.getAttribute( "data-root" ) ) {
                     // 根节点不着色
                     return;
-                }
-
-                // 占位符着色
-                if ( isPlaceholder ) {
-                    // 替换占位符包裹组为占位符本身
-                    groupObject = this.kfEditor.requestService( "syntax.get.group.object", groupObject.operands[ 0 ].node.id );
                 }
 
                 this.record.select.lastSelect = groupObject;
@@ -172,6 +165,7 @@ define( function ( require ) {
                     // 根节点不着色
                     return;
                 }
+
                 groupObject.select();
 
             },
@@ -196,8 +190,7 @@ define( function ( require ) {
             },
 
             /**
-             * 根据当前光标信息绘制选区， 参数isAllSelect控制当前选区的类型
-             * @param isAllSelect 为ture则表示全选， 否则为普通选区
+             * 根据当前光标信息绘制选区
              */
             selectCurrentCursor: function () {
 
@@ -240,7 +233,7 @@ define( function ( require ) {
 
                 var groupId = this.kfEditor.requestService( "syntax.get.record.cursor" ).groupId,
                     groupObject = this.kfEditor.requestService( "syntax.get.group.object", groupId ),
-                    isPlaceholder = this.kfEditor.requestService( "syntax.valid.placeholder", groupId );
+                    isPlaceholder = this.kfEditor.requestService( "syntax.is.placeholder.node", groupId );
 
                 this.clearSelect();
 

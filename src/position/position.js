@@ -162,27 +162,48 @@ define( function ( require ) {
              */
             getGroupInfoByNode: function ( target ) {
 
-                var result = null,
-                    oldTarget = null;
+                var result = {},
+                    containerNode = getGroup( target, false, false ),
+                    containerInfo = null;
 
-                oldTarget = target;
-                while ( target = getGroup( target, true, false ) ) {
+                if ( !containerNode ) {
+                    return null;
+                }
 
-                    if ( target.getAttribute( "data-type" ) === "kf-editor-group" ) {
+                containerInfo = this.kfEditor.requestService( "syntax.get.group.content", containerNode.id );
+
+                for ( var i = 0, len = containerInfo.content.length; i < len; i++) {
+
+                    result.index = i;
+
+                    if ( containerInfo.content[ i ].contains( target ) ) {
                         break;
                     }
 
-                    oldTarget = target
-
                 }
 
-                result = {
-                    group: this.kfEditor.requestService( "syntax.get.group.content", target.id )
-                };
-
-                result.index = result.group.content.indexOf( oldTarget );
+                result.group = containerInfo;
 
                 return result;
+
+//                oldTarget = target;
+//                while ( target = getGroup( target, true, false ) ) {
+//
+//                    if ( target.getAttribute( "data-type" ) === "kf-editor-group" ) {
+//                        break;
+//                    }
+//
+//                    oldTarget = target
+//
+//                }
+//
+//                result = {
+//                    group: this.kfEditor.requestService( "syntax.get.group.content", target.id )
+//                };
+//
+//                result.index = result.group.content.indexOf( oldTarget );
+//
+//                return result;
 
             },
 

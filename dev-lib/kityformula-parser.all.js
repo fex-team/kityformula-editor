@@ -1,6 +1,6 @@
 /*!
  * ====================================================
- * kityformula-editor - v1.0.0 - 2014-04-13
+ * kityformula-editor - v1.0.0 - 2014-04-15
  * https://github.com/HanCong03/kityformula-editor
  * GitHub: https://github.com/kitygraph/kityformula-editor.git 
  * Copyright (c) 2014 Baidu Kity Group; Licensed MIT
@@ -156,6 +156,10 @@ define("assembly", [], function(require, exports, module) {
                     objTree.operand.push({});
                     operand[i] = arguments.callee(originTree.operand[i], currentOperand, objTree.operand[objTree.operand.length - 1], mapping, selectInfo);
                 }
+            }
+            // 包含有选区时， 需要修正一下偏移
+            if (cursorLocation.length === 2) {
+                selectInfo.endOffset -= 1;
             }
             while (i = cursorLocation.length) {
                 i = cursorLocation[i - 1];

@@ -8,7 +8,8 @@ define( function ( require, exports, module ) {
         kfUtils = require( "base/utils" ),
         KEY_CODE = {
             LEFT: 37,
-            RIGHT: 39
+            RIGHT: 39,
+            DELETE: 8
         };
 
     return kity.createClass( "InputComponent", {
@@ -21,8 +22,6 @@ define( function ( require, exports, module ) {
             this.inputBox = this.createInputBox();
 
             this.initServices();
-
-            this.focus();
 
             this.initEvent();
 
@@ -47,7 +46,9 @@ define( function ( require, exports, module ) {
 
             box.className = "kf-editor-input-box";
             box.type = "text";
-            box.style.display = "none";
+
+            // focus是否可信
+            box.isTrusted = false;
 
             editorContainer.appendChild( box );
 
@@ -55,14 +56,24 @@ define( function ( require, exports, module ) {
 
         },
 
+        setUntrusted: function () {
+            this.inputBox.isTrusted = false;
+        },
+
+        setTrusted: function () {
+            this.inputBox.isTrusted = true;
+        },
+
         updateInput: function () {
 
             var latexInfo = this.kfEditor.requestService( "syntax.serialization" );
 
+            this.setUntrusted();
             this.inputBox.value = latexInfo.str;
             this.inputBox.selectionStart = latexInfo.startOffset;
             this.inputBox.selectionEnd = latexInfo.endOffset;
             this.inputBox.focus();
+            this.setTrusted();
 
         },
 
@@ -75,11 +86,8 @@ define( function ( require, exports, module ) {
             originString = originString.substring( 0, latexInfo.startOffset ) + " " + str + " " + originString.substring( latexInfo.endOffset );
 
             this.restruct( originString );
+            this.updateInput();
 
-        },
-
-        focus: function () {
-            this.inputBox.focus();
         },
 
         initEvent: function () {
@@ -100,6 +108,11 @@ define( function ( require, exports, module ) {
                         _self.rightMove();
                         break;
 
+                    case KEY_CODE.DELETE:
+                        e.preventDefault();
+                        _self.delete();
+                        break;
+
                 }
 
             } );
@@ -111,9 +124,41 @@ define( function ( require, exports, module ) {
 
             } );
 
+            // 光标显隐控制
+            kfUtils.addEvent( this.inputBox, "blur", function ( e ) {
+
+                _self.kfEditor.requestService( "control.cursor.hide" );
+                _self.kfEditor.requestService( "render.clear.select" );
+
+            } );
+
+            kfUtils.addEvent( this.inputBox, "focus", function ( e ) {
+                if ( this.isTrusted ) {
+                    _self.kfEditor.requestService( "control.reselect" );
+                }
+            } );
+
+            // 粘贴过滤
+            kfUtils.addEvent( this.inputBox, "paste", function ( e ) {
+
+                // TODO 处理粘贴
+                debugger;
+//                _self.processingInput();
+
+            } );
+
+        },
+
+        hasRootplaceholder: function () {
+            return this.kfEditor.requestService( "syntax.has.root.placeholder" );
         },
 
         leftMove: function () {
+
+            // 当前处于"根占位符"上， 则不允许move
+            if ( this.hasRootplaceholder() ) {
+                return;
+            }
 
             this.kfEditor.requestService( "syntax.cursor.move.left" );
             this.update();
@@ -122,8 +167,34 @@ define( function ( require, exports, module ) {
 
         rightMove: function () {
 
+            if ( this.hasRootplaceholder() ) {
+                return;
+            }
+
             this.kfEditor.requestService( "syntax.cursor.move.right" );
             this.update();
+
+        },
+
+        delete: function () {
+
+            var isNeedRedraw = null;
+
+            // 当前处于"根占位符"上，不允许删除操作
+            if ( this.hasRootplaceholder() ) {
+                return;
+            }
+
+            // 返回是否修要重绘
+            isNeedRedraw = this.kfEditor.requestService( "syntax.delete.group" );
+
+            if ( isNeedRedraw ) {
+                this.updateInput();
+                this.processingInput();
+            } else {
+                this.updateInput();
+                this.kfEditor.requestService( "control.reselect" );
+            }
 
         },
 
@@ -137,20 +208,15 @@ define( function ( require, exports, module ) {
         restruct: function ( latexStr ) {
 
             this.kfEditor.requestService( "render.draw", latexStr );
-
-            this.update();
+            this.kfEditor.requestService( "control.reselect" );
 
         },
 
         update: function () {
 
-            this.kfEditor.requestService( "render.clear.select" );
             // 更新输入框
             this.updateInput();
-            // 重定位光标
-            this.kfEditor.requestService( "control.cursor.relocation" );
-            // 着色
-            this.kfEditor.requestService( "render.tint.current.cursor" );
+            this.kfEditor.requestService( "control.reselect" );
 
         }
 

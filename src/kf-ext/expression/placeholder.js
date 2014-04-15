@@ -21,8 +21,37 @@ define( function ( require, exports, module ) {
 
             this.setFlag( "Placeholder" );
 
+            this.label = null;
+
             this.box.setAttr( "data-type", null );
             this.setOperator( new PlaceholderOperator() );
+
+        },
+
+        setLabel: function ( label ) {
+            this.label = label;
+        },
+
+        getLabel: function () {
+            return this.label;
+        },
+
+        // 重载占位符的setAttr， 以处理根占位符节点
+        setAttr: function ( key, val ) {
+
+            if ( key === "label" ) {
+                this.setLabel( val );
+            } else {
+
+                if ( key.label ) {
+                    this.setLabel( key.label );
+                    // 删除label
+                    delete key.label;
+                }
+                // 继续设置其他属性
+                this.callBase( key, val );
+
+            }
 
         },
 

@@ -39,6 +39,10 @@ define( function ( require, exports, module ) {
                 hideCursor: this.hideCursor
             } );
 
+            this.kfEditor.registerService( "control.reselect", this, {
+                reselect: this.reselect
+            } );
+
         },
 
         createCursor: function () {
@@ -64,9 +68,8 @@ define( function ( require, exports, module ) {
                 e.preventDefault();
 
                 _self.updateCursorInfo( e );
-                _self.updateCursor();
-                _self.kfEditor.requestService( "render.tint.current.cursor" );
                 _self.kfEditor.requestService( "control.update.input" );
+                _self.reselect();
 
             } );
 
@@ -75,8 +78,32 @@ define( function ( require, exports, module ) {
         updateCursorInfo: function ( evt ) {
 
             var cursorInfo = null,
-                groupInfo = this.kfEditor.requestService( "position.get.group", evt.target ),
+                wrapNode = null,
+                groupInfo = null,
                 index = -1;
+
+            // 有根占位符存在， 所有定位到定位到根占位符内部
+            if ( this.kfEditor.requestService( "syntax.has.root.placeholder" ) ) {
+
+                this.kfEditor.requestService( "syntax.update.record.cursor", {
+                    groupId: this.kfEditor.requestService( "syntax.get.root.group.info" ).id,
+                    startOffset: 0,
+                    endOffset: 1
+                } );
+
+                return false;
+            }
+
+            wrapNode = this.kfEditor.requestService( "position.get.wrap", evt.target );
+
+            // 占位符处理, 选中该占位符
+            if ( wrapNode && this.kfEditor.requestService( "syntax.is.placeholder.node", wrapNode.id ) ) {
+                groupInfo = this.kfEditor.requestService( "position.get.group.info", wrapNode );
+                this.kfEditor.requestService( "syntax.update.record.cursor", groupInfo.group.id, groupInfo.index, groupInfo.index + 1 );
+                return;
+            }
+
+            groupInfo = this.kfEditor.requestService( "position.get.group", evt.target );
 
             if ( groupInfo === null ) {
                 groupInfo = this.kfEditor.requestService( "syntax.get.root.group.info" );
@@ -92,10 +119,44 @@ define( function ( require, exports, module ) {
             this.cursorShape.setAttr( "style", "display: none" );
         },
 
-        updateCursor: function () {
+        // 根据当前的光标信息， 对选区和光标进行更新
+        reselect: function () {
 
             var cursorInfo = this.kfEditor.requestService( "syntax.get.record.cursor" ),
-                groupInfo = this.kfEditor.requestService( "syntax.get.group.content", cursorInfo.groupId ),
+                groupInfo = null;
+
+            this.hideCursor();
+
+            // 根节点单独处理
+            if ( this.kfEditor.requestService( "syntax.is.select.placeholder" ) ) {
+
+                groupInfo = this.kfEditor.requestService( "syntax.get.group.content", cursorInfo.groupId );
+                this.kfEditor.requestService( "render.select.group", groupInfo.content[ cursorInfo.startOffset ].id );
+                return;
+
+            }
+
+            if ( cursorInfo.startOffset === cursorInfo.endOffset ) {
+                // 更新光标位置
+                this.updateCursor();
+                // 请求背景着色
+                this.kfEditor.requestService( "render.tint.current.cursor" );
+            } else {
+                this.kfEditor.requestService( "render.select.current.cursor" );
+            }
+
+        },
+
+        updateCursor: function () {
+
+            var cursorInfo = this.kfEditor.requestService( "syntax.get.record.cursor" );
+
+            if ( cursorInfo.startOffset !== cursorInfo.endOffset ) {
+                this.hideCursor();
+                return;
+            }
+
+            var groupInfo = this.kfEditor.requestService( "syntax.get.group.content", cursorInfo.groupId ),
                 isBefore = cursorInfo.endOffset === 0,
                 index = isBefore ? 0 : cursorInfo.endOffset - 1,
                 focusChild = groupInfo.content[ index ],

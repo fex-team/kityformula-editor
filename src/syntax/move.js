@@ -1,5 +1,5 @@
 /*！
- * 光标控制
+ * 光标移动控制
  */
 
 define( function ( require, exports, module ) {
@@ -27,7 +27,7 @@ define( function ( require, exports, module ) {
 
             // cursorInfo 为null则不用处理
             if ( cursorInfo ) {
-                this.parentComponent.updateCursor( cursorInfo.groupId, cursorInfo.startOffset, cursorInfo.endOffset );
+                this.parentComponent.updateCursor( cursorInfo );
             }
 
         },
@@ -40,7 +40,7 @@ define( function ( require, exports, module ) {
 
             // cursorInfo 为null则不用处理
             if ( cursorInfo ) {
-                this.parentComponent.updateCursor( cursorInfo.groupId, cursorInfo.startOffset, cursorInfo.endOffset );
+                this.parentComponent.updateCursor( cursorInfo );
             }
 
         }
@@ -54,13 +54,14 @@ define( function ( require, exports, module ) {
             syntaxComponent = this.parentComponent,
             containerInfo = null;
 
+        containerInfo = syntaxComponent.getGroupContent( cursorInfo.groupId );
+
+        // 当前处于占位符中
+        if ( syntaxComponent.isSelectPlaceholder() ) {
+            return locateOuterIndex( this, containerInfo.content[ cursorInfo.startOffset ], DIRECTION.LEFT );
+        }
+
         if ( cursorInfo.startOffset === cursorInfo.endOffset ) {
-
-            containerInfo = syntaxComponent.getGroupContent( cursorInfo.groupId );
-
-            if ( isPlaceholderNode( containerInfo.groupObj ) ) {
-                return locateOuterIndex( this, containerInfo.groupObj, DIRECTION.LEFT );
-            }
 
             if ( cursorInfo.startOffset > 0 ) {
 
@@ -69,8 +70,14 @@ define( function ( require, exports, module ) {
                 if ( isGroupNode( prevGroupNode ) ) {
                     cursorInfo = locateIndex( this, prevGroupNode, DIRECTION.LEFT );
                 } else {
+
                     cursorInfo.startOffset -= 1;
-                    cursorInfo.endOffset = cursorInfo.startOffset;
+
+                    // 非占位符处理
+                    if ( !isPlaceholderNode( prevGroupNode ) ) {
+                        cursorInfo.endOffset = cursorInfo.startOffset;
+                    }
+
                 }
 
             // 跳出当前容器， 回溯
@@ -98,13 +105,14 @@ define( function ( require, exports, module ) {
             syntaxComponent = this.parentComponent,
             containerInfo = null;
 
+        containerInfo = syntaxComponent.getGroupContent( cursorInfo.groupId );
+
+        // 当前处于占位符中
+        if ( syntaxComponent.isSelectPlaceholder() ) {
+            return locateOuterIndex( this, containerInfo.content[ cursorInfo.startOffset ], DIRECTION.RIGHT );
+        }
+
         if ( cursorInfo.startOffset === cursorInfo.endOffset ) {
-
-            containerInfo = syntaxComponent.getGroupContent( cursorInfo.groupId );
-
-            if ( isPlaceholderNode( containerInfo.groupObj ) ) {
-                return locateOuterIndex( this, containerInfo.groupObj, DIRECTION.RIGHT );
-            }
 
             if ( cursorInfo.startOffset < containerInfo.content.length ) {
 
@@ -114,8 +122,14 @@ define( function ( require, exports, module ) {
                 if ( isGroupNode( nextGroupNode ) ) {
                     cursorInfo = locateIndex( this, nextGroupNode, DIRECTION.RIGHT );
                 } else {
+
                     cursorInfo.startOffset += 1;
-                    cursorInfo.endOffset = cursorInfo.startOffset;
+
+                    // 非占位符同时更新结束偏移
+                    if ( !isPlaceholderNode( nextGroupNode ) ) {
+                        cursorInfo.endOffset = cursorInfo.startOffset;
+                    }
+
                 }
 
             // 跳出当前容器， 回溯
@@ -207,9 +221,9 @@ define( function ( require, exports, module ) {
                 if ( isPlaceholderNode( groupElement ) ) {
 
                     return {
-                        groupId: groupElement.id,
-                        startOffset: 0,
-                        endOffset: 0
+                        groupId: groupNode.id,
+                        startOffset: groupInfo.content.length - 1,
+                        endOffset: groupInfo.content.length
                     };
 
                 // 内部元素仍然是一个容器并且只有这一个内部元素，则进行递归处理
@@ -291,6 +305,15 @@ define( function ( require, exports, module ) {
 
         }
 
+        // 如果外部组是容器， 则直接定位即可
+        if ( isContainerNode( outerGroupInfo.group.groupObj ) ) {
+            return {
+                groupId: outerGroupInfo.group.id,
+                startOffset: outerGroupInfo.index,
+                endOffset: outerGroupInfo.index
+            };
+        }
+
         groupNode = outerGroupInfo.group.content[ outerGroupInfo.index - 1 ];
 
         // 定位到的组是一个容器， 则定位到容器尾部
@@ -349,6 +372,14 @@ define( function ( require, exports, module ) {
                 if ( isContainerNode( groupElement ) ) {
                     // 递归处理
                     return locateRightIndex( moveComponent, groupElement );
+                }
+
+                if ( isPlaceholderNode( groupElement ) ) {
+                    return {
+                        groupId: groupNode.id,
+                        startOffset: 0,
+                        endOffset: 1
+                    };
                 }
 
                 return {
@@ -435,6 +466,19 @@ define( function ( require, exports, module ) {
         // 定位到的组是一个容器， 则定位到容器内部开头位置上
         if ( isContainerNode( groupNode ) ) {
 
+            groupInfo = syntaxComponent.getGroupContent( groupNode.id );
+
+            // 检查内容开始元素是否是占位符
+            if ( syntaxComponent.isPlaceholder( groupInfo.content[ 0 ].id ) ) {
+
+                return {
+                    groupId: groupNode.id,
+                    startOffset: 0,
+                    endOffset: 1
+                };
+
+            }
+
             return {
                 groupId: groupNode.id,
                 startOffset: 0,
@@ -467,7 +511,7 @@ define( function ( require, exports, module ) {
     }
 
     function isPlaceholderNode ( node ) {
-        return !!node.getAttribute( "data-placeholder" );
+        return node.getAttribute( "data-flag" ) === "Placeholder";
     }
 
     function isEmptyNode ( node ) {
