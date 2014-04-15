@@ -158,17 +158,16 @@ define( function ( require, exports, module ) {
                 };
 
                 cursorInfo.endOffset = 1;
-                this.parentComponent.updateCursor( cursorInfo );
-
-                return true;
-
-            }
 
             // 否则可以删除当前选中内容
-            tree.operand.splice( cursorInfo.startOffset, cursorInfo.endOffset - cursorInfo.startOffset );
-            cursorInfo.endOffset = cursorInfo.startOffset;
+            } else {
+                tree.operand.splice( cursorInfo.startOffset, cursorInfo.endOffset - cursorInfo.startOffset );
+                cursorInfo.endOffset = cursorInfo.startOffset;
+            }
 
-            return cursorInfo;
+            this.parentComponent.updateCursor( cursorInfo );
+
+            return true;
 
         },
 
