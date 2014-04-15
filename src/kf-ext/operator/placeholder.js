@@ -92,11 +92,11 @@ define( function ( require, exports, modules ) {
         borderBoxShape =  new kity.Rect( textBox.width + padding * 2, textBox.height + padding * 2, 0, 0 ).stroke( "black" ).fill( "transparent" );       borderBoxShape.setAttr( "stroke-dasharray", "1, 2" );
 
         textShape.setAttr( {
-            dx: -textBox.x,
-            dy: -textBox.y
+            dx: 0-textBox.x,
+            dy: 0-textBox.y
         } );
 
-        textShape.translate( 10, 10 );
+        textShape.translate( padding, padding );
 
         shapeGroup.addShape( borderBoxShape );
 
