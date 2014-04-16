@@ -111,11 +111,17 @@ define( function ( require ) {
                 // 清空原有内容
                 this.container.innerHTML = "";
 
-                kity.Utils.each( items, function ( item, index ) {
+                kity.Utils.each( items, function ( item ) {
 
-                    item = item.item;
+                    var contents = item.content;
 
-                    newContent.push( '<div class="'+ PREFIX +'area-item" data-value="'+ item.val +'"><div class="'+ PREFIX +'area-item-content">'+ item.show +'</div></div>' );
+                    kity.Utils.each( contents, function ( currentContent, index ) {
+
+                        currentContent = currentContent.item;
+
+                        newContent.push( '<div class="'+ PREFIX +'area-item" data-value="'+ currentContent.val +'"><div class="'+ PREFIX +'area-item-content">'+ currentContent.show +'</div></div>' );
+
+                    } );
 
                 } );
 

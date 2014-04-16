@@ -105,15 +105,15 @@ define( function ( require ) {
 
             createItemGroup: function () {
 
-                var groups = this.createGroup();
+                var itemGroup = this.createGroup();
 
                 switch ( this.options.type ) {
 
                     case BOX_TYPE.DETACHED:
-                        return groups;
+                        return itemGroup.items[ 0 ];
 
                     case BOX_TYPE.OVERLAP:
-                        return this.createOverlapGroup( groups );
+                        return this.createOverlapGroup( itemGroup );
 
                 }
 
@@ -132,17 +132,23 @@ define( function ( require ) {
                     return null;
                 }
 
-                return this.options.group[ this.overlapIndex ].content;
+                return this.options.group[ this.overlapIndex ].items;
 
             },
 
-            createOverlapGroup: function ( groups ) {
+            createOverlapGroup: function ( itemGroup ) {
 
-                var list = this.getGroupList(),
+                var classifyList = itemGroup.title,
                     _self = this,
                     overlapContainer = createOverlapContainer( this.doc),
                     overlapButtonObject = createOverlapButton( this.doc ),
-                    overlapListObject = createOverlapList( this.doc, list );
+                    overlapListObject = createOverlapList( this.doc, {
+                        width: 150,
+                        items: classifyList
+                    } ),
+                    wrapNode = $$.ele( this.doc, "div", {
+                        className: PREFIX + "wrap-group"
+                    } );
 
                 this.overlapButtonObject = overlapButtonObject;
 
@@ -152,17 +158,32 @@ define( function ( require ) {
                 overlapButtonObject.initEvent();
                 overlapListObject.initEvent();
 
-                // 切换面板
+                // 合并box的内容
+                kity.Utils.each( itemGroup.items, function ( itemArr, index ) {
+
+                    var itemWrapNode = wrapNode.cloneNode( false );
+
+                    kity.Utils.each( itemArr, function ( item ) {
+
+                        itemWrapNode.appendChild( item );
+
+                    } );
+
+                    itemGroup.items[ index ] = itemWrapNode;
+
+                } );
+
+                // 切换面板处理器
                 overlapListObject.setSelectHandler( function ( index, oldIndex ) {
 
                     _self.overlapIndex = index;
 
-                    overlapButtonObject.setLabel( list.items[index] + " ▼" );
+                    overlapButtonObject.setLabel( classifyList[index] + " ▼" );
                     overlapButtonObject.hideMount();
 
                     // 切换内容
-                    groups[ oldIndex ].style.display = "none";
-                    groups[ index ].style.display = "block";
+                    itemGroup.items[ oldIndex ].style.display = "none";
+                    itemGroup.items[ index ].style.display = "block";
 
                     _self.onchangeHandler( index );
 
@@ -170,7 +191,7 @@ define( function ( require ) {
 
                 overlapContainer.appendChild( overlapButtonObject.getNode() );
 
-                kity.Utils.each( groups, function ( group, index ) {
+                kity.Utils.each( itemGroup.items, function ( group, index ) {
 
                     if ( index > 0 ) {
                         group.style.display = "none";
@@ -207,7 +228,11 @@ define( function ( require ) {
             createGroup: function () {
 
                 var doc = this.doc,
-                    groups = [],
+                    itemGroup = [],
+                    result = {
+                        title: [],
+                        items: []
+                    },
                     groupNode = null,
                     groupTitle = null,
                     itemType = BOX_TYPE.DETACHED === this.options.type ? ITEM_TYPE.BIG : ITEM_TYPE.SMALL,
@@ -222,28 +247,37 @@ define( function ( require ) {
 
                 kity.Utils.each( this.options.group, function ( group, i ) {
 
-                    groupNode = groupNode.cloneNode( false );
-                    itemContainer = itemContainer.cloneNode( false );
+                    result.title.push( group.title || "" );
+                    itemGroup = [];
 
-                    groupTitle = $$.ele( doc, "div", {
-                        className: PREFIX + "box-group-title",
-                        content: group.title
+                    kity.Utils.each( group.items, function ( item ) {
+
+                        groupNode = groupNode.cloneNode( false );
+                        itemContainer = itemContainer.cloneNode( false );
+
+                        groupTitle = $$.ele( doc, "div", {
+                            className: PREFIX + "box-group-title",
+                            content: item.title
+                        } );
+
+                        groupNode.appendChild( groupTitle );
+                        groupNode.appendChild( itemContainer );
+
+                        kity.Utils.each( createItems( doc, item.content, itemType ), function ( boxItem ) {
+
+                            boxItem.appendTo( itemContainer );
+
+                        } );
+
+                        itemGroup.push( groupNode );
+
                     } );
 
-                    groupNode.appendChild( groupTitle );
-                    groupNode.appendChild( itemContainer );
-
-                    kity.Utils.each( createItems( doc, group.content, itemType ), function ( item ) {
-
-                        item.appendTo( itemContainer );
-
-                    } );
-
-                    groups.push( groupNode );
+                    result.items.push( itemGroup );
 
                 } );
 
-                return groups;
+                return result;
 
             },
 

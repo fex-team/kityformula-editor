@@ -190,7 +190,7 @@
 
 /* area */
 .kf-editor-ui-area {
-    height: 90%;
+    height: 70px;
     display: inline-block;
     cursor: default;
     position: relative;
@@ -206,6 +206,7 @@
     border: 1px solid #D3D3D3;
     border-right: 0;
     vertical-align: top;
+    overflow: hidden;
 }
 
 .kf-editor-ui-area-button {
