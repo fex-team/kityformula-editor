@@ -160,6 +160,9 @@ define( function ( require ) {
         // 括号组的前两个元素不用处理
         if ( tree.name === "brackets" && index < 2 ) {
             return;
+        // 函数的第一个参数不处理
+        } else if ( tree.name === "function" && index === 0 ) {
+            return;
         }
 
         tree.attr[ "data-type" ] = GROUP_TYPE.VIRTUAL;

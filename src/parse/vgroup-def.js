@@ -14,7 +14,8 @@ define( function () {
         "script": true,
         "superscript": true,
         "subscript": true,
-        "brackets": true
+        "brackets": true,
+        "function": true
 
     };
 
