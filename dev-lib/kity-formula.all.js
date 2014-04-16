@@ -1,6 +1,6 @@
 /*!
  * ====================================================
- * Kity Formula - v1.0.0 - 2014-04-03
+ * Kity Formula - v1.0.0 - 2014-04-16
  * https://github.com/kitygraph/formula
  * GitHub: https://github.com/kitygraph/formula.git 
  * Copyright (c) 2014 Baidu Kity Group; Licensed MIT
@@ -2418,7 +2418,7 @@ define("char/data/symbol/not/ncong", [], {
         x: 3,
         y: 2
     },
-    box: "M 0 0 L 22 0 L 22 27 L 0 27 Z"
+    size: [ 18, 27 ]
 });
 /**
  * 字符data: 不等号
@@ -2429,7 +2429,7 @@ define("char/data/symbol/not/neq", [], {
         x: 3,
         y: 2
     },
-    box: "M 0 0 L 22 0 L 22 27 L 0 27 Z"
+    size: [ 16, 27 ]
 });
 /**
  * 字符data:
@@ -2440,7 +2440,7 @@ define("char/data/symbol/not/nequiv", [], {
         x: 3,
         y: 2
     },
-    box: "M 0 0 L 23 0 L 23 27 L 0 27 Z"
+    size: [ 18, 27 ]
 });
 /**
  * 字符data: ≱
@@ -2451,7 +2451,7 @@ define("char/data/symbol/not/nge", [], {
         x: 3,
         y: 2
     },
-    box: "M 0 0 L 21 0 L 21 27 L 0 27 Z"
+    size: [ 17, 27 ]
 });
 /**
  * 字符data: ≯
@@ -2462,7 +2462,7 @@ define("char/data/symbol/not/ngt", [], {
         x: 3,
         y: 2
     },
-    box: "M 0 0 L 22 0 L 22 27 L 0 27 Z"
+    size: [ 17, 27 ]
 });
 /**
  * 字符data:
@@ -2473,7 +2473,7 @@ define("char/data/symbol/not/nin", [], {
         x: 3,
         y: 2
     },
-    box: "M 0 0 L 18 0 L 18 27 L 0 27 Z"
+    size: [ 13, 27 ]
 });
 /**
  * 字符data: ≰
@@ -2484,7 +2484,7 @@ define("char/data/symbol/not/nle", [], {
         x: 3,
         y: 2
     },
-    box: "M 0 0 L 21 0 L 21 27 L 0 27 Z"
+    size: [ 17, 27 ]
 });
 /**
  * 字符data: ≰
@@ -2495,7 +2495,7 @@ define("char/data/symbol/not/nlt", [], {
         x: 3,
         y: 2
     },
-    box: "M 0 0 L 21 0 L 21 27 L 0 27 Z"
+    size: [ 18, 27 ]
 });
 /**
  * 字符data: ≁
@@ -2506,7 +2506,7 @@ define("char/data/symbol/not/nsim", [], {
         x: 3,
         y: 2
     },
-    box: "M 0 0 L 22 0 L 22 27 L 0 27 Z"
+    size: [ 18, 27 ]
 });
 /**
  * 字符data: ⊈
@@ -2517,7 +2517,7 @@ define("char/data/symbol/not/nsubseteq", [], {
         x: 3,
         y: 2
     },
-    box: "M 0 0 L 21 0 L 21 27 L 0 27 Z"
+    size: [ 17, 27 ]
 });
 /**
  * 字符data: ⊉
@@ -2528,7 +2528,7 @@ define("char/data/symbol/not/nsupseteq", [], {
         x: 3,
         y: 2
     },
-    box: "M 0 0 L 21 0 L 21 27 L 0 27 Z"
+    size: [ 18, 27 ]
 });
 /**
  * 字符data: 约等于
@@ -4046,14 +4046,14 @@ define("operator/integration", [ "kity", "operator/operator", "def/gtype", "sign
         constructor: function(type) {
             this.callBase("Integration");
             // 默认是普通单重积分
-            this.type = type || 1;
+            this.opType = type || 1;
         },
         setType: function(type) {
-            this.type = type | 0;
+            this.opType = type | 0;
         },
         // 重置类型
         resetType: function() {
-            this.type = 1;
+            this.opType = 1;
         },
         /*
          * 积分操作符应用操作数
@@ -4071,7 +4071,7 @@ define("operator/integration", [ "kity", "operator/operator", "def/gtype", "sign
         var pathData = "M1.318,48.226c0,0,0.044,0.066,0.134,0.134c0.292,0.313,0.626,0.447,1.006,0.447c0.246,0.022,0.358-0.044,0.604-0.268   c0.782-0.782,1.497-2.838,2.324-6.727c0.514-2.369,0.938-4.693,1.586-8.448C8.559,24.068,9.9,17.878,11.978,9.52   c0.917-3.553,1.922-7.576,3.866-8.983C16.247,0.246,16.739,0,17.274,0c1.564,0,2.503,1.162,2.592,2.57   c0,0.827-0.424,1.386-1.273,1.386c-0.671,0-1.229-0.514-1.229-1.251c0-0.805,0.514-1.095,1.185-1.274   c0.022,0-0.291-0.29-0.425-0.379c-0.201-0.134-0.514-0.224-0.737-0.224c-0.067,0-0.112,0-0.157,0.022   c-0.469,0.134-0.983,0.939-1.453,2.234c-0.537,1.475-0.961,3.174-1.631,6.548c-0.424,2.101-0.693,3.464-1.229,6.727   c-1.608,9.185-2.949,15.487-5.006,23.756c-0.514,2.034-0.849,3.24-1.207,4.335c-0.559,1.698-1.162,2.95-1.811,3.799   c-0.514,0.715-1.385,1.408-2.436,1.408c-1.363,0-2.391-1.185-2.458-2.592c0-0.804,0.447-1.363,1.273-1.363   c0.671,0,1.229,0.514,1.229,1.251C2.503,47.757,1.989,48.047,1.318,48.226z", group = new kity.Group(), opShape = new kity.Path(pathData).fill("black"), tmpShape = null;
         this.addOperatorShape(group);
         group.addShape(opShape);
-        for (var i = 1; i < this.type; i++) {
+        for (var i = 1; i < this.opType; i++) {
             tmpShape = new kity.Use(opShape).translate(opShape.getWidth() / 2 * i, 0);
             group.addShape(tmpShape);
         }

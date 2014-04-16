@@ -153,7 +153,7 @@ define( function ( require ) {
 
             createSign: function () {
 
-                if ( !this.options.sign ) {
+                if ( this.options.sign === false ) {
                     return null;
                 }
 

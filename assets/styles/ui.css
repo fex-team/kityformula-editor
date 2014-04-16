@@ -1,6 +1,6 @@
 /* 按钮 */
 .kf-editor-ui-button {
-    width: 50px;
+    padding: 0 5px;
     height: 100%;
     font-size: 10px;
     display: inline-block;

@@ -1,6 +1,6 @@
 /*!
  * ====================================================
- * kityformula-editor - v1.0.0 - 2014-04-15
+ * kityformula-editor - v1.0.0 - 2014-04-16
  * https://github.com/HanCong03/kityformula-editor
  * GitHub: https://github.com/kitygraph/kityformula-editor.git 
  * Copyright (c) 2014 Baidu Kity Group; Licensed MIT
@@ -292,7 +292,7 @@ define("impl/latex/base/rpn", [ "impl/latex/base/utils", "impl/latex/define/oper
     function processFunction(units) {
         var processed = [], currentUnit = null;
         while ((currentUnit = units.pop()) !== undefined) {
-            if (currentUnit && typeof currentUnit === "object" && currentUnit.sign === false) {
+            if (currentUnit && typeof currentUnit === "object" && (currentUnit.sign === false || currentUnit.name === "function")) {
                 // 预先处理不可作为独立符号的函数
                 var tt = currentUnit.handler(currentUnit, [], processed.reverse());
                 processed.unshift(tt);
@@ -330,7 +330,7 @@ define("impl/latex/base/tree", [ "impl/latex/define/type", "impl/latex/handler/c
 /**
  * 通用工具包
  */
-define("impl/latex/base/utils", [ "impl/latex/define/operator", "impl/latex/handler/script", "impl/latex/handler/func", "impl/latex/define/type", "impl/latex/handler/fraction", "impl/latex/handler/sqrt", "impl/latex/handler/summation", "impl/latex/handler/integration", "impl/latex/handler/brackets", "impl/latex/define/func", "impl/latex/handler/lib/int-extract" ], function(require, exports, module) {
+define("impl/latex/base/utils", [ "impl/latex/define/operator", "impl/latex/handler/script", "impl/latex/define/type", "impl/latex/handler/fraction", "impl/latex/handler/sqrt", "impl/latex/handler/summation", "impl/latex/handler/integration", "impl/latex/handler/brackets", "impl/latex/define/func", "impl/latex/handler/func", "impl/latex/handler/lib/int-extract" ], function(require, exports, module) {
     var OPERATOR_LIST = require("impl/latex/define/operator"), FUNCTION_LIST = require("impl/latex/define/func"), FUNCTION_HANDLER = require("impl/latex/handler/func"), Utils = {
         // 根据输入的latex字符串， 检测出该字符串所对应的kf的类型
         getLatexType: function(str) {
@@ -432,8 +432,8 @@ define("impl/latex/define/func", [], function(require, exports, module) {
 /**
  * 操作符列表
  */
-define("impl/latex/define/operator", [ "impl/latex/handler/script", "impl/latex/handler/func", "impl/latex/handler/lib/int-extract", "impl/latex/define/type", "impl/latex/handler/fraction", "impl/latex/handler/sqrt", "impl/latex/handler/combination", "impl/latex/handler/summation", "impl/latex/handler/integration", "impl/latex/handler/brackets", "impl/latex/define/brackets" ], function(require, exports, module) {
-    var scriptHandler = require("impl/latex/handler/script"), funcHandler = require("impl/latex/handler/func"), TYPE = require("impl/latex/define/type");
+define("impl/latex/define/operator", [ "impl/latex/handler/script", "impl/latex/define/type", "impl/latex/handler/fraction", "impl/latex/handler/sqrt", "impl/latex/handler/combination", "impl/latex/handler/summation", "impl/latex/handler/lib/int-extract", "impl/latex/handler/integration", "impl/latex/handler/brackets", "impl/latex/define/brackets" ], function(require, exports, module) {
+    var scriptHandler = require("impl/latex/handler/script"), TYPE = require("impl/latex/define/type");
     return {
         "^": {
             name: "superscript",
@@ -718,7 +718,7 @@ define("impl/latex/handler/summation", [ "impl/latex/handler/lib/int-extract" ],
 /**
  * Kity Formula Latex解析器实现
  */
-define("impl/latex/latex", [ "parser", "impl/latex/base/latex-utils", "impl/latex/base/rpn", "impl/latex/base/tree", "impl/latex/define/pre", "impl/latex/pre/int", "impl/latex/serialization", "impl/latex/define/reverse", "impl/latex/define/operator", "impl/latex/handler/script", "impl/latex/handler/func", "impl/latex/define/type", "impl/latex/handler/fraction", "impl/latex/handler/sqrt", "impl/latex/handler/summation", "impl/latex/handler/integration", "impl/latex/handler/brackets", "impl/latex/reverse/combination", "impl/latex/reverse/fraction", "impl/latex/reverse/func", "impl/latex/reverse/integration", "impl/latex/reverse/subscript", "impl/latex/reverse/superscript", "impl/latex/reverse/script", "impl/latex/reverse/sqrt", "impl/latex/reverse/summation", "impl/latex/reverse/brackets", "impl/latex/base/utils", "impl/latex/define/func" ], function(require, exports, module) {
+define("impl/latex/latex", [ "parser", "impl/latex/base/latex-utils", "impl/latex/base/rpn", "impl/latex/base/tree", "impl/latex/define/pre", "impl/latex/pre/int", "impl/latex/serialization", "impl/latex/define/reverse", "impl/latex/define/operator", "impl/latex/handler/script", "impl/latex/define/type", "impl/latex/handler/fraction", "impl/latex/handler/sqrt", "impl/latex/handler/summation", "impl/latex/handler/integration", "impl/latex/handler/brackets", "impl/latex/reverse/combination", "impl/latex/reverse/fraction", "impl/latex/reverse/func", "impl/latex/reverse/integration", "impl/latex/reverse/subscript", "impl/latex/reverse/superscript", "impl/latex/reverse/script", "impl/latex/reverse/sqrt", "impl/latex/reverse/summation", "impl/latex/reverse/brackets", "impl/latex/base/utils", "impl/latex/define/func", "impl/latex/handler/func" ], function(require, exports, module) {
     var Parser = require("parser").Parser, LatexUtils = require("impl/latex/base/latex-utils"), PRE_HANDLER = require("impl/latex/define/pre"), serialization = require("impl/latex/serialization"), OP_DEFINE = require("impl/latex/define/operator"), REVERSE_DEFINE = require("impl/latex/define/reverse"), Utils = require("impl/latex/base/utils");
     // data
     var leftChar = "￸", rightChar = "￼", clearCharPattern = new RegExp(leftChar + "|" + rightChar, "g"), leftCharPattern = new RegExp(leftChar, "g"), rightCharPattern = new RegExp(rightChar, "g");

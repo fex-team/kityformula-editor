@@ -143,6 +143,9 @@ define( function ( require ) {
                 }, {
                     title: "希腊字母",
                     items: []
+                }, {
+                    title: "求反关系运算符",
+                    items: []
                 } ]
             }
         }
@@ -310,6 +313,87 @@ define( function ( require ) {
         type: UI_ELE_TYPE.DRAPDOWN_BOX,
         options: {
             button: {
+                label: "积分",
+                icon: "assets/images/toolbar/button/int.png"
+            },
+            box: {
+                width: 332,
+                group: [ {
+                    title: "积分",
+                    items: [ {
+                        title: "积分",
+                        content: [ {
+                            item: {
+                                show: '<img src="assets/images/toolbar/int/1.png">',
+                                val: "\\int \\placeholder"
+                            }
+                        }, {
+                            item: {
+                                show: '<img src="assets/images/toolbar/int/2.png">',
+                                val: "\\int^\\placeholder_\\placeholder\\placeholder"
+                            }
+                        }, {
+                            item: {
+                                show: '<img src="assets/images/toolbar/int/3.png">',
+                                val: "\\iint\\placeholder"
+                            }
+                        }, {
+                            item: {
+                                show: '<img src="assets/images/toolbar/int/4.png">',
+                                val: "\\iint^\\placeholder_\\placeholder\\placeholder"
+                            }
+                        }, {
+                            item: {
+                                show: '<img src="assets/images/toolbar/int/5.png">',
+                                val: "\\iiint\\placeholder"
+                            }
+                        }, {
+                            item: {
+                                show: '<img src="assets/images/toolbar/int/6.png">',
+                                val: "\\iiint^\\placeholder_\\placeholder\\placeholder"
+                            }
+                        } ]
+                    } ]
+                } ]
+            }
+        }
+    }, {
+        type: UI_ELE_TYPE.DRAPDOWN_BOX,
+        options: {
+            button: {
+                label: "大型运算符",
+                icon: "assets/images/toolbar/button/sum.png"
+            },
+            box: {
+                width: 332,
+                group: [ {
+                    title: "求和",
+                    items: [ {
+                        title: "求和",
+                        content: [ {
+                            item: {
+                                show: '<img src="assets/images/toolbar/large/1.png">',
+                                val: "\\sum\\placeholder"
+                            }
+                        }, {
+                            item: {
+                                show: '<img src="assets/images/toolbar/large/2.png">',
+                                val: "\\sum^\\placeholder_\\placeholder\\placeholder"
+                            }
+                        }, {
+                            item: {
+                                show: '<img src="assets/images/toolbar/large/3.png">',
+                                val: "\\sum_\\placeholder\\placeholder"
+                            }
+                        } ]
+                    } ]
+                } ]
+            }
+        }
+    }, {
+        type: UI_ELE_TYPE.DRAPDOWN_BOX,
+        options: {
+            button: {
                 label: "括号",
                 icon: "assets/images/toolbar/button/brackets.png"
             },
@@ -344,6 +428,138 @@ define( function ( require ) {
                 } ]
             }
         }
+    }, {
+        type: UI_ELE_TYPE.DRAPDOWN_BOX,
+        options: {
+            button: {
+                label: "函数",
+                icon: "assets/images/toolbar/button/sin.png"
+            },
+            box: {
+                width: 249,
+                group: [ {
+                    title: "函数",
+                    items: [ {
+                        title: "三角函数",
+                        content: [ {
+                            item: {
+                                show: '<img src="assets/images/toolbar/func/1.png">',
+                                val: "\\sin\\placeholder"
+                            }
+                        }, {
+                            item: {
+                                show: '<img src="assets/images/toolbar/func/2.png">',
+                                val: "\\cos\\placeholder"
+                            }
+                        }, {
+                            item: {
+                                show: '<img src="assets/images/toolbar/func/3.png">',
+                                val: "\\tan\\placeholder"
+                            }
+                        }, {
+                            item: {
+                                show: '<img src="assets/images/toolbar/func/4.png">',
+                                val: "\\csc\\placeholder"
+                            }
+                        }, {
+                            item: {
+                                show: '<img src="assets/images/toolbar/func/5.png">',
+                                val: "\\sec\\placeholder"
+                            }
+                        }, {
+                            item: {
+                                show: '<img src="assets/images/toolbar/func/6.png">',
+                                val: "\\cot\\placeholder"
+                            }
+                        } ]
+                    }, {
+                        title: "常用函数",
+                        content: [ {
+                            item: {
+                                show: '<img src="assets/images/toolbar/func/c1.png">',
+                                val: "\\sin\\theta"
+                            }
+                        }, {
+                            item: {
+                                show: '<img src="assets/images/toolbar/func/c2.png">',
+                                val: "\\sin{2x}"
+                            }
+                        }, {
+                            item: {
+                                show: '<img src="assets/images/toolbar/func/c3.png">',
+                                val: "\\tan\\theta=\\frac {\\sin\\theta}{\\cos\\theta}"
+                            }
+                        } ]
+                    } ]
+                } ]
+            }
+        }
+    }, {
+        type: UI_ELE_TYPE.DRAPDOWN_BOX,
+        options: {
+            button: {
+                label: "极限和对数",
+                icon: "assets/images/toolbar/button/lim.png"
+            },
+            box: {
+                width: 249,
+                group: [ {
+                    title: "函数",
+                    items: [ {
+                        title: "函数",
+                        content: [ {
+                            item: {
+                                show: '<img src="assets/images/toolbar/func/1.png">',
+                                val: "\\sin\\placeholder"
+                            }
+                        }, {
+                            item: {
+                                show: '<img src="assets/images/toolbar/func/2.png">',
+                                val: "\\cos\\placeholder"
+                            }
+                        }, {
+                            item: {
+                                show: '<img src="assets/images/toolbar/func/3.png">',
+                                val: "\\tan\\placeholder"
+                            }
+                        }, {
+                            item: {
+                                show: '<img src="assets/images/toolbar/func/4.png">',
+                                val: "\\csc\\placeholder"
+                            }
+                        }, {
+                            item: {
+                                show: '<img src="assets/images/toolbar/func/5.png">',
+                                val: "\\sec\\placeholder"
+                            }
+                        }, {
+                            item: {
+                                show: '<img src="assets/images/toolbar/func/6.png">',
+                                val: "\\cot\\placeholder"
+                            }
+                        } ]
+                    }, {
+                        title: "常用函数",
+                        content: [ {
+                            item: {
+                                show: '<img src="assets/images/toolbar/func/c1.png">',
+                                val: "\\sin\\theta"
+                            }
+                        }, {
+                            item: {
+                                show: '<img src="assets/images/toolbar/func/c2.png">',
+                                val: "\\sin{2x}"
+                            }
+                        }, {
+                            item: {
+                                show: '<img src="assets/images/toolbar/func/c3.png">',
+                                val: "\\tan\\theta=\\frac {\\sin\\theta}{\\cos\\theta}"
+                            }
+                        } ]
+                    } ]
+                } ]
+            }
+        }
     } ];
 
     // 初始化希腊字符配置
@@ -354,31 +570,61 @@ define( function ( require ) {
                 values: [ "alpha", "beta", "gamma", "delta", "epsilon", "zeta", "eta", "theta", "iota", "kappa", "lambda", "mu", "nu", "xi", "omicron", "pi", "rho", "sigma", "tau", "upsilon", "phi", "chi", "psi", "omega" ]
             }, {
                 title: "大写",
-                values: [ "alpha", "beta", "gamma", "delta", "epsilon", "zeta", "eta", "theta", "iota", "kappa", "lambda", "mu", "nu", "xi", "omicron", "pi", "rho", "sigma", "tau", "upsilon", "phi", "chi", "psi", "omega" ]
+                values: [ "Alpha", "Beta", "Gamma", "Delta", "Epsilon", "Zeta", "Eta", "Theta", "Iota", "Kappa", "Lambda", "Mu", "Nu", "Xi", "Omicron", "Pi", "Rho", "Sigma", "Tau", "Upsilon", "Phi", "Chi", "Psi", "Omega" ]
             } ],
             greekConfigList = config[ 2 ].options.box.group[ 1 ].items;
 
-        kity.Utils.each( greekList, function ( curGreekData, index ) {
+        // 小写处理
+        greekConfigList.push( {
+            title: greekList[ 0 ].title,
+            content: getContents( {
+                path: "assets/images/toolbar/char/greek/lower/",
+                values: greekList[ 0 ].values
+            } )
+        } );
 
-            greekConfigList.push( {
-                title: curGreekData.title,
-                content: getContents( curGreekData.values )
-            } );
+        // 大写处理
+        greekConfigList.push( {
+            title: greekList[ 1 ].title,
+            content: getContents( {
+                path: "assets/images/toolbar/char/greek/upper/",
+                values: greekList[ 1 ].values
+            } )
+        } );
 
+    } )();
+
+    // 初始化求反运算符
+    ( function () {
+
+        var greekList = [ {
+                title: "求反关系运算符",
+                values: [ "neq", "ncong", "nequiv", "nge", "ngt", "nin", "nle", "nlt", "nsim", "nsubseteq", "nsupseteq" ]
+            } ],
+            greekConfigList = config[ 2 ].options.box.group[ 2 ].items;
+
+        greekConfigList.push( {
+            title: greekList[ 0 ].title,
+            content: getContents( {
+                path: "assets/images/toolbar/char/not/",
+                values: greekList[ 0 ].values
+            } )
         } );
 
     } )();
 
 
-    function getContents ( values ) {
+    function getContents ( data ) {
 
-        var result = [];
+        var result = [],
+            path = data.path,
+            values = data.values;
 
         kity.Utils.each( values, function ( value ) {
 
             result.push( {
                 item: {
-                    show: '<img src="assets/images/toolbar/char/greek/'+ value +'.png">',
+                    show: '<img src="' + path + value.toLowerCase() +'.png">',
                     val: "\\" + value
                 }
             } );
