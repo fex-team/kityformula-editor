@@ -71,6 +71,7 @@ define( function ( require ) {
             setToolbar: function ( toolbar ) {
                 this.toolbar = toolbar;
                 this.buttonElement.setToolbar( toolbar );
+                this.boxElement.setToolbar( toolbar );
             },
 
             createButton: function () {

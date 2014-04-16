@@ -110,6 +110,7 @@ define( function ( require ) {
             },
 
             showMount: function () {
+
                 this.displayState = true;
                 this.mountPoint.style.display = "block";
 
@@ -124,6 +125,8 @@ define( function ( require ) {
                     // 对齐到按钮的右边界
                     this.mountPoint.style.left = currentBox.right - mountEleBox.right - 1 + "px";
                 }
+
+                this.mountElement.updateSize();
 
             },
 

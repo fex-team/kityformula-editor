@@ -62,6 +62,19 @@ define( function ( require ) {
                 }
             },
 
+            updateSize: function () {
+
+                var containerBox = $$.getRectBox( this.toolbar.getContainer() ),
+                    curBox = $$.getRectBox( this.element );
+
+                if ( curBox.bottom <= containerBox.bottom ) {
+                    return;
+                }
+
+                this.element.style.height = curBox.height - ( curBox.bottom - containerBox.bottom + 20 ) + "px";
+
+            },
+
             initEvent: function () {
 
                 var className = "." + PREFIX + "box-item",
@@ -83,6 +96,12 @@ define( function ( require ) {
 
                     e.stopPropagation();
                     e.preventDefault();
+
+                } );
+
+                $$.on( this.element, "mousewheel", function ( e ) {
+
+                    e.stopPropagation();
 
                 } );
 

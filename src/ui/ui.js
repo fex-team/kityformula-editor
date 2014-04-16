@@ -45,6 +45,8 @@ define( function ( require, exports, modules ) {
 
                 this.initServices();
 
+                this.initEvent();
+
                 this.initResizeEvent();
 
             },
@@ -83,6 +85,14 @@ define( function ( require, exports, modules ) {
                     off: SERVICE_LIST.removeEvent,
                     trigger: SERVICE_LIST.trigger,
                     fire: SERVICE_LIST.trigger
+                } );
+
+            },
+
+            initEvent: function () {
+
+                Utils.addEvent( this.container, 'mousewheel', function ( e ) {
+                    e.preventDefault();
                 } );
 
             },

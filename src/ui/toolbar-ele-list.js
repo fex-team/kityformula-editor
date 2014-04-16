@@ -16,6 +16,7 @@ define( function ( require ) {
                 icon: "assets/images/toolbar/button/pi.png"
             },
             box: {
+                width: 367,
                 group: [ {
                     title: "预设公式",
                     items: [ {
