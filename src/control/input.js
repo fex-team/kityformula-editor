@@ -127,15 +127,21 @@ define( function ( require, exports, module ) {
             // 光标显隐控制
             kfUtils.addEvent( this.inputBox, "blur", function ( e ) {
 
+                _self.kfEditor.requestService( "ui.disable.toolbar" );
+
                 _self.kfEditor.requestService( "control.cursor.hide" );
                 _self.kfEditor.requestService( "render.clear.select" );
 
             } );
 
             kfUtils.addEvent( this.inputBox, "focus", function ( e ) {
+
+                _self.kfEditor.requestService( "ui.enable.toolbar" );
+
                 if ( this.isTrusted ) {
                     _self.kfEditor.requestService( "control.reselect" );
                 }
+
             } );
 
             // 粘贴过滤

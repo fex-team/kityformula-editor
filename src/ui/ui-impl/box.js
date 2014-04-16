@@ -121,6 +121,18 @@ define( function ( require ) {
 
             },
 
+            enable: function () {
+                if ( this.overlapButtonObject ) {
+                    this.overlapButtonObject.enable();
+                }
+            },
+
+            disable: function () {
+                if ( this.overlapButtonObject ) {
+                    this.overlapButtonObject.disable();
+                }
+            },
+
             hide: function () {
                 this.overlapButtonObject && this.overlapButtonObject.hideMount();
             },

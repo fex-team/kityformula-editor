@@ -23,6 +23,7 @@ define( function ( require ) {
                 this.doc = doc;
 
                 this.element = this.createButton();
+                this.disabled = true;
 
                 this.icon = this.createIcon();
                 this.label = this.createLabel();
@@ -49,6 +50,10 @@ define( function ( require ) {
                     e.stopPropagation();
 
                     if ( e.which !== 1 ) {
+                        return;
+                    }
+
+                    if ( _self.disabled ) {
                         return;
                     }
 
@@ -169,6 +174,16 @@ define( function ( require ) {
                     className: PREFIX + "button-mount-point"
                 } );
 
+            },
+
+            disable: function () {
+                this.disabled = true;
+                this.element.classList.remove( PREFIX + "enabled" );
+            },
+
+            enable: function () {
+                this.disabled = false;
+                this.element.classList.add( PREFIX + "enabled" );
             },
 
             mergeElement: function () {

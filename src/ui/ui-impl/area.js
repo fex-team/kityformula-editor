@@ -21,6 +21,7 @@ define( function ( require ) {
 
                 this.doc = doc;
                 this.toolbar = null;
+                this.disabled = true;
 
                 this.element = this.createArea();
                 this.container = this.createContainer();
@@ -47,7 +48,7 @@ define( function ( require ) {
                     e.preventDefault();
                     e.stopPropagation();
 
-                    if ( e.which !== 1 ) {
+                    if ( e.which !== 1 || _self.disabled ) {
                         return;
                     }
 
@@ -60,7 +61,7 @@ define( function ( require ) {
 
                     e.preventDefault();
 
-                    if ( e.which !== 1 ) {
+                    if ( e.which !== 1 || _self.disabled ) {
                         return;
                     }
 
@@ -70,6 +71,18 @@ define( function ( require ) {
 
                 this.boxObject.initEvent();
 
+            },
+
+            disable: function () {
+                this.disabled = true;
+                this.boxObject.disable();
+                this.element.classList.remove( PREFIX + "enabled" );
+            },
+
+            enable: function () {
+                this.disabled = false;
+                this.boxObject.enable();
+                this.element.classList.add( PREFIX + "enabled" );
             },
 
             setListener: function () {

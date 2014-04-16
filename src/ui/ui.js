@@ -41,7 +41,6 @@ define( function ( require, exports, modules ) {
                 this.editArea.appendChild( this.canvasContainer );
                 this.container.appendChild( this.editArea );
 
-                this.initCanvas();
                 this.initComponents();
 
                 this.initServices();
@@ -56,10 +55,6 @@ define( function ( require, exports, modules ) {
                 // 工具栏组件
                 this.components.toolbar = new Toolbar( this.kfEditor, this, ELEMENT_LIST );
                 this.components.scrollZoom = new ScrollZoom( this, this.kfEditor, this.canvasContainer );
-
-            },
-
-            initCanvas: function () {
 
             },
 

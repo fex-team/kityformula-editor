@@ -26,7 +26,21 @@ define( function ( require ) {
 
                 this.initToolbarElements();
 
+                this.initServices();
+
                 this.initEvent();
+
+            },
+
+            initServices: function () {
+
+                this.kfEditor.registerService( "ui.disable.toolbar", this, {
+                    disableToolbar: this.disableToolbar
+                } );
+
+                this.kfEditor.registerService( "ui.enable.toolbar", this, {
+                    enableToolbar: this.enableToolbar
+                } );
 
             },
 
@@ -55,6 +69,22 @@ define( function ( require ) {
             insertSource: function ( val ) {
 
                 this.kfEditor.requestService( "control.insert.string", val );
+
+            },
+
+            disableToolbar: function () {
+
+                kity.Utils.each( this.elements, function ( ele ) {
+                    ele.disable && ele.disable();
+                } );
+
+            },
+
+            enableToolbar: function () {
+
+                kity.Utils.each( this.elements, function ( ele ) {
+                    ele.enable && ele.enable();
+                } );
 
             },
 

@@ -60,6 +60,14 @@ define( function ( require ) {
 
             },
 
+            disable: function () {
+                this.buttonElement.disable();
+            },
+
+            enable: function () {
+                this.buttonElement.enable();
+            },
+
             setToolbar: function ( toolbar ) {
 
                 this.toolbar = toolbar;
