@@ -127,7 +127,8 @@ define( function ( require, exports, module ) {
             // 光标显隐控制
             kfUtils.addEvent( this.inputBox, "blur", function ( e ) {
 
-                _self.kfEditor.requestService( "ui.disable.toolbar" );
+                _self.kfEditor.requestService( "ui.toolbar.disable" );
+                _self.kfEditor.requestService( "ui.toolbar.close" );
 
                 _self.kfEditor.requestService( "control.cursor.hide" );
                 _self.kfEditor.requestService( "render.clear.select" );
@@ -136,7 +137,7 @@ define( function ( require, exports, module ) {
 
             kfUtils.addEvent( this.inputBox, "focus", function ( e ) {
 
-                _self.kfEditor.requestService( "ui.enable.toolbar" );
+                _self.kfEditor.requestService( "ui.toolbar.enable" );
 
                 if ( this.isTrusted ) {
                     _self.kfEditor.requestService( "control.reselect" );

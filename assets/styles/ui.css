@@ -199,6 +199,7 @@
     left: 0;
     vertical-align: top;
     opacity: 0.5;
+    z-index: 999;
 }
 
 .kf-editor-ui-area-container {

@@ -45,7 +45,7 @@ module.exports = function (grunt) {
             cmd: {
 
                 files: {
-                    '.build_tmp/kity-formula-o.js': '.build_tmp/**/*.js'
+                    '.build_tmp/kityformula-editor-o.js': '.build_tmp/**/*.js'
                 }
 
             },
@@ -71,7 +71,7 @@ module.exports = function (grunt) {
                 },
 
                 files: {
-                    'dist/kity-formula.all.js': [ 'dev-lib/cmd-define.js', '.build_tmp/kity-formula-o.js', 'dev-lib/exports.js' ]
+                    'dist/kityformula-editor.all.js': [ 'dev-lib/cmd-define.js', '.build_tmp/kityformula-editor-o.js', 'dev-lib/exports.js' ]
                 }
 
             }
@@ -98,7 +98,7 @@ module.exports = function (grunt) {
             minimize: {
 
                 files: {
-                    'dist/kity-formula.all.min.js': 'dist/kity-formula.all.js'
+                    'dist/kityformula-editor.all.min.js': 'dist/kityformula-editor.all.js'
                 }
 
             }

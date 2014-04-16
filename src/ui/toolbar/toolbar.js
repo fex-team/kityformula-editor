@@ -34,12 +34,16 @@ define( function ( require ) {
 
             initServices: function () {
 
-                this.kfEditor.registerService( "ui.disable.toolbar", this, {
+                this.kfEditor.registerService( "ui.toolbar.disable", this, {
                     disableToolbar: this.disableToolbar
                 } );
 
-                this.kfEditor.registerService( "ui.enable.toolbar", this, {
+                this.kfEditor.registerService( "ui.toolbar.enable", this, {
                     enableToolbar: this.enableToolbar
+                } );
+
+                this.kfEditor.registerService( "ui.toolbar.close", this, {
+                    closeToolbar: this.closeToolbar
                 } );
 
             },
@@ -86,6 +90,10 @@ define( function ( require ) {
                     ele.enable && ele.enable();
                 } );
 
+            },
+
+            closeToolbar: function () {
+                this.closeElement();
             },
 
             // 接受到关闭通知

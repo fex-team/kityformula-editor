@@ -1,6 +1,6 @@
 {
-    "name": "kity-formula",
-    "title": "Kity Formula",
+    "name": "kityformula-editor",
+    "title": "Kity Formula Editor",
     "description": "HTML(SVG) Formula display solutions",
     "version": "1.0.0",
     "homepage": "https://github.com/kitygraph/formula",
