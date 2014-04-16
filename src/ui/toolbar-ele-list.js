@@ -436,7 +436,7 @@ define( function ( require ) {
                 icon: "assets/images/toolbar/button/sin.png"
             },
             box: {
-                width: 249,
+                width: 250,
                 group: [ {
                     title: "函数",
                     items: [ {
@@ -494,7 +494,7 @@ define( function ( require ) {
                 } ]
             }
         }
-    }, {
+    }/*, {
         type: UI_ELE_TYPE.DRAPDOWN_BOX,
         options: {
             button: {
@@ -560,7 +560,7 @@ define( function ( require ) {
                 } ]
             }
         }
-    } ];
+    }*/ ];
 
     // 初始化希腊字符配置
     ( function () {
