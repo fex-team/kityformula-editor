@@ -172,7 +172,7 @@
 
 .kf-editor-ui-box-item-content {
     background: white;
-    border: 1px solid black;
+    border: 1px solid #D8D8D8;
 }
 
 .kf-editor-ui-area .kf-editor-ui-box-item-content {
@@ -309,7 +309,7 @@
 }
 
 .kf-editor-ui-area-item-content {
-    border: 1px solid black;
+    border: 1px solid #D8D8D8;
     position: absolute;
     top: -1px;
     left: -1px;
