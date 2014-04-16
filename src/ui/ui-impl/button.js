@@ -126,7 +126,7 @@ define( function ( require ) {
                     this.mountPoint.style.left = currentBox.right - mountEleBox.right - 1 + "px";
                 }
 
-                this.mountElement.updateSize();
+                this.mountElement.updateSize && this.mountElement.updateSize();
 
             },
 

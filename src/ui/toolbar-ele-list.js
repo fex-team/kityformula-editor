@@ -437,7 +437,7 @@ define( function ( require ) {
                 icon: "assets/images/toolbar/button/sin.png"
             },
             box: {
-                width: 250,
+                width: 265,
                 group: [ {
                     title: "函数",
                     items: [ {

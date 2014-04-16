@@ -35,7 +35,7 @@
 }
 
 .kf-editor-ui-overlap-button .kf-editor-ui-button-label {
-    padding: 5px 5px;
+    padding: 5px 0;
     text-align: left;
     color: white;
     font-size: 14px;
@@ -117,6 +117,10 @@
     left: 0;
     overflow-x: hidden;
     overflow-y: auto;
+}
+
+.kf-editor-ui-box-container {
+    font-size: 14px;
 }
 
 .kf-editor-ui-box-group-title {
