@@ -107,6 +107,10 @@ define( function ( require ) {
 
             },
 
+            getPositionInfo: function () {
+                return $$.getRectBox( this.element );
+            },
+
             createItems: function () {
 
                 var doc = this.doc,

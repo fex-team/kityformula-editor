@@ -14,7 +14,7 @@ define( function ( require ) {
 
         Tollbar = kity.createClass( "Tollbar", {
 
-            constructor: function ( kfEditor, uiComponent, elementList ) {
+            constructor: function ( uiComponent, kfEditor, elementList ) {
 
                 this.kfEditor = kfEditor;
                 this.uiComponent = uiComponent;
@@ -90,6 +90,10 @@ define( function ( require ) {
                     ele.enable && ele.enable();
                 } );
 
+            },
+
+            getContainer: function () {
+                return this.kfEditor.requestService( "ui.get.canvas.container" );
             },
 
             closeToolbar: function () {

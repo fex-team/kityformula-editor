@@ -27,6 +27,10 @@ define( function ( require ) {
             return node;
         },
 
+        getRectBox: function ( node ) {
+            return node.getBoundingClientRect();
+        },
+
         on: function ( target, type, fn ) {
             $( target ).on( type, fn );
             return this;

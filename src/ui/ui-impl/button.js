@@ -19,11 +19,16 @@ define( function ( require ) {
 
                 // 事件状态， 是否已经初始化
                 this.eventState = false;
+                this.toolbar = null;
+                this.displayState = false;
 
                 this.doc = doc;
 
                 this.element = this.createButton();
                 this.disabled = true;
+
+                // 挂载的对象
+                this.mountElement = null;
 
                 this.icon = this.createIcon();
                 this.label = this.createLabel();
@@ -64,10 +69,17 @@ define( function ( require ) {
 
             },
 
+            setToolbar: function ( toolbar ) {
+                this.toolbar = toolbar;
+            },
+
             toggleMountElement: function () {
 
-                var state = this.mountPoint.style.display || "none";
-                this.mountPoint.style.display = state === "none" ? "block" : "none";
+                if ( this.displayState ) {
+                    this.hideMount();
+                } else {
+                    this.showMount();
+                }
 
             },
 
@@ -98,10 +110,25 @@ define( function ( require ) {
             },
 
             showMount: function () {
+                this.displayState = true;
                 this.mountPoint.style.display = "block";
+
+                var editorContainer = this.toolbar.getContainer(),
+                    currentBox = null,
+                    containerBox = $$.getRectBox( editorContainer ),
+                    mountEleBox = this.mountElement.getPositionInfo();
+
+                // 修正偏移
+                if ( mountEleBox.right > containerBox.right ) {
+                    currentBox = $$.getRectBox( this.element );
+                    // 对齐到按钮的右边界
+                    this.mountPoint.style.left = currentBox.right - mountEleBox.right - 1 + "px";
+                }
+
             },
 
             hideMount: function () {
+                this.displayState = false;
                 this.mountPoint.style.display = "none";
             },
 
@@ -109,8 +136,9 @@ define( function ( require ) {
                 return this.element;
             },
 
-            mount: function ( source ) {
-                source.mountTo( this.mountPoint );
+            mount: function ( element ) {
+                this.mountElement = element;
+                element.mountTo( this.mountPoint );
             },
 
             createButton: function () {

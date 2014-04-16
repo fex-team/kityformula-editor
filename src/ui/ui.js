@@ -53,7 +53,7 @@ define( function ( require, exports, modules ) {
             initComponents: function () {
 
                 // 工具栏组件
-                this.components.toolbar = new Toolbar( this.kfEditor, this, ELEMENT_LIST );
+                this.components.toolbar = new Toolbar( this, this.kfEditor, ELEMENT_LIST );
                 this.components.scrollZoom = new ScrollZoom( this, this.kfEditor, this.canvasContainer );
 
             },

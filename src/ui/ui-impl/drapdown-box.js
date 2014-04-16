@@ -69,9 +69,8 @@ define( function ( require ) {
             },
 
             setToolbar: function ( toolbar ) {
-
                 this.toolbar = toolbar;
-
+                this.buttonElement.setToolbar( toolbar );
             },
 
             createButton: function () {

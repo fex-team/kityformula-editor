@@ -24,7 +24,7 @@ define( function ( require ) {
             constructor: function ( doc, options ) {
 
                 this.options = options;
-
+                this.toolbar = null;
                 this.options.type = this.options.type || BOX_TYPE.DETACHED;
 
                 this.doc = doc;
@@ -53,6 +53,13 @@ define( function ( require ) {
 
                 return boxNode;
 
+            },
+
+            setToolbar: function ( toolbar ) {
+                this.toolbar = toolbar;
+                if ( this.overlapButtonObject ) {
+                    this.overlapButtonObject.setToolbar( toolbar );
+                }
             },
 
             initEvent: function () {
@@ -101,6 +108,10 @@ define( function ( require ) {
                     className: PREFIX + "box-container"
                 } );
 
+            },
+
+            getPositionInfo: function () {
+                return $$.getRectBox( this.element );
             },
 
             createItemGroup: function () {
@@ -500,6 +511,10 @@ define( function ( require ) {
 
     function createOverlapList ( doc, list ) {
         return new List( doc, list );
+    }
+
+    function getRectBox ( node ) {
+        return node.getBoundingClientRect();
     }
 
     return Box;

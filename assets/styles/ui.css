@@ -112,6 +112,9 @@
     border: 1px solid #c2c2c2;
     box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.13);
     background: white;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 .kf-editor-ui-box-group-title {

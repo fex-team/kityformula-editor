@@ -205,6 +205,7 @@ define( function ( require ) {
 
             setToolbar: function ( toolbar ) {
                 this.toolbar = toolbar;
+                this.boxObject.setToolbar( toolbar );
             },
 
             attachTo: function ( container ) {
