@@ -115,6 +115,10 @@ define( function ( require, exports, module ) {
 
                 }
 
+                if ( !_self.pretreatmentInput( e ) ) {
+                    e.preventDefault();
+                }
+
             } );
 
             // 用户输入
@@ -202,6 +206,19 @@ define( function ( require, exports, module ) {
                 this.updateInput();
                 this.kfEditor.requestService( "control.reselect" );
             }
+
+        },
+
+        pretreatmentInput: function ( evt ) {
+
+            if ( evt.keyCode === 32 ) {
+
+                this.insertStr( "\\," );
+                return false;
+
+            }
+
+            return true;
 
         },
 

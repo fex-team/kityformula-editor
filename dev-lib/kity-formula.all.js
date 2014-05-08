@@ -513,7 +513,10 @@ define("char/text", [ "kity", "font/manager", "signgroup", "def/gtype" ], functi
         },
         translation: function(content) {
             var fontFamily = this.fontFamily;
-            return content.replace(/\\([a-zA-Z]+)\\/g, function(match, input) {
+            return content.replace(/\\([a-zA-Z,]+)\\/g, function(match, input) {
+                if (input === ",") {
+                    return "￼ ￼";
+                }
                 var data = FontManager.getCharacterValue(input, fontFamily);
                 if (!data) {
                     console.error(input + "丢失");
@@ -761,27 +764,26 @@ define("expression/compound-exp/func", [ "kity", "operator/func", "char/text", "
         /**
          * function表达式构造函数
          * @param funcName function名称
+         * @param expr 函数表达式
          * @param sup 上标
          * @param sub 下标
          */
-        constructor: function(funcName, sup, sub) {
+        constructor: function(funcName, expr, sup, sub) {
             this.callBase();
             this.setFlag("Func");
             this.setOperator(new FunctionOperator(funcName));
+            this.setExpr(expr);
             this.setSuperscript(sup);
             this.setSubscript(sub);
         },
+        setExpr: function(expr) {
+            return this.setOperand(expr, 0);
+        },
         setSuperscript: function(sub) {
-            return this.setOperand(sub, 0);
-        },
-        getSuperscript: function() {
-            return this.getOperand(0);
-        },
-        setSubscript: function(sub) {
             return this.setOperand(sub, 1);
         },
-        getSubscript: function() {
-            return this.getOperand(1);
+        setSubscript: function(sub) {
+            return this.setOperand(sub, 2);
         }
     });
 });
@@ -797,10 +799,11 @@ define("expression/compound-exp/integration", [ "kity", "operator/integration", 
              * @param supOperand 上限
              * @param subOperand 下限
              */
-        constructor: function(superscript, subscript) {
+        constructor: function(integrand, superscript, subscript) {
             this.callBase();
             this.setFlag("Integration");
             this.setOperator(new IntegrationOperator());
+            this.setIntegrand(integrand);
             this.setSuperscript(superscript);
             this.setSubscript(subscript);
         },
@@ -812,11 +815,14 @@ define("expression/compound-exp/integration", [ "kity", "operator/integration", 
             this.getOperator().resetType();
             return this;
         },
+        setIntegrand: function(integrand) {
+            this.setOperand(integrand, 0);
+        },
         setSuperscript: function(sup) {
-            this.setOperand(sup, 0);
+            this.setOperand(sup, 1);
         },
         setSubscript: function(sub) {
-            this.setOperand(sub, 1);
+            this.setOperand(sub, 2);
         }
     });
     return IntegrationExpression;
@@ -857,22 +863,26 @@ define("expression/compound-exp/summation", [ "kity", "operator/summation", "ope
         base: require("expression/compound"),
         /**
          * 构造求和表达式
-         * @param exp 求和主题表达式
+         * @param expr 求和表达式
          * @param upOperand 上标
          * @param downOperand 下标
          */
-        constructor: function(superscript, subscript) {
+        constructor: function(expr, superscript, subscript) {
             this.callBase();
             this.setFlag("Summation");
             this.setOperator(new SummationOperator());
+            this.setExpr(expr);
             this.setSuperscript(superscript);
             this.setSubscript(subscript);
         },
+        setExpr: function(expr) {
+            this.setOperand(expr, 0);
+        },
         setSuperscript: function(sup) {
-            this.setOperand(sup, 0);
+            this.setOperand(sup, 1);
         },
         setSubscript: function(sub) {
-            this.setOperand(sub, 1);
+            this.setOperand(sub, 2);
         }
     });
 });
@@ -4208,16 +4218,6 @@ define("operator/common/script-controller", [ "kity" ], function(require) {
     var kity = require("kity"), defaultOptions = {
         subOffset: 0,
         supOffset: 0,
-        // 整体扩展
-        expand: {
-            width: 0,
-            height: 0
-        },
-        // 整体偏移
-        allOffset: {
-            x: 0,
-            y: 0
-        },
         // 上下标的默认缩放值
         zoom: .66
     };
@@ -4238,7 +4238,7 @@ define("operator/common/script-controller", [ "kity" ], function(require) {
             // 基础空间大小
             var supBox = sup.getFixRenderBox(), subBox = sub.getFixRenderBox(), maxOffset = Math.max(supBox.height, subBox.height), space = {
                 width: Math.max(targetBox.width, supBox.width, subBox.width),
-                height: 0
+                height: maxOffset * 2 + targetBox.height
             }, targetHeight = targetBox.height, vOffset = 0;
             if (supBox.height < maxOffset) {
                 vOffset = maxOffset - supBox.height;
@@ -4247,9 +4247,7 @@ define("operator/common/script-controller", [ "kity" ], function(require) {
             sup.translate((space.width - supBox.width) / 2, vOffset);
             target.translate((space.width - targetBox.width) / 2, maxOffset);
             sub.translate((space.width - subBox.width) / 2, maxOffset + targetBox.height);
-            this.opObj.parentExpression.setBoxSize(space.width, space.height);
-            this.opObj.parentExpression.expand(options.expand.width, options.expand.height);
-            this.opObj.parentExpression.translateElement(options.allOffset.x, options.allOffset.y);
+            return space;
         },
         // 侧面标记
         applySide: function() {
@@ -4281,9 +4279,7 @@ define("operator/common/script-controller", [ "kity" ], function(require) {
             } else {
                 space.height = targetHeight;
             }
-            this.opObj.parentExpression.setBoxSize(space.width, space.height);
-            this.opObj.parentExpression.expand(options.expand.width, options.expand.height);
-            this.opObj.parentExpression.translateElement(options.allOffset.x, options.allOffset.y);
+            return space;
         }
     });
 });
@@ -4300,31 +4296,32 @@ define("operator/func", [ "kity", "char/text", "font/manager", "signgroup", "ope
         },
         /*
          * 积分操作符应用操作数
-         * @param integrand 被积函数
-         * @param supOperand 上限
-         * @param subOperand 下限
+         * @param expr 函数表达式
+         * @param sup 上限
+         * @param sub 下限
          */
-        applyOperand: function(supOperand, subOperand) {
-            var opShape = generateOperator.call(this);
-            this.addOperatorShape(opShape);
-            adjustmentPosition.call(this, opShape, supOperand, subOperand);
+        applyOperand: function(expr, sup, sub) {
+            var opShape = generateOperator.call(this), padding = 5, expBox = expr.getFixRenderBox(), space = new ScriptController(this, opShape, sup, sub, {
+                zoom: .5
+            }).applyUpDown(), diff = (space.height - expBox.height) / 2;
+            if (diff >= 0) {
+                expr.translate(space.width + padding, diff);
+            } else {
+                diff = -diff;
+                opShape.translate(0, diff);
+                sup.translate(0, diff);
+                sub.translate(0, diff);
+                expr.translate(space.width + padding, 0);
+            }
+            this.parentExpression.expand(padding, padding * 2);
+            this.parentExpression.translateElement(padding, padding);
         }
     });
     /* 返回操作符对象 */
     function generateOperator() {
-        return new Text(this.funcName, "KF AMS ROMAN");
-    }
-    function adjustmentPosition(operatorShape, sup, sub) {
-        new ScriptController(this, operatorShape, sup, sub, {
-            expand: {
-                width: 10,
-                height: 0
-            },
-            allOffset: {
-                x: 5,
-                y: 0
-            }
-        }).applyUpDown();
+        var opShape = new Text(this.funcName, "KF AMS ROMAN");
+        this.addOperatorShape(opShape);
+        return opShape;
     }
 });
 /**
@@ -4346,20 +4343,21 @@ define("operator/integration", [ "kity", "operator/common/script-controller", "o
         resetType: function() {
             this.opType = 1;
         },
-        applyOperand: function(sup, sub) {
-            var opShape = this.getOperatorShape();
-            new ScriptController(this, opShape, sup, sub, {
-                subOffset: -15,
-                expand: {
-                    width: 10,
-                    height: 10
-                },
-                zoom: .5,
-                allOffset: {
-                    x: 5,
-                    y: 5
-                }
-            }).applySide();
+        applyOperand: function(exp, sup, sub) {
+            var opShape = this.getOperatorShape(), padding = 5, expBox = exp.getFixRenderBox(), space = new ScriptController(this, opShape, sup, sub, {
+                subOffset: -15
+            }).applySide(), diff = (space.height - expBox.height) / 2;
+            if (diff >= 0) {
+                exp.translate(space.width + padding, diff);
+            } else {
+                diff = -diff;
+                opShape.translate(0, diff);
+                sup.translate(0, diff);
+                sub.translate(0, diff);
+                exp.translate(space.width + padding, 0);
+            }
+            this.parentExpression.expand(padding, padding * 2);
+            this.parentExpression.translateElement(padding, padding);
         },
         getOperatorShape: function() {
             var pathData = "M1.318,48.226c0,0,0.044,0.066,0.134,0.134c0.292,0.313,0.626,0.447,1.006,0.447c0.246,0.022,0.358-0.044,0.604-0.268   c0.782-0.782,1.497-2.838,2.324-6.727c0.514-2.369,0.938-4.693,1.586-8.448C8.559,24.068,9.9,17.878,11.978,9.52   c0.917-3.553,1.922-7.576,3.866-8.983C16.247,0.246,16.739,0,17.274,0c1.564,0,2.503,1.162,2.592,2.57   c0,0.827-0.424,1.386-1.273,1.386c-0.671,0-1.229-0.514-1.229-1.251c0-0.805,0.514-1.095,1.185-1.274   c0.022,0-0.291-0.29-0.425-0.379c-0.201-0.134-0.514-0.224-0.737-0.224c-0.067,0-0.112,0-0.157,0.022   c-0.469,0.134-0.983,0.939-1.453,2.234c-0.537,1.475-0.961,3.174-1.631,6.548c-0.424,2.101-0.693,3.464-1.229,6.727   c-1.608,9.185-2.949,15.487-5.006,23.756c-0.514,2.034-0.849,3.24-1.207,4.335c-0.559,1.698-1.162,2.95-1.811,3.799   c-0.514,0.715-1.385,1.408-2.436,1.408c-1.363,0-2.391-1.185-2.458-2.592c0-0.804,0.447-1.363,1.273-1.363   c0.671,0,1.229,0.514,1.229,1.251C2.503,47.757,1.989,48.047,1.318,48.226z", group = new kity.Group(), opGroup = new kity.Group(), opShape = new kity.Path(pathData).fill("black"), opBox = new kity.Rect(0, 0, 0, 0).fill("transparent"), tmpShape = null;
@@ -4455,19 +4453,19 @@ define("operator/summation", [ "kity", "operator/common/script-controller", "ope
             this.callBase("Summation");
             this.displayType = "equation";
         },
-        applyOperand: function(sup, sub) {
-            var opShape = this.getOperatorShape();
-            new ScriptController(this, opShape, sup, sub, {
-                extend: {
-                    width: 5,
-                    height: 5
-                },
-                allOffset: {
-                    x: 5,
-                    y: 5
-                },
-                zoom: .5
-            }).applyUpDown();
+        applyOperand: function(expr, sup, sub) {
+            var opShape = this.getOperatorShape(), expBox = expr.getFixRenderBox(), padding = 5, space = new ScriptController(this, opShape, sup, sub).applyUpDown(), diff = (space.height - expBox.height) / 2;
+            if (diff >= 0) {
+                expr.translate(space.width + padding, diff);
+            } else {
+                diff = -diff;
+                opShape.translate(0, diff);
+                sup.translate(0, diff);
+                sub.translate(0, diff);
+                expr.translate(space.width + padding, 0);
+            }
+            this.parentExpression.expand(padding, padding * 2);
+            this.parentExpression.translateElement(padding, padding);
         },
         getOperatorShape: function() {
             var pathData = "M0.672,33.603c-0.432,0-0.648,0-0.648-0.264c0-0.024,0-0.144,0.24-0.432l12.433-14.569L0,0.96c0-0.264,0-0.72,0.024-0.792   C0.096,0.024,0.12,0,0.672,0h28.371l2.904,6.745h-0.6C30.531,4.8,28.898,3.72,28.298,3.336c-1.896-1.2-3.984-1.608-5.28-1.8   c-0.216-0.048-2.4-0.384-5.617-0.384H4.248l11.185,15.289c0.168,0.24,0.168,0.312,0.168,0.36c0,0.12-0.048,0.192-0.216,0.384   L3.168,31.515h14.474c4.608,0,6.96-0.624,7.464-0.744c2.76-0.72,5.305-2.352,6.241-4.848h0.6l-2.904,7.681H0.672z", operatorShape = new kity.Path(pathData).fill("black"), opBgShape = new kity.Rect(0, 0, 0, 0).fill("transparent"), group = new kity.Group(), opRenderBox = null;

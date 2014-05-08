@@ -39,6 +39,7 @@
 .kf-editor-input-box {
     position: fixed;
     top: 0;
-    left: -1000000px;
+    left: 0px;
+    width: 10000px;
     z-index: 999999;
 }

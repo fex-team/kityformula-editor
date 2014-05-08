@@ -1,6 +1,6 @@
 /*!
  * ====================================================
- * kityformula-editor - v1.0.0 - 2014-05-08
+ * kityformula-editor - v1.0.0 - 2014-05-09
  * https://github.com/HanCong03/kityformula-editor
  * GitHub: https://github.com/kitygraph/kityformula-editor.git 
  * Copyright (c) 2014 Baidu Kity Group; Licensed MIT
@@ -566,7 +566,7 @@ define("impl/latex/handler/func", [ "impl/latex/handler/lib/script-extractor" ],
     // 处理函数接口
     return function(info, processedStack, unprocessedStack) {
         var params = ScriptExtractor.exec(unprocessedStack);
-        info.operand = [ info.params, params.superscript, params.subscript ];
+        info.operand = [ info.params, params.expr, params.superscript, params.subscript ];
         delete info.params;
         delete info.handler;
         return info;
@@ -579,7 +579,7 @@ define("impl/latex/handler/integration", [ "impl/latex/handler/lib/script-extrac
     var ScriptExtractor = require("impl/latex/handler/lib/script-extractor");
     return function(info, processedStack, unprocessedStack) {
         var count = unprocessedStack.shift(), params = ScriptExtractor.exec(unprocessedStack);
-        info.operand = [ params.superscript, params.subscript ];
+        info.operand = [ params.expr, params.superscript, params.subscript ];
         // 参数配置调用
         info.callFn = {
             setType: [ count | 0 ]
@@ -588,83 +588,41 @@ define("impl/latex/handler/integration", [ "impl/latex/handler/lib/script-extrac
         return info;
     };
 });
-/**
- * 积分参数提取函数
- */
-define("impl/latex/handler/lib/int-extract", [], function(require, exports, module) {
-    return function(units) {
-        var sup = units.shift() || null, sub = null, exp = null;
-        if (sup !== null) {
-            if (typeof sup === "string") {
-                exp = sup;
-                sup = null;
-            } else {
-                if (sup.name === "superscript") {
-                    sup = units.shift() || null;
-                    if (sup) {
-                        sub = units.shift() || null;
-                        if (sub) {
-                            if (sub.name === "subscript") {
-                                sub = units.shift() || null;
-                                exp = units.shift() || null;
-                            } else {
-                                exp = sub;
-                                sub = null;
-                            }
-                        }
-                    }
-                } else if (sup.name === "subscript") {
-                    sub = units.shift() || null;
-                    if (sub) {
-                        sup = units.shift() || null;
-                        if (sup) {
-                            if (sup.name === "superscript") {
-                                sup = units.shift() || null;
-                                exp = units.shift() || null;
-                            } else {
-                                exp = sup;
-                                sup = null;
-                            }
-                        }
-                    }
-                } else {
-                    exp = sup;
-                    sup = null;
-                }
-            }
-        }
-        return {
-            sub: sub,
-            sup: sup
-        };
-    };
-});
 /*!
  * 通用上下标提取器
  */
 define("impl/latex/handler/lib/script-extractor", [], function(require) {
     return {
         exec: function(stack) {
-            var scriptGroup = extractor(stack), nextGroup = null, result = {
-                superscript: null,
-                subscript: null
-            };
-            if (scriptGroup) {
-                nextGroup = extractor(stack);
-            } else {
-                return result;
+            // 提取上下标
+            var result = extractScript(stack), expr = stack.shift();
+            if (expr && expr.name.indexOf("script") !== -1) {
+                throw new Error("Script: syntax error!");
             }
-            result[scriptGroup.type] = scriptGroup.value || null;
-            if (nextGroup) {
-                if (nextGroup.type === scriptGroup.type) {
-                    throw new Error("Script: syntax error!");
-                }
-                result[nextGroup.type] = nextGroup.value || null;
-            }
+            result.expr = expr || null;
             return result;
         }
     };
-    function extractor(stack) {
+    function extractScript(stack) {
+        var scriptGroup = extract(stack), nextGroup = null, result = {
+            superscript: null,
+            subscript: null
+        };
+        if (scriptGroup) {
+            nextGroup = extract(stack);
+        } else {
+            return result;
+        }
+        result[scriptGroup.type] = scriptGroup.value || null;
+        if (nextGroup) {
+            if (nextGroup.type === scriptGroup.type) {
+                throw new Error("Script: syntax error!");
+            }
+            result[nextGroup.type] = nextGroup.value || null;
+        }
+        return result;
+    }
+    function extract(stack) {
         var forward = stack.shift();
         if (!forward) {
             return null;
@@ -749,7 +707,7 @@ define("impl/latex/handler/summation", [ "impl/latex/handler/lib/script-extracto
     var ScriptExtractor = require("impl/latex/handler/lib/script-extractor");
     return function(info, processedStack, unprocessedStack) {
         var params = ScriptExtractor.exec(unprocessedStack);
-        info.operand = [ params.superscript, params.subscript ];
+        info.operand = [ params.expr, params.superscript, params.subscript ];
         delete info.handler;
         return info;
     };
@@ -811,7 +769,7 @@ define("impl/latex/latex", [ "parser", "impl/latex/base/latex-utils", "impl/late
             return input;
         },
         split: function(data) {
-            var units = [], pattern = /(?:\\[a-z]+\s*)|(?:[{}]\s*)|(?:[^\\{}]\s*)/gi, emptyPattern = /^\s+|\s+$/g, match = null;
+            var units = [], pattern = /(?:\\[,]\s*)|(?:\\[a-z]+\s*)|(?:[{}]\s*)|(?:[^\\{}]\s*)/gi, emptyPattern = /^\s+|\s+$/g, match = null;
             data = data.replace(emptyPattern, "");
             while (match = pattern.exec(data)) {
                 match = match[0].replace(emptyPattern, "");
@@ -971,6 +929,12 @@ define("impl/latex/reverse/brackets", [], function() {
      * 2: 表达式
      */
     return function(operands) {
+        if (operands[0] === "{" || operands[0] === "}") {
+            operands[0] = "\\" + operands[0];
+        }
+        if (operands[1] === "{" || operands[1] === "}") {
+            operands[1] = "\\" + operands[1];
+        }
         return [ "\\left", operands[0], operands[2], "\\right", operands[1] ].join(" ");
     };
 });
@@ -1001,9 +965,8 @@ define("impl/latex/reverse/func", [], function() {
     /**
      * operands中元素对照表
      * 0: 函数名
-     * 1: 表达式
-     * 2: 上标
-     * 3: 下标
+     * 1: 上标
+     * 2: 下标
      */
     return function(operands) {
         var result = [ "\\" + operands[0] ];
@@ -1015,7 +978,9 @@ define("impl/latex/reverse/func", [], function() {
         if (operands[3]) {
             result.push("_" + operands[3]);
         }
-        result.push(" " + operands[1]);
+        if (operands[1]) {
+            result.push(" " + operands[1]);
+        }
         return result.join("");
     };
 });
@@ -1025,19 +990,18 @@ define("impl/latex/reverse/func", [], function() {
 define("impl/latex/reverse/integration", [], function() {
     /**
      * operands中元素对照表
-     * 0: 表达式
-     * 1: 上标
-     * 2: 下标
+     * 0: 上标
+     * 1: 下标
      */
     return function(operands) {
-        var result = [ "\\int" ];
+        var result = [ "\\int " ];
         // 修正多重积分的序列化
         if (this.callFn && this.callFn.setType) {
             result = [ "\\" ];
             for (var i = 0, len = this.callFn.setType; i < len; i++) {
                 result.push("i");
             }
-            result.push("nt");
+            result.push("nt ");
         }
         // 上标
         if (operands[1]) {
@@ -1047,7 +1011,9 @@ define("impl/latex/reverse/integration", [], function() {
         if (operands[2]) {
             result.push("_" + operands[2]);
         }
-        result.push(" " + operands[0]);
+        if (operands[0]) {
+            result.push(" " + operands[0]);
+        }
         return result.join("");
     };
 });
@@ -1103,12 +1069,11 @@ define("impl/latex/reverse/subscript", [], function() {
 define("impl/latex/reverse/summation", [], function() {
     /**
      * operands中元素对照表
-     * 0: 表达式
-     * 1: 上标
-     * 2: 下标
+     * 0: 上标
+     * 1: 下标
      */
     return function(operands) {
-        var result = [ "\\sum" ];
+        var result = [ "\\sum " ];
         // 上标
         if (operands[1]) {
             result.push("^" + operands[1]);
@@ -1117,7 +1082,9 @@ define("impl/latex/reverse/summation", [], function() {
         if (operands[2]) {
             result.push("_" + operands[2]);
         }
-        result.push(" " + operands[0]);
+        if (operands[0]) {
+            result.push(" " + operands[0]);
+        }
         return result.join("");
     };
 });
@@ -1138,7 +1105,7 @@ define("impl/latex/reverse/superscript", [], function() {
  * Created by hn on 14-3-20.
  */
 define("impl/latex/serialization", [ "impl/latex/define/reverse", "impl/latex/reverse/combination", "impl/latex/reverse/fraction", "impl/latex/reverse/func", "impl/latex/reverse/integration", "impl/latex/reverse/subscript", "impl/latex/reverse/superscript", "impl/latex/reverse/script", "impl/latex/reverse/sqrt", "impl/latex/reverse/summation", "impl/latex/reverse/brackets" ], function(require) {
-    var reverseHandlerTable = require("impl/latex/define/reverse"), specialCharPattern = /(\\[\w]+)\\/g;
+    var reverseHandlerTable = require("impl/latex/define/reverse"), specialCharPattern = /(\\(?:[\w]+)|(,))\\/g;
     return function(tree, options) {
         return reverseParse(tree, options);
     };
