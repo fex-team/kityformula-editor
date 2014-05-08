@@ -111,7 +111,7 @@ define( function ( require ) {
         if ( isRoot ) {
             processRootGroup( parser, tree );
         // 根占位符处理, 附加label
-        } else if ( parentTree.attr[ "data-root" ] && tree.name === "placeholder" ) {
+        } else if ( parentTree.attr[ "data-root" ] && tree.name === "placeholder" && parentTree.operand.length === 1 ) {
             tree.attr.label = ROOT_P_TEXT;
         }
 
