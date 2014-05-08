@@ -149,7 +149,7 @@ define( function ( require, exports, module ) {
             // 移动方向， true为右， false为左
             var dir = x > this.startPoint.x,
                 cursorInfo = {},
-                unifiedGroupInfo = null,
+                communityGroupInfo = null,
                 inRightArea = false,
                 startGroupInfo = this.startGroup,
                 currentGroupNode = null,
@@ -205,37 +205,37 @@ define( function ( require, exports, module ) {
                 } else {
 
                     // 获取公共容器
-                    unifiedGroupInfo = this.getUnifiedGroup( startGroupInfo.groupInfo, currentGroupInfo.groupInfo );
+                    communityGroupInfo = this.getCommunityGroup( startGroupInfo.groupInfo, currentGroupInfo.groupInfo );
 
                     // 修正偏移相同时的情况， 比如在分数中选中时
-                    if ( unifiedGroupInfo.startOffset === unifiedGroupInfo.endOffset ) {
+                    if ( communityGroupInfo.startOffset === communityGroupInfo.endOffset ) {
 
-                        unifiedGroupInfo.endOffset += 1;
+                        communityGroupInfo.endOffset += 1;
 
                     // 根据拖拽方向修正各自的偏移
                     } else {
 
                         // 当前光标移动所在的组元素节点
-                        currentGroupNode = unifiedGroupInfo.group.content[ unifiedGroupInfo.endOffset ];
+                        currentGroupNode = communityGroupInfo.group.content[ communityGroupInfo.endOffset ];
 
                         inRightArea = this.kfEditor.requestService( "position.get.area", currentGroupNode, x );
 
                         // 当前移动到右区域， 则更新结束偏移
                         if ( inRightArea ) {
-                            unifiedGroupInfo.endOffset += 1;
+                            communityGroupInfo.endOffset += 1;
                         }
 
                         // 左移动时， 修正起始偏移
                         if ( !dir ) {
-                            unifiedGroupInfo.startOffset += 1;
+                            communityGroupInfo.startOffset += 1;
                         }
 
                     }
 
                     cursorInfo = {
-                        groupId: unifiedGroupInfo.group.id,
-                        startOffset: unifiedGroupInfo.startOffset,
-                        endOffset: unifiedGroupInfo.endOffset
+                        groupId: communityGroupInfo.group.id,
+                        startOffset: communityGroupInfo.startOffset,
+                        endOffset: communityGroupInfo.endOffset
                     };
 
                 }
@@ -342,7 +342,7 @@ define( function ( require, exports, module ) {
          * @param startGroupInfo 组信息
          * @param endGroupInfo 另一个组信息
          */
-        getUnifiedGroup: function ( startGroupInfo, endGroupInfo ) {
+        getCommunityGroup: function ( startGroupInfo, endGroupInfo ) {
 
             var bigBoundingGroup = null,
                 targetGroup = startGroupInfo.groupObj,

@@ -38,10 +38,15 @@ define( function ( require ) {
 
             initCanvas: function () {
 
-                var canvasContainer = this.kfEditor.requestService( "ui.get.canvas.container" );
+                var canvasContainer = this.kfEditor.requestService( "ui.get.canvas.container"),
+                    viewBox = null;
+
 
                 this.assembly = Assembly.use( canvasContainer, DEFAULT_OPTIONS );
                 this.formula = this.assembly.formula;
+
+                viewBox = this.formula.getViewBox();
+                this.formula.setViewBox( -viewBox.width / 2, -viewBox.height / 2, viewBox.width, viewBox.height );
 
             },
 
@@ -119,13 +124,9 @@ define( function ( require ) {
 
             relocation: function () {
 
-                var formulaSpace = this.formula.container.getRenderBox(),
-                    viewPort = this.formula.getViewPort();
+                var formulaSpace = this.formula.container.getRenderBox();
 
-                viewPort.center.x = formulaSpace.width / 2;
-                viewPort.center.y = formulaSpace.height / 2;
-
-                this.formula.setViewPort( viewPort );
+                this.formula.container.setTranslate( -formulaSpace.width / 2, -formulaSpace.height / 2);
 
             },
 
@@ -199,7 +200,7 @@ define( function ( require ) {
                     box = null,
                     offset = -1,
                     width = 0,
-                    height = group.getRenderBox().height,
+                    height = group.getFixRenderBox().height,
                     startIndex = Math.min( cursorInfo.startOffset, cursorInfo.endOffset ),
                     endIndex = Math.max( cursorInfo.startOffset, cursorInfo.endOffset );
 
@@ -210,7 +211,7 @@ define( function ( require ) {
 
                 for ( var i = startIndex, len = endIndex; i < len; i++ ) {
 
-                    box = group.getOperand( i ).getRenderBox();
+                    box = group.getOperand( i ).getFixRenderBox();
 
                     if ( offset == -1 ) {
                         offset = box.x;
@@ -284,7 +285,7 @@ define( function ( require ) {
                 }
 
                 currentSelect.unselect();
-                box = currentSelect.getRenderBox();
+                box = currentSelect.getFixRenderBox();
                 currentSelect.setBoxSize( box.width, box.height );
 
                 transform = currentSelect.getBox().getTransform();
@@ -294,7 +295,7 @@ define( function ( require ) {
                     transform.m.f = 0;
                 }
 
-                currentSelect.getBox().setTransform( transform );
+                currentSelect.getBox().setMatrix( transform );
 
             },
 

@@ -162,7 +162,7 @@ define( function ( require, exports, module ) {
                 focusChild = groupInfo.content[ index ],
                 paperContainerRect = getRect( this.paper.container.node ),
                 cursorOffset = 0,
-                focusChildRect = getRect( focusChild),
+                focusChildRect = getRect( focusChild ),
                 cursorTransform = this.cursorShape.getTransform(),
                 canvasZoom = this.kfEditor.requestService( "render.get.canvas.zoom" ),
                 formulaZoom = this.paper.getZoom();
@@ -177,7 +177,7 @@ define( function ( require, exports, module ) {
             cursorTransform.m.e = cursorOffset / canvasZoom / formulaZoom ;
             cursorTransform.m.f = ( focusChildRect.top - paperContainerRect.top ) / canvasZoom / formulaZoom;
 
-            this.cursorShape.setTransform( cursorTransform );
+            this.cursorShape.setMatrix( cursorTransform );
             this.cursorShape.setAttr( "style", "display: block" );
 
         },

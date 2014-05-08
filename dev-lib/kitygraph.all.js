@@ -1,6 +1,6 @@
 /*!
  * ====================================================
- * kitygraph - v1.0.0 - 2014-03-06
+ * kitygraph - v1.0.0 - 2014-05-08
  * https://github.com/kitygraph/kity
  * GitHub: https://github.com/kitygraph/kity.git 
  * Copyright (c) 2014 Baidu UEditor Group; Licensed MIT
@@ -85,7 +85,7 @@ function use ( id ) {
     return require( id );
 
 }
-define("animate/animator", [ "animate/timeline", "graphic/color", "graphic/matrix", "graphic/eventhandler", "core/class", "animate/easing", "core/config", "graphic/shape", "graphic/svg", "core/utils", "graphic/styled", "graphic/data", "graphic/pen" ], function(require, exports, module) {
+define("animate/animator", [ "animate/timeline", "graphic/color", "graphic/matrix", "graphic/eventhandler", "animate/frame", "core/utils", "core/class", "animate/easing", "core/config", "graphic/shape", "graphic/svg", "graphic/styled", "graphic/data", "graphic/pen", "graphic/box" ], function(require, exports, module) {
     function parseTime(str) {
         var value = parseFloat(str, 10);
         if (/ms/.test(str)) {
@@ -105,12 +105,12 @@ define("animate/animator", [ "animate/timeline", "graphic/color", "graphic/matri
         constructor: function(beginValue, finishValue, setter) {
             if (arguments.length == 1) {
                 var opt = arguments[0];
-                this.beginVal = opt.beginValue;
-                this.finishVal = opt.finishValue;
+                this.beginValue = opt.beginValue;
+                this.finishValue = opt.finishValue;
                 this.setter = opt.setter;
             } else {
-                this.beginVal = beginValue;
-                this.finishVal = finishValue;
+                this.beginValue = beginValue;
+                this.finishValue = finishValue;
                 this.setter = setter;
             }
         },
@@ -144,7 +144,7 @@ define("animate/animator", [ "animate/timeline", "graphic/color", "graphic/matri
             return timeline;
         },
         reverse: function() {
-            return new Animator(this.finishVal, this.beginVal, this.setter);
+            return new Animator(this.finishValue, this.beginValue, this.setter);
         }
     });
     Animator.DEFAULT_DURATION = 300;
@@ -354,7 +354,115 @@ define("animate/easing", [], function(require, exports, module) {
     };
     return easings;
 });
-define("animate/opacityanimator", [ "animate/animator", "animate/timeline", "animate/easing", "core/class", "graphic/shape", "graphic/matrix", "core/utils", "graphic/vector", "core/config", "graphic/svg", "graphic/eventhandler", "graphic/styled", "graphic/data", "graphic/pen" ], function(require, exports, module) {
+define("animate/frame", [], function(require, exports, module) {
+    // 原生动画帧方法 polyfill
+    var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || function(fn) {
+        return setTimeout(fn, 1e3 / 60);
+    };
+    // 等待执行的帧的集合，这些帧的方法将在下个动画帧同步执行
+    var pendingFrames = [];
+    /**
+     * 添加一个帧到等待集合中
+     *
+     * 如果添加的帧是序列的第一个，至少有一个帧需要被执行，则下一个动画帧需要执行
+     */
+    function pushFrame(frame) {
+        if (pendingFrames.push(frame) === 1) {
+            requestAnimationFrame(executePendingFrames);
+        }
+    }
+    /**
+     * 执行所有等待帧
+     */
+    function executePendingFrames() {
+        var frames = pendingFrames;
+        pendingFrames = [];
+        while (frames.length) {
+            executeFrame(frames.pop());
+        }
+    }
+    /**
+     * 请求一个帧，执行指定的动作。动作回调提供一些有用的信息
+     *
+     * @param {Function} action
+     *
+     *     要执行的动作，该动作回调有一个参数 frame，其中：
+     *
+     *     frame.time
+     *         动作执行时的时间戳（ms）
+     *
+     *     frame.index
+     *         当前执行的帧的编号（首帧为 0）
+     *
+     *     frame.dur
+     *         上一帧至今经过的时间，单位 ms
+     *
+     *     frame.elapsed
+     *         从首帧开始到当前帧经过的时间
+     *
+     *     frame.action
+     *         指向当前的帧处理函数
+     *
+     *     frame.next()
+     *         表示下一帧继续执行。如果不调用该方法，将不会执行下一帧。
+     *
+     */
+    function requestFrame(action) {
+        var frame = initFrame(action);
+        pushFrame(frame);
+        return frame;
+    }
+    /**
+     * 释放一个已经请求过的帧，如果该帧在等待集合里，将移除，下个动画帧不会执行释放的帧
+     */
+    function releaseFrame(frame) {
+        var index = pendingFrames.indexOf(frame);
+        if (~index) {
+            pendingFrames.splice(index, 1);
+        }
+    }
+    /**
+     * 初始化一个帧，主要用于后续计算
+     */
+    function initFrame(action) {
+        var frame = {
+            index: 0,
+            time: +new Date(),
+            elapsed: 0,
+            action: action,
+            next: function() {
+                pushFrame(frame);
+            }
+        };
+        return frame;
+    }
+    /**
+     * 执行一个帧动作
+     */
+    function executeFrame(frame) {
+        // 当前帧时间错
+        var time = +new Date();
+        // 当上一帧到当前帧经过的时间
+        var dur = time - frame.time;
+        // 
+        // http://stackoverflow.com/questions/13133434/requestanimationframe-detect-stop
+        // 浏览器最小化或切换标签，requestAnimationFrame 不会执行。
+        // 检测时间超过 200 ms（频率小于 5Hz ） 判定为计时器暂停，重置为一帧长度
+        // 
+        if (dur > 200) {
+            dur = 1e3 / 60;
+        }
+        frame.dur = dur;
+        frame.elapsed += dur;
+        frame.time = time;
+        frame.action.call(null, frame);
+        frame.index++;
+    }
+    // 暴露
+    exports.requestFrame = requestFrame;
+    exports.releaseFrame = releaseFrame;
+});
+define("animate/opacityanimator", [ "animate/animator", "animate/timeline", "animate/easing", "core/class", "graphic/shape", "graphic/matrix", "core/utils", "graphic/box", "graphic/point", "core/config", "graphic/svg", "graphic/eventhandler", "graphic/styled", "graphic/data", "graphic/pen" ], function(require, exports, module) {
     var Animator = require("animate/animator");
     var Matrix = require("graphic/matrix");
     var OpacityAnimator = require("core/class").createClass("OpacityAnimator", {
@@ -388,7 +496,7 @@ define("animate/opacityanimator", [ "animate/animator", "animate/timeline", "ani
     });
     return OpacityAnimator;
 });
-define("animate/rotateanimator", [ "animate/animator", "animate/timeline", "animate/easing", "core/class", "graphic/shape", "graphic/matrix", "core/utils", "graphic/vector", "core/config", "graphic/svg", "graphic/eventhandler", "graphic/styled", "graphic/data", "graphic/pen" ], function(require, exports, module) {
+define("animate/rotateanimator", [ "animate/animator", "animate/timeline", "animate/easing", "core/class", "graphic/shape", "graphic/matrix", "core/utils", "graphic/box", "graphic/point", "core/config", "graphic/svg", "graphic/eventhandler", "graphic/styled", "graphic/data", "graphic/pen" ], function(require, exports, module) {
     var Animator = require("animate/animator");
     var Matrix = require("graphic/matrix");
     var RotateAnimator = require("core/class").createClass("RotateAnimator", {
@@ -415,12 +523,12 @@ define("animate/rotateanimator", [ "animate/animator", "animate/timeline", "anim
     });
     return RotateAnimator;
 });
-define("animate/scaleanimator", [ "animate/animator", "animate/timeline", "animate/easing", "core/class", "graphic/shape", "graphic/matrix", "core/utils", "graphic/vector", "core/config", "graphic/svg", "graphic/eventhandler", "graphic/styled", "graphic/data", "graphic/pen" ], function(require, exports, module) {
+define("animate/scaleanimator", [ "animate/animator", "animate/timeline", "animate/easing", "core/class", "graphic/shape", "graphic/matrix", "core/utils", "graphic/box", "graphic/point", "core/config", "graphic/svg", "graphic/eventhandler", "graphic/styled", "graphic/data", "graphic/pen" ], function(require, exports, module) {
     var Animator = require("animate/animator");
     var Matrix = require("graphic/matrix");
     var ScaleAnimator = require("core/class").createClass("ScaleAnimator", {
         base: Animator,
-        constructor: function(sx, sy, ax, ay) {
+        constructor: function(sx, sy) {
             this.callBase({
                 beginValue: 0,
                 finishValue: 1,
@@ -441,67 +549,20 @@ define("animate/scaleanimator", [ "animate/animator", "animate/timeline", "anima
     });
     return ScaleAnimator;
 });
-define("animate/timeline", [ "graphic/color", "core/utils", "graphic/standardcolor", "core/class", "graphic/matrix", "graphic/vector", "graphic/eventhandler", "graphic/shapeevent", "core/config" ], function(require, exports, module) {
+define("animate/timeline", [ "graphic/color", "core/utils", "graphic/standardcolor", "core/class", "graphic/matrix", "graphic/box", "graphic/point", "graphic/eventhandler", "graphic/shapeevent", "animate/frame", "core/config" ], function(require, exports, module) {
     var Color = require("graphic/color");
     var Matrix = require("graphic/matrix");
     var EventHandler = require("graphic/eventhandler");
-    var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || function(fn) {
-        return setTimeout(fn, 16);
-    };
-    var cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame || window.webkitCancelAnimationFrame || window.msCancelAnimationFrame || function(reqId) {
-        return clearTimeout(reqId);
-    };
-    var globalFrameAction = [];
-    var frameRequests = [];
-    var frameRequestId = 0;
-    function requestFrame(id) {
-        if (!~frameRequests.indexOf(id)) {
-            frameRequests.push(id);
-        }
-        if (frameRequests.length === 1) {
-            frameRequestId = execGlobalFrameAction();
-        }
-    }
-    function releaseFrame(id) {
-        var index = frameRequests.indexOf(id);
-        if (index !== -1) {
-            frameRequests.splice(index, 1);
-        }
-        if (frameRequests.length === 0) {
-            cancelAnimationFrame(frameRequestId);
-        }
-    }
-    function execGlobalFrameAction() {
-        var pending = globalFrameAction;
-        globalFrameAction = [];
-        while (pending.length) {
-            pending.shift()();
-        }
-        if (frameRequests.length > 0) {
-            frameRequestId = requestAnimationFrame(execGlobalFrameAction);
-        }
-    }
-    function paralle(v1, v2, op) {
-        if (false === isNaN(parseFloat(v1))) {
-            return op(v1, v2);
-        }
-        var value = {};
-        for (var n in v1) {
-            if (v1.hasOwnProperty(n)) {
-                value[n] = paralle(v1[n], v2[n], op);
-            }
-        }
-        return value;
-    }
-    function getDelta(v1, v2) {
-        return paralle(v1, v2, function(v1, v2) {
-            return v2 - v1;
+    var frame = require("animate/frame");
+    var utils = require("core/utils");
+    function getPercentValue(b, f, p) {
+        return utils.paralle(b, f, function(b, f) {
+            return b + (f - b) * p;
         });
     }
-    // 不会深度遍历
-    function getPercentValue(b, f, p) {
-        return paralle(b, f, function(b, f) {
-            return b + (f - b) * p;
+    function getDelta(v1, v2) {
+        return utils.paralle(v1, v2, function(v1, v2) {
+            return v2 - v1;
         });
     }
     function TimelineEvent(timeline, type, param) {
@@ -514,64 +575,30 @@ define("animate/timeline", [ "graphic/color", "core/utils", "graphic/standardcol
             }
         }
     }
-    var timelineId = 0;
     var Timeline = require("core/class").createClass("Timeline", {
         mixins: [ EventHandler ],
         constructor: function(animator, target, duration, easing) {
             this.callMixin();
+            this.target = target;
             this.time = 0;
             this.duration = duration;
-            this.target = target;
             this.easing = easing;
-            this.status = "ready";
             this.animator = animator;
-            this.beginVal = animator.beginVal;
-            this.finishVal = animator.finishVal;
+            this.beginValue = animator.beginValue;
+            this.finishValue = animator.finishValue;
             this.setter = animator.setter;
-            this.id = timelineId++;
+            this.status = "ready";
         },
-        guessValueType: function() {
-            var value = this.beginVal;
-            if (parseFloat(value)) {
-                this.valueType = "number";
-                return;
-            }
-            // string as color
-            if (typeof value == "string" || value instanceof Color) {
-                this.valueType = "color";
-                return;
-            }
-            if (value.x && value.y) {
-                this.valueType = "point";
-                return;
-            }
-            if (value instanceof Matrix) {
-                this.valueType = "matrix";
-            }
-        },
-        nextFrame: function() {
+        nextFrame: function(frame) {
             if (this.status != "playing") {
                 return;
             }
-            var ts = +new Date(), lts = this.lastFrameTS || 0, elapsed = ts - lts;
-            var target = this.target, setter = this.setter;
-            // 
-            // 1. 首次播放 lts 为 0，则修正 elapsed 为一帧的长度
-            // 
-            // 2. 浏览器最小化或切换标签，requestAnimationFrame 不会执行。
-            //    检测时间超过 200 ms（频率小于 5Hz ） 判定为计时器暂停，重置为一帧长度
-            //    
-            //    ref: http://stackoverflow.com/questions/13133434/requestanimationframe-detect-stop
-            if (elapsed > 200) {
-                elapsed = 1e3 / 60;
-            }
-            this.time += elapsed;
+            this.time += frame.dur;
             this.setValue(this.getValue());
-            this.lastFrameTS = ts;
             if (this.time >= this.duration) {
                 this.timeUp();
             }
-            globalFrameAction.push(this.nextFrame.bind(this));
+            frame.next();
         },
         getPlayTime: function() {
             return this.rollbacking ? this.duration - this.time : this.time;
@@ -583,32 +610,19 @@ define("animate/timeline", [ "graphic/color", "core/utils", "graphic/standardcol
             return this.easing(this.getPlayTime(), 0, 1, this.duration);
         },
         getValue: function() {
-            var b = this.beginVal, f = this.finishVal, p = this.getValueProportion(), v;
-            switch (this.valueType) {
-              case "color":
-                b = b.getValues();
-                f = f.getValues();
-                v = getPercentValue(b, f, p);
-                return Color.createRGBA(v.r, v.g, v.b, v.a);
-
-              case "matrix":
-                b = b.getMatrix();
-                f = f.getMatrix();
-                v = getPercentValue(b, f, p);
-                return new Matrix(v);
-
-              default:
-                return getPercentValue(b, f, p);
-            }
+            var b = this.beginValue;
+            var f = this.finishValue;
+            var p = this.getValueProportion();
+            return getPercentValue(b, f, p);
         },
-        getDelta: function() {
-            this.lastValue = this.lastValue || this.beginVal;
-            return getDelta(this.lastValue, this.currentValue);
-        },
-        setValue: function(value, lastValue) {
+        setValue: function(value) {
+            this.lastValue = this.currentValue;
             this.currentValue = value;
             this.setter.call(this.target, this.target, value, this);
-            this.lastValue = value;
+        },
+        getDelta: function() {
+            this.lastValue = this.lastValue === undefined ? this.beginValue : this.lastValue;
+            return getDelta(this.lastValue, this.currentValue);
         },
         play: function() {
             var ctx = this.context;
@@ -617,45 +631,43 @@ define("animate/timeline", [ "graphic/color", "core/utils", "graphic/standardcol
             this.status = "playing";
             switch (lastStatus) {
               case "ready":
-                this.beginVal = typeof this.beginVal == "function" ? this.beginVal.call(this.target, this.target) : this.beginVal;
-                this.finishVal = typeof this.finishVal == "function" ? this.finishVal.call(this.target, this.target) : this.finishVal;
+                if (utils.isFunction(this.beginValue)) {
+                    this.beginValue = this.beginValue.call(this.target, this.target);
+                }
+                if (utils.isFunction(this.finishValue)) {
+                    this.finishValue = this.finishValue.call(this.target, this.target);
+                }
                 this.time = 0;
-                this.guessValueType();
-                this.nextFrame();
+                this.frame = frame.requestFrame(this.nextFrame.bind(this));
                 break;
 
               case "finished":
               case "stoped":
                 this.time = 0;
-                this.nextFrame();
+                this.frame = frame.requestFrame(this.nextFrame.bind(this));
                 break;
 
               case "paused":
-                this.lastFrameTS = 0;
-                this.nextFrame();
+                this.frame.next();
             }
             this.fire("play", new TimelineEvent(this, "play", {
                 lastStatus: lastStatus
             }));
-            requestFrame(this.id);
             return this;
         },
         pause: function() {
             this.status = "paused";
             this.fire("pause", new TimelineEvent(this, "pause"));
-            releaseFrame(this.id);
+            frame.releaseFrame(this.frame);
             return this;
         },
         stop: function() {
             this.status = "stoped";
-            this.setValue(this.finishVal);
+            this.setValue(this.finishValue);
             this.rollbacking = false;
             this.fire("stop", new TimelineEvent(this, "stop"));
-            releaseFrame(this.id);
+            frame.releaseFrame(this.frame);
             return this;
-        },
-        reset: function() {
-            this.setValue(this.beginVal);
         },
         timeUp: function() {
             if (this.repeatOption) {
@@ -681,10 +693,10 @@ define("animate/timeline", [ "graphic/color", "core/utils", "graphic/standardcol
             }
         },
         finish: function() {
-            this.setValue(this.finishVal);
+            this.setValue(this.finishValue);
             this.status = "finished";
             this.fire("finish", new TimelineEvent(this, "finish"));
-            releaseFrame(this.id);
+            frame.releaseFrame(this.frame);
         },
         decreaseRepeat: function() {
             if (this.repeatOption !== true) {
@@ -697,9 +709,11 @@ define("animate/timeline", [ "graphic/color", "core/utils", "graphic/standardcol
             return this;
         }
     });
+    Timeline.requestFrame = frame.requestFrame;
+    Timeline.releaseFrame = frame.releaseFrame;
     return Timeline;
 });
-define("animate/translateanimator", [ "animate/animator", "animate/timeline", "animate/easing", "core/class", "graphic/shape", "graphic/matrix", "core/utils", "graphic/vector", "core/config", "graphic/svg", "graphic/eventhandler", "graphic/styled", "graphic/data", "graphic/pen" ], function(require, exports, module) {
+define("animate/translateanimator", [ "animate/animator", "animate/timeline", "animate/easing", "core/class", "graphic/shape", "graphic/matrix", "core/utils", "graphic/box", "graphic/point", "core/config", "graphic/svg", "graphic/eventhandler", "graphic/styled", "graphic/data", "graphic/pen" ], function(require, exports, module) {
     var Animator = require("animate/animator");
     var Matrix = require("graphic/matrix");
     var TranslateAnimator = require("core/class").createClass("TranslateAnimator", {
@@ -845,6 +859,9 @@ define("core/class", [ "core/config" ], function(require, exports) {
     Class.prototype.getType = function() {
         return this.__KityClassName;
     };
+    Class.prototype.getClass = function() {
+        return this.constructor;
+    };
     // 检查基类是否调用了父类的构造函数
     // 该检查是弱检查，假如调用的代码被注释了，同样能检查成功（这个特性可用于知道建议调用，但是出于某些原因不想调用的情况）
     function checkBaseConstructorCall(targetClass, classname) {
@@ -909,6 +926,56 @@ define("core/class", [ "core/config" ], function(require, exports) {
         }
         return BaseClass;
     }
+    Class.prototype._accessProperty = function() {
+        return this._propertyRawData || (this._propertyRawData = {});
+    };
+    function upperCamael(name) {
+        return name.substr(0, 1).toUpperCase() + name.substr(1);
+    }
+    function generateGetMethodFor(classProto, name, propDefine) {
+        var methodName = (propDefine.bool ? "is" : "get") + upperCamael(name), index;
+        if (propDefine instanceof Array && ~propDefine.indexOf("get")) {}
+        if (typeof get == "function") {
+            classProto[methodName] = function() {
+                return get(this._accessProperty()[name]);
+            };
+        } else {
+            classProto[methodName] = function() {
+                var p = this._accessProperty();
+                return name in p ? p[name] : p[name] = "get";
+            };
+        }
+    }
+    function generateSetMethodFor(classProto, name, set) {
+        var methodName = "set" + name.substr(0, 1).toUpperCase() + name.substr(1);
+        if (typeof set == "function") {
+            classProto[methodName] = function() {
+                var args = Array.prototype.slice.call(arguments);
+                var p = this._accessProperty();
+                args.unshift(function(value) {
+                    p[name] = value;
+                });
+                var ret = set.apply(this, args);
+                return ret !== undefined && set.chain ? this : ret;
+            };
+        } else {
+            classProto[methodName] = function(value) {
+                this._accessProperty()[name] = value;
+                return this;
+            };
+        }
+    }
+    function generatePropertyFor(classProto, defines) {
+        var name, propDefine;
+        for (name in defines) {
+            if (!defines.hasOwnProperty(name) || typeof defines[name] == "function") {
+                continue;
+            }
+            propDefine = defines[name];
+            generateGetMethodFor(classProto, name, propDefine);
+            generateSetMethodFor(classProto, name, propDefine);
+        }
+    }
     exports.createClass = function(classname, defines) {
         var constructor, NewClass, BaseClass;
         if (arguments.length === 1) {
@@ -937,6 +1004,7 @@ define("core/class", [ "core/config" ], function(require, exports) {
         delete defines.mixins;
         delete defines.constructor;
         delete defines.base;
+        generatePropertyFor(NewClass, defines);
         NewClass = extend(NewClass, defines);
         return NewClass;
     };
@@ -991,8 +1059,80 @@ define("core/utils", [], function(require, exports, module) {
             }
             return cloned;
         },
+        copy: function(obj) {
+            if (typeof obj !== "object") return obj;
+            if (typeof obj === "function") return null;
+            return JSON.parse(JSON.stringify(obj));
+        },
         getValue: function(value, defaultValue) {
             return value !== undefined ? value : defaultValue;
+        },
+        flatten: function(arr) {
+            var result = [], length = arr.length, i;
+            for (i = 0; i < length; i++) {
+                if (arr[i] instanceof Array) {
+                    result = result.concat(utils.flatten(arr[i]));
+                } else {
+                    result.push(arr[i]);
+                }
+            }
+            return result;
+        },
+        /**
+         * 平行地对 v1 和 v2 进行指定的操作
+         *
+         *    如果 v1 是数字，那么直接进行 op 操作
+         *    如果 v1 是对象，那么返回一个对象，其元素是 v1 和 v2 同名的每个元素平行地进行 op 操作的结果
+         *    如果 v1 是数组，那么返回一个数组，其元素是 v1 和 v2 同索引的每个元素平行地进行 op 操作的结果
+         *
+         * @param  {Number|Object|Array} v1
+         * @param  {Number|Object|Array} v2
+         * @param  {Function} op
+         * @return {Number|Object|Array}
+         */
+        paralle: function(v1, v2, op) {
+            var Class, field, index, value;
+            // 是否数字
+            if (false === isNaN(parseFloat(v1))) {
+                return op(v1, v2);
+            }
+            // 数组
+            if (v1 instanceof Array) {
+                value = [];
+                for (index = 0; index < v1.length; index++) {
+                    value.push(utils.paralle(v1[index], v2[index], op));
+                }
+                return value;
+            }
+            // 对象
+            if (v1 instanceof Object) {
+                value = {};
+                // 如果值是一个支持原始表示的实例，获取其原始表示
+                Class = v1.getClass && v1.getClass();
+                if (Class && Class.parse) {
+                    v1 = v1.valueOf();
+                    v2 = v2.valueOf();
+                }
+                for (field in v1) {
+                    if (v1.hasOwnProperty(field) && v2.hasOwnProperty(field)) {
+                        value[field] = utils.paralle(v1[field], v2[field], op);
+                    }
+                }
+                // 如果值是一个支持原始表示的实例，用其原始表示的结果重新封箱
+                if (Class && Class.parse) {
+                    value = Class.parse(value);
+                }
+                return value;
+            }
+            return value;
+        },
+        /**
+         * 创建 op 操作的一个平行化版本
+         */
+        parallelize: function(op) {
+            return function(v1, v2) {
+                return utils.paralle(v1, v2, op);
+            };
         }
     };
     utils.each([ "String", "Function", "Array", "Number", "RegExp", "Object", "Boolean" ], function(v) {
@@ -1203,7 +1343,7 @@ define("filter/effectcontainer", [ "core/class", "core/config", "graphic/contain
 /**
  * Filter 基类
  */
-define("filter/filter", [ "graphic/svg", "core/class", "core/config", "filter/effectcontainer", "graphic/container", "graphic/shape", "core/utils", "graphic/eventhandler", "graphic/styled", "graphic/data", "graphic/matrix", "graphic/pen" ], function(require, exports, module) {
+define("filter/filter", [ "graphic/svg", "core/class", "core/config", "filter/effectcontainer", "graphic/container", "graphic/shape", "core/utils", "graphic/eventhandler", "graphic/styled", "graphic/data", "graphic/matrix", "graphic/pen", "graphic/box" ], function(require, exports, module) {
     var svg = require("graphic/svg");
     var Class = require("core/class");
     var Filter = Class.createClass("Filter", {
@@ -1381,7 +1521,7 @@ define("graphic/bezier", [ "core/class", "core/config", "graphic/pointcontainer"
 /**
  * 贝塞尔点
  */
-define("graphic/bezierpoint", [ "graphic/shapepoint", "core/class", "graphic/point", "graphic/vector", "core/config" ], function(require, exports, module) {
+define("graphic/bezierpoint", [ "graphic/shapepoint", "core/class", "graphic/point", "graphic/vector", "graphic/matrix", "core/config" ], function(require, exports, module) {
     var ShapePoint = require("graphic/shapepoint");
     var Vector = require("graphic/vector");
     var BezierPoint = require("core/class").createClass("BezierPoint", {
@@ -1478,7 +1618,59 @@ define("graphic/bezierpoint", [ "graphic/shapepoint", "core/class", "graphic/poi
     });
     return BezierPoint;
 });
-define("graphic/circle", [ "core/class", "core/config", "graphic/ellipse", "core/utils", "graphic/path" ], function(require, exports, module) {
+define("graphic/box", [], function(require, exports, module) {
+    var Box = kity.createClass("Box", {
+        constructor: function(x, y, width, height) {
+            var box = arguments[0];
+            if (box && typeof box === "object") {
+                x = box.x;
+                y = box.y;
+                width = box.width;
+                height = box.height;
+            }
+            if (width < 0) {
+                x -= width = -width;
+            }
+            if (height < 0) {
+                y -= height = -height;
+            }
+            this.x = x;
+            this.y = y;
+            this.width = width;
+            this.height = height;
+        },
+        getLeft: function() {
+            return this.x;
+        },
+        getRight: function() {
+            return this.x + this.width;
+        },
+        getTop: function() {
+            return this.y;
+        },
+        getBottom: function() {
+            return this.y + this.height;
+        },
+        getRangeX: function() {
+            return [ this.x, this.x + this.width ];
+        },
+        getRangeY: function() {
+            return [ this.y, this.y + this.height ];
+        },
+        merge: function(another) {
+            var xMin = Math.min(this.x, another.x), xMax = Math.max(this.x + this.width, another.x + another.width), yMin = Math.min(this.y, another.y), yMax = Math.max(this.y + this.height, another.y + another.height);
+            return new Box(xMin, yMin, xMax - xMin, yMax - yMin);
+        },
+        valueOf: function() {
+            return [ this.x, this.y, this.width, this.height ];
+        },
+        toString: function() {
+            return this.valueOf().join(" ");
+        }
+    });
+    return Box;
+});
+define("graphic/circle", [ "core/class", "core/config", "graphic/ellipse", "core/utils", "graphic/point", "graphic/path" ], function(require, exports, module) {
     return require("core/class").createClass("Circle", {
         base: require("graphic/ellipse"),
         constructor: function(radius, cx, cy) {
@@ -1492,7 +1684,7 @@ define("graphic/circle", [ "core/class", "core/config", "graphic/ellipse", "core
         }
     });
 });
-define("graphic/clip", [ "core/class", "core/config", "graphic/shape", "graphic/svg", "core/utils", "graphic/eventhandler", "graphic/styled", "graphic/data", "graphic/matrix", "graphic/pen", "graphic/shapecontainer", "graphic/container" ], function(require, exports, module) {
+define("graphic/clip", [ "core/class", "core/config", "graphic/shape", "graphic/svg", "core/utils", "graphic/eventhandler", "graphic/styled", "graphic/data", "graphic/matrix", "graphic/pen", "graphic/box", "graphic/shapecontainer", "graphic/container" ], function(require, exports, module) {
     var Class = require("core/class");
     var Shape = require("graphic/shape");
     var Clip = Class.createClass("Clip", {
@@ -1592,6 +1784,9 @@ define("graphic/color", [ "core/utils", "graphic/standardcolor", "core/class", "
         getValues: function() {
             return Utils.clone(this._color);
         },
+        valueOf: function() {
+            return this.getValues();
+        },
         toRGB: function() {
             return ColorUtils.toString(this._color, "rgb");
         },
@@ -1646,7 +1841,13 @@ define("graphic/color", [ "core/utils", "graphic/standardcolor", "core/class", "
         L: "l",
         A: "a",
         parse: function(valStr) {
-            var rgbValue = ColorUtils.parseToValue(valStr);
+            var rgbValue;
+            if (Utils.isString(valStr)) {
+                rgbValue = ColorUtils.parseToValue(valStr);
+            }
+            if (Utils.isObject(valStr) && "r" in valStr) {
+                rgbValue = valStr;
+            }
             //解析失败， 返回一个默认color实例
             if (rgbValue === null) {
                 return new Color();
@@ -1993,8 +2194,8 @@ define("graphic/curve", [ "core/utils", "core/class", "core/config", "graphic/pa
                 key = i + "," + j;
                 //计算中点坐标
                 centerPoints[key] = {
-                    x: (points[i].getX() + points[j].getX()) / 2,
-                    y: (points[i].getY() + points[j].getY()) / 2
+                    x: (points[i].x + points[j].y) / 2,
+                    y: (points[i].x + points[j].y) / 2
                 };
             }
             return centerPoints;
@@ -2048,14 +2249,14 @@ define("graphic/curve", [ "core/utils", "core/class", "core/config", "graphic/pa
                 var currentPanLine = panLines[index], //平移线中点
                 center = currentPanLine.center, //移动距离
                 distance = {
-                    x: center.x - point.getX(),
-                    y: center.y - point.getY()
+                    x: center.x - point.x,
+                    y: center.y - point.y
                 };
                 var currentResult = result[index] = {
                     points: [],
                     center: {
-                        x: point.getX(),
-                        y: point.getY()
+                        x: point.x,
+                        y: point.y
                     }
                 };
                 //计算控制点到顶点的距离， 并且应用平滑系数到距离上
@@ -2106,13 +2307,13 @@ define("graphic/curve", [ "core/utils", "core/class", "core/config", "graphic/pa
             if (points.length === 0) {
                 return this;
             } else {
-                drawer.moveTo(points[0].getX(), points[0].getY());
+                drawer.moveTo(points[0]);
             }
             if (points.length === 1) {
                 return this;
             }
             if (points.length === 2) {
-                drawer.lineTo(points[1].getX(), points[1].getY());
+                drawer.lineTo(points[1]);
                 return this;
             }
             //获取已转换过后的带控制点的所有点
@@ -2175,22 +2376,16 @@ define("graphic/data", [ "core/class", "core/config" ], function(require, export
         }
     });
 });
-define("graphic/defbrush", [ "graphic/svg", "core/class", "core/config" ], function(require, exports, module) {
-    var svg = require("graphic/svg");
+define("graphic/defbrush", [ "core/class", "core/config", "graphic/resource", "graphic/svg" ], function(require, exports, module) {
     return require("core/class").createClass("GradientBrush", {
+        base: require("graphic/resource"),
         constructor: function(nodeType) {
-            this.callBase();
-            this.node = svg.createNode(nodeType);
-        },
-        fill: function(path) {
-            var pathNode = path.node;
-            pathNode.setAttribute("fill", "url(#" + this.node.id + ")");
-            return this;
+            this.callBase(nodeType);
         }
     });
 });
-define("graphic/ellipse", [ "core/utils", "core/class", "core/config", "graphic/path", "graphic/shape", "graphic/svg" ], function(require, exports, module) {
-    var Utils = require("core/utils");
+define("graphic/ellipse", [ "core/utils", "graphic/point", "core/class", "core/config", "graphic/path", "graphic/shape", "graphic/svg" ], function(require, exports, module) {
+    var Utils = require("core/utils"), Point = require("graphic/point");
     return require("core/class").createClass("Ellipse", {
         base: require("graphic/path"),
         constructor: function(rx, ry, cx, cy) {
@@ -2202,8 +2397,7 @@ define("graphic/ellipse", [ "core/utils", "core/class", "core/config", "graphic/
             this.update();
         },
         update: function() {
-            var rx = this.rx, ry = this.ry;
-            x1 = this.cx + rx, x2 = this.cx - rx, y = this.cy;
+            var rx = this.rx, ry = this.ry, x1 = this.cx + rx, x2 = this.cx - rx, y = this.cy;
             var drawer = this.getDrawer();
             drawer.clear();
             drawer.moveTo(x1, y);
@@ -2224,10 +2418,7 @@ define("graphic/ellipse", [ "core/utils", "core/class", "core/config", "graphic/
             return this.ry;
         },
         getCenter: function() {
-            return {
-                x: this.cx,
-                y: this.cy
-            };
+            return new Point(this.cx, this.cy);
         },
         getCenterX: function() {
             return this.cx;
@@ -2249,6 +2440,11 @@ define("graphic/ellipse", [ "core/utils", "core/class", "core/config", "graphic/
             return this.update();
         },
         setCenter: function(cx, cy) {
+            if (arguments.length == 1) {
+                var p = Point.parse(arguments[0]);
+                cx = p.x;
+                cy = p.y;
+            }
             this.cx = cx;
             this.cy = cy;
             return this.update();
@@ -2266,7 +2462,7 @@ define("graphic/ellipse", [ "core/utils", "core/class", "core/config", "graphic/
 /*
  * kity event 实现
  */
-define("graphic/eventhandler", [ "core/utils", "graphic/shapeevent", "graphic/matrix", "core/class", "core/config" ], function(require, exports, module) {
+define("graphic/eventhandler", [ "core/utils", "graphic/shapeevent", "graphic/matrix", "graphic/point", "core/class", "core/config" ], function(require, exports, module) {
     // polyfill
     (function() {
         function CustomEvent(event, params) {
@@ -2443,7 +2639,7 @@ define("graphic/eventhandler", [ "core/utils", "graphic/shapeevent", "graphic/ma
         }
     });
 });
-define("graphic/gradientbrush", [ "graphic/svg", "graphic/defbrush", "core/class", "graphic/color", "core/utils", "graphic/standardcolor", "core/config" ], function(require, exports, module) {
+define("graphic/gradientbrush", [ "graphic/svg", "graphic/defbrush", "core/class", "graphic/resource", "graphic/color", "core/utils", "graphic/standardcolor", "core/config" ], function(require, exports, module) {
     var svg = require("graphic/svg");
     var DefBrush = require("graphic/defbrush");
     var Color = require("graphic/color");
@@ -2471,7 +2667,7 @@ define("graphic/gradientbrush", [ "graphic/svg", "graphic/defbrush", "core/class
         }
     });
 });
-define("graphic/group", [ "graphic/shapecontainer", "graphic/container", "core/utils", "core/class", "graphic/shape", "core/config", "graphic/svg", "graphic/eventhandler", "graphic/styled", "graphic/data", "graphic/matrix", "graphic/pen" ], function(require, exports, module) {
+define("graphic/group", [ "graphic/shapecontainer", "graphic/container", "core/utils", "core/class", "graphic/shape", "core/config", "graphic/svg", "graphic/eventhandler", "graphic/styled", "graphic/data", "graphic/matrix", "graphic/pen", "graphic/box" ], function(require, exports, module) {
     var ShapeContainer = require("graphic/shapecontainer");
     return require("core/class").createClass("Group", {
         mixins: [ ShapeContainer ],
@@ -2481,7 +2677,32 @@ define("graphic/group", [ "graphic/shapecontainer", "graphic/container", "core/u
         }
     });
 });
-define("graphic/image", [ "core/class", "core/config", "graphic/shape", "graphic/svg", "core/utils", "graphic/eventhandler", "graphic/styled", "graphic/data", "graphic/matrix", "graphic/pen" ], function(require, exports, module) {
+define("graphic/hyperlink", [ "graphic/shapecontainer", "graphic/container", "core/utils", "core/class", "graphic/shape", "core/config", "graphic/svg", "graphic/eventhandler", "graphic/styled", "graphic/data", "graphic/matrix", "graphic/pen", "graphic/box" ], function(require, exports, module) {
+    var ShapeContainer = require("graphic/shapecontainer");
+    return require("core/class").createClass("HyperLink", {
+        mixins: [ ShapeContainer ],
+        base: require("graphic/shape"),
+        constructor: function(url) {
+            this.callBase("a");
+            this.setHref(url);
+        },
+        setHref: function(href) {
+            this.node.setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", href);
+            return this;
+        },
+        getHref: function() {
+            return this.node.getAttributeNS("xlink:href");
+        },
+        setTarget: function(target) {
+            this.node.setAttribute("target", target);
+            return this;
+        },
+        getTarget: function() {
+            return this.node.getAttribute("target");
+        }
+    });
+});
+define("graphic/image", [ "core/class", "core/config", "graphic/shape", "graphic/svg", "core/utils", "graphic/eventhandler", "graphic/styled", "graphic/data", "graphic/matrix", "graphic/pen", "graphic/box" ], function(require, exports, module) {
     return require("core/class").createClass("Image", {
         base: require("graphic/shape"),
         constructor: function(url, width, height, x, y) {
@@ -2622,10 +2843,67 @@ define("graphic/lineargradientbrush", [ "graphic/svg", "graphic/gradientbrush", 
         }
     });
 });
+define("graphic/marker", [ "graphic/point", "core/class", "core/config", "graphic/resource", "graphic/svg", "graphic/shapecontainer", "graphic/container", "core/utils", "graphic/shape", "graphic/viewbox", "graphic/path" ], function(require, exports, module) {
+    var Point = require("graphic/point");
+    var Marker = require("core/class").createClass("Marker", {
+        base: require("graphic/resource"),
+        mixins: [ require("graphic/shapecontainer"), require("graphic/viewbox") ],
+        constructor: function() {
+            this.callBase("marker");
+            this.setOrient("auto");
+        },
+        setRef: function(x, y) {
+            if (arguments.length === 1) {
+                y = x.y;
+                x = x.x;
+            }
+            this.node.setAttribute("refX", x);
+            this.node.setAttribute("refY", y);
+            return this;
+        },
+        getRef: function() {
+            return new Point(+this.node.getAttribute("refX"), +this.node.getAttribute("refY"));
+        },
+        setWidth: function(width) {
+            this.node.setAttribute("markerWidth", this.width = width);
+            return this;
+        },
+        setOrient: function(orient) {
+            this.node.setAttribute("orient", this.orient = orient);
+            return this;
+        },
+        getOrient: function() {
+            return this.orient;
+        },
+        getWidth: function() {
+            return +this.width;
+        },
+        setHeight: function(height) {
+            this.node.setAttribute("markerHeight", this.height = height);
+            return this;
+        },
+        getHeight: function() {
+            return +this.height;
+        }
+    });
+    var Path = require("graphic/path");
+    require("core/class").extendClass(Path, {
+        setMarkerStart: function(marker) {
+            this.node.setAttribute("marker-start", marker.toString());
+        },
+        setMarkerMid: function(marker) {
+            this.node.setAttribute("marker-mid", marker.toString());
+        },
+        setMarkerEnd: function(marker) {
+            this.node.setAttribute("marker-end", marker.toString());
+        }
+    });
+    return Marker;
+});
 /**
  * 蒙板
  */
-define("graphic/mask", [ "core/class", "core/config", "graphic/shape", "graphic/svg", "core/utils", "graphic/eventhandler", "graphic/styled", "graphic/data", "graphic/matrix", "graphic/pen", "graphic/shapecontainer", "graphic/container" ], function(require, exports, module) {
+define("graphic/mask", [ "core/class", "core/config", "graphic/shape", "graphic/svg", "core/utils", "graphic/eventhandler", "graphic/styled", "graphic/data", "graphic/matrix", "graphic/pen", "graphic/box", "graphic/shapecontainer", "graphic/container" ], function(require, exports, module) {
     var Class = require("core/class");
     var Shape = require("graphic/shape");
     var Mask = Class.createClass("Mask", {
@@ -2647,10 +2925,11 @@ define("graphic/mask", [ "core/class", "core/config", "graphic/shape", "graphic/
     });
     return Mask;
 });
-define("graphic/matrix", [ "core/utils", "graphic/vector", "core/class", "core/config" ], function(require, exports, module) {
+define("graphic/matrix", [ "core/utils", "graphic/box", "graphic/point", "core/class", "core/config" ], function(require, exports, module) {
     var utils = require("core/utils");
+    var Box = require("graphic/box");
     var mPattern = /matrix\((.+)\)/i;
-    var Vector = require("graphic/vector");
+    var Point = require("graphic/point");
     // 注意，合并的结果是先执行m2，再执行m1的结果
     function mergeMatrixData(m2, m1) {
         return {
@@ -2726,6 +3005,22 @@ define("graphic/matrix", [ "core/utils", "graphic/vector", "core/class", "core/c
             });
             return this;
         },
+        /**
+         * 获得反转矩阵
+         *
+         * 这是我解方程算出来的
+         */
+        inverse: function() {
+            var m = this.m, a = m.a, b = m.b, c = m.c, d = m.d, e = m.e, f = m.f, k, aa, bb, cc, dd, ee, ff;
+            k = a * d - b * c;
+            aa = d / k;
+            bb = -b / k;
+            cc = -c / k;
+            dd = a / k;
+            ee = (c * f - e * d) / k;
+            ff = (b * e - a * f) / k;
+            return new Matrix(aa, bb, cc, dd, ee, ff);
+        },
         setMatrix: function(a, b, c, d, e, f) {
             if (arguments.length === 1) {
                 this.m = utils.clone(arguments[0]);
@@ -2758,11 +3053,14 @@ define("graphic/matrix", [ "core/utils", "graphic/vector", "core/class", "core/c
             return this.mergeMatrix(matrix);
         },
         toString: function() {
-            var m = this.m;
-            return "matrix(" + [ m.a, m.b, m.c, m.d, m.e, m.f ].join(", ") + ")";
+            return this.valueOf().join(" ");
         },
-        transformPoint: function(x, y) {
-            return Matrix.transformPoint(x, y, this.m);
+        valueOf: function() {
+            var m = this.m;
+            return [ m.a, m.b, m.c, m.d, m.e, m.f ];
+        },
+        transformPoint: function() {
+            return Matrix.transformPoint.apply(null, [].slice.call(arguments).concat([ this.m ]));
         },
         transformBox: function(box) {
             return Matrix.transformBox(box, this.m);
@@ -2788,7 +3086,12 @@ define("graphic/matrix", [ "core/utils", "graphic/vector", "core/class", "core/c
         return new Matrix();
     };
     Matrix.transformPoint = function(x, y, m) {
-        return new Vector(m.a * x + m.c * y + m.e, m.b * x + m.d * y + m.f);
+        if (arguments.length === 2) {
+            m = y;
+            y = x.y;
+            x = x.x;
+        }
+        return new Point(m.a * x + m.c * y + m.e, m.b * x + m.d * y + m.f);
     };
     Matrix.transformBox = function(box, matrix) {
         var xMin = Number.MAX_VALUE, xMax = -Number.MAX_VALUE, yMin = Number.MAX_VALUE, yMax = -Number.MAX_VALUE;
@@ -2802,17 +3105,67 @@ define("graphic/matrix", [ "core/utils", "graphic/vector", "core/class", "core/c
             yMin = Math.min(yMin, rp.y);
             yMax = Math.max(yMax, rp.y);
         }
-        return {
+        var box = new Box({
             x: xMin,
             y: yMin,
             width: xMax - xMin,
-            height: yMax - yMin,
+            height: yMax - yMin
+        });
+        utils.extend(box, {
             closurePoints: rps,
             left: xMin,
             right: xMax,
             top: yMin,
             bottom: yMax
+        });
+        return box;
+    };
+    // 获得从 node 到 refer 的变换矩阵
+    Matrix.getCTM = function(target, refer) {
+        var ctm = {
+            a: 1,
+            b: 0,
+            c: 0,
+            d: 1,
+            e: 0,
+            f: 0
         };
+        refer = refer || "parent";
+        // 根据参照坐标系选区的不一样，返回不同的结果
+        switch (refer) {
+          case "screen":
+            // 以浏览器屏幕为参照坐标系
+            ctm = target.node.getScreenCTM();
+            break;
+
+          case "doc":
+          case "paper":
+            // 以文档（Paper）为参照坐标系
+            ctm = target.node.getCTM();
+            break;
+
+          case "view":
+          case "top":
+            // 以顶层绘图容器（视野）为参照坐标系
+            if (target.getPaper()) {
+                ctm = target.node.getTransformToElement(target.getPaper().shapeNode);
+            }
+            break;
+
+          case "parent":
+            // 以父容器为参照坐标系
+            if (target.node.parentNode) {
+                ctm = target.node.getTransformToElement(target.node.parentNode);
+            }
+            break;
+
+          default:
+            // 其他情况，指定参照物
+            if (refer.node) {
+                ctm = target.node.getTransformToElement(refer.shapeNode || refer.node);
+            }
+        }
+        return new Matrix(ctm.a, ctm.b, ctm.c, ctm.d, ctm.e, ctm.f);
     };
     return Matrix;
 });
@@ -2919,7 +3272,7 @@ define("graphic/palette", [ "graphic/standardcolor", "graphic/color", "core/util
     });
     return Palette;
 });
-define("graphic/paper", [ "core/class", "core/config", "core/utils", "graphic/svg", "graphic/container", "graphic/shapecontainer", "graphic/shape", "graphic/viewbox", "graphic/eventhandler", "graphic/shapeevent", "graphic/styled", "graphic/matrix", "graphic/vector", "graphic/data", "graphic/pen" ], function(require, exports, module) {
+define("graphic/paper", [ "core/class", "core/config", "core/utils", "graphic/svg", "graphic/container", "graphic/shapecontainer", "graphic/shape", "graphic/viewbox", "graphic/eventhandler", "graphic/shapeevent", "graphic/styled", "graphic/matrix", "graphic/box", "graphic/point", "graphic/data", "graphic/pen" ], function(require, exports, module) {
     var Class = require("core/class");
     var utils = require("core/utils");
     var svg = require("graphic/svg");
@@ -2992,8 +3345,8 @@ define("graphic/paper", [ "core/class", "core/config", "core/utils", "graphic/sv
             matrix.translate(-cx, -cy);
             matrix.scale(zoom);
             matrix.translate(cx, cy);
-            matrix.translate(dx, dy)
-            this.shapeNode.setAttribute("transform", matrix);
+            matrix.translate(dx, dy);
+            this.shapeNode.setAttribute("transform", "matrix(" + matrix + ")");
             this.viewport = {
                 center: {
                     x: cx,
@@ -3010,7 +3363,7 @@ define("graphic/paper", [ "core/class", "core/config", "core/utils", "graphic/sv
         getViewPort: function() {
             if (!this.viewport) {
                 var box = this.getViewBox();
-                this.viewport = {
+                return {
                     zoom: 1,
                     center: {
                         x: box.x + box.width / 2,
@@ -3023,6 +3376,13 @@ define("graphic/paper", [ "core/class", "core/config", "core/utils", "graphic/sv
                 };
             }
             return this.viewport;
+        },
+        getViewPortTransform: function() {
+            var m = this.shapeNode.getCTM();
+            return new Matrix(m.a, m.b, m.c, m.d, m.e, m.f);
+        },
+        getTransform: function() {
+            return this.getViewPortTransform().reverse();
         },
         addResource: function(resource) {
             this.resources.appendItem(resource);
@@ -3052,66 +3412,95 @@ define("graphic/paper", [ "core/class", "core/config", "core/utils", "graphic/sv
                 parent = parent.container;
             }
             return parent;
+        },
+        whenPaperReady: function(fn) {
+            var me = this;
+            function check() {
+                var paper = me.getPaper();
+                if (paper && fn) {
+                    fn.call(me, paper);
+                }
+                return paper;
+            }
+            if (!check()) {
+                this.on("add treeadd", function listen() {
+                    if (check()) {
+                        me.off("add", listen);
+                        me.off("treeadd", listen);
+                    }
+                });
+            }
+            return this;
         }
     });
     return Paper;
 });
-define("graphic/path", [ "core/utils", "core/class", "core/config", "graphic/shape", "graphic/svg", "graphic/eventhandler", "graphic/styled", "graphic/data", "graphic/matrix", "graphic/pen" ], function(require, exports, module) {
+define("graphic/path", [ "core/utils", "core/class", "core/config", "graphic/shape", "graphic/svg", "graphic/eventhandler", "graphic/styled", "graphic/data", "graphic/matrix", "graphic/pen", "graphic/box" ], function(require, exports, module) {
     var Utils = require("core/utils");
     var createClass = require("core/class").createClass;
     var Shape = require("graphic/shape");
     var svg = require("graphic/svg");
     var config = require("core/config");
+    var slice = Array.prototype.slice, flatten = Utils.flatten;
     var PathDrawer = createClass("PathDrawer", {
         constructor: function(path) {
+            this.segment = [];
             this.path = path;
             this.__clear = false;
         },
-        appendData: function(data) {
+        getPath: function() {
+            return this.path;
+        },
+        pushSegment: function() {
+            var segment = slice.call(arguments);
             var originData = this.path.getPathData();
             if (this.__clear) {
                 originData = "";
                 this.__clear = false;
             }
+            segment = flatten(segment);
             if (originData) {
-                this.path.setPathData(originData + " " + data.join(" "));
+                this.path.setPathData(originData + " " + segment.join(" "));
             } else {
-                this.path.setPathData(data.join(" "));
+                this.path.setPathData(segment.join(" "));
             }
             return this;
         },
+        push: function(command, args) {
+            return this.pushSegment([ command, slice.call(args) ]);
+        },
         moveTo: function(x, y) {
-            return this.appendData([ "M", x, y ]);
+            return this.push("M", arguments);
         },
         moveBy: function(dx, dy) {
-            return this.appendData([ "m", dx, dy ]);
+            return this.push("m", arguments);
         },
         lineTo: function(x, y) {
-            return this.appendData([ "L", x, y ]);
+            return this.push("L", arguments);
         },
         lineBy: function(dx, dy) {
-            return this.appendData([ "l", dx, dy ]);
+            return this.push("l", arguments);
         },
         arcTo: function(rx, ry, xr, laf, sf, x, y) {
-            return this.appendData([ "A", rx, ry, xr, laf, sf, x, y ]);
+            return this.push("A", arguments);
         },
         arcBy: function(rx, ry, xr, laf, sf, dx, dy) {
-            return this.appendData([ "a", rx, ry, xr, laf, sf, dx, dy ]);
+            return this.push("a", arguments);
         },
-        carcTo: function(r, x, y, laf, sf) {
-            return this.arcTo(r, r, 0, laf || 0, sf || 0, x, y);
+        carcTo: function(r, laf, sf, x, y) {
+            return this.push("A", [ r, r, 0 ].concat(slice.call(arguments, 1)));
         },
-        carcBy: function(r, dx, dy, laf, sf) {
-            return this.arcBy(r, r, 0, laf || 0, sf || 0, dx, dy);
+        carcBy: function(r, laf, sf, dx, dy) {
+            return this.push("a", [ r, r, 0 ].concat(slice.call(arguments, 1)));
         },
         bezierTo: function(x1, y1, x2, y2, x, y) {
-            return this.appendData([ "C", x1, y1, x2, y2, x, y ]);
+            return this.push("C", arguments);
         },
         bezierBy: function(dx1, dy1, dx2, dy2, dx, dy) {
-            return this.appendData([ "c", dx1, dy1, dx2, dy2, dx, dy ]);
+            return this.push("c", arguments);
         },
         close: function() {
-            return this.appendData([ "z" ]);
+            return this.pushSegment([ "z" ]);
         },
         clear: function() {
             this.__clear = true;
@@ -3119,17 +3508,6 @@ define("graphic/path", [ "core/utils", "core/class", "core/config", "graphic/sha
             return this;
         }
     });
-    function flatten(arr) {
-        var result = [], length = arr.length;
-        for (var i = 0; i < length; i++) {
-            if (arr[i] instanceof Array) {
-                result = result.concat(flatten(arr[i]));
-            } else {
-                result.push(arr[i]);
-            }
-        }
-        return result;
-    }
     return createClass("Path", {
         base: Shape,
         constructor: function(data) {
@@ -3149,22 +3527,10 @@ define("graphic/path", [ "core/utils", "core/class", "core/config", "graphic/sha
                 data = flatten(data).join(" ");
             }
             this.pathdata = data;
-            var path = this;
-            if (config.debug) {
-                path.node.setAttribute("d", data);
-                this.trigger("shapeupdate", {
-                    type: "pathdata"
-                });
-            } else {
-                // lazy dump data attribute
-                clearTimeout(this.lazyDumpId);
-                this.lazyDumpId = setTimeout(function() {
-                    path.node.setAttribute("d", data);
-                    this.trigger("shapeupdate", {
-                        type: "pathdata"
-                    });
-                });
-            }
+            this.node.setAttribute("d", data);
+            this.trigger("shapeupdate", {
+                type: "pathdata"
+            });
             return this;
         },
         getPathData: function() {
@@ -3179,7 +3545,7 @@ define("graphic/path", [ "core/utils", "core/class", "core/config", "graphic/sha
         }
     });
 });
-define("graphic/patternbrush", [ "graphic/defbrush", "graphic/svg", "core/class", "graphic/shapecontainer", "graphic/container", "core/utils", "graphic/shape", "core/config" ], function(require, exports, module) {
+define("graphic/patternbrush", [ "graphic/defbrush", "core/class", "graphic/resource", "graphic/shapecontainer", "graphic/container", "core/utils", "graphic/shape", "graphic/svg", "core/config" ], function(require, exports, module) {
     var DefBrush = require("graphic/defbrush");
     var ShapeContainer = require("graphic/shapecontainer");
     var svg = require("graphic/svg");
@@ -3221,24 +3587,23 @@ define("graphic/patternbrush", [ "graphic/defbrush", "graphic/svg", "core/class"
 define("graphic/pen", [ "graphic/color", "core/utils", "graphic/standardcolor", "core/class", "core/config" ], function(require, exports, module) {
     var Color = require("graphic/color");
     return require("core/class").createClass("Pen", {
-        constructor: function(color, width) {
-            this.color = color instanceof Color ? color : new Color(color);
+        constructor: function(brush, width) {
+            this.brush = brush;
             this.width = width || 1;
             this.linecap = null;
             this.linejoin = null;
             this.dashArray = null;
-            this.opacity = this.color.get("a");
+            this.opacity = 1;
         },
-        getColor: function() {
+        getBrush: function() {
             return this.color;
         },
-        setColor: function(color) {
-            if (typeof color == "string") {
-                color = new Color(color);
-            }
-            this.color = color;
-            this.opacity = this.color.get("a");
+        setBrush: function(brush) {
+            this.brush = brush;
             return this;
+        },
+        setColor: function(color) {
+            return this.setBrush(color);
         },
         getWidth: function() {
             return this.width;
@@ -3276,7 +3641,7 @@ define("graphic/pen", [ "graphic/color", "core/utils", "graphic/standardcolor", 
         },
         stroke: function(shape) {
             var node = shape.node;
-            node.setAttribute("stroke", this.getColor().toString());
+            node.setAttribute("stroke", this.brush.toString());
             node.setAttribute("stroke-width", this.getWidth());
             if (this.getOpacity() < 1) {
                 node.setAttribute("stroke-opacity", this.getOpacity());
@@ -3293,41 +3658,62 @@ define("graphic/pen", [ "graphic/color", "core/utils", "graphic/standardcolor", 
         }
     });
 });
+define("graphic/pie", [ "core/class", "core/config", "graphic/sweep", "graphic/point", "graphic/path" ], function(require, exports, module) {
+    return require("core/class").createClass({
+        base: require("graphic/sweep"),
+        constructor: function(radius, angle, angleOffset) {
+            this.callBase([ 0, radius ], angle, angleOffset);
+        },
+        getRadius: function() {
+            return this.getSectionArray()[1];
+        },
+        setRadius: function(radius) {
+            this.setSectionArray([ 0, radius ]);
+        }
+    });
+});
 /*
  * 点对象抽象
  */
 define("graphic/point", [ "core/class", "core/config" ], function(require, exports, module) {
-    return require("core/class").createClass("Point", {
+    var Point = require("core/class").createClass("Point", {
         constructor: function(x, y) {
-            this.px = x || 0;
-            this.py = y || 0;
+            this.x = x || 0;
+            this.y = y || 0;
         },
-        setPoint: function(x, y) {
-            this.px = x;
-            this.py = y;
-            return this;
+        offset: function(dx, dy) {
+            if (arguments.length == 1) {
+                dy = dx.y;
+                dx = dx.x;
+            }
+            return new Point(this.x + dx, this.y + dy);
         },
-        getPoint: function() {
-            return {
-                x: this.px,
-                y: this.py
-            };
+        valueOf: function() {
+            return [ this.x, this.y ];
         },
-        setX: function(x) {
-            this.px = x;
-            return this;
-        },
-        getX: function() {
-            return this.px;
-        },
-        setY: function(y) {
-            this.py = y;
-            return this;
-        },
-        getY: function() {
-            return this.py;
+        toString: function() {
+            return this.valueOf().join(" ");
         }
     });
+    Point.fromPolar = function(radius, angle, unit) {
+        if (unit != "rad") {
+            // deg to rad
+            angle = angle / 180 * Math.PI;
+        }
+        return new Point(radius * Math.cos(angle), radius * Math.sin(angle));
+    };
+    Point.parse = function(unknown) {
+        if (unknown instanceof Point) {
+            return unknown;
+        }
+        if (typeof unknown == "string") {
+            return Point.parse(unknown.split(/\s*[\s,]\s*/));
+        }
+        if ("0" in unknown && "1" in unknown) {
+            return new Point(unknown[0], unknown[1]);
+        }
+    };
+    return Point;
 });
 /**
  * 点集合容器
@@ -3398,10 +3784,10 @@ define("graphic/poly", [ "core/utils", "core/class", "core/config", "graphic/pat
             if (!points.length) {
                 return this;
             }
-            drawer.moveTo(points[0].getX(), points[0].getY());
+            drawer.moveTo(points[0]);
             for (var i = 1, point, len = points.length; i < len; i++) {
                 point = points[i];
-                drawer.lineTo(point.getX(), point.getY());
+                drawer.lineTo(point);
             }
             if (this.closeable && points.length > 2) {
                 drawer.close();
@@ -3470,8 +3856,8 @@ define("graphic/radialgradientbrush", [ "graphic/gradientbrush", "graphic/svg", 
         }
     });
 });
-define("graphic/rect", [ "core/utils", "core/class", "core/config", "graphic/path", "graphic/shape", "graphic/svg" ], function(require, exports, module) {
-    var RectUtils = {}, Utils = require("core/utils");
+define("graphic/rect", [ "core/utils", "graphic/point", "core/class", "core/config", "graphic/path", "graphic/shape", "graphic/svg" ], function(require, exports, module) {
+    var RectUtils = {}, Utils = require("core/utils"), Point = require("graphic/point");
     Utils.extend(RectUtils, {
         //根据传递进来的width、height和radius属性，
         //获取最适合的radius值
@@ -3529,12 +3915,14 @@ define("graphic/rect", [ "core/utils", "core/class", "core/config", "graphic/pat
             return this.update();
         },
         getPosition: function() {
-            return {
-                x: this.x,
-                y: this.y
-            };
+            return new Point(this.x, this.y);
         },
         setPosition: function(x, y) {
+            if (arguments.length == 1) {
+                var p = Point.parse(arguments[0]);
+                y = p.y;
+                x = p.x;
+            }
             this.x = x;
             this.y = y;
             return this.update();
@@ -3561,7 +3949,82 @@ define("graphic/rect", [ "core/utils", "core/class", "core/config", "graphic/pat
         }
     });
 });
-define("graphic/shape", [ "graphic/svg", "core/utils", "graphic/eventhandler", "graphic/shapeevent", "core/class", "graphic/styled", "graphic/data", "graphic/matrix", "graphic/vector", "graphic/pen", "graphic/color", "core/config" ], function(require, exports, module) {
+define("graphic/regularpolygon", [ "graphic/point", "core/class", "core/config", "graphic/path", "core/utils", "graphic/shape", "graphic/svg" ], function(require, exports, module) {
+    var Point = require("graphic/point");
+    return require("core/class").createClass("RegularPolygon", {
+        base: require("graphic/path"),
+        constructor: function(side, radius, x, y) {
+            this.callBase();
+            this.radius = radius || 0;
+            this.side = Math.max(side || 3, 3);
+            if (arguments.length > 2) {
+                if (arguments.length == 3) {
+                    y = x.y;
+                    x = x.x;
+                }
+            }
+            this.center = new Point(x, y);
+            this.draw();
+        },
+        getSide: function() {
+            return this.side;
+        },
+        setSide: function(side) {
+            this.side = side;
+            return this.draw();
+        },
+        getRadius: function() {
+            return this.radius;
+        },
+        setRadius: function(radius) {
+            this.radius = radius;
+            return this.draw();
+        },
+        draw: function() {
+            var radius = this.radius, side = this.side, step = Math.PI * 2 / side, drawer = this.getDrawer(), i;
+            drawer.clear();
+            drawer.moveTo(Point.fromPolar(radius, Math.PI / 2, "rad").offset(this.center));
+            for (i = 0; i <= side; i++) {
+                drawer.lineTo(Point.fromPolar(radius, step * i + Math.PI / 2, "rad").offset(this.center));
+            }
+            drawer.close();
+            return this;
+        }
+    });
+});
+define("graphic/resource", [ "graphic/svg", "core/class", "core/config" ], function(require, exports, module) {
+    var svg = require("graphic/svg");
+    return require("core/class").createClass("Resource", {
+        constructor: function(nodeType) {
+            this.callBase();
+            this.node = svg.createNode(nodeType);
+        },
+        toString: function() {
+            return "url(#" + this.node.id + ")";
+        }
+    });
+});
+define("graphic/ring", [ "core/class", "core/config", "graphic/sweep", "graphic/point", "graphic/path" ], function(require, exports, module) {
+    return require("core/class").createClass({
+        base: require("graphic/sweep"),
+        constructor: function(innerRadius, outerRadius) {
+            this.callBase([ innerRadius, outerRadius ], 360, 0);
+        },
+        getInnerRadius: function() {
+            return this.getSectionArray()[0];
+        },
+        getOuterRadius: function() {
+            return this.getSectionArray()[1];
+        },
+        setInnerRadius: function(value) {
+            this.setSectionArray([ value, this.getOuterRadius() ]);
+        },
+        setOuterRadius: function(value) {
+            this.setSectionArray([ this.getInnerRadius(), value ]);
+        }
+    });
+});
+define("graphic/shape", [ "graphic/svg", "core/utils", "graphic/eventhandler", "graphic/shapeevent", "core/class", "graphic/styled", "graphic/data", "graphic/matrix", "graphic/box", "graphic/point", "graphic/pen", "graphic/color", "core/config" ], function(require, exports, module) {
     var svg = require("graphic/svg");
     var utils = require("core/utils");
     var EventHandler = require("graphic/eventhandler");
@@ -3569,11 +4032,19 @@ define("graphic/shape", [ "graphic/svg", "core/utils", "graphic/eventhandler", "
     var Data = require("graphic/data");
     var Matrix = require("graphic/matrix");
     var Pen = require("graphic/pen");
-    return require("core/class").createClass("Shape", {
+    var slice = Array.prototype.slice;
+    var Box = require("graphic/box");
+    var Shape = require("core/class").createClass("Shape", {
         mixins: [ EventHandler, Styled, Data ],
         constructor: function(tagName) {
             this.node = svg.createNode(tagName);
             this.node.shape = this;
+            this.transform = {
+                translate: null,
+                rotate: null,
+                scale: null,
+                matrix: null
+            };
             this.callMixin();
         },
         getId: function() {
@@ -3598,32 +4069,11 @@ define("graphic/shape", [ "graphic/svg", "core/utils", "graphic/eventhandler", "
                     height: this.node.clientHeight
                 };
             }
-            return box;
+            return new Box(box);
         },
         getRenderBox: function(refer) {
-            function isAncestorOf(container, shape) {
-                var parent = shape.container;
-                while (parent && parent != container) {
-                    parent = parent.container;
-                }
-                return !!parent;
-            }
-            if (refer === undefined) {
-                refer = this;
-            } else if (refer === "top") {
-                refer = this.getPaper() || this;
-            } else if (!isAncestorOf(refer, this)) {
-                refer = this;
-            }
             var box = this.getBoundaryBox();
-            var current = this;
-            var matrix = current.getTransform();
-            while (current != refer) {
-                current = current.container;
-                if (current.getTransform) {
-                    matrix = matrix.merge(current.getTransform());
-                }
-            }
+            var matrix = this.getTransform(refer);
             return matrix.transformBox(box);
         },
         getWidth: function() {
@@ -3646,88 +4096,104 @@ define("graphic/shape", [ "graphic/svg", "core/utils", "graphic/eventhandler", "
             var opacity = this.node.getAttribute("opacity");
             return opacity ? +opacity : 1;
         },
-        getTransform: function() {
-            return Matrix.parse(this.node.getAttribute("transform"));
-        },
-        setTransform: function(matrix) {
-            this.node.setAttribute("transform", matrix.toString());
-            this.trigger("shapeupdate", {
-                type: "transform"
-            });
-            return this;
-        },
-        resetTransform: function() {
-            this.node.removeAttribute("transform");
-            this.trigger("shapeupdate", {
-                type: "transform"
-            });
-            return this;
-        },
-        mergeTransform: function(matrix) {
-            return this.setTransform(this.getTransform().mergeMatrix(matrix));
-        },
-        getAnchor: function() {
-            if (this.anchor && this.anchor.x !== undefined) {
-                return this.anchor;
-            }
-            var anchor = anchor || "center";
-            var rbox = this.getRenderBox();
-            var value = {
-                x: rbox.x + rbox.width / 2,
-                y: rbox.y + rbox.height / 2
-            };
-            if (~anchor.indexOf("left")) {
-                value.x = rbox.x;
-            }
-            if (~anchor.indexOf("right")) {
-                value.x = rbox.x + rbox.width;
-            }
-            if (~anchor.indexOf("top")) {
-                value.y = rbox.y;
-            }
-            if (~anchor.indexOf("bottom")) {
-                value.y = rbox.y + rbox.height;
-            }
-            return value;
-        },
-        setAnchor: function(ax, ay) {
-            if (arguments.length === 1) {
-                this.anchor = ax;
+        setVisible: function(value) {
+            if (value) {
+                this.node.removeAttribute("display");
             } else {
-                this.anchor = {
-                    x: ax,
-                    y: ay
-                };
+                this.node.setAttribute("display", "none");
             }
             return this;
         },
-        resetAnchor: function() {
-            delete this.anchor;
+        getVisible: function() {
+            this.node.getAttribute("display");
+        },
+        hasAncestor: function(node) {
+            var parent = this.container;
+            while (parent) {
+                if (parent === node) {
+                    return true;
+                }
+                parent = parent.container;
+            }
+            return false;
+        },
+        getTransform: function(refer) {
+            return Matrix.getCTM(this, refer);
+        },
+        clearTransform: function() {
+            this.node.removeAttribute("transform");
+            this.transform = {
+                translate: null,
+                rotate: null,
+                scale: null,
+                matrix: null
+            };
+            this.trigger("shapeupdate", {
+                type: "transform"
+            });
             return this;
+        },
+        _applyTransform: function() {
+            var t = this.transform, result = [];
+            if (t.translate) {
+                result.push([ "translate(", t.translate, ")" ]);
+            }
+            if (t.rotate) {
+                result.push([ "rotate(", t.rotate, ")" ]);
+            }
+            if (t.scale) {
+                result.push([ "scale(", t.scale, ")" ]);
+            }
+            if (t.matrix) {
+                result.push([ "matrix(", t.matrix, ")" ]);
+            }
+            this.node.setAttribute("transform", utils.flatten(result).join(" "));
+            return this;
+        },
+        setMatrix: function(m) {
+            this.transform.matrix = m;
+            return this._applyTransform();
+        },
+        setTranslate: function(t) {
+            this.transform.translate = t !== null && slice.call(arguments) || null;
+            return this._applyTransform();
+        },
+        setRotate: function(r) {
+            this.transform.rotate = r !== null && slice.call(arguments) || null;
+            return this._applyTransform();
+        },
+        setScale: function(s) {
+            this.transform.scale = s != null && slice.call(arguments) || null;
+            return this._applyTransform();
         },
         translate: function(dx, dy) {
+            var m = this.transform.matrix || new Matrix();
             if (dy === undefined) {
                 dy = 0;
             }
-            return this.mergeTransform(new Matrix().translate(dx, dy));
+            this.transform.matrix = m.translate(dx, dy);
+            return this._applyTransform();
         },
         rotate: function(deg) {
-            var a = this.getAnchor();
-            return this.mergeTransform(new Matrix().translate(-a.x, -a.y).rotate(deg).translate(a.x, a.y));
+            var m = this.transform.matrix || new Matrix();
+            this.transform.matrix = m.rotate(deg);
+            return this._applyTransform();
         },
         scale: function(sx, sy) {
-            var a = this.getAnchor();
+            var m = this.transform.matrix || new Matrix();
             if (sy === undefined) {
                 sy = sx;
             }
-            return this.mergeTransform(new Matrix().translate(-a.x, -a.y).scale(sx, sy).translate(a.x, a.y));
+            this.transform.matrix = m.scale(sx, sy);
+            return this._applyTransform();
         },
         skew: function(sx, sy) {
-            var a = this.getAnchor();
+            var m = this.transform.matrix || new Matrix();
             if (sy === undefined) {
                 sy = sx;
             }
-            return this.mergeTransform(new Matrix().translate(-a.x, -a.y).skew(sx, sy).translate(a.x, a.y));
+            this.transform.matrix = m.skew(sx, sy);
+            return this._applyTransform();
         },
         stroke: function(pen, width) {
             if (pen && pen.stroke) {
@@ -3742,12 +4208,8 @@ define("graphic/shape", [ "graphic/svg", "core/utils", "graphic/eventhandler", "
             return this;
         },
         fill: function(brush) {
-            if (brush && brush.fill) {
-                brush.fill(this);
-            } else {
-                // 字符串或重写了 toString 的对象
-                this.node.setAttribute("fill", brush.toString());
-            }
+            // 字符串或重写了 toString 的对象
+            this.node.setAttribute("fill", brush.toString());
             return this;
         },
         setAttr: function(a, v) {
@@ -3767,8 +4229,9 @@ define("graphic/shape", [ "graphic/svg", "core/utils", "graphic/eventhandler", "
             return this.node.getAttribute(a);
         }
     });
+    return Shape;
 });
-define("graphic/shapecontainer", [ "graphic/container", "core/class", "core/utils", "core/config", "graphic/shape", "graphic/svg", "graphic/eventhandler", "graphic/styled", "graphic/data", "graphic/matrix", "graphic/pen" ], function(require, exports, module) {
+define("graphic/shapecontainer", [ "graphic/container", "core/class", "core/utils", "core/config", "graphic/shape", "graphic/svg", "graphic/eventhandler", "graphic/styled", "graphic/data", "graphic/matrix", "graphic/pen", "graphic/box" ], function(require, exports, module) {
     var Container = require("graphic/container");
     var utils = require("core/utils");
     var ShapeContainer = require("core/class").createClass("ShapeContainer", {
@@ -3799,7 +4262,7 @@ define("graphic/shapecontainer", [ "graphic/container", "core/class", "core/util
         /* private */
         notifyTreeModification: function(type, container) {
             this.eachItem(function(index, shape) {
-                if (shape instanceof ShapeContainer) {
+                if (shape.notifyTreeModification) {
                     shape.notifyTreeModification(type, container);
                 }
                 shape.trigger(type, {
@@ -3923,8 +4386,8 @@ define("graphic/shapecontainer", [ "graphic/container", "core/class", "core/util
 /*
  * 图形事件包装类
  * */
-define("graphic/shapeevent", [ "graphic/matrix", "core/utils", "graphic/vector", "core/class", "core/config" ], function(require, exprots, module) {
-    var Matrix = require("graphic/matrix"), Utils = require("core/utils");
+define("graphic/shapeevent", [ "graphic/matrix", "core/utils", "graphic/box", "graphic/point", "core/class", "core/config" ], function(require, exprots, module) {
+    var Matrix = require("graphic/matrix"), Utils = require("core/utils"), Point = require("graphic/point");
     return require("core/class").createClass("ShapeEvent", {
         constructor: function(event) {
             var target = null;
@@ -3959,18 +4422,15 @@ define("graphic/shapeevent", [ "graphic/matrix", "core/utils", "graphic/vector",
             }
         },
         //当前鼠标事件在用户坐标系中点击的点的坐标位置
-        getPosition: function(touch_index) {
+        getPosition: function(refer, touch_index) {
             if (!this.originEvent) {
                 return null;
             }
             var eventClient = this.originEvent.touches ? this.originEvent.touches[touch_index || 0] : this.originEvent;
-            var clientX = eventClient.clientX, clientY = eventClient.clientY, paper = this.targetShape.getPaper(), //转换过后的点
-            transPoint = Matrix.transformPoint(clientX, clientY, paper.node.getScreenCTM().inverse());
-            var viewport = paper.getViewPort();
-            return {
-                x: transPoint.x / viewport.zoom - viewport.offset.x,
-                y: transPoint.y / viewport.zoom - viewport.offset.y
-            };
+            var clientX = eventClient && eventClient.clientX || 0, clientY = eventClient && eventClient.clientY || 0, node = this.targetShape.shapeNode || this.targetShape.node, // 鼠标位置在目标对象上的坐标
+            // 基于屏幕坐标算
+            point = Matrix.transformPoint(clientX, clientY, node.getScreenCTM().inverse());
+            return Matrix.getCTM(this.targetShape, refer || "view").transformPoint(point);
         },
         stopPropagation: function() {
             var evt = this.originEvent;
@@ -3995,18 +4455,18 @@ define("graphic/shapepoint", [ "core/class", "core/config", "graphic/point" ], f
             this.callBase(px, py);
         },
         setX: function(x) {
-            this.callBase(x);
-            this.update();
-            return this;
+            return this.setPoint(x, this.y);
         },
         setY: function(y) {
-            this.callBase(y);
+            return this.setPoint(this.x, y);
+        },
+        setPoint: function(x, y) {
+            this.x = x;
+            this.y = y;
             this.update();
             return this;
         },
-        setPoint: function(x, y) {
-            this.callBase(x, y);
-            this.update();
+        getPoint: function() {
             return this;
         },
         update: function() {
@@ -4172,6 +4632,83 @@ define("graphic/standardcolor", [], {
     //标准扩展
     EXTEND_STANDARD: {}
 });
+define("graphic/star", [ "graphic/point", "core/class", "core/config", "graphic/path", "core/utils", "graphic/shape", "graphic/svg" ], function(require, exports, module) {
+    /**
+     * @see http://www.jdawiseman.com/papers/easymath/surds_star_inner_radius.html
+     */
+    var defaultRatioForStar = {
+        "3": .2,
+        // yy
+        "5": .38196601125,
+        "6": .57735026919,
+        "8": .541196100146,
+        "10": .726542528005,
+        "12": .707106781187
+    };
+    var Point = require("graphic/point");
+    return require("core/class").createClass("Star", {
+        base: require("graphic/path"),
+        constructor: function(vertex, radius, shrink, offset, angleOffset) {
+            this.callBase();
+            this.vertex = vertex || 3;
+            this.radius = radius || 0;
+            this.shrink = shrink;
+            this.offset = offset || new Point(0, 0);
+            this.angleOffset = angleOffset || 0;
+            this.draw();
+        },
+        getVertex: function() {
+            return this.vertex;
+        },
+        setVertex: function(value) {
+            this.vertex = value;
+            return this.draw();
+        },
+        getRadius: function() {
+            return this.radius;
+        },
+        setRadius: function(value) {
+            this.radius = value;
+            return this.draw();
+        },
+        getShrink: function() {
+            return this.shrink;
+        },
+        setShrink: function(value) {
+            this.shrink = value;
+            return this.draw();
+        },
+        getOffset: function() {
+            return this.offset;
+        },
+        setOffset: function(value) {
+            this.offset = value;
+            return this.draw();
+        },
+        getAngleOffset: function() {
+            return this.angleOffset;
+        },
+        setAngleOffset: function(value) {
+            this.angleOffset = value;
+            return this.draw();
+        },
+        draw: function() {
+            var innerRadius = this.radius, outerRadius = this.radius * (this.shrink || defaultRatioForStar[this.vertex] || .5), vertex = this.vertex, offset = this.offset, angleStart = 90, angleStep = 180 / vertex, angleOffset = this.angleOffset, drawer = this.getDrawer(), i, angle;
+            drawer.clear();
+            drawer.moveTo(Point.fromPolar(outerRadius, angleStart));
+            for (i = 1; i <= vertex * 2; i++) {
+                angle = angleStart + angleStep * i;
+                // 绘制内点
+                if (i % 2) {
+                    drawer.lineTo(Point.fromPolar(innerRadius, angle + angleOffset).offset(offset));
+                } else {
+                    drawer.lineTo(Point.fromPolar(outerRadius, angle));
+                }
+            }
+            drawer.close();
+        }
+    });
+});
 define("graphic/styled", [ "core/class", "core/config" ], function(require, exports, module) {
     // polyfill for ie
     var ClassList = require("core/class").createClass("ClassList", {
@@ -4247,10 +4784,80 @@ define("graphic/svg", [], function(require, exports, module) {
     };
     return svg;
 });
+define("graphic/sweep", [ "graphic/point", "core/class", "core/config", "graphic/path", "core/utils", "graphic/shape", "graphic/svg" ], function(require, exports, module) {
+    var Point = require("graphic/point");
+    return require("core/class").createClass("Sweep", {
+        base: require("graphic/path"),
+        constructor: function(sectionArray, angle, angleOffset) {
+            this.callBase();
+            this.sectionArray = sectionArray || [];
+            this.angle = angle || 0;
+            this.angleOffset = angleOffset || 0;
+            this.draw();
+        },
+        getSectionArray: function() {
+            return this.sectionArray;
+        },
+        setSectionArray: function(value) {
+            this.sectionArray = value;
+            return this.draw();
+        },
+        getAngle: function() {
+            return this.angle;
+        },
+        setAngle: function(value) {
+            this.angle = value;
+            return this.draw();
+        },
+        getAngleOffset: function() {
+            return this.angleOffset;
+        },
+        setAngleOffset: function(value) {
+            this.angleOffset = value;
+            return this.draw();
+        },
+        draw: function() {
+            var sectionArray = this.sectionArray, i;
+            for (i = 0; i < sectionArray.length; i += 2) {
+                this.drawSection(sectionArray[i], sectionArray[i + 1]);
+            }
+            return this;
+        },
+        drawSection: function(from, to) {
+            var angleLength = this.angle && (this.angle % 360 ? this.angle % 360 : 360), angleStart = this.angleOffset, angleHalf = angleStart + angleLength / 2, angleEnd = angleStart + angleLength, drawer = this.getDrawer();
+            drawer.moveTo(Point.fromPolar(from, angleStart));
+            drawer.lineTo(Point.fromPolar(to, angleStart));
+            if (to) {
+                drawer.carcTo(to, 0, 1, Point.fromPolar(to, angleHalf));
+                drawer.carcTo(to, 0, 1, Point.fromPolar(to, angleEnd));
+            }
+            drawer.lineTo(Point.fromPolar(from, angleEnd));
+            if (from) {
+                drawer.carcTo(from, 0, 1, Point.fromPolar(from, angleHalf));
+                drawer.carcTo(from, 0, 1, Point.fromPolar(from, angleStart));
+            }
+            drawer.close();
+        }
+    });
+});
 define("graphic/text", [ "graphic/textcontent", "graphic/shape", "core/class", "graphic/shapecontainer", "graphic/container", "core/utils", "graphic/svg", "core/config" ], function(require, exports, module) {
     var TextContent = require("graphic/textcontent");
     var ShapeContainer = require("graphic/shapecontainer");
     var svg = require("graphic/svg");
+    var offsetHash = {};
+    function getTextBoundOffset(text) {
+        var font = window.getComputedStyle(text.node).font;
+        if (offsetHash[font]) {
+            return offsetHash[font];
+        }
+        var bbox = text.getBoundaryBox(), y = text.getY() + +text.node.getAttribute("dy");
+        var topOffset = y - bbox.y, bottomOffset = topOffset - bbox.height;
+        return offsetHash[font] = {
+            top: topOffset,
+            bottom: bottomOffset,
+            middle: (topOffset + bottomOffset) / 2
+        };
+    }
     return require("core/class").createClass("Text", {
         base: TextContent,
         mixins: [ ShapeContainer ],
@@ -4259,6 +4866,9 @@ define("graphic/text", [ "graphic/textcontent", "graphic/shape", "core/class", "
             if (content !== undefined) {
                 this.setContent(content);
             }
+            this.whenPaperReady(function() {
+                this.setVerticalAlign(this.verticalAlign);
+            });
         },
         setX: function(x) {
             this.node.setAttribute("x", x);
@@ -4272,28 +4882,53 @@ define("graphic/text", [ "graphic/textcontent", "graphic/shape", "core/class", "
             return this;
         },
         getX: function() {
-            return +this.node.getAttribute("x");
+            return +this.node.getAttribute("x") || 0;
         },
         getY: function() {
-            return +this.node.getAttribute("y");
+            return +this.node.getAttribute("y") || 0;
+        },
+        setFont: function(font) {
+            this.callBase(font);
+            return this.setVerticalAlign(this.getVerticalAlign());
         },
         setTextAnchor: function(anchor) {
-            if (anchor == "center") {
-                anchor = "middle";
-            }
             this.node.setAttribute("text-anchor", anchor);
-            // text path
-            if (this.shapeNode != this.node) {
-                this.shapeNode.setAttribute("startOffset", {
-                    start: "0",
-                    middle: "50%",
-                    end: "100%"
-                }[anchor]);
-            }
             return this;
         },
         getTextAnchor: function() {
             return this.node.getAttribute("text-anchor") || "start";
+        },
+        // top/bottom/middle/baseline
+        setVerticalAlign: function(align) {
+            var dy;
+            switch (align) {
+              case "top":
+                dy = getTextBoundOffset(this).top;
+                break;
+
+              case "bottom":
+                dy = getTextBoundOffset(this).bottom;
+                break;
+
+              case "middle":
+                dy = getTextBoundOffset(this).middle;
+                break;
+
+              default:
+                dy = 0;
+            }
+            this.node.setAttribute("dy", dy);
+            this.verticalAlign = align;
+            return this;
+        },
+        getVerticalAlign: function() {
+            return this.verticalAlign || "baseline";
+        },
+        setStartOffset: function(offset) {
+            // only for text path
+            if (this.shapeNode != this.node) {
+                this.shapeNode.setAttribute("startOffset", offset * 100 + "%");
+            }
         },
         addSpan: function(span) {
             this.addShape(span);
@@ -4315,7 +4950,7 @@ define("graphic/text", [ "graphic/textcontent", "graphic/shape", "core/class", "
         }
     });
 });
-define("graphic/textcontent", [ "graphic/shape", "graphic/svg", "core/utils", "graphic/eventhandler", "graphic/styled", "graphic/data", "graphic/matrix", "graphic/pen", "core/class", "core/config" ], function(require, exports, module) {
+define("graphic/textcontent", [ "graphic/shape", "graphic/svg", "core/utils", "graphic/eventhandler", "graphic/styled", "graphic/data", "graphic/matrix", "graphic/pen", "graphic/box", "core/class", "core/config" ], function(require, exports, module) {
     var Shape = require("graphic/shape");
     return require("core/class").createClass("TextContent", {
         base: Shape,
@@ -4342,12 +4977,42 @@ define("graphic/textcontent", [ "graphic/shape", "graphic/svg", "core/utils", "g
             return this;
         },
         setSize: function(value) {
-            this.fontsize = value;
-            this.node.setAttribute("font-size", value);
-            return this;
+            return this.setFontSize(value);
         },
-        getSize: function() {
-            return this.fontsize;
+        setFontSize: function(value) {
+            return this.setFont({
+                size: value
+            });
+        },
+        setFontFamily: function(value) {
+            return this.setFont({
+                family: value
+            });
+        },
+        setFontBold: function(bold) {
+            return this.setFont({
+                weight: bold ? "bold" : "normal"
+            });
+        },
+        setFontItalic: function(italic) {
+            return this.setFont({
+                style: italic ? "italic" : "normal"
+            });
+        },
+        setFont: function(font) {
+            if (font.family) {
+                this.node.setAttribute("font-family", font.family);
+            }
+            if (font.size) {
+                this.node.setAttribute("font-size", font.size);
+            }
+            if (font.weight) {
+                this.node.setAttribute("font-weight", font.weight);
+            }
+            if (font.style) {
+                this.node.setAttribute("font-style", font.style);
+            }
+            return this;
         },
         getExtentOfChar: function(index) {
             return this.node.getExtentOfChar(index);
@@ -4375,7 +5040,7 @@ define("graphic/textspan", [ "graphic/textcontent", "graphic/shape", "core/class
 /*
  * USE 功能
  */
-define("graphic/use", [ "graphic/svg", "core/class", "core/config", "graphic/shape", "core/utils", "graphic/eventhandler", "graphic/styled", "graphic/data", "graphic/matrix", "graphic/pen" ], function(require, exports, module) {
+define("graphic/use", [ "graphic/svg", "core/class", "core/config", "graphic/shape", "core/utils", "graphic/eventhandler", "graphic/styled", "graphic/data", "graphic/matrix", "graphic/pen", "graphic/box" ], function(require, exports, module) {
     var Svg = require("graphic/svg");
     var Class = require("core/class");
     var Use = Class.createClass("Use", {
@@ -4406,62 +5071,63 @@ define("graphic/use", [ "graphic/svg", "core/class", "core/config", "graphic/sha
     });
     return Use;
 });
-define("graphic/vector", [ "core/class", "core/config" ], function(require, exports, module) {
+define("graphic/vector", [ "graphic/point", "core/class", "graphic/matrix", "core/utils", "graphic/box", "core/config" ], function(require, exports, module) {
+    var Point = require("graphic/point");
+    var Matrix = require("graphic/matrix");
     var Vector = require("core/class").createClass("Vector", {
+        base: Point,
         constructor: function(x, y) {
-            this.x = x || 0;
-            this.y = y || 0;
+            this.callBase(x, y);
+        },
+        square: function() {
+            return this.x * this.x + this.y * this.y;
         },
         length: function() {
-            return Math.sqrt(Vector.square(this));
+            return Math.sqrt(this.square());
+        },
+        add: function(q) {
+            return new Vector(this.x + q.x, this.y + q.y);
+        },
+        minus: function(q) {
+            return new Vector(this.x - q.x, this.y - q.y);
+        },
+        dot: function(q) {
+            return this.x * q.x + this.y * q.y;
+        },
+        project: function(q) {
+            return q.multipy(this.dot(q) / q.square());
+        },
+        normalize: function(length) {
+            if (length === undefined) {
+                length = 1;
+            }
+            return this.multipy(length / this.length());
+        },
+        multipy: function(scale) {
+            return new Vector(this.x * scale, this.y * scale);
+        },
+        rotate: function(angle, unit) {
+            if (unit == "rad") {
+                angle = angle / Math.PI * 180;
+            }
+            var p = new Matrix().rotate(angle).transformPoint(this);
+            return new Vector(p.x, p.y);
+        },
+        vertical: function() {
+            return new Vector(this.y, -this.x);
+        },
+        reverse: function() {
+            return this.multipy(-1);
         }
     });
-    Vector.add = function(p, q) {
-        return new Vector(p.x + q.x, p.y + q.y);
-    };
-    Vector.square = function(p) {
-        return p.x * p.x + p.y * p.y;
-    };
-    Vector.normalize = function(p, l) {
-        if (l === undefined) {
-            l = 1;
-        }
-        var factor = l / p.length();
-        return new Vector(p.x * factor, p.y * factor);
-    };
-    Vector.verticalVector = function(p) {
-        return new Vector(p.y, -p.x);
-    };
-    Vector.verticalNormalize = function(p) {
-        return Vector.normalize(Vector.verticalVector(p));
-    };
-    Vector.multipy = function(p, s) {
-        return new Vector(p.x * s, p.y * s);
-    };
-    Vector.reverse = function(p) {
-        return Vector.multipy(p, -1);
-    };
-    Vector.dot = function(p, q) {
-        return p.x * q.x + p.y * q.y;
-    };
-    Vector.minus = function(p, q) {
-        return new Vector(p.x - q.x, p.y - q.y);
-    };
-    // p 在 q 上的投影
-    Vector.projection = function(p, q) {
-        var factor = Vector.dot(p, q) / Vector.square(q);
-        return Vector.multipy(q, factor);
-    };
-    // from p1 to p2
     Vector.fromPoints = function(p1, p2) {
         return new Vector(p2.x - p1.x, p2.y - p1.y);
     };
-    Vector.fromPolar = function(d, a, isRad) {
-        if (isRad !== true) {
-            a = a * Math.PI / 180;
+    require("core/class").extendClass(Point, {
+        asVector: function() {
+            return new Vector(this.x, this.y);
         }
-        return new Vector(d * Math.cos(a), d * Math.sin(a));
-    };
+    });
     return Vector;
 });
 define("graphic/view", [ "graphic/shapecontainer", "graphic/container", "core/utils", "core/class", "graphic/shape", "graphic/viewbox", "core/config", "graphic/view" ], function(require, exports, module) {
@@ -4521,7 +5187,7 @@ define("graphic/viewbox", [ "core/class", "core/config" ], function(require, exp
 
             // core
             Utils: require( "core/utils" ),
-            Browser:require("core/browser"),
+            Browser: require( "core/browser" ),
             // shape
             Bezier: require( 'graphic/bezier' ),
             BezierPoint: require( 'graphic/bezierpoint' ),
@@ -4532,11 +5198,13 @@ define("graphic/viewbox", [ "core/class", "core/config" ], function(require, exp
             Ellipse: require( 'graphic/ellipse' ),
             GradientBrush: require( 'graphic/gradientbrush' ),
             Group: require( 'graphic/group' ),
+            HyperLink: require( 'graphic/hyperlink' ),
             Image: require( 'graphic/image' ),
             Line: require( 'graphic/line' ),
             LinearGradientBrush: require( 'graphic/lineargradientbrush' ),
             Mask: require( 'graphic/mask' ),
             Matrix: require( 'graphic/matrix' ),
+            Marker: require( 'graphic/marker' ),
             Palette: require( 'graphic/palette' ),
             Paper: require( 'graphic/paper' ),
             Path: require( 'graphic/path' ),
@@ -4545,10 +5213,15 @@ define("graphic/viewbox", [ "core/class", "core/config" ], function(require, exp
             Point: require( 'graphic/point' ),
             Polygon: require( 'graphic/polygon' ),
             Polyline: require( 'graphic/polyline' ),
+            Pie: require( 'graphic/pie' ),
             RadialGradientBrush: require( 'graphic/radialgradientbrush' ),
             Rect: require( 'graphic/rect' ),
+            RegularPolygon: require('graphic/regularpolygon'),
+            Ring: require( 'graphic/ring' ),
             Shape: require( 'graphic/shape' ),
             ShapePoint: require( 'graphic/shapepoint' ),
+            Sweep: require( 'graphic/sweep' ),
+            Star: require('graphic/star'),
             Text: require( 'graphic/text' ),
             TextSpan: require( 'graphic/textspan' ),
             Use: require( 'graphic/use' ),
@@ -4583,8 +5256,7 @@ define("graphic/viewbox", [ "core/class", "core/config" ], function(require, exp
     // build环境中才含有use
     try {
         use( 'kity.start' );
-    } catch ( e ) {
-    }
+    } catch ( e ) {}
 
 } )( this );
 })();

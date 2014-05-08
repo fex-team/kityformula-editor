@@ -1,6 +1,6 @@
 /*!
  * ====================================================
- * kityformula-editor - v1.0.0 - 2014-04-16
+ * kityformula-editor - v1.0.0 - 2014-05-08
  * https://github.com/HanCong03/kityformula-editor
  * GitHub: https://github.com/kitygraph/kityformula-editor.git 
  * Copyright (c) 2014 Baidu Kity Group; Licensed MIT
@@ -330,7 +330,7 @@ define("impl/latex/base/tree", [ "impl/latex/define/type", "impl/latex/handler/c
 /**
  * 通用工具包
  */
-define("impl/latex/base/utils", [ "impl/latex/define/operator", "impl/latex/handler/script", "impl/latex/define/type", "impl/latex/handler/fraction", "impl/latex/handler/sqrt", "impl/latex/handler/summation", "impl/latex/handler/integration", "impl/latex/handler/brackets", "impl/latex/define/func", "impl/latex/handler/func", "impl/latex/handler/lib/int-extract" ], function(require, exports, module) {
+define("impl/latex/base/utils", [ "impl/latex/define/operator", "impl/latex/handler/script", "impl/latex/define/type", "impl/latex/handler/fraction", "impl/latex/handler/sqrt", "impl/latex/handler/summation", "impl/latex/handler/integration", "impl/latex/handler/brackets", "impl/latex/define/func", "impl/latex/handler/func", "impl/latex/handler/lib/script-extractor" ], function(require, exports, module) {
     var OPERATOR_LIST = require("impl/latex/define/operator"), FUNCTION_LIST = require("impl/latex/define/func"), FUNCTION_HANDLER = require("impl/latex/handler/func"), Utils = {
         // 根据输入的latex字符串， 检测出该字符串所对应的kf的类型
         getLatexType: function(str) {
@@ -432,7 +432,7 @@ define("impl/latex/define/func", [], function(require, exports, module) {
 /**
  * 操作符列表
  */
-define("impl/latex/define/operator", [ "impl/latex/handler/script", "impl/latex/define/type", "impl/latex/handler/fraction", "impl/latex/handler/sqrt", "impl/latex/handler/combination", "impl/latex/handler/summation", "impl/latex/handler/lib/int-extract", "impl/latex/handler/integration", "impl/latex/handler/brackets", "impl/latex/define/brackets" ], function(require, exports, module) {
+define("impl/latex/define/operator", [ "impl/latex/handler/script", "impl/latex/define/type", "impl/latex/handler/fraction", "impl/latex/handler/sqrt", "impl/latex/handler/combination", "impl/latex/handler/summation", "impl/latex/handler/lib/script-extractor", "impl/latex/handler/integration", "impl/latex/handler/brackets", "impl/latex/define/brackets" ], function(require, exports, module) {
     var scriptHandler = require("impl/latex/handler/script"), TYPE = require("impl/latex/define/type");
     return {
         "^": {
@@ -561,12 +561,12 @@ define("impl/latex/handler/fraction", [], function(require, exports, module) {
 /*!
  * 函数表达式处理器
  */
-define("impl/latex/handler/func", [ "impl/latex/handler/lib/int-extract" ], function(require, exports, module) {
-    var extractFn = require("impl/latex/handler/lib/int-extract");
+define("impl/latex/handler/func", [ "impl/latex/handler/lib/script-extractor" ], function(require, exports, module) {
+    var ScriptExtractor = require("impl/latex/handler/lib/script-extractor");
     // 处理函数接口
     return function(info, processedStack, unprocessedStack) {
-        var params = extractFn(unprocessedStack);
-        info.operand = [ info.params, params.exp, params.sup, params.sub ];
+        var params = ScriptExtractor.exec(unprocessedStack);
+        info.operand = [ info.params, params.superscript, params.subscript ];
         delete info.params;
         delete info.handler;
         return info;
@@ -575,11 +575,11 @@ define("impl/latex/handler/func", [ "impl/latex/handler/lib/int-extract" ], func
 /*!
  * 积分函数处理器
  */
-define("impl/latex/handler/integration", [ "impl/latex/handler/lib/int-extract" ], function(require, exports, module) {
-    var extractFn = require("impl/latex/handler/lib/int-extract");
+define("impl/latex/handler/integration", [ "impl/latex/handler/lib/script-extractor" ], function(require, exports, module) {
+    var ScriptExtractor = require("impl/latex/handler/lib/script-extractor");
     return function(info, processedStack, unprocessedStack) {
-        var count = unprocessedStack.shift(), params = extractFn(unprocessedStack);
-        info.operand = [ params.exp, params.sup, params.sub ];
+        var count = unprocessedStack.shift(), params = ScriptExtractor.exec(unprocessedStack);
+        info.operand = [ params.superscript, params.subscript ];
         // 参数配置调用
         info.callFn = {
             setType: [ count | 0 ]
@@ -635,10 +635,49 @@ define("impl/latex/handler/lib/int-extract", [], function(require, exports, modu
         }
         return {
             sub: sub,
-            sup: sup,
-            exp: exp
+            sup: sup
         };
     };
+});
+/*!
+ * 通用上下标提取器
+ */
+define("impl/latex/handler/lib/script-extractor", [], function(require) {
+    return {
+        exec: function(stack) {
+            var scriptGroup = extractor(stack), nextGroup = null, result = {
+                superscript: null,
+                subscript: null
+            };
+            if (scriptGroup) {
+                nextGroup = extractor(stack);
+            } else {
+                return result;
+            }
+            result[scriptGroup.type] = scriptGroup.value || null;
+            if (nextGroup) {
+                if (nextGroup.type === scriptGroup.type) {
+                    throw new Error("Script: syntax error!");
+                }
+                result[nextGroup.type] = nextGroup.value || null;
+            }
+            return result;
+        }
+    };
+    function extractor(stack) {
+        var forward = stack.shift();
+        if (!forward) {
+            return null;
+        }
+        if (forward.name === "subscript" || forward.name === "superscript") {
+            return {
+                type: forward.name,
+                value: stack.shift()
+            };
+        }
+        stack.unshift(forward);
+        return null;
+    }
 });
 /*!
  * 上下标操作符函数处理
@@ -706,11 +745,11 @@ define("impl/latex/handler/sqrt", [ "impl/latex/handler/combination" ], function
 /*!
  * 求和函数处理器
  */
-define("impl/latex/handler/summation", [ "impl/latex/handler/lib/int-extract" ], function(require, exports, module) {
-    var extractFn = require("impl/latex/handler/lib/int-extract");
+define("impl/latex/handler/summation", [ "impl/latex/handler/lib/script-extractor" ], function(require, exports, module) {
+    var ScriptExtractor = require("impl/latex/handler/lib/script-extractor");
     return function(info, processedStack, unprocessedStack) {
-        var params = extractFn(unprocessedStack);
-        info.operand = [ params.exp, params.sup, params.sub ];
+        var params = ScriptExtractor.exec(unprocessedStack);
+        info.operand = [ params.superscript, params.subscript ];
         delete info.handler;
         return info;
     };

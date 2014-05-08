@@ -21,8 +21,9 @@ define( function ( require, exports, modules ) {
 
         applyOperand: function () {
 
-            this.setBoxSize( 17, 27 );
             this.opShape = generateOpShape( this, this.parentExpression.getLabel() );
+            this.parentExpression.expand( 20, 20 );
+            this.parentExpression.translateElement( 10, 10 );
 
         },
 
@@ -60,12 +61,12 @@ define( function ( require, exports, modules ) {
     // 创建通用图形
     function createCommonShape ( operator ) {
 
-        var w = 13,
-            h = 17,
+        var w = 35,
+            h = 50,
             shape = null;
 
-        shape =  new kity.Rect( w, h, 0, 0 ).stroke( "black" ).fill( "transparent" ).translate( 2, 6 );
-        shape.setAttr( "stroke-dasharray", "1, 2" );
+        shape =  new kity.Rect( w, h, 0, 0 ).stroke( "black" ).fill( "transparent" );
+        shape.setAttr( "stroke-dasharray", "5, 5" );
 
         operator.addOperatorShape( shape );
 
@@ -86,10 +87,11 @@ define( function ( require, exports, modules ) {
         shapeGroup.addShape( textShape );
         operator.addOperatorShape( shapeGroup );
 
-        textBox = textShape.getRenderBox();
+        textBox = textShape.getFixRenderBox();
 
         // 宽度要加上padding
-        borderBoxShape =  new kity.Rect( textBox.width + padding * 2, textBox.height + padding * 2, 0, 0 ).stroke( "black" ).fill( "transparent" );       borderBoxShape.setAttr( "stroke-dasharray", "1, 2" );
+        borderBoxShape =  new kity.Rect( textBox.width + padding * 2, textBox.height + padding * 2, 0, 0 ).stroke( "black" ).fill( "transparent" );
+        borderBoxShape.setAttr( "stroke-dasharray", "5, 5" );
 
         textShape.setAttr( {
             dx: 0-textBox.x,
