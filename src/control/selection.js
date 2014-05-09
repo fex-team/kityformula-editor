@@ -89,7 +89,14 @@ define( function ( require, exports, module ) {
                     }
 
                 } else {
+
+                    if ( e.which !== 1 ) {
+                        _self.stopUpdateSelection();
+                        return;
+                    }
+
                     _self.updateSelection( e.target, e.clientX, e.clientY );
+
                 }
 
             } );
