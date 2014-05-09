@@ -97,6 +97,12 @@ define( function ( require, exports, module ) {
 
             kfUtils.addEvent( this.inputBox, "keydown", function ( e ) {
 
+                if ( e.ctrlKey ) {
+                    // 处理用户控制行为
+                    _self.processUserCtrl( e );
+                    return;
+                }
+
                 switch ( e.keyCode ) {
 
                     case KEY_CODE.LEFT:
@@ -204,6 +210,21 @@ define( function ( require, exports, module ) {
             } else {
                 this.updateInput();
                 this.kfEditor.requestService( "control.reselect" );
+            }
+
+        },
+
+        processUserCtrl: function ( e ) {
+
+            e.preventDefault();
+
+            switch ( e.keyCode ) {
+
+                // ctrl + A
+                case 65:
+                    this.kfEditor.requestService( "control.select.all" );
+                    break;
+
             }
 
         },

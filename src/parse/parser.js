@@ -6,6 +6,7 @@ define( function ( require ) {
 
     var KFParser = require( "kf" ).Parser,
         kity = require( "kity" ),
+        CURSOR_CHAR = require( "sysconf" ).cursorCharacter,
         VGROUP_LIST = require( "parse/vgroup-def" ),
         ROOT_P_TEXT = require( "parse/root-p-text" ),
         COMBINATION_NAME = "combination",
@@ -111,7 +112,7 @@ define( function ( require ) {
         if ( isRoot ) {
             processRootGroup( parser, tree );
         // 根占位符处理, 附加label
-        } else if ( parentTree.attr[ "data-root" ] && tree.name === "placeholder" && parentTree.operand.length === 1 ) {
+        } else if ( parentTree.attr[ "data-root" ] && tree.name === "placeholder" && onlyPlaceholder( parentTree.operand ) ) {
             tree.attr.label = ROOT_P_TEXT;
         }
 
@@ -204,6 +205,35 @@ define( function ( require ) {
             tree.operand[ index ] = supplementTree( parser, subtree, tree );
 
         }
+
+    }
+
+    /**
+     * 判断给定的操作数列表内是否仅有一个占位符存在, 该判断仅支持对根内部的表达式做判断
+     * @param operands 操作数列表
+     * @returns {boolean}
+     */
+    function onlyPlaceholder ( operands ) {
+
+        var result = 1;
+
+        if ( operands.length > 3 ) {
+            return false;
+        }
+
+        for ( var i = 0, len = operands.length; i < len; i++ ) {
+
+            if ( operands[ i ] === CURSOR_CHAR ) {
+                continue;
+            }
+
+            if ( operands[ i ] && operands[ i ].name === "placeholder" ) {
+                result--;
+            }
+
+        }
+
+        return !result;
 
     }
 

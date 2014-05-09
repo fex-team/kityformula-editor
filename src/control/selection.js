@@ -30,7 +30,16 @@ define( function ( require, exports, module ) {
 
             this.startGroup = {};
 
+            this.initServices();
             this.initEvent();
+
+        },
+
+        initServices: function () {
+
+            this.kfEditor.registerService( "control.select.all", this, {
+                selectAll: this.selectAll
+            } );
 
         },
 
@@ -263,11 +272,7 @@ define( function ( require, exports, module ) {
             // 如果是根节点， 则直接选中其内容
             if ( this.kfEditor.requestService( "syntax.is.root.node", parentGroupInfo.id ) ) {
 
-                cursorInfo = {
-                    groupId: parentGroupInfo.id,
-                    startOffset: 0,
-                    endOffset: parentGroupInfo.content.length
-                };
+                this.selectAll();
 
             // 否则，仅选中该组
             } else {
@@ -296,6 +301,22 @@ define( function ( require, exports, module ) {
                 }
 
             }
+
+            this.kfEditor.requestService( "syntax.update.record.cursor", cursorInfo );
+            this.kfEditor.requestService( "control.reselect" );
+            this.kfEditor.requestService( "control.update.input" );
+
+        },
+
+        selectAll: function () {
+
+            var rootGroupInfo = this.kfEditor.requestService( "syntax.get.root.group.info" );
+
+            var cursorInfo= {
+                groupId: rootGroupInfo.id,
+                startOffset: 0,
+                endOffset: rootGroupInfo.content.length
+            };
 
             this.kfEditor.requestService( "syntax.update.record.cursor", cursorInfo );
             this.kfEditor.requestService( "control.reselect" );

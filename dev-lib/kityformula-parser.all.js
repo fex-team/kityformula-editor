@@ -502,6 +502,20 @@ define("impl/latex/define/reverse", [ "impl/latex/reverse/combination", "impl/la
         brackets: require("impl/latex/reverse/brackets")
     };
 });
+/*!
+ * 特殊字符定义
+ */
+define("impl/latex/define/special", [], function() {
+    return {
+        "#": 1,
+        $: 1,
+        "%": 1,
+        _: 1,
+        "&": 1,
+        "{": 1,
+        "}": 1
+    };
+});
 /**
  * 操作符类型定义
  */
@@ -715,8 +729,8 @@ define("impl/latex/handler/summation", [ "impl/latex/handler/lib/script-extracto
 /**
  * Kity Formula Latex解析器实现
  */
-define("impl/latex/latex", [ "parser", "impl/latex/base/latex-utils", "impl/latex/base/rpn", "impl/latex/base/tree", "impl/latex/define/pre", "impl/latex/pre/int", "impl/latex/serialization", "impl/latex/define/reverse", "impl/latex/define/operator", "impl/latex/handler/script", "impl/latex/define/type", "impl/latex/handler/fraction", "impl/latex/handler/sqrt", "impl/latex/handler/summation", "impl/latex/handler/integration", "impl/latex/handler/brackets", "impl/latex/reverse/combination", "impl/latex/reverse/fraction", "impl/latex/reverse/func", "impl/latex/reverse/integration", "impl/latex/reverse/subscript", "impl/latex/reverse/superscript", "impl/latex/reverse/script", "impl/latex/reverse/sqrt", "impl/latex/reverse/summation", "impl/latex/reverse/brackets", "impl/latex/base/utils", "impl/latex/define/func", "impl/latex/handler/func" ], function(require, exports, module) {
-    var Parser = require("parser").Parser, LatexUtils = require("impl/latex/base/latex-utils"), PRE_HANDLER = require("impl/latex/define/pre"), serialization = require("impl/latex/serialization"), OP_DEFINE = require("impl/latex/define/operator"), REVERSE_DEFINE = require("impl/latex/define/reverse"), Utils = require("impl/latex/base/utils");
+define("impl/latex/latex", [ "parser", "impl/latex/base/latex-utils", "impl/latex/base/rpn", "impl/latex/base/tree", "impl/latex/define/pre", "impl/latex/pre/int", "impl/latex/serialization", "impl/latex/define/reverse", "impl/latex/define/special", "impl/latex/define/operator", "impl/latex/handler/script", "impl/latex/define/type", "impl/latex/handler/fraction", "impl/latex/handler/sqrt", "impl/latex/handler/summation", "impl/latex/handler/integration", "impl/latex/handler/brackets", "impl/latex/reverse/combination", "impl/latex/reverse/fraction", "impl/latex/reverse/func", "impl/latex/reverse/integration", "impl/latex/reverse/subscript", "impl/latex/reverse/superscript", "impl/latex/reverse/script", "impl/latex/reverse/sqrt", "impl/latex/reverse/summation", "impl/latex/reverse/brackets", "impl/latex/base/utils", "impl/latex/define/func", "impl/latex/handler/func" ], function(require, exports, module) {
+    var Parser = require("parser").Parser, LatexUtils = require("impl/latex/base/latex-utils"), PRE_HANDLER = require("impl/latex/define/pre"), serialization = require("impl/latex/serialization"), OP_DEFINE = require("impl/latex/define/operator"), REVERSE_DEFINE = require("impl/latex/define/reverse"), SPECIAL_LIST = require("impl/latex/define/special"), Utils = require("impl/latex/base/utils");
     // data
     var leftChar = "￸", rightChar = "￼", clearCharPattern = new RegExp(leftChar + "|" + rightChar, "g"), leftCharPattern = new RegExp(leftChar, "g"), rightCharPattern = new RegExp(rightChar, "g");
     Parser.register("latex", Parser.implement({
@@ -769,7 +783,7 @@ define("impl/latex/latex", [ "parser", "impl/latex/base/latex-utils", "impl/late
             return input;
         },
         split: function(data) {
-            var units = [], pattern = /(?:\\[,{}]\s*)|(?:\\[a-z]+\s*)|(?:[{}]\s*)|(?:[^\\{}]\s*)/gi, emptyPattern = /^\s+|\s+$/g, match = null;
+            var units = [], pattern = /(?:\\[^a-z]\s*)|(?:\\[a-z]+\s*)|(?:[{}]\s*)|(?:[^\\{}]\s*)/gi, emptyPattern = /^\s+|\s+$/g, match = null;
             data = data.replace(emptyPattern, "");
             while (match = pattern.exec(data)) {
                 match = match[0].replace(emptyPattern, "");
@@ -872,8 +886,11 @@ define("impl/latex/latex", [ "parser", "impl/latex/base/latex-utils", "impl/late
      * 把序列化的字符串表示法转化为中间格式的结构化表示
      */
     function parseStruct(str) {
-        var type = Utils.getLatexType(str);
-        switch (type) {
+        // 特殊控制字符优先处理
+        if (isSpecialCharacter(str)) {
+            return str.substring(1);
+        }
+        switch (Utils.getLatexType(str)) {
           case "operator":
             return Utils.getDefine(str);
 
@@ -891,6 +908,12 @@ define("impl/latex/latex", [ "parser", "impl/latex/base/latex-utils", "impl/late
             return char + "\\";
         }
         return char;
+    }
+    function isSpecialCharacter(char) {
+        if (char.indexOf("\\") === 0) {
+            return !!SPECIAL_LIST[char.substring(1)];
+        }
+        return false;
     }
     function clearEmpty(data) {
         return data.replace(/\\\s+/, "").replace(/\s*([^a-z0-9\s])\s*/gi, function(match, symbol) {
@@ -1104,8 +1127,8 @@ define("impl/latex/reverse/superscript", [], function() {
 /**
  * Created by hn on 14-3-20.
  */
-define("impl/latex/serialization", [ "impl/latex/define/reverse", "impl/latex/reverse/combination", "impl/latex/reverse/fraction", "impl/latex/reverse/func", "impl/latex/reverse/integration", "impl/latex/reverse/subscript", "impl/latex/reverse/superscript", "impl/latex/reverse/script", "impl/latex/reverse/sqrt", "impl/latex/reverse/summation", "impl/latex/reverse/brackets" ], function(require) {
-    var reverseHandlerTable = require("impl/latex/define/reverse"), specialCharPattern = /(\\(?:[\w]+)|([,\{\}]))\\/g;
+define("impl/latex/serialization", [ "impl/latex/define/reverse", "impl/latex/reverse/combination", "impl/latex/reverse/fraction", "impl/latex/reverse/func", "impl/latex/reverse/integration", "impl/latex/reverse/subscript", "impl/latex/reverse/superscript", "impl/latex/reverse/script", "impl/latex/reverse/sqrt", "impl/latex/reverse/summation", "impl/latex/reverse/brackets", "impl/latex/define/special" ], function(require) {
+    var reverseHandlerTable = require("impl/latex/define/reverse"), SPECIAL_LIST = require("impl/latex/define/special"), specialCharPattern = /(\\(?:[\w]+)|(?:[^a-z]))\\/gi;
     return function(tree, options) {
         return reverseParse(tree, options);
     };
@@ -1113,6 +1136,9 @@ define("impl/latex/serialization", [ "impl/latex/define/reverse", "impl/latex/re
         var operands = [], originalOperands = null;
         // 字符串处理， 需要处理特殊字符
         if (typeof tree !== "object") {
+            if (isSpecialCharacter(tree)) {
+                return "\\" + tree + " ";
+            }
             return tree.replace(specialCharPattern, function(match, group) {
                 return group + " ";
             });
@@ -1130,6 +1156,9 @@ define("impl/latex/serialization", [ "impl/latex/define/reverse", "impl/latex/re
             }
         }
         return reverseHandlerTable[tree.name].call(tree, operands, options);
+    }
+    function isSpecialCharacter(char) {
+        return !!SPECIAL_LIST[char];
     }
 });
 /*!

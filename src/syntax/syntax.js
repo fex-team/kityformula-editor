@@ -9,7 +9,7 @@ define( function ( require ) {
         MoveComponent = require( "syntax/move" ),
         DeleteComponent = require( "syntax/delete" ),
 
-        CURSOR_CHAR = "\uF155",
+        CURSOR_CHAR = require( "sysconf" ).cursorCharacter,
         GROUP_TYPE = require( "def/group-type" ),
 
         SyntaxComponenet = kity.createClass( 'SyntaxComponenet', {
