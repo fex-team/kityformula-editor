@@ -8,7 +8,7 @@ define( function ( require ) {
         kity = require( "kity"),
 
         DEFAULT_OPTIONS = {
-            min: 0.5,
+            min: 1,
             max: 5
         },
 

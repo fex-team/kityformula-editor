@@ -1,6 +1,6 @@
 /*!
  * ====================================================
- * Kity Formula - v1.0.0 - 2014-05-08
+ * Kity Formula - v1.0.0 - 2014-05-09
  * https://github.com/kitygraph/formula
  * GitHub: https://github.com/kitygraph/formula.git 
  * Copyright (c) 2014 Baidu Kity Group; Licensed MIT
@@ -513,7 +513,7 @@ define("char/text", [ "kity", "font/manager", "signgroup", "def/gtype" ], functi
         },
         translation: function(content) {
             var fontFamily = this.fontFamily;
-            return content.replace(/\\([a-zA-Z,]+)\\/g, function(match, input) {
+            return content.replace(/\\([a-zA-Z,{}]+)\\/g, function(match, input) {
                 if (input === ",") {
                     return "￼ ￼";
                 }
@@ -3460,7 +3460,9 @@ define("font/kf-ams-main", [], function(require) {
             vert: "|",
             Vert: "ǁ",
             "|": "ǁ",
-            backslash: "ǂ",
+            "{": "{",
+            "}": "}",
+            backslash: "\\",
             langle: "〈",
             rangle: "〉",
             lceil: "⌈",
@@ -4265,19 +4267,23 @@ define("operator/common/script-controller", [ "kity" ], function(require) {
             // 水平方向调整
             sup.translate(targetBox.width + options.supOffset, 0);
             sub.translate(targetBox.width + options.subOffset, 0);
-            if (supBox.height > targetHeight / 2) {
-                vOffset = supBox.height - targetHeight / 2;
-            }
-            target.translate(0, vOffset);
-            if (subBox.height > targetHeight / 2) {
-                sub.translate(0, vOffset + targetHeight / 2);
-            } else {
-                sub.translate(0, vOffset + targetHeight - subBox.height);
-            }
-            if (targetHeight < maxOffset * 2) {
-                space.height = maxOffset * 2;
-            } else {
+            if (maxOffset * 2 < targetHeight) {
+                sub.translate(0, targetHeight - subBox.height);
                 space.height = targetHeight;
+            } else {
+                vOffset = maxOffset - targetHeight / 2;
+                target.translate(0, vOffset);
+                if (supBox.height < targetHeight / 2) {
+                    sup.translate(0, vOffset);
+                } else {
+                    sup.translate(0, maxOffset - supBox.height);
+                }
+                if (subBox.height < targetHeight / 2) {
+                    sub.translate(0, vOffset + targetHeight - subBox.height);
+                } else {
+                    sub.translate(0, maxOffset * 2 - subBox.height);
+                }
+                space.height = maxOffset * 2;
             }
             return space;
         }
@@ -4429,16 +4435,10 @@ define("operator/script", [ "kity", "operator/common/script-controller", "operat
             this.callBase(operatorName || "Script");
         },
         applyOperand: function(operand, sup, sub) {
-            new ScriptController(this, operand, sup, sub, {
-                expand: {
-                    width: 0,
-                    height: 10
-                },
-                allOffset: {
-                    x: 0,
-                    y: 5
-                }
-            }).applySide();
+            var opShape = this.getOperatorShape(), padding = 5, space = new ScriptController(this, operand, sup, sub).applySide();
+            this.parentExpression.setBoxSize(space.width, space.height);
+            this.parentExpression.expand(0, padding * 2);
+            this.parentExpression.translateElement(0, padding);
         }
     });
 });

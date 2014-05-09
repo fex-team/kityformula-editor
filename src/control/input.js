@@ -6,6 +6,7 @@ define( function ( require, exports, module ) {
 
     var kity = require( "kity" ),
         kfUtils = require( "base/utils" ),
+        InputFilter = require( "control/input-filter" ),
         KEY_CODE = {
             LEFT: 37,
             RIGHT: 39,
@@ -209,17 +210,23 @@ define( function ( require, exports, module ) {
 
         },
 
+        // 输入前的预处理， 执行输入过滤
         pretreatmentInput: function ( evt ) {
 
-            if ( evt.keyCode === 32 ) {
+            var keyCode = this.getKeyCode( evt ),
+                replaceStr = InputFilter.getReplaceString( keyCode );
 
-                this.insertStr( "\\," );
-                return false;
-
+            if ( replaceStr === null ) {
+                return true;
             }
 
-            return true;
+            this.insertStr( replaceStr );
+            return false;
 
+        },
+
+        getKeyCode: function ( e ) {
+            return ( e.shiftKey ? "s+" : "" ) + e.keyCode;
         },
 
         processingInput: function () {

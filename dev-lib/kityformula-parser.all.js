@@ -769,7 +769,7 @@ define("impl/latex/latex", [ "parser", "impl/latex/base/latex-utils", "impl/late
             return input;
         },
         split: function(data) {
-            var units = [], pattern = /(?:\\[,]\s*)|(?:\\[a-z]+\s*)|(?:[{}]\s*)|(?:[^\\{}]\s*)/gi, emptyPattern = /^\s+|\s+$/g, match = null;
+            var units = [], pattern = /(?:\\[,{}]\s*)|(?:\\[a-z]+\s*)|(?:[{}]\s*)|(?:[^\\{}]\s*)/gi, emptyPattern = /^\s+|\s+$/g, match = null;
             data = data.replace(emptyPattern, "");
             while (match = pattern.exec(data)) {
                 match = match[0].replace(emptyPattern, "");
@@ -835,7 +835,7 @@ define("impl/latex/latex", [ "parser", "impl/latex/base/latex-utils", "impl/late
                     break;
 
                   default:
-                    group.push(units[i].replace(leftCharPattern, "{").replace(rightCharPattern, "}"));
+                    group.push(units[i].replace(leftCharPattern, "\\{").replace(rightCharPattern, "\\}"));
                     break;
                 }
             }
@@ -1105,7 +1105,7 @@ define("impl/latex/reverse/superscript", [], function() {
  * Created by hn on 14-3-20.
  */
 define("impl/latex/serialization", [ "impl/latex/define/reverse", "impl/latex/reverse/combination", "impl/latex/reverse/fraction", "impl/latex/reverse/func", "impl/latex/reverse/integration", "impl/latex/reverse/subscript", "impl/latex/reverse/superscript", "impl/latex/reverse/script", "impl/latex/reverse/sqrt", "impl/latex/reverse/summation", "impl/latex/reverse/brackets" ], function(require) {
-    var reverseHandlerTable = require("impl/latex/define/reverse"), specialCharPattern = /(\\(?:[\w]+)|(,))\\/g;
+    var reverseHandlerTable = require("impl/latex/define/reverse"), specialCharPattern = /(\\(?:[\w]+)|([,\{\}]))\\/g;
     return function(tree, options) {
         return reverseParse(tree, options);
     };
