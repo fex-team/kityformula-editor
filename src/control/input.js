@@ -153,9 +153,7 @@ define( function ( require, exports, module ) {
             // 粘贴过滤
             kfUtils.addEvent( this.inputBox, "paste", function ( e ) {
 
-                // TODO 处理粘贴
-                debugger;
-//                _self.processingInput();
+                e.preventDefault();
 
             } );
 
