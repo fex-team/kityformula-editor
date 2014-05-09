@@ -10,7 +10,7 @@ define( function ( require ) {
             controller: {
                 zoom: true,
                 maxzoom: 5,
-                minzoom: 0.5
+                minzoom: 1
             },
             formula: {
                 fontsize: 50,

@@ -26,7 +26,9 @@ define( function ( require ) {
 
                 this.record = {
                     select: {},
-                    cursor: {}
+                    cursor: {},
+                    // 画布信息
+                    canvas: {}
                 };
 
                 this.initCanvas();
@@ -38,9 +40,8 @@ define( function ( require ) {
 
             initCanvas: function () {
 
-                var canvasContainer = this.kfEditor.requestService( "ui.get.canvas.container"),
+                var canvasContainer = this.kfEditor.requestService( "ui.get.canvas.container" ),
                     viewBox = null;
-
 
                 this.assembly = Assembly.use( canvasContainer, DEFAULT_OPTIONS );
                 this.formula = this.assembly.formula;
@@ -51,6 +52,22 @@ define( function ( require ) {
             },
 
             initServices: function () {
+
+                this.kfEditor.registerService( "render.get.canvas", this, {
+                    getCanvas: this.getCanvas
+                } );
+
+                this.kfEditor.registerService( "render.get.content.size", this, {
+                    getContentSize: this.getContentSize
+                } );
+
+                this.kfEditor.registerService( "render.clear.canvas.transform", this, {
+                    clearCanvasTransform: this.clearCanvasTransform
+                } );
+
+                this.kfEditor.registerService( "render.revert.canvas.transform", this, {
+                    revertCanvasTransform: this.revertCanvasTransform
+                } );
 
                 this.kfEditor.registerService( "render.relocation", this, {
                     relocation: this.relocation
@@ -322,6 +339,65 @@ define( function ( require ) {
                 viewPort.zoom = zoom;
 
                 this.formula.setViewPort( viewPort );
+
+            },
+
+            getCanvas: function () {
+                return this.formula;
+            },
+
+            getContentSize: function () {
+
+                return this.formula.container.getRenderBox();
+
+            },
+
+            /**
+             * 清除编辑器里内容的偏移
+             */
+            clearCanvasTransform: function () {
+
+                var canvasInfo = this.record.canvas,
+                    viewPort = this.formula.getViewPort();
+
+                canvasInfo.viewBox = this.formula.getViewBox();
+                canvasInfo.viewPortZoom = viewPort.zoom;
+                canvasInfo.contentOffset = this.formula.container.getTranslate();
+
+                viewPort.zoom = 1;
+
+                this.formula.setViewPort( viewPort );
+                this.formula.node.removeAttribute( "viewBox" );
+                this.formula.container.setTranslate( 0, 0 );
+
+            },
+
+            /**
+             * 恢复被clearCanvasTransform清除的偏移， 该方法仅针对上一次清除有效，
+             * 且该方法应该只有在调用clearCanvasTransform后才可以调用该方法，并且两者之间应该配对出现
+             * @returns {boolean}
+             */
+            revertCanvasTransform: function () {
+
+                var canvasInfo = this.record.canvas,
+                    viewBox = canvasInfo.viewBox,
+                    viewPort = null;
+
+                if ( !viewBox ) {
+                    return false;
+                }
+
+                this.formula.setViewBox( viewBox.x, viewBox.y, viewBox.width, viewBox.height );
+                this.formula.container.setTranslate( canvasInfo.contentOffset );
+
+                viewPort = this.formula.getViewPort();
+                viewPort.zoom = canvasInfo.viewPortZoom;
+
+                this.formula.setViewPort( viewPort );
+
+                canvasInfo.viewBox = null;
+                canvasInfo.viewPortZoom = null;
+                canvasInfo.contentOffset = null;
 
             },
 

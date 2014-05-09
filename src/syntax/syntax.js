@@ -96,6 +96,10 @@ define( function ( require ) {
                     getRootGroupInfo: this.getRootGroupInfo
                 } );
 
+                this.kfEditor.registerService( "syntax.get.root", this, {
+                    getRootObject: this.getRootObject
+                } )
+
                 this.kfEditor.registerService( "syntax.update.record.cursor", this, {
                     updateCursor: this.updateCursor
                 } );
@@ -247,6 +251,12 @@ define( function ( require ) {
                     groupObj: groupInfo.objGroup.node,
                     content: content
                 };
+
+            },
+
+            getRootObject: function () {
+
+                return this.objTree.mapping.root.objGroup;
 
             },
 

@@ -1,6 +1,6 @@
 /*!
  * ====================================================
- * kitygraph - v1.0.0 - 2014-05-08
+ * kitygraph - v1.0.0 - 2014-05-10
  * https://github.com/kitygraph/kity
  * GitHub: https://github.com/kitygraph/kity.git 
  * Copyright (c) 2014 Baidu UEditor Group; Licensed MIT
@@ -4119,6 +4119,9 @@ define("graphic/shape", [ "graphic/svg", "core/utils", "graphic/eventhandler", "
         },
         getTransform: function(refer) {
             return Matrix.getCTM(this, refer);
+        },
+        getTranslate: function() {
+            return this.transform.translate;
         },
         clearTransform: function() {
             this.node.removeAttribute("transform");

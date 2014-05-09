@@ -9,7 +9,7 @@ define( function ( require ) {
 
         DEFAULT_OPTIONS = {
             min: 1,
-            max: 5
+            max: 2
         },
 
         ScrollZoomController = kity.createClass( 'ScrollZoomController', {

@@ -225,6 +225,11 @@ define( function ( require, exports, module ) {
                     this.kfEditor.requestService( "control.select.all" );
                     break;
 
+                // ctrl + S
+                case 83:
+                    this.kfEditor.requestService( "print.image" );
+                    break;
+
             }
 
         },

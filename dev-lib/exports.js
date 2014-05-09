@@ -1,5 +1,5 @@
 /**
- * 模块暴露
+ * 模块注册
  */
 
 ( function ( global ) {
@@ -15,6 +15,7 @@
         KFEditor.registerComponents( "position", require( "position/position" ) );
         KFEditor.registerComponents( "syntax", require( "syntax/syntax" ) );
         KFEditor.registerComponents( "control", require( "control/controller" ) );
+        KFEditor.registerComponents( "print", require( "print/printer" ) );
 
         kf.Editor = KFEditor;
 
