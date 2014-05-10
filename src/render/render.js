@@ -217,7 +217,6 @@ define( function ( require ) {
                     box = null,
                     offset = -1,
                     width = 0,
-                    height = group.getFixRenderBox().height,
                     startIndex = Math.min( cursorInfo.startOffset, cursorInfo.endOffset ),
                     endIndex = Math.max( cursorInfo.startOffset, cursorInfo.endOffset );
 
@@ -228,7 +227,7 @@ define( function ( require ) {
 
                 for ( var i = startIndex, len = endIndex; i < len; i++ ) {
 
-                    box = group.getOperand( i ).getFixRenderBox();
+                    box = group.getOperand( i ).getRenderBox( group );
 
                     if ( offset == -1 ) {
                         offset = box.x;
@@ -238,9 +237,9 @@ define( function ( require ) {
 
                 }
 
-                group.setBoxSize( width, height );
+                group.setBoxWidth( width );
                 group.selectAll();
-                group.getBox().translate( offset, 0 );
+                group.getBox().setTranslate( offset, 0 );
 
             },
 
@@ -302,17 +301,10 @@ define( function ( require ) {
                 }
 
                 currentSelect.unselect();
-                box = currentSelect.getFixRenderBox();
-                currentSelect.setBoxSize( box.width, box.height );
+                box = currentSelect.getRenderBox( currentSelect );
+                currentSelect.setBoxWidth( box.width );
 
-                transform = currentSelect.getBox().getTransform();
-
-                if ( transform ) {
-                    transform.m.e = 0;
-                    transform.m.f = 0;
-                }
-
-                currentSelect.getBox().setMatrix( transform );
+                currentSelect.getBox().setTranslate( 0, 0 );
 
             },
 

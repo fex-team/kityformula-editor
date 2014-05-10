@@ -1,6 +1,6 @@
 /*!
  * ====================================================
- * Kity Formula - v1.0.0 - 2014-05-09
+ * Kity Formula - v1.0.0 - 2014-05-10
  * https://github.com/kitygraph/formula
  * GitHub: https://github.com/kitygraph/formula.git 
  * Copyright (c) 2014 Baidu Kity Group; Licensed MIT
@@ -4210,6 +4210,7 @@ define("operator/combination", [ "kity", "operator/operator", "def/gtype", "sign
                 operand.translate(offset - box.x, (maxHeight - (box.y + box.height)) / 2);
                 offset += box.width;
             });
+            this.parentExpression.updateBoxSize();
         }
     });
 });
