@@ -47,7 +47,6 @@ define( function ( require ) {
          */
         getBase64DataUrl: function () {
 
-            debugger;
             var canvasData = this.getFormatCanvasData();
 
             return getBase64DataURL( canvasData, arguments[ 0 ] );
