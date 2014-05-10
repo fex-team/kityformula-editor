@@ -200,6 +200,11 @@ define( function ( require ) {
 
             tree.operand[ index ] = subtree;
 
+        // 特殊文本处理， 比如mathcal、mathrm等
+        } else if ( subtree.name === "text" ) {
+
+            tree.operand[ index ] = subtree;
+
         } else {
 
             tree.operand[ index ] = supplementTree( parser, subtree, tree );

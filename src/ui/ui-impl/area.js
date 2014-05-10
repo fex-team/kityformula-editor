@@ -23,10 +23,16 @@ define( function ( require ) {
                 this.toolbar = null;
                 this.disabled = true;
 
+                this.panelIndex = 0;
+
                 this.element = this.createArea();
                 this.container = this.createContainer();
+                this.panel = this.createPanel();
+                this.buttonContainer = this.createButtonContainer();
                 this.button = this.createButton();
                 this.mountPoint = this.createMountPoint();
+                this.moveDownButton = this.createMoveDownButton();
+                this.moveUpButton = this.createMoveUpButton();
 
                 this.boxObject = this.createBox();
                 this.mergeElement();
@@ -53,6 +59,34 @@ define( function ( require ) {
                     }
 
                     _self.showMount();
+                    _self.toolbar.notify( "closeOther", _self );
+
+                } );
+
+                $$.on( this.moveDownButton, "mousedown", function ( e ) {
+
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    if ( e.which !== 1 || _self.disabled ) {
+                        return;
+                    }
+
+                    _self.nextPanel();
+                    _self.toolbar.notify( "closeOther", _self );
+
+                } );
+
+                $$.on( this.moveUpButton, "mousedown", function ( e ) {
+
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    if ( e.which !== 1 || _self.disabled ) {
+                        return;
+                    }
+
+                    _self.prevPanel();
                     _self.toolbar.notify( "closeOther", _self );
 
                 } );
@@ -122,7 +156,7 @@ define( function ( require ) {
                     newContent = [];
 
                 // 清空原有内容
-                this.container.innerHTML = "";
+                this.panel.innerHTML = "";
 
                 kity.Utils.each( items, function ( item ) {
 
@@ -138,7 +172,7 @@ define( function ( require ) {
 
                 } );
 
-                this.container.innerHTML = newContent.join( "" );
+                this.panel.innerHTML = newContent.join( "" );
 
             },
 
@@ -171,6 +205,24 @@ define( function ( require ) {
 
             },
 
+            createMoveDownButton: function () {
+
+                return $$.ele( this.doc, "div", {
+                    className: PREFIX + "movedown-button",
+                    content: "▼"
+                } );
+
+            },
+
+            createMoveUpButton: function () {
+
+                return $$.ele( this.doc, "div", {
+                    className: PREFIX + "moveup-button",
+                    content: "▲"
+                } );
+
+            },
+
             createMountPoint: function () {
 
                 return $$.ele( this.doc, "div", {
@@ -187,19 +239,77 @@ define( function ( require ) {
 
             createContainer: function () {
 
-                var node = $$.ele( this.doc, "div", {
+                return $$.ele( this.doc, "div", {
                     className: PREFIX + "area-container"
                 } );
 
-                return node;
+            },
 
+            createPanel: function () {
+
+                return $$.ele( this.doc, "div", {
+                    className: PREFIX + "area-panel"
+                } );
+
+            },
+
+            createButtonContainer: function () {
+                return $$.ele( this.doc, "div", {
+                    className: PREFIX + "area-button-container"
+                } );
             },
 
             mergeElement: function () {
 
+                this.buttonContainer.appendChild( this.moveUpButton );
+                this.buttonContainer.appendChild( this.moveDownButton );
+                this.buttonContainer.appendChild( this.button );
+
+                this.container.appendChild( this.panel );
+
                 this.element.appendChild( this.container );
-                this.element.appendChild( this.button );
+                this.element.appendChild( this.buttonContainer );
                 this.element.appendChild( this.mountPoint );
+
+            },
+
+            nextPanel: function () {
+
+                var panelBounding = getRect( this.panel ),
+                    containerBounding = getRect( this.container ),
+                    containerHeight = containerBounding.height;
+
+                if ( panelBounding.height < containerBounding.height ) {
+                    return;
+                }
+
+                if ( ( this.panelIndex + 1 ) * containerHeight >= panelBounding.height ) {
+                    return;
+                }
+
+                this.panelIndex++;
+
+                this.panel.style.top = -this.panelIndex * containerHeight + "px";
+
+            },
+
+            prevPanel: function () {
+
+                var panelBounding = getRect( this.panel ),
+                    containerBounding = getRect( this.container ),
+                    containerHeight = containerBounding.height;
+
+                if ( panelBounding.height < containerBounding.height ) {
+                    return;
+                }
+
+                if ( this.panelIndex - 1 < 0 ) {
+                    return;
+                }
+
+                this.panelIndex--;
+
+                this.panel.style.top = - this.panelIndex * containerHeight + "px";
 
             },
 
@@ -215,5 +325,9 @@ define( function ( require ) {
         } );
 
     return Area;
+
+    function getRect ( node ) {
+        return node.getBoundingClientRect();
+    }
 
 } );

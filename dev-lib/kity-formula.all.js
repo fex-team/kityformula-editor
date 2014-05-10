@@ -1,6 +1,6 @@
 /*!
  * ====================================================
- * Kity Formula - v1.0.0 - 2014-05-10
+ * Kity Formula - v1.0.0 - 2014-05-11
  * https://github.com/kitygraph/formula
  * GitHub: https://github.com/kitygraph/formula.git 
  * Copyright (c) 2014 Baidu Kity Group; Licensed MIT
@@ -502,6 +502,10 @@ define("char/text", [ "kity", "font/manager", "signgroup", "def/gtype" ], functi
                 y: 0
             });
             return contentNode;
+        },
+        setFamily: function(fontFamily) {
+            this.fontFamily = fontFamily;
+            this.contentNode.setAttr("font-family", fontFamily);
         },
         getBaseHeight: function() {
             var chars = this.contentShape.getItems(), currentChar = null, index = 0, height = 0;
@@ -1074,6 +1078,9 @@ define("expression/text", [ "char/text", "kity", "font/manager", "signgroup", "c
             this.textContent = new Text(this.content, this.fontFamily);
             this.setChildren(0, this.textContent);
             this.setChildren(1, new kity.Rect(0, 0, 0, 0).fill("transparent"));
+        },
+        setFamily: function(fontFamily) {
+            this.textContent.setFamily(fontFamily);
         },
         addedCall: function() {
             var box = this.textContent.getFixRenderBox();

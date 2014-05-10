@@ -219,16 +219,38 @@
     border-right: 0;
     vertical-align: top;
     overflow: hidden;
+    position: relative;
+    top: 0;
+    left: 0;
+}
+
+.kf-editor-ui-area-panel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: 0.5s top;
+}
+
+.kf-editor-ui-area-button-container {
+    display: inline-block;
+    height: 100%;
+    text-align: center;
+    border: 1px solid #D3D3D3;
+}
+
+.kf-editor-ui-moveup-button {
+    height: 20px;
+}
+
+.kf-editor-ui-movedown-button {
+    height: 20px;
+    border: 1px solid #D3D3D3;
+    border-width: 1px 0;
 }
 
 .kf-editor-ui-area-button {
-    width: 15px;
-    height: 100%;
-    line-height: 70px;
-    text-align: center;
-    color: #5c5c5c;
+    line-height: 26px;
     display: inline-block;
-    border: 1px solid #D3D3D3;
 }
 
 .kf-editor-ui-enabled .kf-editor-ui-area-button:HOVER {

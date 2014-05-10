@@ -49,103 +49,23 @@ define( function ( require ) {
     }, {
         type: UI_ELE_TYPE.AREA,
         options: {
-            button: {
-                icon: "assets/images/toolbar/char/button.png"
-            },
             box: {
                 width: 527,
                 type: BOX_TYPE.OVERLAP,
                 group: [ {
                     title: "基础数学",
-                    items: [ {
-                        title: "基础数学",
-                        content: [ {
-                            item: {
-                                show: '<img src="assets/images/toolbar/char/math/pm.png">',
-                                val: "\\pm"
-                            }
-                        }, {
-                            item: {
-                                show: '<img src="assets/images/toolbar/char/math/infty.png">',
-                                val: "\\infty"
-                            }
-                        }, {
-                            item: {
-                                show: '<img src="assets/images/toolbar/char/math/eq.png">',
-                                val: "="
-                            }
-                        }, {
-                            item: {
-                                show: '<img src="assets/images/toolbar/char/math/sim.png">',
-                                val: "\\sim"
-                            }
-                        }, {
-                            item: {
-                                show: '<img src="assets/images/toolbar/char/math/times.png">',
-                                val: "\\times"
-                            }
-                        }, {
-                            item: {
-                                show: '<img src="assets/images/toolbar/char/math/div.png">',
-                                val: "\\div"
-                            }
-                        }, {
-                            item: {
-                                show: '<img src="assets/images/toolbar/char/math/tanhao.png">',
-                                val: "!"
-                            }
-                        }, {
-                            item: {
-                                show: '<img src="assets/images/toolbar/char/math/lt.png">',
-                                val: "<"
-                            }
-                        }, {
-                            item: {
-                                show: '<img src="assets/images/toolbar/char/math/ll.png">',
-                                val: "\\ll"
-                            }
-                        }, {
-                            item: {
-                                show: '<img src="assets/images/toolbar/char/math/gt.png">',
-                                val: ">"
-                            }
-                        }, {
-                            item: {
-                                show: '<img src="assets/images/toolbar/char/math/gg.png">',
-                                val: "\\gg"
-                            }
-                        }, {
-                            item: {
-                                show: '<img src="assets/images/toolbar/char/math/leq.png">',
-                                val: "\\leq"
-                            }
-                        }, {
-                            item: {
-                                show: '<img src="assets/images/toolbar/char/math/geq.png">',
-                                val: "\\geq"
-                            }
-                        }, {
-                            item: {
-                                show: '<img src="assets/images/toolbar/char/math/mp.png">',
-                                val: "\\mp"
-                            }
-                        }, {
-                            item: {
-                                show: '<img src="assets/images/toolbar/char/math/simeq.png">',
-                                val: "\\simeq"
-                            }
-                        }, {
-                            item: {
-                                show: '<img src="assets/images/toolbar/char/math/equiv.png">',
-                                val: "\\equiv"
-                            }
-                        } ]
-                    } ]
+                    items: []
                 }, {
                     title: "希腊字母",
                     items: []
                 }, {
                     title: "求反关系运算符",
+                    items: []
+                }, {
+                    title: "字母类符号",
+                    items: []
+                }, {
+                    title: "手写体",
                     items: []
                 } ]
             }
@@ -495,73 +415,52 @@ define( function ( require ) {
                 } ]
             }
         }
-    }/*, {
-        type: UI_ELE_TYPE.DRAPDOWN_BOX,
-        options: {
-            button: {
-                label: "极限和对数",
-                icon: "assets/images/toolbar/button/lim.png"
-            },
-            box: {
-                width: 249,
-                group: [ {
-                    title: "函数",
-                    items: [ {
-                        title: "函数",
-                        content: [ {
-                            item: {
-                                show: '<img src="assets/images/toolbar/func/1.png">',
-                                val: "\\sin\\placeholder"
-                            }
-                        }, {
-                            item: {
-                                show: '<img src="assets/images/toolbar/func/2.png">',
-                                val: "\\cos\\placeholder"
-                            }
-                        }, {
-                            item: {
-                                show: '<img src="assets/images/toolbar/func/3.png">',
-                                val: "\\tan\\placeholder"
-                            }
-                        }, {
-                            item: {
-                                show: '<img src="assets/images/toolbar/func/4.png">',
-                                val: "\\csc\\placeholder"
-                            }
-                        }, {
-                            item: {
-                                show: '<img src="assets/images/toolbar/func/5.png">',
-                                val: "\\sec\\placeholder"
-                            }
-                        }, {
-                            item: {
-                                show: '<img src="assets/images/toolbar/func/6.png">',
-                                val: "\\cot\\placeholder"
-                            }
-                        } ]
-                    }, {
-                        title: "常用函数",
-                        content: [ {
-                            item: {
-                                show: '<img src="assets/images/toolbar/func/c1.png">',
-                                val: "\\sin\\theta"
-                            }
-                        }, {
-                            item: {
-                                show: '<img src="assets/images/toolbar/func/c2.png">',
-                                val: "\\sin{2x}"
-                            }
-                        }, {
-                            item: {
-                                show: '<img src="assets/images/toolbar/func/c3.png">',
-                                val: "\\tan\\theta=\\frac {\\sin\\theta}{\\cos\\theta}"
-                            }
-                        } ]
-                    } ]
-                } ]
-            }
-        }
-    }*/ ];
+    } ];
+
+    // 初始化基础数学
+    ( function () {
+
+        var list = [
+                "pm", "infty", {
+                    key: "=",
+                    img: "eq"
+                }, "sim", "times", "div", {
+                    key: "!",
+                    img: "tanhao"
+                }, {
+                    key: "<",
+                    img: "lt"
+                }, "ll", {
+                    key: ">",
+                    img: "gt"
+                },
+                "gg", "leq", "geq", "mp", "cong", "equiv", "propto", "approx", "forall", "partial",
+                "surd", "cup", "cap", "varnothing", {
+                    key: "%",
+                    img: "baifenhao"
+                },
+                "circ", "exists", "nexists", "in", "ni", "gets", "uparrow", "to", "downarrow",
+                "leftrightarrow", "therefore", "because", {
+                    key: "+",
+                    img: "plus"
+                }, {
+                    key: "-",
+                    img: "minus"
+                },
+                "neg", "ast", "cdot", "vdots", "ddots", "aleph", "beth", "blacksquare"
+
+            ],
+            configList = config[ 2 ].options.box.group[ 0 ].items;
+
+        configList.push( {
+            title: "基础数学",
+            content: getContents( {
+                path: "assets/images/toolbar/char/math/",
+                values: list
+            } )
+        } );
+
+    } )();
 
     // 初始化希腊字符配置
     ( function () {
@@ -572,6 +471,9 @@ define( function ( require ) {
             }, {
                 title: "大写",
                 values: [ "Alpha", "Beta", "Gamma", "Delta", "Epsilon", "Zeta", "Eta", "Theta", "Iota", "Kappa", "Lambda", "Mu", "Nu", "Xi", "Omicron", "Pi", "Rho", "Sigma", "Tau", "Upsilon", "Phi", "Chi", "Psi", "Omega" ]
+            }, {
+                title: "变体",
+                values: [ "digamma", "varepsilon", "varkappa", "varphi", "varpi", "varrho", "varsigma", "vartheta" ]
             } ],
             greekConfigList = config[ 2 ].options.box.group[ 1 ].items;
 
@@ -590,6 +492,15 @@ define( function ( require ) {
             content: getContents( {
                 path: "assets/images/toolbar/char/greek/upper/",
                 values: greekList[ 1 ].values
+            } )
+        } );
+
+        // 变体处理
+        greekConfigList.push( {
+            title: greekList[ 2 ].title,
+            content: getContents( {
+                path: "assets/images/toolbar/char/greek/misc/",
+                values: greekList[ 2 ].values
             } )
         } );
 
@@ -614,7 +525,60 @@ define( function ( require ) {
 
     } )();
 
+    // 初始字母类符号
+    ( function () {
 
+        var list = [
+                "aleph", "beth ", "daleth", "gimel", "complement", "ell", "eth", "hbar",
+                "hslash", "mho", "partial", "wp", "circledS", "Bbbk", "Finv", "Game",
+                "Im", "Re"
+            ],
+            configList = config[ 2 ].options.box.group[ 3 ].items;
+
+        configList.push( {
+            title: "字母类符号",
+            content: getContents( {
+                path: "assets/images/toolbar/alphabetic/",
+                values: list
+            } )
+        } );
+
+    } )();
+
+    // 初始化希腊字符配置
+    ( function () {
+
+        var list = [ {
+                title: "手写体",
+                values: [
+                    "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L",
+                    "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X",
+                    "Y", "Z" ]
+            }, {
+                title: "大写",
+                values: [ "Alpha", "Beta", "Gamma", "Delta", "Epsilon", "Zeta", "Eta", "Theta", "Iota", "Kappa", "Lambda", "Mu", "Nu", "Xi", "Omicron", "Pi", "Rho", "Sigma", "Tau", "Upsilon", "Phi", "Chi", "Psi", "Omega" ]
+            }, {
+                title: "变体",
+                values: [ "digamma", "varepsilon", "varkappa", "varphi", "varpi", "varrho", "varsigma", "vartheta" ]
+            } ],
+            configList = config[ 2 ].options.box.group[ 4 ].items;
+
+        kity.Utils.each( list[ 0 ].values, function ( item, index ) {
+
+            list[ 0 ].values[ index ] = "mathcal{" + item + "}"
+
+        } );
+        // 手写体
+        configList.push( {
+            title: "手写体",
+            content: getContents( {
+                path: "assets/images/toolbar/char/cal/",
+                values: list[ 0 ].values
+            } )
+        } );
+
+    } )();
+    
     function getContents ( data ) {
 
         var result = [],
@@ -623,10 +587,20 @@ define( function ( require ) {
 
         kity.Utils.each( values, function ( value ) {
 
+            var img = value,
+                val = value;
+
+            if ( typeof value !== "string" ) {
+                img = value.img;
+                val = value.key;
+            } else {
+                val = "\\" + value;
+            }
+
             result.push( {
                 item: {
-                    show: '<img src="' + path + value.toLowerCase() +'.png">',
-                    val: "\\" + value
+                    show: '<img src="' + path + img.toLowerCase() +'.png">',
+                    val: val
                 }
             } );
 
