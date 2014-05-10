@@ -280,6 +280,7 @@ define( function ( require, exports, module ) {
             if ( this.kfEditor.requestService( "syntax.is.root.node", parentGroupInfo.id ) ) {
 
                 this.selectAll();
+                return;
 
             // 否则，仅选中该组
             } else {
