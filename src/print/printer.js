@@ -14,6 +14,8 @@ define( function ( require ) {
 
             this.initServices();
 
+            this.initCommands();
+
         },
 
         initServices: function () {
@@ -21,6 +23,12 @@ define( function ( require ) {
             this.kfEditor.registerService( "print.image", this, {
                 printImage: this.printImage
             } );
+
+        },
+
+        initCommands: function () {
+
+            this.kfEditor.registerCommand( "get.image.data", this, this.getBase64DataUrl );
 
         },
 
@@ -39,6 +47,7 @@ define( function ( require ) {
          */
         getBase64DataUrl: function () {
 
+            debugger;
             var canvasData = this.getFormatCanvasData();
 
             return getBase64DataURL( canvasData, arguments[ 0 ] );

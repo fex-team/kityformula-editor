@@ -600,7 +600,7 @@ define( function ( require ) {
 
         var greekList = [ {
                 title: "求反关系运算符",
-                values: [ "neq", "ncong", "nequiv", "nge", "ngt", "nin", "nle", "nlt", "nsim", "nsubseteq", "nsupseteq" ]
+                values: [ "neq", "ncong", "nequiv", "ngeq", "ngtr", "notin", "nleq", "nless", "nsim", "nsubseteq", "nsupseteq" ]
             } ],
             greekConfigList = config[ 2 ].options.box.group[ 2 ].items;
 
