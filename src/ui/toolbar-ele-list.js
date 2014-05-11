@@ -529,7 +529,7 @@ define( function ( require ) {
     ( function () {
 
         var list = [
-                "aleph", "beth ", "daleth", "gimel", "complement", "ell", "eth", "hbar",
+                "aleph", "beth", "daleth", "gimel", "complement", "ell", "eth", "hbar",
                 "hslash", "mho", "partial", "wp", "circledS", "Bbbk", "Finv", "Game",
                 "Im", "Re"
             ],
@@ -565,7 +565,10 @@ define( function ( require ) {
 
         kity.Utils.each( list[ 0 ].values, function ( item, index ) {
 
-            list[ 0 ].values[ index ] = "mathcal{" + item + "}"
+            list[ 0 ].values[ index ] = {
+                key: "\\mathcal{" + item + "}",
+                img: item.toLowerCase()
+            }
 
         } );
         // 手写体

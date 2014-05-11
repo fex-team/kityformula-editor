@@ -3201,6 +3201,7 @@ define("font/kf-ams-main", [], function(require) {
             mho: "℧",
             partial: "∂",
             wp: "℘",
+            Game: "⅁",
             Bbbk: "⅌",
             Finv: "Ⅎ",
             Im: "ℑ",
