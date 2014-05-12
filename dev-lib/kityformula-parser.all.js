@@ -327,7 +327,7 @@ define("impl/latex/base/tree", [ "impl/latex/define/type", "impl/latex/handler/c
 /**
  * 通用工具包
  */
-define("impl/latex/base/utils", [ "impl/latex/define/operator", "impl/latex/handler/script", "impl/latex/define/type", "impl/latex/handler/fraction", "impl/latex/handler/sqrt", "impl/latex/handler/summation", "impl/latex/handler/integration", "impl/latex/handler/brackets", "impl/latex/handler/mathcal", "impl/latex/handler/mathfrak", "impl/latex/handler/mathbb", "impl/latex/define/func", "impl/latex/handler/func", "impl/latex/handler/lib/script-extractor" ], function(require, exports, module) {
+define("impl/latex/base/utils", [ "impl/latex/define/operator", "impl/latex/handler/script", "impl/latex/define/type", "impl/latex/handler/fraction", "impl/latex/handler/sqrt", "impl/latex/handler/summation", "impl/latex/handler/integration", "impl/latex/handler/brackets", "impl/latex/handler/mathcal", "impl/latex/handler/mathfrak", "impl/latex/handler/mathbb", "impl/latex/handler/mathrm", "impl/latex/define/func", "impl/latex/handler/func", "impl/latex/handler/lib/script-extractor" ], function(require, exports, module) {
     var OPERATOR_LIST = require("impl/latex/define/operator"), FUNCTION_LIST = require("impl/latex/define/func"), FUNCTION_HANDLER = require("impl/latex/handler/func"), Utils = {
         // 根据输入的latex字符串， 检测出该字符串所对应的kf的类型
         getLatexType: function(str) {
@@ -429,7 +429,7 @@ define("impl/latex/define/func", [], function(require, exports, module) {
 /**
  * 操作符列表
  */
-define("impl/latex/define/operator", [ "impl/latex/handler/script", "impl/latex/define/type", "impl/latex/handler/fraction", "impl/latex/handler/sqrt", "impl/latex/handler/combination", "impl/latex/handler/summation", "impl/latex/handler/lib/script-extractor", "impl/latex/handler/integration", "impl/latex/handler/brackets", "impl/latex/define/brackets", "impl/latex/handler/mathcal", "impl/latex/handler/mathfrak", "impl/latex/handler/mathbb" ], function(require, exports, module) {
+define("impl/latex/define/operator", [ "impl/latex/handler/script", "impl/latex/define/type", "impl/latex/handler/fraction", "impl/latex/handler/sqrt", "impl/latex/handler/combination", "impl/latex/handler/summation", "impl/latex/handler/lib/script-extractor", "impl/latex/handler/integration", "impl/latex/handler/brackets", "impl/latex/define/brackets", "impl/latex/handler/mathcal", "impl/latex/handler/mathfrak", "impl/latex/handler/mathbb", "impl/latex/handler/mathrm" ], function(require, exports, module) {
     var scriptHandler = require("impl/latex/handler/script"), TYPE = require("impl/latex/define/type");
     return {
         "^": {
@@ -488,6 +488,12 @@ define("impl/latex/define/operator", [ "impl/latex/handler/script", "impl/latex/
             type: TYPE.FN,
             sign: false,
             handler: require("impl/latex/handler/mathbb")
+        },
+        mathrm: {
+            name: "mathrm",
+            type: TYPE.FN,
+            sign: false,
+            handler: require("impl/latex/handler/mathrm")
         }
     };
 });
@@ -503,7 +509,7 @@ define("impl/latex/define/pre", [ "impl/latex/pre/int" ], function(require, expo
 /*!
  * 逆解析对照表
  */
-define("impl/latex/define/reverse", [ "impl/latex/reverse/combination", "impl/latex/reverse/fraction", "impl/latex/reverse/func", "impl/latex/reverse/integration", "impl/latex/reverse/subscript", "impl/latex/reverse/superscript", "impl/latex/reverse/script", "impl/latex/reverse/sqrt", "impl/latex/reverse/summation", "impl/latex/reverse/brackets", "impl/latex/reverse/mathcal", "impl/latex/reverse/mathfrak", "impl/latex/reverse/mathbb" ], function(require) {
+define("impl/latex/define/reverse", [ "impl/latex/reverse/combination", "impl/latex/reverse/fraction", "impl/latex/reverse/func", "impl/latex/reverse/integration", "impl/latex/reverse/subscript", "impl/latex/reverse/superscript", "impl/latex/reverse/script", "impl/latex/reverse/sqrt", "impl/latex/reverse/summation", "impl/latex/reverse/brackets", "impl/latex/reverse/mathcal", "impl/latex/reverse/mathfrak", "impl/latex/reverse/mathbb", "impl/latex/reverse/mathrm" ], function(require) {
     return {
         combination: require("impl/latex/reverse/combination"),
         fraction: require("impl/latex/reverse/fraction"),
@@ -517,7 +523,8 @@ define("impl/latex/define/reverse", [ "impl/latex/reverse/combination", "impl/la
         brackets: require("impl/latex/reverse/brackets"),
         mathcal: require("impl/latex/reverse/mathcal"),
         mathfrak: require("impl/latex/reverse/mathfrak"),
-        mathbb: require("impl/latex/reverse/mathbb")
+        mathbb: require("impl/latex/reverse/mathbb"),
+        mathrm: require("impl/latex/reverse/mathrm")
     };
 });
 /*!
@@ -733,6 +740,27 @@ define("impl/latex/handler/mathfrak", [], function(require, exports, module) {
     };
 });
 /*!
+ * 罗马处理
+ */
+define("impl/latex/handler/mathrm", [], function(require, exports, module) {
+    return function(info, processedStack, unprocessedStack) {
+        var chars = unprocessedStack.shift();
+        if (typeof chars === "object" && chars.name === "combination") {
+            chars = chars.operand.join("");
+        }
+        info.name = "text";
+        info.attr = {
+            _reverse: "mathrm"
+        };
+        info.callFn = {
+            setFamily: [ "KF AMS ROMAN" ]
+        };
+        info.operand = [ chars ];
+        delete info.handler;
+        return info;
+    };
+});
+/*!
  * 上下标操作符函数处理
  */
 define("impl/latex/handler/script", [], function(require, exports, module) {
@@ -810,7 +838,7 @@ define("impl/latex/handler/summation", [ "impl/latex/handler/lib/script-extracto
 /**
  * Kity Formula Latex解析器实现
  */
-define("impl/latex/latex", [ "parser", "impl/latex/base/latex-utils", "impl/latex/base/rpn", "impl/latex/base/tree", "impl/latex/define/pre", "impl/latex/pre/int", "impl/latex/serialization", "impl/latex/define/reverse", "impl/latex/define/special", "impl/latex/define/operator", "impl/latex/handler/script", "impl/latex/define/type", "impl/latex/handler/fraction", "impl/latex/handler/sqrt", "impl/latex/handler/summation", "impl/latex/handler/integration", "impl/latex/handler/brackets", "impl/latex/handler/mathcal", "impl/latex/handler/mathfrak", "impl/latex/handler/mathbb", "impl/latex/reverse/combination", "impl/latex/reverse/fraction", "impl/latex/reverse/func", "impl/latex/reverse/integration", "impl/latex/reverse/subscript", "impl/latex/reverse/superscript", "impl/latex/reverse/script", "impl/latex/reverse/sqrt", "impl/latex/reverse/summation", "impl/latex/reverse/brackets", "impl/latex/reverse/mathcal", "impl/latex/reverse/mathfrak", "impl/latex/reverse/mathbb", "impl/latex/base/utils", "impl/latex/define/func", "impl/latex/handler/func" ], function(require, exports, module) {
+define("impl/latex/latex", [ "parser", "impl/latex/base/latex-utils", "impl/latex/base/rpn", "impl/latex/base/tree", "impl/latex/define/pre", "impl/latex/pre/int", "impl/latex/serialization", "impl/latex/define/reverse", "impl/latex/define/special", "impl/latex/define/operator", "impl/latex/handler/script", "impl/latex/define/type", "impl/latex/handler/fraction", "impl/latex/handler/sqrt", "impl/latex/handler/summation", "impl/latex/handler/integration", "impl/latex/handler/brackets", "impl/latex/handler/mathcal", "impl/latex/handler/mathfrak", "impl/latex/handler/mathbb", "impl/latex/handler/mathrm", "impl/latex/reverse/combination", "impl/latex/reverse/fraction", "impl/latex/reverse/func", "impl/latex/reverse/integration", "impl/latex/reverse/subscript", "impl/latex/reverse/superscript", "impl/latex/reverse/script", "impl/latex/reverse/sqrt", "impl/latex/reverse/summation", "impl/latex/reverse/brackets", "impl/latex/reverse/mathcal", "impl/latex/reverse/mathfrak", "impl/latex/reverse/mathbb", "impl/latex/reverse/mathrm", "impl/latex/base/utils", "impl/latex/define/func", "impl/latex/handler/func" ], function(require, exports, module) {
     var Parser = require("parser").Parser, LatexUtils = require("impl/latex/base/latex-utils"), PRE_HANDLER = require("impl/latex/define/pre"), serialization = require("impl/latex/serialization"), OP_DEFINE = require("impl/latex/define/operator"), REVERSE_DEFINE = require("impl/latex/define/reverse"), SPECIAL_LIST = require("impl/latex/define/special"), Utils = require("impl/latex/base/utils");
     // data
     var leftChar = "￸", rightChar = "￼", clearCharPattern = new RegExp(leftChar + "|" + rightChar, "g"), leftCharPattern = new RegExp(leftChar, "g"), rightCharPattern = new RegExp(rightChar, "g");
@@ -1146,6 +1174,14 @@ define("impl/latex/reverse/mathfrak", [], function() {
     };
 });
 /*!
+ * 逆解析处理函数: mathcal
+ */
+define("impl/latex/reverse/mathrm", [], function() {
+    return function(operands) {
+        return "\\mathrm{" + operands[0] + "}";
+    };
+});
+/*!
  * 逆解析处理函数: script
  */
 define("impl/latex/reverse/script", [], function() {
@@ -1232,7 +1268,7 @@ define("impl/latex/reverse/superscript", [], function() {
 /**
  * Created by hn on 14-3-20.
  */
-define("impl/latex/serialization", [ "impl/latex/define/reverse", "impl/latex/reverse/combination", "impl/latex/reverse/fraction", "impl/latex/reverse/func", "impl/latex/reverse/integration", "impl/latex/reverse/subscript", "impl/latex/reverse/superscript", "impl/latex/reverse/script", "impl/latex/reverse/sqrt", "impl/latex/reverse/summation", "impl/latex/reverse/brackets", "impl/latex/reverse/mathcal", "impl/latex/reverse/mathfrak", "impl/latex/reverse/mathbb", "impl/latex/define/special" ], function(require) {
+define("impl/latex/serialization", [ "impl/latex/define/reverse", "impl/latex/reverse/combination", "impl/latex/reverse/fraction", "impl/latex/reverse/func", "impl/latex/reverse/integration", "impl/latex/reverse/subscript", "impl/latex/reverse/superscript", "impl/latex/reverse/script", "impl/latex/reverse/sqrt", "impl/latex/reverse/summation", "impl/latex/reverse/brackets", "impl/latex/reverse/mathcal", "impl/latex/reverse/mathfrak", "impl/latex/reverse/mathbb", "impl/latex/reverse/mathrm", "impl/latex/define/special" ], function(require) {
     var reverseHandlerTable = require("impl/latex/define/reverse"), SPECIAL_LIST = require("impl/latex/define/special"), specialCharPattern = /(\\(?:[\w]+)|(?:[^a-z]))\\/gi;
     return function(tree, options) {
         return reverseParse(tree, options);

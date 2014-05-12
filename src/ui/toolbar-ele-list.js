@@ -569,7 +569,17 @@ define( function ( require ) {
                 values: [
                     "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L",
                     "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X",
-                    "Y", "Z" ]
+                    "Y", "Z"
+                ]
+            }, {
+                title: "罗马",
+                values: [
+                    "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L",
+                    "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X",
+                    "Y", "Z", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j",
+                    "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v",
+                    "w", "x", "y", "z"
+                ]
             } ],
             configList = config[ 2 ].options.box.group[ 4 ].items;
 
@@ -602,6 +612,17 @@ define( function ( require ) {
 
         } );
 
+        kity.Utils.each( list[ 3 ].values, function ( item, index ) {
+
+            list[ 3 ].values[ index ] = {
+                key: "\\mathrm{" + item + "}",
+                img: item.replace( /[A-Z]/, function ( match ) {
+                    return "u" + match.toLowerCase();
+                } )
+            }
+
+        } );
+
         // 手写体
         configList.push( {
             title: list[ 0 ].title,
@@ -624,6 +645,14 @@ define( function ( require ) {
             content: getContents( {
                 path: "assets/images/toolbar/char/bb/",
                 values: list[ 2 ].values
+            } )
+        } );
+
+        configList.push( {
+            title: list[ 3 ].title,
+            content: getContents( {
+                path: "assets/images/toolbar/char/rm/",
+                values: list[ 3 ].values
             } )
         } );
 
