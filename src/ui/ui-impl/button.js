@@ -21,6 +21,7 @@ define( function ( require ) {
                 this.eventState = false;
                 this.toolbar = null;
                 this.displayState = false;
+                this.fixOffset = options.fixOffset || false;
 
                 this.doc = doc;
 
@@ -113,6 +114,13 @@ define( function ( require ) {
 
                 this.displayState = true;
                 this.mountPoint.style.display = "block";
+
+                if ( this.fixOffset ) {
+
+                    var tt = this.element.getBoundingClientRect();
+                    this.mountElement.setOffset( tt.left, tt.bottom );
+
+                }
 
                 var editorContainer = this.toolbar.getContainer(),
                     currentBox = null,

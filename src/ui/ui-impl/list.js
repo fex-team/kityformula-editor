@@ -81,6 +81,11 @@ define( function ( require ) {
 
             },
 
+            setOffset: function ( x, y ) {
+                this.element.style.left = x + "px";
+                this.element.style.top = y + "px";
+            },
+
             initEvent: function () {
 
                 var className = "." + PREFIX + "list-item",

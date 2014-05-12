@@ -19,6 +19,8 @@ define( function ( require ) {
 
         List = require( "ui/ui-impl/list" ),
 
+        SCROLL_STEP = 20,
+
         Box = kity.createClass( "Box", {
 
             constructor: function ( doc, options ) {
@@ -28,9 +30,9 @@ define( function ( require ) {
                 this.options.type = this.options.type || BOX_TYPE.DETACHED;
 
                 this.doc = doc;
+                this.itemPanels = null;
 
                 this.overlapButtonObject = null;
-
                 this.overlapIndex = -1;
 
                 this.element = this.createBox();
@@ -65,13 +67,34 @@ define( function ( require ) {
             updateSize: function () {
 
                 var containerBox = $$.getRectBox( this.toolbar.getContainer() ),
+                    diff = 20,
                     curBox = $$.getRectBox( this.element );
 
-                if ( curBox.bottom <= containerBox.bottom ) {
-                    return;
-                }
+                if ( this.options.type === BOX_TYPE.DETACHED ) {
 
-                this.element.style.height = curBox.height - ( curBox.bottom - containerBox.bottom + 20 ) + "px";
+                    if ( curBox.bottom <= containerBox.bottom ) {
+                        this.element.scrollTop = 0;
+                        return;
+                    }
+
+                    this.element.style.height = curBox.height - ( curBox.bottom - containerBox.bottom + diff ) + "px";
+
+                } else {
+
+                    var panel = this.getCurrentItemPanel(),
+                        panelRect = null;
+
+                    panel.scrollTop = 0;
+
+                    if ( curBox.bottom <= containerBox.bottom ) {
+                        return;
+                    }
+
+                    panelRect = getRectBox( panel );
+
+                    panel.style.height = containerBox.bottom - panelRect.top - diff + "px";
+
+                }
 
             },
 
@@ -101,7 +124,10 @@ define( function ( require ) {
 
                 $$.on( this.element, "mousewheel", function ( e ) {
 
+                    e.preventDefault();
                     e.stopPropagation();
+
+                    _self.scroll( e.originalEvent.wheelDelta );
 
                 } );
 
@@ -113,6 +139,36 @@ define( function ( require ) {
 
             setSelectHandler: function ( onselectHandler ) {
                 this.onselectHandler = onselectHandler;
+            },
+
+            scroll: function ( delta ) {
+
+                // down
+                if ( delta < 0 ) {
+                    this.scrollDown();
+                } else {
+                    this.scrollUp();
+                    this.element.scrollTop -= 20;
+                }
+
+            },
+
+            scrollDown: function () {
+
+                if ( this.options.type === BOX_TYPE.DETACHED ) {
+                    this.element.scrollTop += SCROLL_STEP;
+                } else {
+                    this.getCurrentItemPanel().scrollTop += SCROLL_STEP;
+                }
+
+            },
+
+            scrollUp: function () {
+                if ( this.options.type === BOX_TYPE.DETACHED ) {
+                    this.element.scrollTop -= SCROLL_STEP;
+                } else {
+                    this.getCurrentItemPanel().scrollTop -= SCROLL_STEP;
+                }
             },
 
             setChangeHandler: function ( changeHandler ) {
@@ -183,7 +239,9 @@ define( function ( require ) {
                 var classifyList = itemGroup.title,
                     _self = this,
                     overlapContainer = createOverlapContainer( this.doc),
-                    overlapButtonObject = createOverlapButton( this.doc ),
+                    overlapButtonObject = createOverlapButton( this.doc, {
+                        fixOffset: this.options.fixOffset
+                    } ),
                     overlapListObject = createOverlapList( this.doc, {
                         width: 150,
                         items: classifyList
@@ -215,6 +273,8 @@ define( function ( require ) {
 
                 } );
 
+                this.itemPanels = itemGroup.items;
+
                 // 切换面板处理器
                 overlapListObject.setSelectHandler( function ( index, oldIndex ) {
 
@@ -226,6 +286,10 @@ define( function ( require ) {
                     // 切换内容
                     itemGroup.items[ oldIndex ].style.display = "none";
                     itemGroup.items[ index ].style.display = "block";
+
+                    if ( index !== oldIndex ) {
+                        _self.updateSize();
+                    }
 
                     _self.onchangeHandler( index );
 
@@ -247,6 +311,10 @@ define( function ( require ) {
 
                 return [ overlapContainer ];
 
+            },
+
+            getCurrentItemPanel: function () {
+                return this.itemPanels[ this.overlapIndex ];
             },
 
             // 获取group的list列表, 该类表满足box的group参数格式
@@ -396,11 +464,7 @@ define( function ( require ) {
 
             },
 
-            getContent: function () {
-
-
-
-            },
+            getContent: function () {},
 
             createContent: function () {
 
@@ -518,12 +582,13 @@ define( function ( require ) {
 
     }
 
-    function createOverlapButton ( doc ) {
+    function createOverlapButton ( doc, options ) {
 
         return new Button( doc, {
             sign: false,
             className: "overlap-button",
-            label: ""
+            label: "",
+            fixOffset: options.fixOffset
         } );
 
     }

@@ -186,6 +186,7 @@ define( function ( require ) {
 
             showMount: function () {
                 this.mountPoint.style.display = "block";
+                this.boxObject.updateSize();
             },
 
             hideMount: function () {

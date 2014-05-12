@@ -50,6 +50,7 @@ define( function ( require ) {
         type: UI_ELE_TYPE.AREA,
         options: {
             box: {
+                fixOffset: true,
                 width: 527,
                 type: BOX_TYPE.OVERLAP,
                 group: [ {
@@ -555,11 +556,20 @@ define( function ( require ) {
                     "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X",
                     "Y", "Z" ]
             }, {
-                title: "大写",
-                values: [ "Alpha", "Beta", "Gamma", "Delta", "Epsilon", "Zeta", "Eta", "Theta", "Iota", "Kappa", "Lambda", "Mu", "Nu", "Xi", "Omicron", "Pi", "Rho", "Sigma", "Tau", "Upsilon", "Phi", "Chi", "Psi", "Omega" ]
+                title: "花体",
+                values: [
+                    "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L",
+                    "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X",
+                    "Y", "Z", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j",
+                    "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v",
+                    "w", "x", "y", "z"
+                ]
             }, {
-                title: "变体",
-                values: [ "digamma", "varepsilon", "varkappa", "varphi", "varpi", "varrho", "varsigma", "vartheta" ]
+                title: "双线",
+                values: [
+                    "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L",
+                    "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X",
+                    "Y", "Z" ]
             } ],
             configList = config[ 2 ].options.box.group[ 4 ].items;
 
@@ -571,12 +581,49 @@ define( function ( require ) {
             }
 
         } );
+
+        kity.Utils.each( list[ 1 ].values, function ( item, index ) {
+
+            list[ 1 ].values[ index ] = {
+                key: "\\mathfrak{" + item + "}",
+                img: item.replace( /[A-Z]/, function ( match ) {
+                    return "u" + match.toLowerCase();
+                } )
+            }
+
+        } );
+
+        kity.Utils.each( list[ 2 ].values, function ( item, index ) {
+
+            list[ 2 ].values[ index ] = {
+                key: "\\mathbb{" + item + "}",
+                img: item.toLowerCase()
+            }
+
+        } );
+
         // 手写体
         configList.push( {
-            title: "手写体",
+            title: list[ 0 ].title,
             content: getContents( {
                 path: "assets/images/toolbar/char/cal/",
                 values: list[ 0 ].values
+            } )
+        } );
+
+        configList.push( {
+            title: list[ 1 ].title,
+            content: getContents( {
+                path: "assets/images/toolbar/char/frak/",
+                values: list[ 1 ].values
+            } )
+        } );
+
+        configList.push( {
+            title: list[ 2 ].title,
+            content: getContents( {
+                path: "assets/images/toolbar/char/bb/",
+                values: list[ 2 ].values
             } )
         } );
 

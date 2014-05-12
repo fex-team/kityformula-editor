@@ -62,7 +62,12 @@
 
 .kf-editor-ui-overlap-button .kf-editor-ui-button-mount-point {
     width: 100%;
-    height: 1000px;
+    height: 10000px;
+}
+
+.kf-editor-ui-wrap-group {
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 .kf-editor-ui-overlap-button .kf-editor-ui-button-mount-point {
@@ -275,7 +280,7 @@
     background: white;
     padding: 5px;
     border: 1px solid #b1b1b1;
-    position: relative;
+    position: fixed;
     top: 0;
     left: 0;
 }
