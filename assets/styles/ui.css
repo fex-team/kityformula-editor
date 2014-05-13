@@ -263,6 +263,10 @@
     background: rgba(255, 207, 15, 0.5);
 }
 
+.kf-editor-ui-disabled {
+    opacity: 0.25;
+}
+
 .kf-editor-ui-area-mount {
     position: absolute;
     top: 0;

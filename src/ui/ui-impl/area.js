@@ -24,6 +24,8 @@ define( function ( require ) {
                 this.disabled = true;
 
                 this.panelIndex = 0;
+                this.maxPanelIndex = 0;
+                this.containerHeight = 0;
 
                 this.element = this.createArea();
                 this.container = this.createContainer();
@@ -107,6 +109,10 @@ define( function ( require ) {
 
             },
 
+            initContainerHeight: function () {
+                this.containerHeight = getRect( this.container ).height;
+            },
+
             disable: function () {
                 this.disabled = true;
                 this.boxObject.disable();
@@ -150,6 +156,20 @@ define( function ( require ) {
 
             },
 
+            checkMaxPanelIndex: function () {
+
+                var panelBounding = null;
+
+                if ( this.containerHeight === 0 ) {
+                    return;
+                }
+
+                panelBounding = getRect( this.panel );
+
+                this.maxPanelIndex = Math.ceil( panelBounding.height / this.containerHeight );
+
+            },
+
             updateContent: function () {
 
                 var items = this.boxObject.getOverlapContent(),
@@ -175,6 +195,9 @@ define( function ( require ) {
                 this.panelIndex = 0;
                 this.panel.style.top = 0;
                 this.panel.innerHTML = newContent.join( "" );
+
+                this.checkMaxPanelIndex();
+                this.updatePanelButtonState();
 
             },
 
@@ -276,43 +299,75 @@ define( function ( require ) {
 
             },
 
+            disablePanelUp: function () {
+                this.disabledUp = true;
+                this.moveUpButton.classList.add( "kf-editor-ui-disabled" );
+            },
+
+            enablePanelUp: function () {
+                this.disabledUp = false;
+                this.moveUpButton.classList.remove( "kf-editor-ui-disabled" );
+            },
+
+            disablePanelDown: function () {
+                this.disabledDown = true;
+                this.moveDownButton.classList.add( "kf-editor-ui-disabled" );
+            },
+
+            enablePanelDown: function () {
+                this.disabledDown = false;
+                this.moveDownButton.classList.remove( "kf-editor-ui-disabled" )
+            },
+
+            updatePanelButtonState: function () {
+
+                if ( this.panelIndex === 0 ) {
+                    this.disablePanelUp();
+                } else {
+                    this.enablePanelUp();
+                }
+
+                if ( this.panelIndex + 1 >= this.maxPanelIndex ) {
+                    this.disablePanelDown();
+                } else {
+                    this.enablePanelDown();
+                }
+
+            },
+
             nextPanel: function () {
 
-                var panelBounding = getRect( this.panel ),
-                    containerBounding = getRect( this.container ),
-                    containerHeight = containerBounding.height;
-
-                if ( panelBounding.height < containerBounding.height ) {
+                if ( this.disabledDown ) {
                     return;
                 }
 
-                if ( ( this.panelIndex + 1 ) * containerHeight >= panelBounding.height ) {
+                if ( this.panelIndex + 1 >= this.maxPanelIndex ) {
                     return;
                 }
 
                 this.panelIndex++;
 
-                this.panel.style.top = -this.panelIndex * containerHeight + "px";
+                this.panel.style.top = -this.panelIndex * this.containerHeight + "px";
+
+                this.updatePanelButtonState();
 
             },
 
             prevPanel: function () {
 
-                var panelBounding = getRect( this.panel ),
-                    containerBounding = getRect( this.container ),
-                    containerHeight = containerBounding.height;
-
-                if ( panelBounding.height < containerBounding.height ) {
+                if ( this.disabledUp ) {
                     return;
                 }
 
-                if ( this.panelIndex - 1 < 0 ) {
+                if ( this.panelIndex === 0 ) {
                     return;
                 }
 
                 this.panelIndex--;
 
-                this.panel.style.top = - this.panelIndex * containerHeight + "px";
+                this.panel.style.top = - this.panelIndex * this.containerHeight + "px";
+
+                this.updatePanelButtonState();
 
             },
 
@@ -323,6 +378,9 @@ define( function ( require ) {
 
             attachTo: function ( container ) {
                 container.appendChild( this.element );
+                this.initContainerHeight();
+                this.checkMaxPanelIndex();
+                this.updatePanelButtonState();
             }
 
         } );
