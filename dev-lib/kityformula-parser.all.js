@@ -1,6 +1,6 @@
 /*!
  * ====================================================
- * kityformula-editor - v1.0.0 - 2014-05-12
+ * kityformula-editor - v1.0.0 - 2014-05-13
  * https://github.com/HanCong03/kityformula-editor
  * GitHub: https://github.com/kitygraph/kityformula-editor.git 
  * Copyright (c) 2014 Baidu Kity Group; Licensed MIT
@@ -500,10 +500,12 @@ define("impl/latex/define/operator", [ "impl/latex/handler/script", "impl/latex/
 /**
  * 预处理器列表
  */
-define("impl/latex/define/pre", [ "impl/latex/pre/int" ], function(require, exports, module) {
+define("impl/latex/define/pre", [ "impl/latex/pre/int", "impl/latex/pre/quot" ], function(require, exports, module) {
     return {
         // 积分预处理器
-        "int": require("impl/latex/pre/int")
+        "int": require("impl/latex/pre/int"),
+        // 引号预处理
+        quot: require("impl/latex/pre/quot")
     };
 });
 /*!
@@ -538,7 +540,9 @@ define("impl/latex/define/special", [], function() {
         _: 1,
         "&": 1,
         "{": 1,
-        "}": 1
+        "}": 1,
+        "^": 1,
+        "~": 1
     };
 });
 /**
@@ -838,7 +842,7 @@ define("impl/latex/handler/summation", [ "impl/latex/handler/lib/script-extracto
 /**
  * Kity Formula Latex解析器实现
  */
-define("impl/latex/latex", [ "parser", "impl/latex/base/latex-utils", "impl/latex/base/rpn", "impl/latex/base/tree", "impl/latex/define/pre", "impl/latex/pre/int", "impl/latex/serialization", "impl/latex/define/reverse", "impl/latex/define/special", "impl/latex/define/operator", "impl/latex/handler/script", "impl/latex/define/type", "impl/latex/handler/fraction", "impl/latex/handler/sqrt", "impl/latex/handler/summation", "impl/latex/handler/integration", "impl/latex/handler/brackets", "impl/latex/handler/mathcal", "impl/latex/handler/mathfrak", "impl/latex/handler/mathbb", "impl/latex/handler/mathrm", "impl/latex/reverse/combination", "impl/latex/reverse/fraction", "impl/latex/reverse/func", "impl/latex/reverse/integration", "impl/latex/reverse/subscript", "impl/latex/reverse/superscript", "impl/latex/reverse/script", "impl/latex/reverse/sqrt", "impl/latex/reverse/summation", "impl/latex/reverse/brackets", "impl/latex/reverse/mathcal", "impl/latex/reverse/mathfrak", "impl/latex/reverse/mathbb", "impl/latex/reverse/mathrm", "impl/latex/base/utils", "impl/latex/define/func", "impl/latex/handler/func" ], function(require, exports, module) {
+define("impl/latex/latex", [ "parser", "impl/latex/base/latex-utils", "impl/latex/base/rpn", "impl/latex/base/tree", "impl/latex/define/pre", "impl/latex/pre/int", "impl/latex/pre/quot", "impl/latex/serialization", "impl/latex/define/reverse", "impl/latex/define/special", "impl/latex/define/operator", "impl/latex/handler/script", "impl/latex/define/type", "impl/latex/handler/fraction", "impl/latex/handler/sqrt", "impl/latex/handler/summation", "impl/latex/handler/integration", "impl/latex/handler/brackets", "impl/latex/handler/mathcal", "impl/latex/handler/mathfrak", "impl/latex/handler/mathbb", "impl/latex/handler/mathrm", "impl/latex/reverse/combination", "impl/latex/reverse/fraction", "impl/latex/reverse/func", "impl/latex/reverse/integration", "impl/latex/reverse/subscript", "impl/latex/reverse/superscript", "impl/latex/reverse/script", "impl/latex/reverse/sqrt", "impl/latex/reverse/summation", "impl/latex/reverse/brackets", "impl/latex/reverse/mathcal", "impl/latex/reverse/mathfrak", "impl/latex/reverse/mathbb", "impl/latex/reverse/mathrm", "impl/latex/base/utils", "impl/latex/define/func", "impl/latex/handler/func" ], function(require, exports, module) {
     var Parser = require("parser").Parser, LatexUtils = require("impl/latex/base/latex-utils"), PRE_HANDLER = require("impl/latex/define/pre"), serialization = require("impl/latex/serialization"), OP_DEFINE = require("impl/latex/define/operator"), REVERSE_DEFINE = require("impl/latex/define/reverse"), SPECIAL_LIST = require("impl/latex/define/special"), Utils = require("impl/latex/base/utils");
     // data
     var leftChar = "￸", rightChar = "￼", clearCharPattern = new RegExp(leftChar + "|" + rightChar, "g"), leftCharPattern = new RegExp(leftChar, "g"), rightCharPattern = new RegExp(rightChar, "g");
@@ -1041,13 +1045,11 @@ define("impl/latex/pre/int", [], function(require) {
     };
 });
 /**
- * “开方”预处理器
+ * “双引号”预处理器
  */
-define("impl/latex/pre/sqrt", [], function(require) {
+define("impl/latex/pre/quot", [], function(require) {
     return function(input) {
-        return input.replace(/\\sqrt\s*((?:\[[^\]]*\])?)/g, function(match, exponent) {
-            return "\\sqrt{" + exponent.replace(/^\[|\]$/g, "") + "}";
-        });
+        return input.replace(/``/g, "“");
     };
 });
 /*!
