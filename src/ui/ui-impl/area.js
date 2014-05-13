@@ -172,6 +172,7 @@ define( function ( require ) {
 
                 } );
 
+                this.panelIndex = 0;
                 this.panel.style.top = 0;
                 this.panel.innerHTML = newContent.join( "" );
 

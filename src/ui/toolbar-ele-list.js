@@ -66,6 +66,9 @@ define( function ( require ) {
                     title: "字母类符号",
                     items: []
                 }, {
+                    title: "箭头",
+                    items: []
+                }, {
                     title: "手写体",
                     items: []
                 } ]
@@ -512,7 +515,14 @@ define( function ( require ) {
 
         var greekList = [ {
                 title: "求反关系运算符",
-                values: [ "neq", "ncong", "nequiv", "ngeq", "ngtr", "notin", "nleq", "nless", "nsim", "nsubseteq", "nsupseteq" ]
+                values: [
+                    "neq", "nless", "ngtr", "nleq", "ngeq", "nsim", "lneqq",
+                    "gneqq", "nprec", "nsucc", "notin", "nsubseteq", "nsupseteq",
+                    "subsetneq", "supsetneq", "lnsim", "gnsim", "precnsim",
+                    "succnsim", "ntriangleleft", "ntriangleright", "ntrianglelefteq",
+                    "ntrianglerighteq", "nmid", "nparallel", "nvdash", "nVdash",
+                    "nvDash", "nVDash", "nexists"
+                ]
             } ],
             greekConfigList = config[ 2 ].options.box.group[ 2 ].items;
 
@@ -546,7 +556,37 @@ define( function ( require ) {
 
     } )();
 
-    // 初始化希腊字符配置
+    ( function () {
+
+        var list = [
+                "gets", "to", "uparrow", "downarrow", "leftrightarrow", "updownarrow",
+                "Leftarrow", "Rightarrow", "Uparrow", "Downarrow", "Leftrightarrow",
+                "Updownarrow", "longleftarrow", "longrightarrow", "longleftrightarrow",
+                "Longleftarrow", "Longrightarrow", "Longleftrightarrow", "nearrow",
+                "nwarrow", "searrow", "swarrow", "nleftarrow", "nrightarrow",
+                "nLeftarrow", "nRightarrow", "nLeftrightarrow", "hookleftarrow",
+                "hookrightarrow", "leftharpoonup", "leftharpoondown", "rightharpoonup",
+                "rightharpoondown", "upharpoonleft", "upharpoonright", "downharpoonleft",
+                "downharpoonright", "leftrightharpoons", "rightleftharpoons", "leftleftarrows",
+                "rightrightarrows", "upuparrows", "downdownarrows", "leftrightarrows",
+                "rightleftarrows", "looparrowleft", "looparrowright", "leftarrowtail",
+                "rightarrowtail", "Lsh", "Rsh", "Lleftarrow", "Rrightarrow", "curvearrowleft",
+                "curvearrowright", "circlearrowleft", "circlearrowright", "multimap",
+                "leftrightsquigarrow", "twoheadleftarrow", "twoheadrightarrow",
+                "rightsquigarrow"
+            ],
+            configList = config[ 2 ].options.box.group[ 4 ].items;
+
+        configList.push( {
+            title: "箭头",
+            content: getContents( {
+                path: "assets/images/toolbar/arrow/",
+                values: list
+            } )
+        } );
+
+    } )();
+
     ( function () {
 
         var list = [ {
@@ -581,7 +621,7 @@ define( function ( require ) {
                     "w", "x", "y", "z"
                 ]
             } ],
-            configList = config[ 2 ].options.box.group[ 4 ].items;
+            configList = config[ 2 ].options.box.group[ 5 ].items;
 
         kity.Utils.each( list[ 0 ].values, function ( item, index ) {
 
