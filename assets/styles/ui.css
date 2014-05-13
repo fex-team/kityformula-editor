@@ -1,8 +1,23 @@
+/* 工具栏 */
+.kf-editor-toolbar {
+    width: 100%;
+    padding: 10px;
+    position: relative;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    background-color: #f6f5ee;
+    border-bottom: 1px solid #ccc;
+    -moz-box-shadow:1px 1px 1px rgba( 0, 0, 0, 0.1 );
+    -webkit-box-shadow:1px 1px 1px rgba( 0, 0, 0, 0.1 );
+    box-shadow:1px 1px 1px rgba( 0, 0, 0, 0.1 );
+}
+
 /* 按钮 */
 .kf-editor-ui-button {
     padding: 0 5px;
-    height: 100%;
-    font-size: 10px;
+    height: 79px;
+    font-size: 12px;
     display: inline-block;
     border: 1px solid transparent;
     cursor: default;
@@ -15,6 +30,7 @@
 
 .kf-editor-ui-overlap-button {
     width: 100%;
+    height: 25px;
     background: #8f8f8f;
     position: relative;
     top: 0;
@@ -31,6 +47,8 @@
 .kf-editor-ui-button-label {
     text-align: center;
     display: block;
+    font-size: 12px;
+    line-height: 16px;
     padding: 8px 0;
 }
 
@@ -50,7 +68,9 @@
     border-top-color: #2d2d2d;
     width: 0;
     height: 0;
-    margin: 0 auto;
+    display: inline-block;
+    margin: 6px auto;
+    vertical-align: top;
 }
 
 .kf-editor-ui-button-mount-point {
@@ -102,7 +122,7 @@
 .kf-editor-ui-delimiter {
     width: 11px;
     height: 100%;
-    display: inline-block;
+    display: none;
 }
 
 .kf-editor-ui-delimiter-line {
@@ -205,7 +225,7 @@
 
 /* area */
 .kf-editor-ui-area {
-    height: 68px;
+    height: 79px;
     display: inline-block;
     cursor: default;
     position: relative;
@@ -214,13 +234,17 @@
     vertical-align: top;
     opacity: 0.5;
     z-index: 999;
+    border: 1px solid #e0dfd5;
+    border-radius: 4px;
+    background: white;
+    margin: 0 10px;
 }
 
 .kf-editor-ui-area-container {
-    width: 355px;
-    height: 100%;
+    width: 325px;
+    height: 59px;
+    margin: 10px 0 0 10px;
     display: inline-block;
-    border: 1px solid #D3D3D3;
     border-right: 0;
     vertical-align: top;
     overflow: hidden;
@@ -233,6 +257,8 @@
     position: absolute;
     top: 0;
     left: 0;
+    -webkit-transition: 0.5s top;
+    -moz-transition: 0.5s top;
     transition: 0.5s top;
 }
 
@@ -240,7 +266,9 @@
     display: inline-block;
     height: 100%;
     text-align: center;
-    border: 1px solid #D3D3D3;
+    border: 0 solid #D3D3D3;
+    border-left-width: 1px;
+    background-color: #f2f0e6;
 }
 
 .kf-editor-ui-moveup-button {
@@ -332,7 +360,7 @@
 .kf-editor-ui-area-item {
     width: 24px;
     height: 24px;
-    margin: 5px 0 0 5px;
+    margin: 0 0 7px 7px;
     position: relative;
     top: 0;
     left: 0;
@@ -340,17 +368,15 @@
 }
 
 .kf-editor-ui-area-item-content {
+    width: 24px;
+    height: 24px;
     border: 1px solid #D8D8D8;
-    position: absolute;
-    top: -1px;
-    left: -1px;
-    line-height: 0;
 }
 
 .kf-editor-ui-enabled .kf-editor-ui-area-item-content:HOVER {
-    border: 2px solid #ffbd19;
-    top: -2px;
-    left: -2px;
+    /*border: 2px solid #ffbd19;*/
+    /*top: -2px;*/
+    /*left: -2px;*/
 }
 
 .kf-editor-ui-area-item-content img {

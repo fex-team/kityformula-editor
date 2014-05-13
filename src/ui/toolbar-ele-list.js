@@ -12,8 +12,11 @@ define( function ( require ) {
         type: UI_ELE_TYPE.DRAPDOWN_BOX,
         options: {
             button: {
-                label: "预设",
-                icon: "assets/images/toolbar/button/pi.png"
+                label: '预设<br/>',
+                icon: "assets/images/toolbar/button/fx.png",
+                iconSize: {
+                    w: 40
+                }
             },
             box: {
                 width: 367,
@@ -80,7 +83,7 @@ define( function ( require ) {
         type: UI_ELE_TYPE.DRAPDOWN_BOX,
         options: {
             button: {
-                label: "分数",
+                label: "分数<br/>",
                 icon: "assets/images/toolbar/button/frac.png"
             },
             box: {
@@ -131,7 +134,7 @@ define( function ( require ) {
         type: UI_ELE_TYPE.DRAPDOWN_BOX,
         options: {
             button: {
-                label: "上下标",
+                label: "上下标<br/>",
                 icon: "assets/images/toolbar/button/script.png"
             },
             box: {
@@ -187,7 +190,7 @@ define( function ( require ) {
         type: UI_ELE_TYPE.DRAPDOWN_BOX,
         options: {
             button: {
-                label: "根式",
+                label: "根式<br/>",
                 icon: "assets/images/toolbar/button/sqrt.png"
             },
             box: {
@@ -238,7 +241,7 @@ define( function ( require ) {
         type: UI_ELE_TYPE.DRAPDOWN_BOX,
         options: {
             button: {
-                label: "积分",
+                label: "积分<br/>",
                 icon: "assets/images/toolbar/button/int.png"
             },
             box: {
@@ -286,7 +289,7 @@ define( function ( require ) {
         type: UI_ELE_TYPE.DRAPDOWN_BOX,
         options: {
             button: {
-                label: "大型运算符",
+                label: "大型<br/>运算符",
                 icon: "assets/images/toolbar/button/sum.png"
             },
             box: {
@@ -319,7 +322,7 @@ define( function ( require ) {
         type: UI_ELE_TYPE.DRAPDOWN_BOX,
         options: {
             button: {
-                label: "括号",
+                label: "括号<br/>",
                 icon: "assets/images/toolbar/button/brackets.png"
             },
             box: {

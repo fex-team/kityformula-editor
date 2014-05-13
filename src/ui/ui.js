@@ -6,6 +6,9 @@ define( function ( require, exports, modules ) {
 
     var kity = require( "kity"),
 
+        // UiUitls
+        $$ = require( "ui/ui-impl/ui-utils" ),
+
         Utils = require( "base/utils" ),
 
         Toolbar = require( "ui/toolbar/toolbar" ),
@@ -31,13 +34,13 @@ define( function ( require, exports, modules ) {
 
                 this.resizeTimer = null;
 
+                this.toolbarWrap = createToolbarWrap( currentDocument );
                 this.toolbarContainer = createToolbarContainer( currentDocument );
                 this.editArea = createEditArea( currentDocument );
                 this.canvasContainer = createCanvasContainer( currentDocument );
 
-                this.updateContainerSize( this.container, this.toolbarContainer, this.editArea, this.canvasContainer );
-
-                this.container.appendChild( this.toolbarContainer );
+                this.toolbarWrap.appendChild( this.toolbarContainer );
+                this.container.appendChild( this.toolbarWrap );
                 this.editArea.appendChild( this.canvasContainer );
                 this.container.appendChild( this.editArea );
 
@@ -46,6 +49,8 @@ define( function ( require, exports, modules ) {
                 this.initServices();
 
                 this.initEvent();
+
+                this.updateContainerSize( this.container, this.toolbarWrap, this.editArea, this.canvasContainer );
 
                 this.initResizeEvent();
 
@@ -62,14 +67,11 @@ define( function ( require, exports, modules ) {
 
             updateContainerSize: function ( container, toolbar, editArea, canvasContainer ) {
 
-                var containerBox = container.getBoundingClientRect();
+                var containerBox = container.getBoundingClientRect(),
+                    toolbarBox = toolbar.getBoundingClientRect();
 
-                toolbar.style.width = containerBox.width + "px";
-                toolbar.style.height = 80 + "px";
-
-                editArea.style.marginTop = 80 + "px";
                 editArea.style.width = containerBox.width + "px";
-                editArea.style.height = containerBox.height - 80 + "px";
+                editArea.style.height = containerBox.bottom - toolbarBox.bottom + "px";
 
             },
 
@@ -139,11 +141,20 @@ define( function ( require, exports, modules ) {
 
     };
 
+    function createToolbarWrap ( doc ) {
+
+        return $$.ele( doc, "div", {
+            className: "kf-editor-toolbar"
+        } );
+
+    }
 
     function createToolbarContainer ( doc ) {
-        var container = doc.createElement( "div" );
-        container.className = "kf-editor-toolbar";
-        return container;
+
+        return container = $$.ele( doc, "div", {
+            className: "kf-editor-inner-toolbar"
+        } );
+
     }
 
     function createEditArea ( doc ) {

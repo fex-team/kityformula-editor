@@ -8,6 +8,13 @@ define( function ( require ) {
 
         PREFIX = "kf-editor-ui-",
 
+        DEFAULT_OPTIONS = {
+            iconSize: {
+                w: 32,
+                h: 32
+            }
+        },
+
         // UiUitls
         $$ = require( "ui/ui-impl/ui-utils" ),
 
@@ -15,7 +22,7 @@ define( function ( require ) {
 
             constructor: function ( doc, options ) {
 
-                this.options = options;
+                this.options = kity.Utils.extend( {}, DEFAULT_OPTIONS, options );
 
                 // 事件状态， 是否已经初始化
                 this.eventState = false;
@@ -179,6 +186,14 @@ define( function ( require ) {
 
                 iconNode.style.backgroundImage = "url(" + this.options.icon + ")";
 
+                if ( this.options.iconSize.w ) {
+                    iconNode.style.width = this.options.iconSize.w + "px";
+                }
+
+                if ( this.options.iconSize.h ) {
+                    iconNode.style.height = this.options.iconSize.h + "px";
+                }
+
                 return iconNode;
 
             },
@@ -229,7 +244,7 @@ define( function ( require ) {
 
                 this.icon && this.element.appendChild( this.icon );
                 this.element.appendChild( this.label );
-                this.sign && this.element.appendChild( this.sign );
+                this.sign && this.label.appendChild( this.sign );
                 this.element.appendChild( this.mountPoint );
 
             }
