@@ -185,7 +185,7 @@ define( function ( require ) {
 
                         style = "top: " + ( lineno * 33 + 5 ) + "px; left: " + ( colno * 32 + 5 ) + "px;" ;
 
-                        newContent.push( '<div class="'+ PREFIX +'area-item" data-value="'+ currentContent.val +'" style="'+ style +'"><img class="'+ PREFIX +'area-item-img" src="'+ currentContent.show +'"></div>' );
+                        newContent.push( '<div class="'+ PREFIX +'area-item" data-value="'+ currentContent.val +'" style="'+ style +'"><div class="'+ PREFIX +'area-item-inner"><img class="'+ PREFIX +'area-item-img" src="'+ currentContent.show +'"></div></div>' );
 
                     } );
 
@@ -226,8 +226,7 @@ define( function ( require ) {
             createButton: function () {
 
                 return $$.ele( this.doc, "div", {
-                    className: PREFIX + "area-button",
-                    content: "▼"
+                    className: PREFIX + "area-button"
                 } );
 
             },

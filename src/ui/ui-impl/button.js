@@ -8,6 +8,8 @@ define( function ( require ) {
 
         PREFIX = "kf-editor-ui-",
 
+        LIST_OFFSET = 7,
+
         DEFAULT_OPTIONS = {
             iconSize: {
                 w: 32,
@@ -92,7 +94,11 @@ define( function ( require ) {
             },
 
             setLabel: function ( labelText ) {
-                this.label.innerHTML = labelText;
+                var signText = "";
+                if ( this.sign ) {
+                    signText = '<div class="'+ PREFIX + 'button-sign"></div>';
+                }
+                this.label.innerHTML = labelText + signText;
             },
 
             toggleSelect: function () {
@@ -125,7 +131,7 @@ define( function ( require ) {
                 if ( this.fixOffset ) {
 
                     var tt = this.element.getBoundingClientRect();
-                    this.mountElement.setOffset( tt.left, tt.bottom );
+                    this.mountElement.setOffset( tt.left + LIST_OFFSET, tt.bottom - 5 );
 
                 }
 

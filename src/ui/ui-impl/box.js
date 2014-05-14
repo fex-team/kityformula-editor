@@ -280,7 +280,7 @@ define( function ( require ) {
 
                     _self.overlapIndex = index;
 
-                    overlapButtonObject.setLabel( classifyList[index] + " ▼" );
+                    overlapButtonObject.setLabel( classifyList[index] );
                     overlapButtonObject.hideMount();
 
                     // 切换内容
@@ -585,7 +585,6 @@ define( function ( require ) {
     function createOverlapButton ( doc, options ) {
 
         return new Button( doc, {
-            sign: false,
             className: "overlap-button",
             label: "",
             fixOffset: options.fixOffset
