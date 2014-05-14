@@ -5,6 +5,7 @@
 define( function ( require, exports, modules ) {
 
     var kity = require( "kity" ),
+        FILL_COLOR = require( "sysconf" ).rootPlaceholder.color,
         SELECT_COLOR = require( "kf-ext/def" ).selectColor,
         ALL_SELECT_COLOR = require( "kf-ext/def" ).allSelectColor;
 
@@ -78,9 +79,10 @@ define( function ( require, exports, modules ) {
     function createRootPlaceholder ( operator, label ) {
 
 
-        var textShape = new kity.Text( label ),
+        var textShape = new kity.Text( label ).fill( FILL_COLOR ),
             shapeGroup = new kity.Group(),
             padding = 10,
+            radius = 7,
             borderBoxShape = null,
             textBox = null;
 
@@ -90,7 +92,7 @@ define( function ( require, exports, modules ) {
         textBox = textShape.getFixRenderBox();
 
         // 宽度要加上padding
-        borderBoxShape =  new kity.Rect( textBox.width + padding * 2, textBox.height + padding * 2, 0, 0 ).stroke( "black" ).fill( "transparent" );
+        borderBoxShape =  new kity.Rect( textBox.width + padding * 2, textBox.height + padding * 2, 0, 0, radius ).stroke( FILL_COLOR ).fill( "transparent" );
         borderBoxShape.setAttr( "stroke-dasharray", "5, 5" );
 
         textShape.setAttr( {

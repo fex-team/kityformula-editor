@@ -8,7 +8,7 @@ define( function ( require ) {
         kity = require( "kity" ),
         CURSOR_CHAR = require( "sysconf" ).cursorCharacter,
         VGROUP_LIST = require( "parse/vgroup-def" ),
-        ROOT_P_TEXT = require( "parse/root-p-text" ),
+        ROOT_P_TEXT = require( "sysconf" ).rootPlaceholder.content,
         COMBINATION_NAME = "combination",
         PID_PREFIX = "_kf_editor_",
         GROUP_TYPE = require( "def/group-type" ),

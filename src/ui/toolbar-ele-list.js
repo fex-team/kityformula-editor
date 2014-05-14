@@ -13,6 +13,7 @@ define( function ( require ) {
         options: {
             button: {
                 label: '预设<br/>',
+                className: 'yushe-btn',
                 icon: "assets/images/toolbar/button/fx.png",
                 iconSize: {
                     w: 40
@@ -194,7 +195,7 @@ define( function ( require ) {
                 icon: "assets/images/toolbar/button/sqrt.png"
             },
             box: {
-                width: 332,
+                width: 342,
                 group: [ {
                     title: "根式",
                     items: [ {
@@ -360,11 +361,11 @@ define( function ( require ) {
         type: UI_ELE_TYPE.DRAPDOWN_BOX,
         options: {
             button: {
-                label: "函数",
+                label: "函数<br/>",
                 icon: "assets/images/toolbar/button/sin.png"
             },
             box: {
-                width: 265,
+                width: 340,
                 group: [ {
                     title: "函数",
                     items: [ {

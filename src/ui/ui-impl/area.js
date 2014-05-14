@@ -8,6 +8,7 @@ define( function ( require ) {
 
         PREFIX = "kf-editor-ui-",
 
+        PANEL_HEIGHT = 64,
         // UiUitls
         $$ = require( "ui/ui-impl/ui-utils" ),
 
@@ -25,7 +26,8 @@ define( function ( require ) {
 
                 this.panelIndex = 0;
                 this.maxPanelIndex = 0;
-                this.containerHeight = 0;
+                this.currentItemCount = 0;
+                this.lineMaxCount = 9;
 
                 this.element = this.createArea();
                 this.container = this.createContainer();
@@ -42,8 +44,6 @@ define( function ( require ) {
 
                 this.setListener();
                 this.initEvent();
-
-                this.updateContent();
 
             },
 
@@ -109,10 +109,6 @@ define( function ( require ) {
 
             },
 
-            initContainerHeight: function () {
-                this.containerHeight = getRect( this.container ).height;
-            },
-
             disable: function () {
                 this.disabled = true;
                 this.boxObject.disable();
@@ -158,21 +154,18 @@ define( function ( require ) {
 
             checkMaxPanelIndex: function () {
 
-                var panelBounding = null;
-
-                if ( this.containerHeight === 0 ) {
-                    return;
-                }
-
-                panelBounding = getRect( this.panel );
-
-                this.maxPanelIndex = Math.ceil( panelBounding.height / this.containerHeight );
+                this.maxPanelIndex = Math.ceil( this.currentItemCount / this.lineMaxCount / 2 );
 
             },
 
             updateContent: function () {
 
                 var items = this.boxObject.getOverlapContent(),
+                    count = 0,
+                    style = null,
+                    lineno = 0,
+                    colno = 0,
+                    lineMaxCount = this.lineMaxCount,
                     newContent = [];
 
                 // 清空原有内容
@@ -186,12 +179,20 @@ define( function ( require ) {
 
                         currentContent = currentContent.item;
 
-                        newContent.push( '<div class="'+ PREFIX +'area-item" data-value="'+ currentContent.val +'"><div class="'+ PREFIX +'area-item-content">'+ currentContent.show +'</div></div>' );
+                        lineno = Math.floor( count / lineMaxCount );
+                        colno = count % lineMaxCount;
+                        count++;
+
+                        style = "top: " + ( lineno * 32 + 3 ) + "px; left: " + ( colno * 31 + 3 ) + "px;" ;
+
+                        newContent.push( '<div class="'+ PREFIX +'area-item" data-value="'+ currentContent.val +'" style="'+ style +'"><div class="'+ PREFIX +'area-item-content">'+ currentContent.show +'</div></div>' );
 
                     } );
 
                 } );
 
+
+                this.currentItemCount = count;
                 this.panelIndex = 0;
                 this.panel.style.top = 0;
                 this.panel.innerHTML = newContent.join( "" );
@@ -347,7 +348,7 @@ define( function ( require ) {
 
                 this.panelIndex++;
 
-                this.panel.style.top = -this.panelIndex * this.containerHeight + "px";
+                this.panel.style.top = -this.panelIndex * PANEL_HEIGHT + "px";
 
                 this.updatePanelButtonState();
 
@@ -365,7 +366,7 @@ define( function ( require ) {
 
                 this.panelIndex--;
 
-                this.panel.style.top = - this.panelIndex * this.containerHeight + "px";
+                this.panel.style.top = - this.panelIndex * PANEL_HEIGHT + "px";
 
                 this.updatePanelButtonState();
 
@@ -378,8 +379,7 @@ define( function ( require ) {
 
             attachTo: function ( container ) {
                 container.appendChild( this.element );
-                this.initContainerHeight();
-                this.checkMaxPanelIndex();
+                this.updateContent();
                 this.updatePanelButtonState();
             }
 

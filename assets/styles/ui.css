@@ -1,11 +1,11 @@
 /* 工具栏 */
 .kf-editor-toolbar {
     width: 100%;
-    padding: 10px;
+    padding: 2px 10px;
     position: relative;
     top: 0;
     left: 0;
-    z-index: 3;
+    z-index: 2;
     background-color: #f6f5ee;
     border-bottom: 1px solid #ccc;
     -moz-box-shadow:1px 1px 1px rgba( 0, 0, 0, 0.1 );
@@ -15,27 +15,26 @@
 
 /* 按钮 */
 .kf-editor-ui-button {
-    padding: 0 5px;
+    padding: 8px 5px;
     height: 79px;
     font-size: 12px;
     display: inline-block;
     border: 1px solid transparent;
+    border-radius: 3px;
     cursor: default;
     position: relative;
     top: 0;
     left: 0;
+    z-index: 3;
     vertical-align: top;
     opacity: 0.5;
 }
 
-.kf-editor-ui-overlap-button {
+.kf-editor-toolbar .kf-editor-ui-overlap-button {
     width: 100%;
     height: 25px;
-    background: #8f8f8f;
-    position: relative;
-    top: 0;
-    left: 0;
-    z-index: 2;
+    background: #53b856;
+    border-radius: 0;
 }
 
 .kf-editor-ui-button-icon {
@@ -59,10 +58,6 @@
     font-size: 14px;
 }
 
-.kf-editor-ui-overlap-button .kf-editor-ui-button-label:HOVER {
-    color: #ffbf00;
-}
-
 .kf-editor-ui-button-sign {
     border: 5px solid transparent;
     border-top-color: #2d2d2d;
@@ -76,7 +71,7 @@
 .kf-editor-ui-button-mount-point {
     display: none;
     position: absolute;
-    top: 81px;
+    bottom: -1px;
     left: -1px;
 }
 
@@ -94,28 +89,16 @@
     top: 27px;
 }
 
-.kf-editor-ui-enabled.kf-editor-ui-button:HOVER {
-    background: -webkit-linear-gradient( top, rgba(255, 180, 11, 0.41), rgba(255, 180, 11, 0.61), rgba(255, 180, 11, 0.41) );
-    border: 1px solid #ffbf00;
-    box-shadow: inset 0 0 1px 1px white;
-}
-
-.kf-editor-ui-enabled .kf-editor-ui-overlap-button:HOVER {
-    background: #8f8f8f;
-    border-color: transparent;
-    box-shadow: none;
-}
-
-.kf-editor-ui-overlap-button.kf-editor-ui-button-in {
-    background: #8f8f8f!important;
-    border-color: transparent!important;
-    box-shadow: none!important;
-}
-
 .kf-editor-toolbar .kf-editor-ui-button-in {
-    background: -webkit-linear-gradient( top, rgba(255, 180, 30, 0.81), rgba(255, 177, 24, 0.91), rgba(255, 180, 30, 0.81) );
-    border-color: #b88212;
-    box-shadow: none;
+    border-color: #83d286;
+    background: #e6fae7;
+}
+
+.kf-editor-toolbar .kf-editor-ui-overlap-button {
+    padding-top: 0;
+    padding-bottom: 0;
+    border-color: #53b856;
+    background: #53b856;
 }
 
 /* 分割符 */
@@ -123,6 +106,16 @@
     width: 11px;
     height: 100%;
     display: none;
+}
+
+.kf-editor-ui-enabled.kf-editor-ui-button:HOVER {
+    border: 1px solid #83d286;
+    background: #e6fae7;
+}
+
+.kf-editor-ui-enabled.kf-editor-ui-overlap-button:HOVER {
+    border: 1px solid #53b856;
+    background: #53b856;
 }
 
 .kf-editor-ui-delimiter-line {
@@ -134,8 +127,9 @@
 
 /* box */
 .kf-editor-ui-box {
-    border: 1px solid #c2c2c2;
-    box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.13);
+    border: 1px solid #aba7a6;
+    border-radius: 3px;
+    box-shadow: 0px 4px 2px -2px rgba(0, 0, 0, 0.11);
     background: white;
     position: absolute;
     top: 0;
@@ -149,28 +143,34 @@
 }
 
 .kf-editor-ui-box-group-title {
-    background: #e1e1e1;
-    padding: 5px;
+    background-color: #f7f6f0;
+    height: 23px;
+    line-height: 23px;
+    font-size: 12px;
+    border-bottom: 1px solid #ddd;
+    padding-left: 5px;
 }
 
 .kf-editor-ui-box-group-item-container {
-    padding: 5px;
+    padding: 2px 9px;
 }
 
 .kf-editor-ui-overlap-container {
     overflow: hidden;
 }
 
-.kf-editor-ui-box-item {
+.kf-editor-ui-yushe-btn .kf-editor-ui-box-item {
     border: 1px solid transparent;
     padding: 5px;
-    display: inline-block;
 }
 
-.kf-editor-ui-box-item:HOVER {
-    background: -webkit-linear-gradient( top, rgba(255, 180, 11, 0.41), rgba(255, 180, 11, 0.61), rgba(255, 180, 11, 0.41) );
-    border: 1px solid #ffbf00;
-    box-shadow: inset 0 0 1px 1px white;
+.kf-editor-ui-box-item {
+    display: inline-block;
+    margin: 4px;
+}
+
+.kf-editor-ui-box-item-content:HOVER {
+    border-color: #53b856;
 }
 
 .kf-editor-ui-area .kf-editor-ui-box-item {
@@ -180,7 +180,7 @@
     width: 32px;
     height: 32px;
     border: 0;
-    margin: 0 5px 5px 0;
+    margin: 3px;
     padding: 0;
     z-index: 1;
 }
@@ -197,7 +197,7 @@
 
 .kf-editor-ui-box-item-content {
     background: white;
-    border: 1px solid #D8D8D8;
+    border: 1px solid #808080;
 }
 
 .kf-editor-ui-area .kf-editor-ui-box-item-content {
@@ -207,7 +207,7 @@
 }
 
 .kf-editor-ui-area .kf-editor-ui-box-item-content:HOVER {
-    border: 2px solid #ffbd19;
+    border: 2px solid #53b856;
     top: -1px;
     left: -1px;
 }
@@ -233,62 +233,66 @@
     left: 0;
     vertical-align: top;
     opacity: 0.5;
-    z-index: 999;
+    z-index: 4;
     border: 1px solid #e0dfd5;
     border-radius: 4px;
     background: white;
-    margin: 0 10px;
+    margin: 8px 10px;
 }
 
 .kf-editor-ui-area-container {
-    width: 325px;
-    height: 59px;
-    margin: 10px 0 0 10px;
+    width: 281px;
+    height: 64px;
+    margin: 7px 9px 6px 9px;
     display: inline-block;
     border-right: 0;
     vertical-align: top;
-    overflow: hidden;
     position: relative;
     top: 0;
     left: 0;
+    overflow: hidden;
 }
 
 .kf-editor-ui-area-panel {
     position: absolute;
     top: 0;
     left: 0;
-    -webkit-transition: 0.5s top;
-    -moz-transition: 0.5s top;
-    transition: 0.5s top;
+    line-height: 0;
+    background: white;
+    -webkit-transition: top 0.5s linear;
+    -moz-transition: top 0.5s linear;
+    transition: top 0.5s linear;
 }
 
 .kf-editor-ui-area-button-container {
     display: inline-block;
     height: 100%;
+    overflow: hidden;
     text-align: center;
     border: 0 solid #D3D3D3;
     border-left-width: 1px;
     background-color: #f2f0e6;
 }
 
-.kf-editor-ui-moveup-button {
-    height: 20px;
+.kf-editor-ui-moveup-button, .kf-editor-ui-movedown-button {
+    line-height: 25px;
+    height: 25px;
 }
 
 .kf-editor-ui-movedown-button {
-    height: 20px;
     border: 1px solid #D3D3D3;
     border-width: 1px 0;
 }
 
 .kf-editor-ui-area-button {
+    height: 50px;
     line-height: 26px;
     display: inline-block;
 }
 
 .kf-editor-ui-enabled .kf-editor-ui-area-button:HOVER {
-    border-color: #ffbf00;
-    background: rgba(255, 207, 15, 0.5);
+    background-color: #bae6bc;
+    /*background: rgba(255, 207, 15, 0.5);*/
 }
 
 .kf-editor-ui-disabled {
@@ -311,7 +315,7 @@
 .kf-editor-ui-list {
     background: white;
     padding: 5px;
-    border: 1px solid #b1b1b1;
+    border: 1px solid #a6a2a1;
     position: fixed;
     top: 0;
     left: 0;
@@ -337,13 +341,13 @@
 
 .kf-editor-ui-list-item {
     line-height: 16px;
-    padding: 2px 5px;
+    padding: 2px 10px;
     border: 1px solid transparent;
 }
 
 .kf-editor-ui-list-item:HOVER {
-    border-color: #ffbd19;
-    background: rgba(255, 207, 15, 0.5);
+    border-color: #83d286;
+    background-color: #a6fae7;
 }
 
 .kf-editor-ui-list-item-icon {
@@ -352,31 +356,29 @@
     display: inline-block;
     vertical-align: bottom;
     margin-right: 10px;
-    border: 1px solid rgba(255, 207, 15, 0.8);
     visibility: hidden;
 }
 
 /* area 内容区 */
 .kf-editor-ui-area-item {
-    width: 24px;
-    height: 24px;
-    margin: 0 0 7px 7px;
-    position: relative;
+    width: 25px;
+    height: 25px;
+    position: absolute;
     top: 0;
     left: 0;
-    display: inline-block;
+}
+
+.kf-editor-ui-enabled .kf-editor-ui-area-item:HOVER {
+    border-color: #53b856;
 }
 
 .kf-editor-ui-area-item-content {
     width: 24px;
     height: 24px;
-    border: 1px solid #D8D8D8;
-}
-
-.kf-editor-ui-enabled .kf-editor-ui-area-item-content:HOVER {
-    /*border: 2px solid #ffbd19;*/
-    /*top: -2px;*/
-    /*left: -2px;*/
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: 1px solid #808080;
 }
 
 .kf-editor-ui-area-item-content img {
@@ -386,4 +388,20 @@
 
 .kf-editor-ui-enabled {
     opacity: 1;
+}
+
+.kf-editor-ui-overlap-container .kf-editor-ui-box-item {
+    width: 34px;
+    height: 34px;
+}
+
+.kf-editor-ui-overlap-container .kf-editor-ui-box-item-content:HOVER {
+    border-width: 1px;
+    top: 0;
+    left: 0;
+}
+
+.kf-editor-ui-overlap-container .kf-editor-ui-box-item-val {
+    width: 32px;
+    height: 32px;
 }
