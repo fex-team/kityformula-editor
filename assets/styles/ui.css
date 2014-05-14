@@ -241,9 +241,9 @@
 }
 
 .kf-editor-ui-area-container {
-    width: 281px;
-    height: 64px;
-    margin: 7px 9px 6px 9px;
+    width: 293px;
+    height: 70px;
+    margin: 7px 5px 5px 5px;
     display: inline-block;
     border-right: 0;
     vertical-align: top;
@@ -361,29 +361,31 @@
 
 /* area 内容区 */
 .kf-editor-ui-area-item {
-    width: 25px;
-    height: 25px;
+    width: 26px;
+    height: 26px;
     position: absolute;
     top: 0;
     left: 0;
 }
 
-.kf-editor-ui-enabled .kf-editor-ui-area-item:HOVER {
-    border-color: #53b856;
-}
-
-.kf-editor-ui-area-item-content {
+.kf-editor-ui-area-item-img {
     width: 24px;
     height: 24px;
-    position: absolute;
-    top: 0;
-    left: 0;
     border: 1px solid #808080;
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    -webkit-transition: all 0.1s linear;
+    -moz-transition: all 0.1s linear;
+    transition: all 0.1s linear;
 }
 
-.kf-editor-ui-area-item-content img {
-    width: 24px;
-    height: 24px;
+.kf-editor-ui-enabled .kf-editor-ui-area-item-img:HOVER {
+    width: 32px;
+    height: 32px;
+    top: -5px;
+    left: -5px;
+    border-color: #53b856;
 }
 
 .kf-editor-ui-enabled {
@@ -396,9 +398,9 @@
 }
 
 .kf-editor-ui-overlap-container .kf-editor-ui-box-item-content:HOVER {
-    border-width: 1px;
-    top: 0;
-    left: 0;
+    border-width: 3px;
+    top: -1px;
+    left: -1px;
 }
 
 .kf-editor-ui-overlap-container .kf-editor-ui-box-item-val {

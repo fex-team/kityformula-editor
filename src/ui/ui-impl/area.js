@@ -8,7 +8,7 @@ define( function ( require ) {
 
         PREFIX = "kf-editor-ui-",
 
-        PANEL_HEIGHT = 64,
+        PANEL_HEIGHT = 66,
         // UiUitls
         $$ = require( "ui/ui-impl/ui-utils" ),
 
@@ -183,9 +183,9 @@ define( function ( require ) {
                         colno = count % lineMaxCount;
                         count++;
 
-                        style = "top: " + ( lineno * 32 + 3 ) + "px; left: " + ( colno * 31 + 3 ) + "px;" ;
+                        style = "top: " + ( lineno * 33 + 5 ) + "px; left: " + ( colno * 32 + 5 ) + "px;" ;
 
-                        newContent.push( '<div class="'+ PREFIX +'area-item" data-value="'+ currentContent.val +'" style="'+ style +'"><div class="'+ PREFIX +'area-item-content">'+ currentContent.show +'</div></div>' );
+                        newContent.push( '<div class="'+ PREFIX +'area-item" data-value="'+ currentContent.val +'" style="'+ style +'"><img class="'+ PREFIX +'area-item-img" src="'+ currentContent.show +'"></div>' );
 
                     } );
 

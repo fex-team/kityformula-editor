@@ -501,7 +501,7 @@ define( function ( require ) {
                     className: cls
                 } );
 
-                tmpNode.innerHTML = tmpContent.show;
+                tmpNode.innerHTML = '<img src="' + tmpContent.show + '">';
                 // 附加属性到项的根节点上
                 this.element.setAttribute( "data-value", tmpContent.val );
 
@@ -532,7 +532,7 @@ define( function ( require ) {
                     className: cls
                 } );
 
-                tmpNode.innerHTML = tmpContent.show;
+                tmpNode.innerHTML = '<img src="' + tmpContent.show + '">';
                 // 附加属性到项的根节点上
                 this.element.setAttribute( "data-value", tmpContent.val );
 
