@@ -277,6 +277,7 @@
 
 .kf-editor-ui-area-button-container {
     display: inline-block;
+    width: 16px;
     height: 100%;
     overflow: hidden;
     text-align: center;
@@ -287,19 +288,24 @@
 
 .kf-editor-ui-moveup-button, .kf-editor-ui-movedown-button {
     line-height: 25px;
-    height: 25px;
+    height: 30px;
+}
+
+.kf-editor-ui-moveup-button {
+    background: url( "../images/toolbar/button/up.png" ) 0 9px no-repeat;
 }
 
 .kf-editor-ui-movedown-button {
     border: 1px solid #D3D3D3;
     border-width: 1px 0;
+    background: url( "../images/toolbar/button/down.png" ) 0 9px no-repeat;
 }
 
 .kf-editor-ui-area-button {
     width: 100%;
     height: 50px;
     line-height: 26px;
-    background: url( "../images/toolbar/button/open.png" ) 0 5px no-repeat;
+    background: url( "../images/toolbar/button/open.png" ) 0 0 no-repeat;
 }
 
 .kf-editor-ui-enabled .kf-editor-ui-area-button:HOVER {

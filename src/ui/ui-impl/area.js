@@ -235,7 +235,7 @@ define( function ( require ) {
 
                 return $$.ele( this.doc, "div", {
                     className: PREFIX + "movedown-button",
-                    content: "▼"
+                    content: ""
                 } );
 
             },
@@ -244,7 +244,7 @@ define( function ( require ) {
 
                 return $$.ele( this.doc, "div", {
                     className: PREFIX + "moveup-button",
-                    content: "▲"
+                    content: ""
                 } );
 
             },
