@@ -1,6 +1,6 @@
 /*!
  * ====================================================
- * Kity Formula - v1.0.0 - 2014-05-14
+ * Kity Formula - v1.0.0 - 2014-05-16
  * https://github.com/kitygraph/formula
  * GitHub: https://github.com/kitygraph/formula.git 
  * Copyright (c) 2014 Baidu Kity Group; Licensed MIT
@@ -508,7 +508,7 @@ define("char/text", [ "kity", "font/manager", "signgroup", "def/gtype" ], functi
             this.fontFamily = fontFamily;
             this.contentNode.setAttr("font-family", fontFamily);
         },
-        setFamily: function(fontSize) {
+        setFontSize: function(fontSize) {
             this.fontSize = fontSize;
             this.contentNode.setAttr("font-size", fontSize + "px");
         },
