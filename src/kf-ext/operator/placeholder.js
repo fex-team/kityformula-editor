@@ -79,21 +79,24 @@ define( function ( require, exports, modules ) {
     // 创建根占位符图形
     function createRootPlaceholder ( operator, label ) {
 
-
         var textShape = new kity.Text( label ).fill( FILL_COLOR ),
             shapeGroup = new kity.Group(),
-            padding = 10,
+            padding = 20,
             radius = 7,
-            borderBoxShape = null,
+            borderBoxShape = new kity.Rect( 0, 0, 0, 0, radius ).stroke( FILL_COLOR ).fill( "transparent" ),
             textBox = null;
 
+        textShape.setFontSize( 40 );
+        shapeGroup.addShape( borderBoxShape );
         shapeGroup.addShape( textShape );
         operator.addOperatorShape( shapeGroup );
 
         textBox = textShape.getFixRenderBox();
 
         // 宽度要加上padding
-        borderBoxShape =  new kity.Rect( textBox.width + padding * 2, textBox.height + padding * 2, 0, 0, radius ).stroke( FILL_COLOR ).fill( "transparent" );
+        borderBoxShape.stroke( FILL_COLOR ).fill( "transparent" );
+        borderBoxShape.setSize( textBox.width + padding * 2, textBox.height + padding * 2 );
+        borderBoxShape.setRadius( radius );
         borderBoxShape.setAttr( "stroke-dasharray", "5, 5" );
 
         textShape.setAttr( {
@@ -102,8 +105,6 @@ define( function ( require, exports, modules ) {
         } );
 
         textShape.translate( padding, padding );
-
-        shapeGroup.addShape( borderBoxShape );
 
         // 对于根占位符， 返回的不是组， 而是组容器内部的虚线框。 以方便选中变色
         return borderBoxShape;

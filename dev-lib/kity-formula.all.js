@@ -1,6 +1,6 @@
 /*!
  * ====================================================
- * Kity Formula - v1.0.0 - 2014-05-13
+ * Kity Formula - v1.0.0 - 2014-05-14
  * https://github.com/kitygraph/formula
  * GitHub: https://github.com/kitygraph/formula.git 
  * Copyright (c) 2014 Baidu Kity Group; Licensed MIT
@@ -485,6 +485,7 @@ define("char/text", [ "kity", "font/manager", "signgroup", "def/gtype" ], functi
         constructor: function(content, fontFamily) {
             this.callBase();
             this.fontFamily = fontFamily;
+            this.fontSize = 50;
             this.content = content || "";
             this.translationContent = this.translation(this.content);
             this.contentShape = new kity.Group();
@@ -506,6 +507,10 @@ define("char/text", [ "kity", "font/manager", "signgroup", "def/gtype" ], functi
         setFamily: function(fontFamily) {
             this.fontFamily = fontFamily;
             this.contentNode.setAttr("font-family", fontFamily);
+        },
+        setFamily: function(fontSize) {
+            this.fontSize = fontSize;
+            this.contentNode.setAttr("font-size", fontSize + "px");
         },
         getBaseHeight: function() {
             var chars = this.contentShape.getItems(), currentChar = null, index = 0, height = 0;
@@ -1082,6 +1087,9 @@ define("expression/text", [ "char/text", "kity", "font/manager", "signgroup", "c
         },
         setFamily: function(fontFamily) {
             this.textContent.setFamily(fontFamily);
+        },
+        setFontSize: function(fontSize) {
+            this.textContent.setFontSize(fontSize);
         },
         addedCall: function() {
             var box = this.textContent.getFixRenderBox();

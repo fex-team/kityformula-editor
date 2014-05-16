@@ -11,7 +11,7 @@ define( function () {
 
         // 根占位符内容与颜色
         rootPlaceholder: {
-            color: "#53b856",
+            color: "#666",
             content: "在此处键入公式",
             fontsize: 16
         }

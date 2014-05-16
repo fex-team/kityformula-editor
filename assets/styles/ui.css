@@ -12,6 +12,7 @@
     -webkit-box-shadow:1px 1px 1px rgba( 0, 0, 0, 0.1 );
     box-shadow:1px 1px 1px rgba( 0, 0, 0, 0.1 );
     color: #333;
+    font-family: Helvetica, Arial, "微软雅黑", "Microsoft YaHei", "宋体", sans-serif;
 }
 
 /* 按钮 */
@@ -49,12 +50,11 @@
     text-align: center;
     display: block;
     font-size: 12px;
-    line-height: 16px;
-    padding: 8px 0;
+    line-height: 20px;
 }
 
 .kf-editor-ui-overlap-button .kf-editor-ui-button-label {
-    padding: 5px 0;
+    padding: 3px 5px;
     text-align: left;
     color: white;
     font-size: 12px;
@@ -73,7 +73,7 @@
 .kf-editor-ui-button-mount-point {
     display: none;
     position: absolute;
-    bottom: -1px;
+    bottom: -2px;
     left: -1px;
 }
 
@@ -92,7 +92,7 @@
 }
 
 .kf-editor-toolbar .kf-editor-ui-button-in {
-    border-color: #83d286;
+    border-color: #99c99b;
     background: #e6fae7;
 }
 
@@ -111,7 +111,7 @@
 }
 
 .kf-editor-ui-enabled.kf-editor-ui-button:HOVER {
-    border: 1px solid #83d286;
+    border: 1px solid #99c99b;
     background: #e6fae7;
 }
 
@@ -129,14 +129,13 @@
 
 /* box */
 .kf-editor-ui-box {
-    border: 1px solid #aba7a6;
+    border: 1px solid #b7b2be;
     border-radius: 3px;
-    box-shadow: 0px 4px 2px -2px rgba(0, 0, 0, 0.11);
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.11);
     background: white;
     position: absolute;
-    padding-bottom: 10px;
     top: 0;
-    left: 0;
+    left: -1px;
     overflow-x: hidden;
     overflow-y: auto;
 }
@@ -150,21 +149,26 @@
     height: 23px;
     line-height: 23px;
     font-size: 12px;
-    border-bottom: 1px solid #ddd;
-    padding-left: 5px;
+    border: 1px solid #ebeae4;
+    border-width: 1px 0;
+    padding-left: 12px;
 }
 
 .kf-editor-ui-box-group-item-container {
-    padding: 2px 9px;
+    padding: 7px 9px 17px 9px;
 }
 
 .kf-editor-ui-overlap-container {
     overflow: hidden;
 }
 
+.kf-editor-ui-area .kf-editor-ui-box {
+    top: -1px;
+}
+
 .kf-editor-ui-overlap-container .kf-editor-ui-button-sign {
     border-top-color: white;
-    border-width: 5px;
+    border-width: 4px;
     margin-left: 10px;
 }
 
@@ -254,7 +258,8 @@
 .kf-editor-ui-area-container {
     width: 293px;
     height: 70px;
-    margin: 7px 5px 5px 5px;
+    /*margin: 7px 5px 5px 5px;*/
+    margin: 5px;
     display: inline-block;
     border-right: 0;
     vertical-align: top;
@@ -309,8 +314,15 @@
 }
 
 .kf-editor-ui-enabled .kf-editor-ui-area-button:HOVER {
-    background-color: #bae6bc;
-    /*background: rgba(255, 207, 15, 0.5);*/
+    background-color: #e6fae7;
+}
+
+.kf-editor-ui-enabled .kf-editor-ui-moveup-button:HOVER {
+    background-color: #e6fae7;
+}
+
+.kf-editor-ui-enabled .kf-editor-ui-movedown-button:HOVER {
+    background-color: #e6fae7;
 }
 
 .kf-editor-ui-disabled {
@@ -333,11 +345,12 @@
 .kf-editor-ui-list {
     background: white;
     padding: 1px;
-    border: 1px solid #a6a2a1;
+    border: 1px solid #b7b2be;
+    border-radius: 3px;
     position: fixed;
     top: 0;
     left: 0;
-    box-shadow: 0px 4px 2px -2px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.11);
 }
 
 .kf-editor-ui-list-bg {
@@ -353,7 +366,7 @@
 
 .kf-editor-ui-list-item {
     line-height: 24px;
-    padding: 2px 10px;
+    padding: 2px 6px;
     border: 1px solid transparent;
 }
 
@@ -368,7 +381,7 @@
     display: inline-block;
     vertical-align: middle;
     margin-top: -2px;
-    margin-right: 10px;
+    margin-right: 4px;
     visibility: hidden;
 }
 
