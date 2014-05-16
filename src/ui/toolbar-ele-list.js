@@ -524,8 +524,16 @@ define( function ( require ) {
                     "gneqq", "nprec", "nsucc", "notin", "nsubseteq", "nsupseteq",
                     "subsetneq", "supsetneq", "lnsim", "gnsim", "precnsim",
                     "succnsim", "ntriangleleft", "ntriangleright", "ntrianglelefteq",
-                    "ntrianglerighteq", "nmid", "nparallel", "nvdash", "nVdash",
-                    "nvDash", "nVDash", "nexists"
+                    "ntrianglerighteq", "nmid", "nparallel", "nvdash", {
+                        key: "\\nVdash",
+                        img: "nvdash-1"
+                    }, {
+                        key: "\\nvDash",
+                        img: "nvdash-2"
+                    }, {
+                        key: "\\nVDash",
+                        img: "nvdash-3"
+                    }, "nexists"
                 ]
             } ],
             greekConfigList = config[ 2 ].options.box.group[ 2 ].items;
@@ -564,20 +572,66 @@ define( function ( require ) {
 
         var list = [
                 "gets", "to", "uparrow", "downarrow", "leftrightarrow", "updownarrow",
-                "Leftarrow", "Rightarrow", "Uparrow", "Downarrow", "Leftrightarrow",
-                "Updownarrow", "longleftarrow", "longrightarrow", "longleftrightarrow",
-                "Longleftarrow", "Longrightarrow", "Longleftrightarrow", "nearrow",
+                {
+                    key: "\\Leftarrow",
+                    img: "u-leftarrow"
+                }, {
+                    key: "\\Rightarrow",
+                    img: "u-rightarrow"
+                }, {
+                    key: "\\Uparrow",
+                    img: "u-uparrow"
+                }, {
+                    key: "\\Downarrow",
+                    img: "u-downarrow"
+                }, {
+                    key: "\\Leftrightarrow",
+                    img: "u-leftrightarrow"
+                }, {
+                    key: "\\Updownarrow",
+                    img: "u-updownarrow"
+                }, "longleftarrow", "longrightarrow", "longleftrightarrow",
+                {
+                    key: "\\Longleftarrow",
+                    img: "u-longleftarrow"
+                }, {
+                    key: "\\Longrightarrow",
+                    img: "u-longrightarrow"
+                }, {
+                    key: "\\Longleftrightarrow",
+                    img: "u-longleftrightarrow"
+                }, "nearrow",
                 "nwarrow", "searrow", "swarrow", "nleftarrow", "nrightarrow",
-                "nLeftarrow", "nRightarrow", "nLeftrightarrow", "hookleftarrow",
-                "hookrightarrow", "leftharpoonup", "leftharpoondown", "rightharpoonup",
+                {
+                    key: "\\nLeftarrow",
+                    img: "u-nleftarrow"
+                }, {
+                    key: "\\nRightarrow",
+                    img: "u-nrightarrow"
+                }, {
+                    key: "\\nLeftrightarrow",
+                    img: "u-nleftrightarrow"
+                }, "leftharpoonup", "leftharpoondown", "rightharpoonup",
                 "rightharpoondown", "upharpoonleft", "upharpoonright", "downharpoonleft",
                 "downharpoonright", "leftrightharpoons", "rightleftharpoons", "leftleftarrows",
                 "rightrightarrows", "upuparrows", "downdownarrows", "leftrightarrows",
                 "rightleftarrows", "looparrowleft", "looparrowright", "leftarrowtail",
-                "rightarrowtail", "Lsh", "Rsh", "Lleftarrow", "Rrightarrow", "curvearrowleft",
+                "rightarrowtail",
+                {
+                    key: "\\Lsh",
+                    img: "u-lsh"
+                }, {
+                    key: "\\Rsh",
+                    img: "u-rsh"
+                }, {
+                    key: "\\Lleftarrow",
+                    img: "u-lleftarrow"
+                }, {
+                    key: "\\Rrightarrow",
+                    img: "u-rrightarrow"
+                }, "curvearrowleft",
                 "curvearrowright", "circlearrowleft", "circlearrowright", "multimap",
-                "leftrightsquigarrow", "twoheadleftarrow", "twoheadrightarrow",
-                "rightsquigarrow"
+                "leftrightsquigarrow", "twoheadleftarrow", "twoheadrightarrow", "rightsquigarrow"
             ],
             configList = config[ 2 ].options.box.group[ 4 ].items;
 
