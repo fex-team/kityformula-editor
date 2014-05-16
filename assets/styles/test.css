@@ -1,22 +1,8 @@
-
-html, body {
-    width: 100%;
-    height: 100%;
-    padding: 0;
-    margin: 0;
-    /*background: rgba( 48, 48, 48, 0.5 );*/
+/*定义滚动条的高宽*/
+::-webkit-scrollbar {
+    width: 16px;
+    height: 16px;
 }
-
-body {
-    height: 1000px;
-}
-
-body::-webkit-scrollbar {
-    width: 17px;
-    background: white;
-    border: 1px solid #e6e4dc;
-}
-
 /*CSS的坐标系，左上角为(0,0),往右往下为增加，往上往左为减少*/
 /*显示滚动条上方的渐增按钮*/
 ::-webkit-scrollbar-button:start:decrement,
@@ -31,13 +17,11 @@ body::-webkit-scrollbar {
 }
 /* 定义滚动条渐增按扭的样式 */
 ::-webkit-scrollbar-button:end:increment {
-    height: 10px;
-    background: url(./images2/down.png) 0 0 no-repeat;
+    background-image: url(./images/scroll_cntrl_dwn.png);
 }
 /* 定义滚动条渐减按扭的样式 */
 ::-webkit-scrollbar-button:start:decrement {
-    height: 10px;
-    background: url(./images2/up.png) 0 0 no-repeat;
+    background-image: url(./images/scroll_cntrl_up.png);
 }
 /* 垂直滚动条的第三层轨道的上段 */
 ::-webkit-scrollbar-track-piece:vertical:start {
