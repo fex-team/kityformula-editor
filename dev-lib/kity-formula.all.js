@@ -1,6 +1,6 @@
 /*!
  * ====================================================
- * Kity Formula - v1.0.0 - 2014-05-16
+ * Kity Formula - v1.0.0 - 2014-05-19
  * https://github.com/kitygraph/formula
  * GitHub: https://github.com/kitygraph/formula.git 
  * Copyright (c) 2014 Baidu Kity Group; Licensed MIT
@@ -4227,6 +4227,9 @@ define("formula", [ "kity", "def/gtype", "conf", "font/kf-ams-main", "font/kf-am
             this.config = kity.Utils.extend({}, DEFAULT_OPTIONS, config);
             this.initEnvironment();
             this.initFont();
+        },
+        getContentContainer: function() {
+            return this.container;
         },
         initEnvironment: function() {
             this.zoom = this.config.fontsize / 50;

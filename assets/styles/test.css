@@ -1,0 +1,42 @@
+/*定义滚动条的高宽*/
+::-webkit-scrollbar {
+    width: 16px;
+    height: 16px;
+}
+/*CSS的坐标系，左上角为(0,0),往右往下为增加，往上往左为减少*/
+/*显示滚动条上方的渐增按钮*/
+::-webkit-scrollbar-button:start:decrement,
+    /*显示滚动条上方的渐减按钮*/
+::-webkit-scrollbar-button:end:increment {
+    display: block;
+}
+/*隐藏滚动条上方的渐增按钮*/
+::-webkit-scrollbar-button:vertical:start:increment,
+::-webkit-scrollbar-button:vertical:end:decrement {
+    display: none;
+}
+/* 定义滚动条渐增按扭的样式 */
+::-webkit-scrollbar-button:end:increment {
+    background-image: url(./images/scroll_cntrl_dwn.png);
+}
+/* 定义滚动条渐减按扭的样式 */
+::-webkit-scrollbar-button:start:decrement {
+    background-image: url(./images/scroll_cntrl_up.png);
+}
+/* 垂直滚动条的第三层轨道的上段 */
+::-webkit-scrollbar-track-piece:vertical:start {
+    background-image: url(./images/scroll_gutter_top.png), url(./images/scroll_gutter_mid.png);
+    background-repeat: no-repeat, repeat-y;
+}
+/* 垂直滚动条的第三层轨道的下段 */
+::-webkit-scrollbar-track-piece:vertical:end {
+    background-image: url(./images/scroll_gutter_btm.png), url(./images/scroll_gutter_mid.png);
+    background-repeat: no-repeat, repeat-y;
+    background-position: bottom left, 0 0;
+}
+/* 垂直滚动条的滑动块 */
+::-webkit-scrollbar-thumb:vertical {
+    height: 56px;
+    -webkit-border-image: url(./images/scroll_thumb.png) 8 0 8 0 stretch stretch;
+    border-width: 8 0 8 0;
+}

@@ -11,6 +11,10 @@ define( function ( require, exports, modules ) {
 
         Utils = require( "base/utils" ),
 
+        VIEW_STATE = require( "ui/def" ).VIEW_STATE,
+
+        Scrollbar = require( "ui/ui-impl/scrollbar/scrollbar" ),
+
         Toolbar = require( "ui/toolbar/toolbar" ),
         // 控制组件
         ScrollZoom = require( "ui/control/zoom" ),
@@ -30,6 +34,9 @@ define( function ( require, exports, modules ) {
                 // ui组件实例集合
                 this.components = {};
 
+                this.canvasRect = null;
+                this.viewState = VIEW_STATE.NO_OVERFLOW;
+
                 this.kfEditor = kfEditor;
 
                 this.resizeTimer = null;
@@ -38,11 +45,13 @@ define( function ( require, exports, modules ) {
                 this.toolbarContainer = createToolbarContainer( currentDocument );
                 this.editArea = createEditArea( currentDocument );
                 this.canvasContainer = createCanvasContainer( currentDocument );
+                this.scrollbarContainer = createScrollbarContainer( currentDocument );
 
                 this.toolbarWrap.appendChild( this.toolbarContainer );
                 this.container.appendChild( this.toolbarWrap );
                 this.editArea.appendChild( this.canvasContainer );
                 this.container.appendChild( this.editArea );
+                this.container.appendChild( this.scrollbarContainer );
 
                 this.initComponents();
 
@@ -62,6 +71,7 @@ define( function ( require, exports, modules ) {
                 // 工具栏组件
                 this.components.toolbar = new Toolbar( this, this.kfEditor, ELEMENT_LIST );
                 this.components.scrollZoom = new ScrollZoom( this, this.kfEditor, this.canvasContainer );
+                this.components.scrollbar = new Scrollbar( this, this.kfEditor );
 
             },
 
@@ -79,14 +89,18 @@ define( function ( require, exports, modules ) {
             initServices: function () {
 
                 this.kfEditor.registerService( "ui.get.canvas.container", this, {
-                    getCanvasContainer: SERVICE_LIST.getCanvasContainer
+                    getCanvasContainer: this.getCanvasContainer
+                } );
+
+                this.kfEditor.registerService( "ui.update.canvas.view", this, {
+                    updateCanvasView: this.updateCanvasView
                 } );
 
                 this.kfEditor.registerService( "ui.canvas.container.event", this, {
-                    on: SERVICE_LIST.addEvent,
-                    off: SERVICE_LIST.removeEvent,
-                    trigger: SERVICE_LIST.trigger,
-                    fire: SERVICE_LIST.trigger
+                    on: this.addEvent,
+                    off: this.removeEvent,
+                    trigger: this.trigger,
+                    fire: this.trigger
                 } );
 
             },
@@ -113,33 +127,66 @@ define( function ( require, exports, modules ) {
 
                 };
 
+            },
+
+            getCanvasContainer: function () {
+
+                return this.canvasContainer;
+
+            },
+
+            addEvent: function ( type, handler ) {
+
+                Utils.addEvent( this.canvasContainer, type, handler );
+
+            },
+
+            removeEvent: function () {},
+
+            trigger: function ( type ) {
+
+                Utils.trigger( this.canvasContainer, type );
+
+            },
+
+            // 更新画布视窗， 决定是否出现滚动条
+            updateCanvasView: function () {
+
+                var canvas = this.kfEditor.requestService( "render.get.canvas" ),
+                    contentContainer = canvas.getContentContainer(),
+                    contentRect = null;
+
+                if ( this.canvasRect === null ) {
+                    this.canvasRect = canvas.node.getBoundingClientRect();
+                }
+
+                contentRect = contentContainer.getRenderBox( "paper" );
+
+                if ( contentRect.width > this.canvasRect.width ) {
+
+                    if ( this.viewState === VIEW_STATE.NO_OVERFLOW  ) {
+                        this.toggleViewState();
+                        this.kfEditor.requestService( "ui.show.scrollbar" );
+                    }
+
+                    // 更新滚动条， 参数是：滚动条所控制的内容长度
+                    this.kfEditor.requestService( "ui.update.scrollbar", contentRect.width );
+
+                } else {
+
+                    this.kfEditor.requestService( "ui.hide.scrollbar" );
+
+                }
+
+            },
+
+            toggleViewState: function () {
+
+                this.viewState = this.viewState === VIEW_STATE.NO_OVERFLOW ? VIEW_STATE.OVERFLOW : VIEW_STATE.NO_OVERFLOW;
+
             }
 
-        } ),
-
-    SERVICE_LIST = {
-
-        getCanvasContainer: function () {
-
-            return this.canvasContainer;
-
-        },
-
-        addEvent: function ( type, handler ) {
-
-            Utils.addEvent( this.canvasContainer, type, handler );
-
-        },
-
-        removeEvent: function () {},
-
-        trigger: function ( type ) {
-
-            Utils.trigger( this.canvasContainer, type );
-
-        }
-
-    };
+        } );
 
     function createToolbarWrap ( doc ) {
 
@@ -168,6 +215,12 @@ define( function ( require, exports, modules ) {
     function createCanvasContainer ( doc ) {
         var container = doc.createElement( "div" );
         container.className = "kf-editor-canvas-container";
+        return container;
+    }
+
+    function createScrollbarContainer ( doc ) {
+        var container = doc.createElement( "div" );
+        container.className = "kf-editor-edit-scrollbar";
         return container;
     }
 

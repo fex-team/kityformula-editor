@@ -6,3 +6,7 @@ html, body {
     margin: 0;
     background: rgba( 48, 48, 48, 0.5 );
 }
+
+body {
+    height: 1000px;
+}

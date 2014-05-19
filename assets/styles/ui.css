@@ -446,3 +446,72 @@
     width: 32px;
     height: 32px;
 }
+
+/* scrollbar */
+.kf-editor-ui-box::-webkit-scrollbar {
+    width: 17px;
+    background: url( ./images2/bg.png ) 0 0 repeat-y white;
+}
+
+.kf-editor-ui-box::-webkit-scrollbar-button:end:increment {
+    height: 13px;
+    background: url(./images2/down.png) 0 0 no-repeat white;
+}
+/*定义滚动条渐减按扭的样式 */
+.kf-editor-ui-box::-webkit-scrollbar-button:start:decrement {
+    height: 13px;
+    background: url(./images2/up.png) 0 0 no-repeat white;
+}
+
+/* 垂直滚动条的第三层轨道的上段 */
+.kf-editor-ui-box::-webkit-scrollbar-track-piece:vertical:start {
+    background-image: url(./images2/top.png), url( ./images2/bg.png );
+    background-repeat: no-repeat, repeat-y;
+}
+/* 垂直滚动条的第三层轨道的下段 */
+.kf-editor-ui-box::-webkit-scrollbar-track-piece:vertical:end {
+    background-image: url(./images2/bottom.png), url( ./images2/bg.png );
+    background-repeat: no-repeat, repeat-y;
+    background-position: 0 bottom, 0 0;
+}
+/* 垂直滚动条的滑动块 */
+.kf-editor-ui-box::-webkit-scrollbar-thumb:vertical {
+    /*background: url(./images2/bar.png) 6px 0 no-repeat;*/
+    /*background-size: 6px;*/
+    -webkit-border-image: url(./images2/bar.png) 8;
+    border-width: 10px;
+}
+
+.kf-editor-ui-wrap-group::-webkit-scrollbar {
+    width: 17px;
+    background: url( ./images2/bg.png ) 0 0 repeat-y white;
+}
+
+.kf-editor-ui-wrap-group::-webkit-scrollbar-button:end:increment {
+    height: 13px;
+    background: url(./images2/down.png) 0 0 no-repeat white;
+}
+/*定义滚动条渐减按扭的样式 */
+.kf-editor-ui-wrap-group::-webkit-scrollbar-button:start:decrement {
+    height: 13px;
+    background: url(./images2/up.png) 0 0 no-repeat white;
+}
+
+/* 垂直滚动条的第三层轨道的上段 */
+.kf-editor-ui-wrap-group::-webkit-scrollbar-track-piece:vertical:start {
+    background-image: url(./images2/top.png), url( ./images2/bg.png );
+    background-repeat: no-repeat, repeat-y;
+}
+/* 垂直滚动条的第三层轨道的下段 */
+.kf-editor-ui-wrap-group::-webkit-scrollbar-track-piece:vertical:end {
+    background-image: url(./images2/bottom.png), url( ./images2/bg.png );
+    background-repeat: no-repeat, repeat-y;
+    background-position: 0 bottom, 0 0;
+}
+/* 垂直滚动条的滑动块 */
+.kf-editor-ui-wrap-group::-webkit-scrollbar-thumb:vertical {
+    /*background: url(./images2/bar.png) 6px 0 no-repeat;*/
+    /*background-size: 6px;*/
+    -webkit-border-image: url(./images2/bar.png) 8;
+    border-width: 10px;
+}
