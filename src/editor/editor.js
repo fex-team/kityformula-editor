@@ -7,14 +7,14 @@ define( function ( require ) {
     var kity = require( "kity" ),
         Utils = require( "base/utils" ),
         defaultOpt = {
-            controller: {
-                zoom: true,
-                maxzoom: 5,
-                minzoom: 1
-            },
             formula: {
                 fontsize: 50,
                 autoresize: false
+            },
+            ui: {
+                zoom: true,
+                maxzoom: 2,
+                minzoom: 1
             }
 
         };
@@ -51,9 +51,9 @@ define( function ( require ) {
 
             var _self = this;
 
-            Utils.each( COMPONENTS, function ( component ) {
+            Utils.each( COMPONENTS, function ( component, name ) {
 
-                new component( _self );
+                new component( _self, _self.options[ name ] );
 
             } );
 

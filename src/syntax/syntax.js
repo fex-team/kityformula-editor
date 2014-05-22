@@ -38,6 +38,7 @@ define( function ( require ) {
 
                 this.initComponents();
                 this.initServices();
+                this.initCommands();
 
             },
 
@@ -112,6 +113,10 @@ define( function ( require ) {
                     getCursorRecord: this.getCursorRecord
                 } );
 
+                this.kfEditor.registerService( "syntax.has.cursor.info", this, {
+                    hasCursorInfo: this.hasCursorInfo
+                } );
+
                 this.kfEditor.registerService( "syntax.serialization", this, {
                     serialization: this.serialization
                 } );
@@ -130,6 +135,11 @@ define( function ( require ) {
 
             },
 
+            initCommands: function () {
+                this.kfEditor.registerCommand( "get.source", this, this.getSource );
+                this.kfEditor.registerCommand( "content.is.empty", this, this.isEmpty );
+            },
+
             updateObjTree: function ( objTree ) {
 
                 var selectInfo = objTree.select;
@@ -140,6 +150,10 @@ define( function ( require ) {
 
                 this.objTree = objTree;
 
+            },
+
+            hasCursorInfo: function () {
+                return this.record.cursor.group !== null;
             },
 
             // 验证给定ID的组是否是根节点
@@ -336,6 +350,14 @@ define( function ( require ) {
                     endOffset: endOffset
                 }
 
+            },
+
+            getSource: function () {
+                return this.serialization().str.replace( CURSOR_CHAR, "" ).replace( CURSOR_CHAR, "" );
+            },
+
+            isEmpty: function () {
+                return this.hasRootplaceholder();
             },
 
             serialization: function () {

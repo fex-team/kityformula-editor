@@ -28,7 +28,7 @@ define( function ( require ) {
 
         initCommands: function () {
 
-            this.kfEditor.registerCommand( "get.image.data", this, this.getBase64DataUrl );
+            this.kfEditor.registerCommand( "get.image.data", this, this.getImageData );
 
         },
 
@@ -36,7 +36,17 @@ define( function ( require ) {
 
             var dataUrl = this.getBase64DataUrl();
 
-            open( dataUrl )
+        },
+
+        getImageData: function () {
+
+            var canvasData = this.getFormatCanvasData();
+
+            return {
+                width: canvasData.width,
+                height: canvasData.height,
+                img: getBase64DataURL( canvasData, arguments[ 0 ] )
+            };
 
         },
 
@@ -85,8 +95,8 @@ define( function ( require ) {
             this.kfEditor.requestService( "render.reselect" );
 
             return {
-                width: contentSpace.width,
-                height: contentSpace.height,
+                width: Math.floor( contentSpace.width ),
+                height: Math.floor( contentSpace.height ),
                 content: canvasCopiesNode.outerHTML.replace( '"<"', '"&#x3c;"' )
             };
 
