@@ -164,7 +164,7 @@ define( function ( require, exports, modules ) {
 
                 contentRect = contentContainer.getRenderBox( "paper" );
 
-                if ( contentRect.width > thqis.canvasRect.width ) {
+                if ( contentRect.width > this.canvasRect.width ) {
 
                     if ( this.viewState === VIEW_STATE.NO_OVERFLOW  ) {
                         this.toggleViewState();
