@@ -210,7 +210,7 @@ define( function ( require, exports, modules ) {
 
     function createToolbarContainer ( doc ) {
 
-        return container = $$.ele( doc, "div", {
+        return $$.ele( doc, "div", {
             className: "kf-editor-inner-toolbar"
         } );
 

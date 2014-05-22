@@ -114,6 +114,7 @@ define( function ( require ) {
             preventDefault( this );
             trackClick( this );
             thumbHandler( this );
+            btnClick( this );
 
         },
 
@@ -260,6 +261,24 @@ define( function ( require ) {
 
     }
 
+    // 两端按钮点击
+    function btnClick ( comp ) {
+
+        // left
+        Utils.addEvent( comp.widgets.leftButton, "mousedown", function () {
+
+            setThumbOffsetByStep( comp, -SCROLLBAR_CONF.step );
+
+        } );
+
+        Utils.addEvent( comp.widgets.rightButton, "mousedown", function () {
+
+            setThumbOffsetByStep( comp, SCROLLBAR_CONF.step );
+
+        } );
+
+    }
+
     // 滑块处理
     function thumbHandler ( comp ) {
 
@@ -356,6 +375,21 @@ define( function ( require ) {
         comp.thumbLocationX = locationX;
         comp.widgets.thumb.style.left = locationX + "px";
 
+    }
+
+    // 根据指定的步长来改变滚动条的offset值
+    function setThumbOffsetByStep ( comp, step ) {
+
+        var offset = comp.values.offset + step;
+
+        // 修正越界
+        if ( offset < 0 ) {
+            offset = 0;
+        } else if ( offset > comp.values.trackWidth ) {
+            offset = comp.values.trackWidth;
+        }
+
+        setThumbOffset( comp, offset );
     }
 
     // 设置偏移值, 会同时更新滑块在显示上的定位
