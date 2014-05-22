@@ -1,4 +1,4 @@
-/*!
+                    /*!
  * 输入控制组件
  */
 
@@ -23,6 +23,7 @@ define( function ( require, exports, module ) {
             this.inputBox = this.createInputBox();
 
             this.initServices();
+            this.initCommands();
 
             this.initEvent();
 
@@ -40,6 +41,12 @@ define( function ( require, exports, module ) {
 
         },
 
+        initCommands: function () {
+
+            this.kfEditor.registerCommand( "focus", this, this.focus );
+
+        },
+
         createInputBox: function () {
 
             var editorContainer = this.kfEditor.getContainer(),
@@ -54,6 +61,31 @@ define( function ( require, exports, module ) {
             editorContainer.appendChild( box );
 
             return box;
+
+        },
+
+        focus: function () {
+
+            var rootInfo = null;
+
+            this.inputBox.focus();
+
+            // 如果当前不包含光标信息， 则手动设置光标信息， 以使得当前根节点被全选中
+            if ( !this.kfEditor.requestService( "syntax.has.cursor.info" ) ) {
+
+                rootInfo = this.kfEditor.requestService( "syntax.get.root.group.info" );
+
+                this.kfEditor.requestService( "syntax.update.record.cursor", {
+                    groupId: rootInfo.id,
+                    startOffset: 0,
+                    endOffset: rootInfo.content.length
+                } );
+
+                this.kfEditor.requestService( "control.update.input" );
+
+            }
+
+            this.kfEditor.requestService( "control.reselect" );
 
         },
 

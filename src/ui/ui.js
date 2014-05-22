@@ -23,9 +23,11 @@ define( function ( require, exports, modules ) {
 
         UIComponent = kity.createClass( 'UIComponent', {
 
-            constructor: function ( kfEditor ) {
+            constructor: function ( kfEditor, options ) {
 
                 var currentDocument = null;
+
+                this.options = options;
 
                 this.container = kfEditor.getContainer();
 
@@ -70,7 +72,12 @@ define( function ( require, exports, modules ) {
 
                 // 工具栏组件
                 this.components.toolbar = new Toolbar( this, this.kfEditor, ELEMENT_LIST );
-                this.components.scrollZoom = new ScrollZoom( this, this.kfEditor, this.canvasContainer );
+                if ( this.options.zoom ) {
+                    this.components.scrollZoom = new ScrollZoom( this, this.kfEditor, this.canvasContainer, {
+                        max: this.options.maxzoom,
+                        min: this.options.minzoom
+                    } );
+                }
                 this.components.scrollbar = new Scrollbar( this, this.kfEditor );
 
             },

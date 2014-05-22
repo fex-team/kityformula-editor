@@ -29,7 +29,10 @@
             var editor = new KFEditor( $( "#kfEditorContainer" )[ 0 ] );
 
             editor.execCommand( "render", "\\placeholder" );
+            editor.execCommand( "focus" );
 //            editor.execCommand( "render", "asdfasfdasdasdfasfdasdasdfasfdasdasdfasfdasdasdfasfdsdfasfdasdasdfasfdasdasdfasfdasdasdfasfdasdasdfasfdasdasdfasfdasdasdfasfdasdasdfasfdsdfasfdasdasdfasfdasdasdfasfdasd" );
+
+            window.editor = editor;
 
         } );
     </script>
