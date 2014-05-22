@@ -164,19 +164,18 @@ define( function ( require, exports, modules ) {
 
                 contentRect = contentContainer.getRenderBox( "paper" );
 
-                if ( contentRect.width > this.canvasRect.width ) {
-
-                    this.kfEditor.requestService( "render.disable.relocation" );
-                    this.kfEditor.requestService( "render.relocation" );
-
-                    // 更新滚动条， 参数是：滚动条所控制的内容长度
-                    this.kfEditor.requestService( "ui.update.scrollbar", contentRect.width );
+                if ( contentRect.width > thqis.canvasRect.width ) {
 
                     if ( this.viewState === VIEW_STATE.NO_OVERFLOW  ) {
                         this.toggleViewState();
                         this.kfEditor.requestService( "ui.show.scrollbar" );
+                        this.kfEditor.requestService( "render.disable.relocation" );
                     }
 
+                    this.kfEditor.requestService( "render.relocation" );
+
+                    // 更新滚动条， 参数是：滚动条所控制的内容长度
+                    this.kfEditor.requestService( "ui.update.scrollbar", contentRect.width );
                     this.kfEditor.requestService( "ui.relocation.scrollbar" )
 
                 } else {
@@ -184,8 +183,9 @@ define( function ( require, exports, modules ) {
                     if ( this.viewState === VIEW_STATE.OVERFLOW  ) {
                         this.toggleViewState();
                         this.kfEditor.requestService( "ui.hide.scrollbar" );
+                        this.kfEditor.requestService( "render.enable.relocation" );
                     }
-                    this.kfEditor.requestService( "render.enable.relocation" );
+
                     this.kfEditor.requestService( "render.relocation" );
 
                 }

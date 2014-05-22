@@ -121,6 +121,8 @@ define( function ( require, exports, module ) {
             this.restruct( originString );
             this.updateInput();
 
+            this.kfEditor.requestService( "ui.update.canvas.view" );
+
         },
 
         initEvent: function () {
