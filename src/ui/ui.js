@@ -70,7 +70,10 @@ define( function ( require, exports, modules ) {
 
                 // 工具栏组件
                 this.components.toolbar = new Toolbar( this, this.kfEditor, ELEMENT_LIST );
-                if ( this.options.zoom ) {
+
+                // TODO 禁用缩放, 留待后面再重新开启
+                if ( false ) {
+//                if ( this.options.zoom ) {
                     this.components.scrollZoom = new ScrollZoom( this, this.kfEditor, this.canvasContainer, {
                         max: this.options.maxzoom,
                         min: this.options.minzoom
