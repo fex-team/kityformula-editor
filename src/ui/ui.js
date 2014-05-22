@@ -181,8 +181,11 @@ define( function ( require, exports, modules ) {
 
                 } else {
 
+                    if ( this.viewState === VIEW_STATE.OVERFLOW  ) {
+                        this.toggleViewState();
+                        this.kfEditor.requestService( "ui.hide.scrollbar" );
+                    }
                     this.kfEditor.requestService( "render.enable.relocation" );
-                    this.kfEditor.requestService( "ui.hide.scrollbar" );
                     this.kfEditor.requestService( "render.relocation" );
 
                 }
