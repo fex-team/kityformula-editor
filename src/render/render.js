@@ -22,6 +22,8 @@ define( function ( require ) {
                 this.assembly = null;
                 this.formula = null;
 
+                // 是否禁用重定位
+                this.relDisabled = false;
                 this.canvasZoom = 1;
 
                 this.record = {
@@ -40,15 +42,28 @@ define( function ( require ) {
 
             initCanvas: function () {
 
-                var canvasContainer = this.kfEditor.requestService( "ui.get.canvas.container" ),
-                    viewBox = null;
+                var canvasContainer = this.kfEditor.requestService( "ui.get.canvas.container" );
 
                 this.assembly = Assembly.use( canvasContainer, DEFAULT_OPTIONS );
                 this.formula = this.assembly.formula;
 
-                viewBox = this.formula.getViewBox();
-                this.formula.setViewBox( -viewBox.width / 2, -viewBox.height / 2, viewBox.width, viewBox.height );
+                this.setCanvasToCenter();
 
+            },
+
+            setCanvasOffset: function ( offsetX, offsetY ) {
+
+                var viewBox = this.formula.getViewBox();
+
+                offsetY = offsetY !== undefined ? offsetY : -viewBox.height / 2;
+
+                this.formula.setViewBox( offsetX, offsetY, viewBox.width, viewBox.height );
+
+            },
+
+            setCanvasToCenter: function () {
+                var viewBox = this.formula.getViewBox();
+                this.formula.setViewBox( -viewBox.width / 2, -viewBox.height / 2, viewBox.width, viewBox.height );
             },
 
             initServices: function () {
@@ -62,7 +77,15 @@ define( function ( require ) {
                 } );
 
                 this.kfEditor.registerService( "render.clear.canvas.transform", this, {
-                    clearCanvasTransform: this.clearCanvasTransform
+                    clearCanvasOffset: this.setCanvasToCenter
+                } );
+
+                this.kfEditor.registerService( "render.set.canvas.offset", this, {
+                    setCanvasOffset: this.setCanvasOffset
+                } );
+
+                this.kfEditor.registerService( "render.set.canvas.to.center", this, {
+                    setCanvasToCenter: this.setCanvasToCenter
                 } );
 
                 this.kfEditor.registerService( "render.revert.canvas.transform", this, {
@@ -71,6 +94,14 @@ define( function ( require ) {
 
                 this.kfEditor.registerService( "render.relocation", this, {
                     relocation: this.relocation
+                } );
+
+                this.kfEditor.registerService( "render.disable.relocation", this, {
+                    disableRelocation: this.disableRelocation
+                } );
+
+                this.kfEditor.registerService( "render.enable.relocation", this, {
+                    enableRelocation: this.enableRelocation
                 } );
 
                 this.kfEditor.registerService( "render.select.group.content", this, {
@@ -133,7 +164,12 @@ define( function ( require ) {
 
             initCommands: function () {
 
-                this.kfEditor.registerCommand( "render", this, this.render );
+                var _self = this;
+
+                this.kfEditor.registerCommand( "render", this, function ( str ) {
+                    this.render( str );
+                    this.relocation();
+                } );
 
                 this.kfEditor.registerCommand( "getPaper", this, this.getPaper );
 
@@ -141,9 +177,29 @@ define( function ( require ) {
 
             relocation: function () {
 
+                if ( !this.relDisabled ) {
+                    this.relocationToCenter();
+                } else {
+                    this.relocationToLeft();
+                }
+
+            },
+
+            relocationToCenter: function () {
+
                 var formulaSpace = this.formula.container.getRenderBox();
 
                 this.formula.container.setTranslate( -formulaSpace.width / 2, -formulaSpace.height / 2);
+                this.setCanvasToCenter();
+
+            },
+
+            relocationToLeft: function () {
+
+                var formulaSpace = this.formula.container.getRenderBox();
+
+                this.formula.container.setTranslate( 0, -formulaSpace.height / 2 );
+                this.setCanvasOffset( 0 );
 
             },
 
@@ -319,8 +375,15 @@ define( function ( require ) {
 
                 // 更新语法模块所维护的树
                 this.kfEditor.requestService( "syntax.update.objtree", objTree );
-                this.relocation();
 
+            },
+
+            enableRelocation: function () {
+                this.relDisabled = false;
+            },
+
+            disableRelocation: function () {
+                this.relDisabled = true;
             },
 
             setCanvasZoom: function ( zoom ) {

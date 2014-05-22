@@ -14,6 +14,10 @@ define( function () {
             color: "#666",
             content: "在此处键入公式",
             fontsize: 16
+        },
+
+        scrollbar: {
+            padding: 5
         }
 
     };

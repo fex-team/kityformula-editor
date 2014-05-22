@@ -6,6 +6,7 @@ define( function ( require ) {
 
     var kity = require( "kity" ),
         SCROLLBAR_DEF = require( "ui/def" ).scrollbar,
+        SCROLLBAR_CONF = require( "sysconf" ).scrollbar,
         Utils = require( "base/utils" ),
         CLASS_PREFIX = "kf-editor-ui-";
 
@@ -26,7 +27,7 @@ define( function ( require ) {
             this.values = {
                 // 滚动条此时实际的偏移值, 计算的时候假定滑块的宽度为0
                 offset: 0,
-                // 滑块此时偏移的百分比, 计算的时候假定滑块的宽度为0
+                // 滑块此时偏移位置所占轨道的比例, 计算的时候假定滑块的宽度为0
                 left: 0,
                 // 滚动条控制的容器的可见宽度
                 viewWidth: 0,
@@ -38,6 +39,15 @@ define( function ( require ) {
                 thumbWidth: 0
             };
 
+            // 滑块的物理偏移， 不同于values.offset
+            this.thumbLocationX = 0;
+            // 左溢出长度
+            this.leftOverflow = 0;
+            // 右溢出长度
+            this.rightOverflow = 0;
+            // 记录本次和上一次改变内容之间宽度是否变大
+            this.isExpand = true;
+
             this.initWidget();
             this.mountWidget();
             this.initSize();
@@ -45,6 +55,8 @@ define( function ( require ) {
             this.hide();
             this.initServices();
             this.initEvent();
+
+            this.updateHandler = function (){};
 
         },
 
@@ -87,6 +99,14 @@ define( function ( require ) {
                 updateScrollbar: this.update
             } );
 
+            this.kfEditor.registerService( "ui.set.scrollbar.update.handler", this, {
+                setUpdateHandler: this.setUpdateHandler
+            } );
+
+            this.kfEditor.registerService( "ui.relocation.scrollbar", this, {
+                relocation: this.relocation
+            } );
+
         },
 
         initEvent: function () {
@@ -111,8 +131,8 @@ define( function ( require ) {
         },
 
         show: function () {
-//            this.state = true;
-//            this.container.style.display = "block";
+            this.state = true;
+            this.container.style.display = "block";
         },
 
         hide: function () {
@@ -123,9 +143,9 @@ define( function ( require ) {
         update: function ( contentWidth ) {
 
             var trackWidth = this.values.trackWidth,
-                scale = trackWidth / contentWidth,
                 thumbWidth = 0;
 
+            this.isExpand = contentWidth >= this.values.contentWidth;
             this.values.contentWidth = contentWidth;
 
             if ( trackWidth >= contentWidth ) {
@@ -133,10 +153,69 @@ define( function ( require ) {
                 return;
             }
 
-            thumbWidth = Math.max( Math.ceil( trackWidth * scale ), SCROLLBAR_DEF.thumbMinSize );
+            thumbWidth = Math.max( Math.ceil( trackWidth * trackWidth / contentWidth ), SCROLLBAR_DEF.thumbMinSize );
 
             this.values.thumbWidth = thumbWidth;
             this.widgets.thumb.style.width = thumbWidth + "px";
+
+        },
+
+        setUpdateHandler: function ( updateHandler ) {
+            this.updateHandler = updateHandler;
+        },
+
+        updateOffset: function ( offset ) {
+
+            var values = this.values;
+
+            values.offset = offset;
+            values.left = offset / values.trackWidth;
+            this.leftOverflow = values.left * ( values.contentWidth-values.viewWidth );
+            this.rightOverflow = values.contentWidth-values.viewWidth-this.leftOverflow;
+
+            this.updateHandler( values.left, values.offset, values );
+
+        },
+
+        relocation: function () {
+
+            var cursorLocation = this.kfEditor.requestService( "control.get.cursor.location" ),
+                padding = SCROLLBAR_CONF.padding,
+                contentWidth = this.values.contentWidth,
+                viewWidth = this.values.viewWidth,
+                // 视图左溢出长度
+                viewLeftOverflow = this.values.left * ( contentWidth - viewWidth ),
+                diff = 0;
+
+            // 扩大处理
+            if ( this.isExpand ) {
+
+                cursorLocation.x += padding;
+
+                if ( cursorLocation.x > viewLeftOverflow + viewWidth ) {
+
+                    if ( cursorLocation.x > contentWidth ) {
+                        cursorLocation.x = contentWidth;
+                    }
+
+                    diff = cursorLocation.x - viewWidth;
+
+                    setThumbOffsetByViewOffset( this, diff );
+
+                } else {
+
+                    // 根据左溢出值设置滑块位置, 这里的左溢出值不是新的值，而是上一次的值
+                    setThumbByLeftOverflow( this, this.leftOverflow );
+
+                }
+
+            // 减少内容
+            } else {
+
+                // 只减少左溢出即可, 也可以理解为保证右溢出不变
+                setThumbByLeftOverflow( this, contentWidth - viewWidth - this.rightOverflow );
+
+            }
 
         }
 
@@ -185,7 +264,9 @@ define( function ( require ) {
     function thumbHandler ( comp ) {
 
         var isMoving = false,
-            startPoint = 0;
+            startPoint = 0,
+            startOffset = 0,
+            trackWidth = comp.values.trackWidth;
 
         Utils.addEvent( comp.widgets.thumb, "mousedown", function ( e ) {
 
@@ -194,6 +275,7 @@ define( function ( require ) {
 
             isMoving = true;
             startPoint = e.clientX;
+            startOffset = comp.thumbLocationX;
 
         } );
 
@@ -201,6 +283,7 @@ define( function ( require ) {
 
             isMoving = false;
             startPoint = 0;
+            startOffset = 0;
 
         } );
 
@@ -210,8 +293,17 @@ define( function ( require ) {
                 return;
             }
 
-            var diff = e.clientX - startPoint;
+            var distance = e.clientX - startPoint,
+                offset = startOffset + distance,
+                thumbWidth = comp.values.thumbWidth;
 
+            if ( offset < 0 ) {
+                offset = 0;
+            } else if ( offset + thumbWidth > trackWidth ) {
+                offset = trackWidth - thumbWidth;
+            }
+
+            setThumbLocation( comp, offset );
 
         } );
 
@@ -251,21 +343,72 @@ define( function ( require ) {
 
     }
 
+    function setThumbLocation ( comp, locationX ) {
+
+        // 滑块偏移值
+        var values = comp.values,
+            trackPieceWidth = values.trackWidth - values.thumbWidth,
+            offset = Math.floor( ( locationX / trackPieceWidth ) * values.trackWidth );
+
+        comp.updateOffset( offset );
+
+        // 更新滑块物理偏移: 定位
+        comp.thumbLocationX = locationX;
+        comp.widgets.thumb.style.left = locationX + "px";
+
+    }
 
     // 设置滑块位置, 会修正滑块在显示上的定位， 但不影响取值
     function setThumbOffset ( comp, offset ) {
 
-        var values = comp.values;
+        var values = comp.values,
+            offsetProportion = offset / values.trackWidth,
+            trackPieceWidth = values.trackWidth - values.thumbWidth,
+            thumbLocationX = 0;
 
-        values.offset = offset;
-        values.left = offset / values.trackWidth * 100;
+        thumbLocationX = Math.floor( offsetProportion * trackPieceWidth );
 
-        // 修正定位
-        if ( offset + values.thumbWidth > values.trackWidth ) {
-            offset = values.trackWidth - values.thumbWidth;
+        if ( offset < 0 ) {
+            offset = 0;
+            thumbLocationX = 0;
         }
 
-        comp.widgets.thumb.style.left = offset + "px";
+        comp.updateOffset( offset );
+
+        // 更新滑块定位
+        comp.widgets.thumb.style.left = thumbLocationX + "px";
+        comp.thumbLocationX = thumbLocationX;
+
+    }
+
+    /**
+     * 根据内容视图上的偏移值设置滑块位置
+     */
+    function setThumbOffsetByViewOffset ( comp, viewOffset ) {
+
+        var values = comp.values,
+            offsetProportion = 0,
+            offset = 0;
+
+        // 轨道偏移比例
+        offsetProportion = viewOffset / ( values.contentWidth - values.viewWidth );
+
+        // 轨道偏移值
+        offset = Math.floor( offsetProportion * values.trackWidth );
+
+        setThumbOffset( comp, offset );
+
+    }
+
+    /**
+     * 根据左溢出值设置滑块定位
+     */
+    function setThumbByLeftOverflow ( comp, leftViewOverflow ) {
+
+        var values = comp.values,
+            overflowProportion = leftViewOverflow / ( values.contentWidth - values.viewWidth );
+
+        setThumbOffset( comp, overflowProportion * values.trackWidth );
 
     }
 

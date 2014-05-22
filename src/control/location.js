@@ -43,6 +43,10 @@ define( function ( require, exports, module ) {
                 reselect: this.reselect
             } );
 
+            this.kfEditor.registerService( "control.get.cursor.location", this, {
+                getCursorLocation: this.getCursorLocation
+            } );
+
         },
 
         createCursor: function () {
@@ -174,11 +178,22 @@ define( function ( require, exports, module ) {
             cursorOffset -= paperContainerRect.left;
 
             // 定位光标
-            cursorTransform.m.e = cursorOffset / canvasZoom / formulaZoom ;
+            cursorTransform.m.e = Math.floor( cursorOffset / canvasZoom / formulaZoom ) + 0.5 ;
             cursorTransform.m.f = ( focusChildRect.top - paperContainerRect.top ) / canvasZoom / formulaZoom;
 
             this.cursorShape.setMatrix( cursorTransform );
             this.cursorShape.setAttr( "style", "display: block" );
+
+        },
+
+        getCursorLocation: function () {
+
+            var rect = this.cursorShape.getRenderBox( "paper" );
+
+            return {
+                x: rect.x,
+                y: rect.y
+            };
 
         },
 

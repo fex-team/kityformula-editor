@@ -67,7 +67,7 @@ define( function ( require ) {
             updateSize: function () {
 
                 var containerBox = $$.getRectBox( this.toolbar.getContainer() ),
-                    diff = 20,
+                    diff = 30,
                     curBox = $$.getRectBox( this.element );
 
                 if ( this.options.type === BOX_TYPE.DETACHED ) {

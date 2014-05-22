@@ -255,8 +255,8 @@ define( function ( require, exports, module ) {
 
         processingInput: function () {
 
-            this.kfEditor.requestService( "ui.update.canvas.view" );
             this.restruct( this.inputBox.value );
+            this.kfEditor.requestService( "ui.update.canvas.view" );
 
         },
 

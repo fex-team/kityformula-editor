@@ -39,8 +39,6 @@ define( function ( require, exports, modules ) {
 
                 this.kfEditor = kfEditor;
 
-                this.resizeTimer = null;
-
                 this.toolbarWrap = createToolbarWrap( currentDocument );
                 this.toolbarContainer = createToolbarContainer( currentDocument );
                 this.editArea = createEditArea( currentDocument );
@@ -61,7 +59,7 @@ define( function ( require, exports, modules ) {
 
                 this.updateContainerSize( this.container, this.toolbarWrap, this.editArea, this.canvasContainer );
 
-                this.initResizeEvent();
+                this.initScrollEvent();
 
             },
 
@@ -113,19 +111,16 @@ define( function ( require, exports, modules ) {
 
             },
 
-            initResizeEvent: function () {
+            initScrollEvent: function () {
 
                 var _self = this;
 
-                this.canvasContainer.ownerDocument.defaultView.onresize = function () {
+                this.kfEditor.requestService( "ui.set.scrollbar.update.handler", function ( proportion, offset, values ) {
 
-                    window.clearTimeout( _self.resizeTimer );
+                    offset = Math.floor( proportion * ( values.contentWidth - values.viewWidth ) );
+                    _self.kfEditor.requestService( "render.set.canvas.offset", offset );
 
-                    _self.resizeTimer = window.setTimeout( function () {
-                        _self.kfEditor.requestService( "render.relocation" );
-                    }, 80 );
-
-                };
+                } );
 
             },
 
@@ -164,17 +159,24 @@ define( function ( require, exports, modules ) {
 
                 if ( contentRect.width > this.canvasRect.width ) {
 
+                    this.kfEditor.requestService( "render.disable.relocation" );
+                    this.kfEditor.requestService( "render.relocation" );
+
+                    // 更新滚动条， 参数是：滚动条所控制的内容长度
+                    this.kfEditor.requestService( "ui.update.scrollbar", contentRect.width );
+
                     if ( this.viewState === VIEW_STATE.NO_OVERFLOW  ) {
                         this.toggleViewState();
                         this.kfEditor.requestService( "ui.show.scrollbar" );
                     }
 
-                    // 更新滚动条， 参数是：滚动条所控制的内容长度
-                    this.kfEditor.requestService( "ui.update.scrollbar", contentRect.width );
+                    this.kfEditor.requestService( "ui.relocation.scrollbar" )
 
                 } else {
 
+                    this.kfEditor.requestService( "render.enable.relocation" );
                     this.kfEditor.requestService( "ui.hide.scrollbar" );
+                    this.kfEditor.requestService( "render.relocation" );
 
                 }
 
