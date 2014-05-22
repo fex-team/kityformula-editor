@@ -36,7 +36,9 @@ define( function ( require ) {
                 // 轨道长度
                 trackWidth: 0,
                 // 滑块宽度
-                thumbWidth: 0
+                thumbWidth: 0,
+                // 可滚动的宽度
+                scrollWidth: 0
             };
 
             // 滑块的物理偏移， 不同于values.offset
@@ -148,6 +150,7 @@ define( function ( require ) {
 
             this.isExpand = contentWidth >= this.values.contentWidth;
             this.values.contentWidth = contentWidth;
+            this.values.scrollWidth = contentWidth - this.values.viewWidth;
 
             if ( trackWidth >= contentWidth ) {
                 this.hide();
@@ -171,6 +174,7 @@ define( function ( require ) {
 
             values.offset = offset;
             values.left = offset / values.trackWidth;
+
             this.leftOverflow = values.left * ( values.contentWidth-values.viewWidth );
             this.rightOverflow = values.contentWidth-values.viewWidth-this.leftOverflow;
 
@@ -377,19 +381,20 @@ define( function ( require ) {
 
     }
 
-    // 根据指定的步长来改变滚动条的offset值
+    // 根据指定的内容视图上移动的步长来改变滚动条的offset值
     function setThumbOffsetByStep ( comp, step ) {
 
-        var offset = comp.values.offset + step;
+        var leftOverflow = comp.leftOverflow + step;
 
         // 修正越界
-        if ( offset < 0 ) {
-            offset = 0;
-        } else if ( offset > comp.values.trackWidth ) {
-            offset = comp.values.trackWidth;
+        if ( leftOverflow < 0 ) {
+            leftOverflow = 0;
+        } else if ( leftOverflow > comp.values.scrollWidth ) {
+            leftOverflow = comp.values.scrollWidth;
         }
 
-        setThumbOffset( comp, offset );
+        setThumbByLeftOverflow( comp, leftOverflow );
+
     }
 
     // 设置偏移值, 会同时更新滑块在显示上的定位

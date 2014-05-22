@@ -168,7 +168,7 @@ define( function ( require ) {
 
                 this.kfEditor.registerCommand( "render", this, function ( str ) {
                     this.render( str );
-                    this.relocation();
+                    this.kfEditor.requestService( "ui.update.canvas.view" );
                 } );
 
                 this.kfEditor.registerCommand( "getPaper", this, this.getPaper );
