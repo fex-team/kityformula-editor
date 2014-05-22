@@ -315,7 +315,7 @@ define( function ( require ) {
         var trackRect = getRect( track ),
             values = comp.values,
             // 单位偏移值， 一个viewWidth所对应到轨道上后的offset值
-            unitOffset = values.viewWidth / values.contentWidth * values.trackWidth,
+            unitOffset = values.viewWidth / ( values.contentWidth - values.viewWidth ) * values.trackWidth,
             // 点击位置在轨道中的偏移
             clickOffset = evt.clientX - trackRect.left;
 
@@ -358,7 +358,7 @@ define( function ( require ) {
 
     }
 
-    // 设置滑块位置, 会修正滑块在显示上的定位， 但不影响取值
+    // 设置偏移值, 会同时更新滑块在显示上的定位
     function setThumbOffset ( comp, offset ) {
 
         var values = comp.values,
