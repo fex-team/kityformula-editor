@@ -1,7 +1,7 @@
 /* 工具栏 */
 .kf-editor-toolbar {
     width: 100%;
-    padding: 2px 10px;
+    padding: 1px 10px;
     position: relative;
     top: 0;
     left: 0;
@@ -11,13 +11,13 @@
     -moz-box-shadow:1px 1px 1px rgba( 0, 0, 0, 0.1 );
     -webkit-box-shadow:1px 1px 1px rgba( 0, 0, 0, 0.1 );
     box-shadow:1px 1px 1px rgba( 0, 0, 0, 0.1 );
-    color: #333;
+    color: #000;
     font-family: Helvetica, Arial, "微软雅黑", "Microsoft YaHei", "宋体", sans-serif;
 }
 
 /* 按钮 */
 .kf-editor-ui-button {
-    padding: 8px 5px;
+    padding: 8px 6px;
     height: 79px;
     font-size: 12px;
     display: inline-block;
@@ -30,6 +30,7 @@
     z-index: 3;
     vertical-align: top;
     opacity: 0.5;
+    margin-right: 1px;
 }
 
 .kf-editor-toolbar .kf-editor-ui-overlap-button {
@@ -92,15 +93,16 @@
 }
 
 .kf-editor-toolbar .kf-editor-ui-button-in {
-    border-color: #99c99b;
-    background: #e6fae7;
+    border-color: #cccbc6;
+    background: #f9f8f4;
+    box-shadow: inset 0 0 3px rgba( 0, 0, 0, 0.15 );
 }
 
 .kf-editor-toolbar .kf-editor-ui-overlap-button {
     padding-top: 0;
     padding-bottom: 0;
-    border-color: #53b856;
-    background: #53b856;
+    border-color: #61b864;
+    background: #61b864;
 }
 
 /* 分割符 */
@@ -111,8 +113,9 @@
 }
 
 .kf-editor-ui-enabled.kf-editor-ui-button:HOVER {
-    border: 1px solid #99c99b;
-    background: #e6fae7;
+    border: 1px solid #cccbc6;
+    background: #f9f8f4;
+    box-shadow: inset 0 0 3px rgba( 0, 0, 0, 0.15 );
 }
 
 .kf-editor-ui-enabled.kf-editor-ui-overlap-button:HOVER {
@@ -129,7 +132,7 @@
 
 /* box */
 .kf-editor-ui-box {
-    border: 1px solid #b7b2be;
+    border: 1px solid #61b864;
     border-radius: 3px;
     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.11);
     background: white;
@@ -141,7 +144,7 @@
 }
 
 .kf-editor-ui-box-container {
-    font-size: 14px;
+    font-size: 12px;
 }
 
 .kf-editor-ui-box-group-title {
@@ -170,6 +173,7 @@
     border-top-color: white;
     border-width: 4px;
     margin-left: 10px;
+    margin-top: 8px;
 }
 
 .kf-editor-ui-yushe-btn .kf-editor-ui-box-item {
@@ -187,7 +191,7 @@
 }
 
 .kf-editor-ui-box-item-content:HOVER .kf-editor-ui-box-item-val {
-    border-color: #53b856;
+    border-color: #6eb864;
 }
 
 .kf-editor-ui-area .kf-editor-ui-box-item {
@@ -314,19 +318,20 @@
 }
 
 .kf-editor-ui-enabled .kf-editor-ui-area-button:HOVER {
-    background-color: #e6fae7;
+    background-color: #e5e4e1;
 }
 
 .kf-editor-ui-enabled .kf-editor-ui-moveup-button:HOVER {
-    background-color: #e6fae7;
+    background-color: #e5e4e1;
 }
 
 .kf-editor-ui-enabled .kf-editor-ui-movedown-button:HOVER {
-    background-color: #e6fae7;
+    background-color: #e5e4e1;
 }
 
-.kf-editor-ui-disabled {
+.kf-editor-ui-area-button-container .kf-editor-ui-disabled {
     opacity: 0.25;
+    background-color: transparent!important;
 }
 
 .kf-editor-ui-area-mount {
@@ -343,9 +348,8 @@
 
 /* list */
 .kf-editor-ui-list {
-    background: white;
-    padding: 1px;
-    border: 1px solid #b7b2be;
+    background: #f9f8f5;
+    border: 1px solid #61b864;
     border-radius: 3px;
     position: fixed;
     top: 0;
@@ -368,11 +372,21 @@
     line-height: 24px;
     padding: 2px 6px;
     border: 1px solid transparent;
+    border-width: 1px 0;
+}
+
+.kf-editor-ui-list-item-select {
+    color: #61b864;
+    font-weight: bold;
+}
+
+.kf-editor-ui-list-item-select .kf-editor-ui-list-item-icon {
+    visibility: visible;
 }
 
 .kf-editor-ui-list-item:HOVER {
-    border-color: #83d286;
-    background-color: #e6fae7;
+    border-color: #beddbf;
+    background-color: #ecf3e9;
 }
 
 .kf-editor-ui-list-item-icon {
@@ -426,7 +440,7 @@
 .kf-editor-ui-enabled .kf-editor-ui-area-item-inner:HOVER .kf-editor-ui-area-item-img {
     width: 30px;
     height: 30px;
-    border-color: #53b856;
+    border-color: #6eb864;
 }
 
 .kf-editor-ui-enabled {

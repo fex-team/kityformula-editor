@@ -6,6 +6,7 @@ define( function ( require ) {
 
     var UI_ELE_TYPE = require( "ui/ui-impl/def/ele-type" ),
         BOX_TYPE = require( "ui/ui-impl/def/box-type" ),
+        iconPosition = require( "ui/position" ),
         kity = require( "kity" );
 
     var config = [ {
@@ -429,41 +430,14 @@ define( function ( require ) {
     ( function () {
 
         var list = [
-                "pm", "infty", {
-                    key: "=",
-                    img: "eq"
-                }, "sim", "times", "div", {
-                    key: "!",
-                    img: "tanhao"
-                }, {
-                    key: "<",
-                    img: "lt"
-                }, "ll", {
-                    key: ">",
-                    img: "gt"
-                },
-                "gg", "leq", "geq", "mp", "cong", "equiv", "propto", "approx", "forall", "partial",
-                "surd", "cup", "cap", "varnothing", {
-                    key: "%",
-                    img: "baifenhao"
-                },
-                "circ", "exists", "nexists", "in", "ni", "gets", "uparrow", "to", "downarrow",
-                "leftrightarrow", "therefore", "because", {
-                    key: "+",
-                    img: "plus"
-                }, {
-                    key: "-",
-                    img: "minus"
-                },
-                "neg", "ast", "cdot", "vdots", "ddots", "aleph", "beth", "blacksquare"
-
+                iconPosition[ 0 ]
             ],
             configList = config[ 2 ].options.box.group[ 0 ].items;
 
         configList.push( {
             title: "基础数学",
-            content: getContents( {
-                path: "assets/images/toolbar/char/math/",
+            content: getIconContents( {
+                show: "assets/images/toolbar/char.png",
                 values: list
             } )
         } );
@@ -473,42 +447,68 @@ define( function ( require ) {
     // 初始化希腊字符配置
     ( function () {
 
-        var greekList = [ {
-                title: "小写",
-                values: [ "alpha", "beta", "gamma", "delta", "epsilon", "zeta", "eta", "theta", "iota", "kappa", "lambda", "mu", "nu", "xi", "omicron", "pi", "rho", "sigma", "tau", "upsilon", "phi", "chi", "psi", "omega" ]
-            }, {
-                title: "大写",
-                values: [ "Alpha", "Beta", "Gamma", "Delta", "Epsilon", "Zeta", "Eta", "Theta", "Iota", "Kappa", "Lambda", "Mu", "Nu", "Xi", "Omicron", "Pi", "Rho", "Sigma", "Tau", "Upsilon", "Phi", "Chi", "Psi", "Omega" ]
-            }, {
-                title: "变体",
-                values: [ "digamma", "varepsilon", "varkappa", "varphi", "varpi", "varrho", "varsigma", "vartheta" ]
-            } ],
+//        var greekList = [ {
+//                title: "小写",
+//                values: [ "alpha", "beta", "gamma", "delta", "epsilon", "zeta", "eta", "theta", "iota", "kappa", "lambda", "mu", "nu", "xi", "omicron", "pi", "rho", "sigma", "tau", "upsilon", "phi", "chi", "psi", "omega" ]
+//            }, {
+//                title: "大写",
+//                values: [ "Alpha", "Beta", "Gamma", "Delta", "Epsilon", "Zeta", "Eta", "Theta", "Iota", "Kappa", "Lambda", "Mu", "Nu", "Xi", "Omicron", "Pi", "Rho", "Sigma", "Tau", "Upsilon", "Phi", "Chi", "Psi", "Omega" ]
+//            }, {
+//                title: "变体",
+//                values: [ "digamma", "varepsilon", "varkappa", "varphi", "varpi", "varrho", "varsigma", "vartheta" ]
+//            } ],
+        var titles = [
+                "小写",
+                "大写",
+                "变体"
+            ],
             greekConfigList = config[ 2 ].options.box.group[ 1 ].items;
+
+
+//        ( function () {
+//
+//            kity.Utils.each( greekList, function ( data ) {
+//
+//                data = data.values;
+//
+//                for ( var i = 0, len = data.length; i < len; i++ ) {
+//                    data[ i ] = "\\" + data[ i ];
+//                }
+//
+//            } );
+//
+//        } )();
 
         // 小写处理
         greekConfigList.push( {
-            title: greekList[ 0 ].title,
-            content: getContents( {
-                path: "assets/images/toolbar/char/greek/lower/",
-                values: greekList[ 0 ].values
+            title: titles[ 0 ],
+            content: getIconContents( {
+                show: "assets/images/toolbar/char.png",
+                values: [
+                    iconPosition[ 1 ]
+                ]
             } )
         } );
 
         // 大写处理
         greekConfigList.push( {
-            title: greekList[ 1 ].title,
-            content: getContents( {
-                path: "assets/images/toolbar/char/greek/upper/",
-                values: greekList[ 1 ].values
+            title: titles[ 1 ],
+            content: getIconContents( {
+                show: "assets/images/toolbar/char.png",
+                values: [
+                    iconPosition[ 2 ]
+                ]
             } )
         } );
 
         // 变体处理
         greekConfigList.push( {
-            title: greekList[ 2 ].title,
-            content: getContents( {
-                path: "assets/images/toolbar/char/greek/misc/",
-                values: greekList[ 2 ].values
+            title: titles[ 2 ],
+            content: getIconContents( {
+                show: "assets/images/toolbar/char.png",
+                values: [
+                    iconPosition[ 3 ]
+                ]
             } )
         } );
 
@@ -787,6 +787,34 @@ define( function ( require ) {
 
     }
 
+    function getIconContents ( data ) {
+
+        var result = [],
+            values = data.values;
+
+        kity.Utils.each( values, function ( value ) {
+
+            for ( var key in value ) {
+
+                if ( value.hasOwnProperty( key ) ) {
+                    result.push( {
+                        item: {
+                            show: data.show,
+                            val: key,
+                            pos: value[key]
+                        }
+                    } );
+                }
+
+            }
+
+        } );
+
+        return result;
+
+    }
+
+    window.config = config;
     return config;
 
 } );
