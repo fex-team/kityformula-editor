@@ -16,7 +16,11 @@ define( function ( require ) {
             button: {
                 label: '预设<br/>',
                 className: 'yushe-btn',
-                icon: "assets/images/toolbar/button/fx.png",
+                icon: {
+                    src: "assets/images/toolbar/btn.png",
+                    x: 0,
+                    y: 0
+                },
                 iconSize: {
                     w: 40
                 }
@@ -84,7 +88,11 @@ define( function ( require ) {
         options: {
             button: {
                 label: "分数<br/>",
-                icon: "assets/images/toolbar/button/frac.png"
+                icon: {
+                    src: "assets/images/toolbar/btn.png",
+                    x: 45,
+                    y: 0
+                }
             },
             box: {
                 width: 332,
@@ -129,7 +137,11 @@ define( function ( require ) {
         options: {
             button: {
                 label: "上下标<br/>",
-                icon: "assets/images/toolbar/button/script.png"
+                icon: {
+                    src: "assets/images/toolbar/btn.png",
+                    x: 82,
+                    y: 0
+                }
             },
             box: {
                 width: 332,
@@ -178,7 +190,11 @@ define( function ( require ) {
         options: {
             button: {
                 label: "根式<br/>",
-                icon: "assets/images/toolbar/button/sqrt.png"
+                icon: {
+                    src: "assets/images/toolbar/btn.png",
+                    x: 119,
+                    y: 0
+                }
             },
             box: {
                 width: 342,
@@ -223,7 +239,11 @@ define( function ( require ) {
         options: {
             button: {
                 label: "积分<br/>",
-                icon: "assets/images/toolbar/button/int.png"
+                icon: {
+                    src: "assets/images/toolbar/btn.png",
+                    x: 156,
+                    y: 0
+                }
             },
             box: {
                 width: 332,
@@ -265,7 +285,11 @@ define( function ( require ) {
         options: {
             button: {
                 label: "大型<br/>运算符",
-                icon: "assets/images/toolbar/button/sum.png"
+                icon: {
+                    src: "assets/images/toolbar/btn.png",
+                    x: 193,
+                    y: 0
+                }
             },
             box: {
                 width: 332,
@@ -295,7 +319,11 @@ define( function ( require ) {
         options: {
             button: {
                 label: "括号<br/>",
-                icon: "assets/images/toolbar/button/brackets.png"
+                icon: {
+                    src: "assets/images/toolbar/btn.png",
+                    x: 230,
+                    y: 0
+                }
             },
             box: {
                 width: 332,
@@ -329,7 +357,11 @@ define( function ( require ) {
         options: {
             button: {
                 label: "函数<br/>",
-                icon: "assets/images/toolbar/button/sin.png"
+                icon: {
+                    src: "assets/images/toolbar/btn.png",
+                    x: 267,
+                    y: 0
+                }
             },
             box: {
                 width: 340,

@@ -138,7 +138,6 @@ define( function ( require ) {
 
                     iconNode = groupNode.cloneNode( false );
                     iconNode.className = PREFIX + "list-item-icon";
-                    iconNode.innerHTML = '<img src="assets/images/toolbar/button/tick.png">';
 
                     itemNode.appendChild( iconNode );
                     itemNode.appendChild( $$.ele( doc, "text", itemText ) );

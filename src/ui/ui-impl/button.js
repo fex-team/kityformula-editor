@@ -190,7 +190,11 @@ define( function ( require ) {
                     className: PREFIX + "button-icon"
                 } );
 
-                iconNode.style.backgroundImage = "url(" + this.options.icon + ")";
+                if ( typeof this.options.icon === "string" ) {
+                    iconNode.style.backgroundImage = "url(" + this.options.icon + ") no-repeat";
+                } else {
+                    iconNode.style.background = getBackgroundStyle( this.options.icon );
+                }
 
                 if ( this.options.iconSize.w ) {
                     iconNode.style.width = this.options.iconSize.w + "px";
@@ -256,6 +260,17 @@ define( function ( require ) {
             }
 
         } );
+
+    function getBackgroundStyle ( data ) {
+
+        var style = "url( " + data.src + " ) no-repeat ";
+
+        style += -data.x + 'px ';
+        style += -data.y + 'px';
+
+        return style;
+
+    }
 
     return Button;
 
