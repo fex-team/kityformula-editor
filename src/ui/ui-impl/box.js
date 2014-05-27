@@ -488,20 +488,14 @@ define( function ( require ) {
                     }),
                     cls = PREFIX + "box-item-val",
                     tmpContent = this.options.item,
-                    tmpNode = null;
-
-                if ( typeof tmpContent === "string" ) {
-                    tmpContent = {
-                        show: tmpContent,
-                        val: tmpContent
-                    };
-                }
+                    tmpNode = null,
+                    styleStr = getStyleByData( tmpContent );
 
                 tmpNode = $$.ele( doc, "div", {
                     className: cls
                 } );
 
-                tmpNode.innerHTML = '<img src="' + tmpContent.show + '">';
+                tmpNode.innerHTML = '<div class="'+ PREFIX +'item-image" style="'+ styleStr +'"></div>';
                 // 附加属性到项的根节点上
                 this.element.setAttribute( "data-value", tmpContent.val );
 
@@ -518,23 +512,17 @@ define( function ( require ) {
                         className: PREFIX + "box-item-content"
                     }),
                     cls = PREFIX + "box-item-val",
-                    tmpContent = this.options.item,
+                    tmpContent = this.options,
                     tmpNode = null;
-
-                if ( typeof tmpContent === "string" ) {
-                    tmpContent = {
-                        show: tmpContent,
-                        val: tmpContent
-                    };
-                }
 
                 tmpNode = $$.ele( doc, "div", {
                     className: cls
                 } );
 
-                tmpNode.innerHTML = '<img src="' + tmpContent.show + '">';
+                tmpNode.style.background = 'url( '+ tmpContent.img +' )';
+                tmpNode.style.backgroundPosition = -tmpContent.pos.x + 'px ' + -tmpContent.pos.y + 'px';
                 // 附加属性到项的根节点上
-                this.element.setAttribute( "data-value", tmpContent.val );
+                this.element.setAttribute( "data-value", tmpContent.key );
 
                 contentNode.appendChild( tmpNode );
 
@@ -598,6 +586,22 @@ define( function ( require ) {
 
     function getRectBox ( node ) {
         return node.getBoundingClientRect();
+    }
+
+    function getStyleByData ( data ) {
+
+        // background
+        var style = 'background: url( '+ data.img +' ) no-repeat ';
+
+        style += -data.pos.x + 'px ';
+        style += -data.pos.y + 'px;';
+
+        // width height
+        style += ' width: ' + data.size.width + 'px;';
+        style += ' height: ' + data.size.height + 'px;';
+
+        return style;
+
     }
 
     return Box;

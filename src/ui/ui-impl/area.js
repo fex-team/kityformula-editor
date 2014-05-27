@@ -177,15 +177,13 @@ define( function ( require ) {
 
                     kity.Utils.each( contents, function ( currentContent, index ) {
 
-                        currentContent = currentContent.item;
-
                         lineno = Math.floor( count / lineMaxCount );
                         colno = count % lineMaxCount;
                         count++;
 
                         style = "top: " + ( lineno * 33 + 5 ) + "px; left: " + ( colno * 32 + 5 ) + "px;" ;
 
-                        newContent.push( '<div class="'+ PREFIX +'area-item" data-value="'+ currentContent.val +'" style="'+ style +'"><div class="'+ PREFIX +'area-item-inner"><img class="'+ PREFIX +'area-item-img" src="'+ currentContent.show +'"></div></div>' );
+                        newContent.push( '<div class="'+ PREFIX +'area-item" data-value="'+ currentContent.key +'" style="'+ style +'"><div class="'+ PREFIX +'area-item-inner"><div class="'+ PREFIX +'area-item-img" style="background: url('+ currentContent.img +') no-repeat '+ -currentContent.pos.x + 'px ' + -currentContent.pos.y +'px;"></div></div></div>' );
 
                     } );
 

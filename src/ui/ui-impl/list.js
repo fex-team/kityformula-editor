@@ -69,7 +69,7 @@ define( function ( require ) {
 
                 this.currentSelect = index;
 
-                this.itemGroups.items[ index ].firstChild.style.visibility = "visible";
+                this.itemGroups.items[ index ].classList.add( PREFIX + "list-item-select" );
 
                 this.onselectHandler( index, oldSelect );
 
@@ -77,7 +77,7 @@ define( function ( require ) {
 
             unselect: function ( index ) {
 
-                this.itemGroups.items[ index ].firstChild.style.visibility = "hidden";
+                this.itemGroups.items[ index ].classList.remove( PREFIX + "list-item-select" );
 
             },
 

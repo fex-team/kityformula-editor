@@ -409,28 +409,32 @@
 }
 
 .kf-editor-ui-area-item-inner {
-    width: 26px;
-    height: 26px;
+    width: 34px;
+    height: 34px;
     border: 1px solid white;
     position: absolute;
-    top: -1px;
-    left: -1px;
+    top: -4px;
+    left: -4px;
     -webkit-transition: all 0.1s linear;
     -moz-transition: all 0.1s linear;
     transition: all 0.1s linear;
+
+    -webkit-transform: scale( 0.76, 0.76 );
+    -moz-transform: scale( 0.76, 0.76 );
+    transform: scale( 0.76, 0.76 );
 }
 
 .kf-editor-ui-enabled .kf-editor-ui-area-item-inner:HOVER {
-    width: 32px;
-    height: 32px;
-    top: -3px;
-    left: -3px;
     border-color: #dff3df;
+
+    -webkit-transform: scale( 1, 1 );
+    -moz-transform: scale( 1, 1 );
+    transform: scale( 1, 1 );
 }
 
 .kf-editor-ui-area-item-img {
-    width: 24px;
-    height: 24px;
+    width: 32px;
+    height: 32px;
     border: 1px solid #808080;
     -webkit-transition: all 0.1s linear;
     -moz-transition: all 0.1s linear;
@@ -438,8 +442,6 @@
 }
 
 .kf-editor-ui-enabled .kf-editor-ui-area-item-inner:HOVER .kf-editor-ui-area-item-img {
-    width: 30px;
-    height: 30px;
     border-color: #6eb864;
 }
 
