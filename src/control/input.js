@@ -10,7 +10,9 @@ define( function ( require, exports, module ) {
         KEY_CODE = {
             LEFT: 37,
             RIGHT: 39,
-            DELETE: 8
+            DELETE: 8,
+            // 输入法特殊处理
+            INPUT: 229
         };
 
     return kity.createClass( "InputComponent", {
@@ -131,6 +133,8 @@ define( function ( require, exports, module ) {
 
             kfUtils.addEvent( this.inputBox, "keydown", function ( e ) {
 
+                var isControl = false;
+
                 if ( e.ctrlKey ) {
                     // 处理用户控制行为
                     _self.processUserCtrl( e );
@@ -139,21 +143,31 @@ define( function ( require, exports, module ) {
 
                 switch ( e.keyCode ) {
 
+                    case KEY_CODE.INPUT:
+                        return;
+
                     case KEY_CODE.LEFT:
                         e.preventDefault();
                         _self.leftMove();
+                        isControl = true;
                         break;
 
                     case KEY_CODE.RIGHT:
                         e.preventDefault();
                         _self.rightMove();
+                        isControl = true;
                         break;
 
                     case KEY_CODE.DELETE:
                         e.preventDefault();
                         _self.delete();
+                        isControl = true;
                         break;
 
+                }
+
+                if ( isControl ) {
+                    _self.kfEditor.requestService( "ui.update.canvas.view" );
                 }
 
                 if ( !_self.pretreatmentInput( e ) ) {

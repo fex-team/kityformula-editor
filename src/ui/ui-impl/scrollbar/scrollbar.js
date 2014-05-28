@@ -148,7 +148,7 @@ define( function ( require ) {
             var trackWidth = this.values.trackWidth,
                 thumbWidth = 0;
 
-            this.isExpand = contentWidth >= this.values.contentWidth;
+            this.isExpand = contentWidth > this.values.contentWidth;
             this.values.contentWidth = contentWidth;
             this.values.scrollWidth = contentWidth - this.values.viewWidth;
 
@@ -192,44 +192,50 @@ define( function ( require ) {
                 viewLeftOverflow = this.values.left * ( contentWidth - viewWidth ),
                 diff = 0;
 
-            // 扩大处理
-            if ( this.isExpand ) {
+            if ( cursorLocation.x < viewLeftOverflow ) {
 
-                cursorLocation.x += padding;
-
-                if ( cursorLocation.x > viewLeftOverflow + viewWidth ) {
-
-                    if ( cursorLocation.x > contentWidth ) {
-                        cursorLocation.x = contentWidth;
-                    }
-
-                    diff = cursorLocation.x - viewWidth;
-
-                    setThumbOffsetByViewOffset( this, diff );
-
-                } else {
-
-                    // 根据左溢出值设置滑块位置, 这里的左溢出值不是新的值，而是上一次的值
-                    setThumbByLeftOverflow( this, this.leftOverflow );
-
+                if ( cursorLocation.x < 0 ) {
+                    cursorLocation.x = 0;
                 }
 
-            // 减少内容
+                setThumbOffsetByViewOffset( this, cursorLocation.x );
+
+            } else if ( cursorLocation.x + padding > viewLeftOverflow + viewWidth ) {
+
+                cursorLocation.x += padding;
+                
+                if ( cursorLocation.x > contentWidth ) {
+                    cursorLocation.x = contentWidth;
+                }
+
+                diff = cursorLocation.x - viewWidth;
+
+                setThumbOffsetByViewOffset( this, diff );
+
             } else {
-
-                // 只减少左溢出即可, 也可以理解为保证右溢出不变
-                setThumbByLeftOverflow( this, contentWidth - viewWidth - this.rightOverflow );
-
+                if ( this.isExpand ) {
+                    // 根据上一次左溢出值设置滑块位置
+                    setThumbByLeftOverflow( this, this.leftOverflow );
+                } else  {
+                    // 减少左溢出
+                    setThumbByLeftOverflow( this, contentWidth - viewWidth - this.rightOverflow );
+                }
             }
-
         }
 
     } );
 
     function createElement ( doc, eleName, className ) {
 
-        var node = doc.createElement( eleName );
-        node.className = CLASS_PREFIX + className;
+        var node = doc.createElement( eleName ),
+            str = '<div class="$1"></div><div class="$2"></div>';
+
+        className = CLASS_PREFIX + className;
+
+        node.className = className;
+
+        node.innerHTML = str.replace( '$1', className+'-left' )
+                             .replace( '$2', className+'-right' );
 
         return node;
 

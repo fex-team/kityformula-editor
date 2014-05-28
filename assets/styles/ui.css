@@ -47,7 +47,7 @@
 }
 
 .kf-editor-ui-button-label {
-    color: #333;
+    color: #666;
     text-align: center;
     display: block;
     font-size: 12px;
@@ -93,16 +93,15 @@
 }
 
 .kf-editor-toolbar .kf-editor-ui-button-in {
-    border-color: #cccbc6;
-    background: #f9f8f4;
-    box-shadow: inset 0 0 3px rgba( 0, 0, 0, 0.15 );
+    border-color: #8fcc91!important;
+    background: #e0f0dd!important;
 }
 
 .kf-editor-toolbar .kf-editor-ui-overlap-button {
     padding-top: 0;
     padding-bottom: 0;
-    border-color: #61b864;
-    background: #61b864;
+    border-color: #61b864!important;
+    background: #61b864!important;
 }
 
 /* 分割符 */
@@ -113,9 +112,8 @@
 }
 
 .kf-editor-ui-enabled.kf-editor-ui-button:HOVER {
-    border: 1px solid #cccbc6;
-    background: #f9f8f4;
-    box-shadow: inset 0 0 3px rgba( 0, 0, 0, 0.15 );
+    border: 1px solid #a9d9ab;
+    background: #ebf7e6;
 }
 
 .kf-editor-ui-enabled.kf-editor-ui-overlap-button:HOVER {
@@ -132,7 +130,7 @@
 
 /* box */
 .kf-editor-ui-box {
-    border: 1px solid #61b864;
+    border: 1px solid #b3aead;
     border-radius: 3px;
     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.11);
     background: white;
@@ -141,6 +139,10 @@
     left: -1px;
     overflow-x: hidden;
     overflow-y: auto;
+}
+
+.kf-editor-ui-area .kf-editor-ui-box {
+    border-color: #61b864;
 }
 
 .kf-editor-ui-box-container {
@@ -349,7 +351,7 @@
 /* list */
 .kf-editor-ui-list {
     background: #f9f8f5;
-    border: 1px solid #61b864;
+    border: 1px solid #b3aead;
     border-radius: 3px;
     position: fixed;
     top: 0;
@@ -473,13 +475,13 @@
 }
 
 .kf-editor-ui-box::-webkit-scrollbar-button:end:increment {
-    height: 13px;
-    background: url(./images2/down.png) 0 0 no-repeat white;
+    height: 5px;
+    background: url(./images2/down.png) 0 0 repeat-y white;
 }
 /*定义滚动条渐减按扭的样式 */
 .kf-editor-ui-box::-webkit-scrollbar-button:start:decrement {
-    height: 13px;
-    background: url(./images2/up.png) 0 0 no-repeat white;
+    height: 5px;
+    background: url(./images2/up.png) 0 0 repeat-y white;
 }
 
 /* 垂直滚动条的第三层轨道的上段 */
@@ -507,13 +509,13 @@
 }
 
 .kf-editor-ui-wrap-group::-webkit-scrollbar-button:end:increment {
-    height: 13px;
-    background: url(./images2/down.png) 0 0 no-repeat white;
+    height: 5px;
+    background: url(./images2/down.png) 0 0 repeat-y white;
 }
 /*定义滚动条渐减按扭的样式 */
 .kf-editor-ui-wrap-group::-webkit-scrollbar-button:start:decrement {
-    height: 13px;
-    background: url(./images2/up.png) 0 0 no-repeat white;
+    height: 5px;
+    background: url(./images2/up.png) 0 0 repeat-y white;
 }
 
 /* 垂直滚动条的第三层轨道的上段 */
@@ -529,8 +531,6 @@
 }
 /* 垂直滚动条的滑动块 */
 .kf-editor-ui-wrap-group::-webkit-scrollbar-thumb:vertical {
-    /*background: url(./images2/bar.png) 6px 0 no-repeat;*/
-    /*background-size: 6px;*/
     -webkit-border-image: url(./images2/bar.png) 8;
     border-width: 10px;
 }

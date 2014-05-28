@@ -130,8 +130,8 @@ define( function ( require ) {
 
                 if ( this.fixOffset ) {
 
-                    var tt = this.element.getBoundingClientRect();
-                    this.mountElement.setOffset( tt.left + LIST_OFFSET, tt.bottom - 5 );
+                    var elementRect = this.element.getBoundingClientRect();
+                    this.mountElement.setOffset( elementRect.left + LIST_OFFSET, elementRect.bottom );
 
                 }
 

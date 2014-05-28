@@ -16,27 +16,29 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 14px;
+    width: 5px;
     height: 100%;
-    background: red;
+    background: white;
 }
 
 .kf-editor-ui-right-button {
     position: absolute;
     top: 0;
     right: 0;
-    width: 14px;
+    width: 5px;
     height: 100%;
-    background: red;
+    background: white;
 }
 
 .kf-editor-ui-track {
     position: absolute;
     top: 0;
-    left: 14px;
+    left: 5px;
     width: 0;
     height: 100%;
-    background: #efefef;
+    background-image: url( ../images/scrollbar/mo/bar-left.png ), url( ../images/scrollbar/mo/bar-right.png ), url( ../images/scrollbar/mo/bar-bg.png );
+    background-repeat: no-repeat, no-repeat, repeat-x;
+    background-position: 0 0, right 0, 0 0;
 }
 
 .kf-editor-ui-thumb {
@@ -45,5 +47,24 @@
     left: 0;
     width: 0;
     height: 100%;
-    background: #2d2d2d;
+    background: url( ../images/scrollbar/mo/thumb-bg.png ) repeat-x 0 0;
+}
+
+.kf-editor-ui-thumb-left {
+    width: 5px;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: url( ../images/scrollbar/mo/thumb-left.png ) no-repeat 0 0;
+    z-index: 1;
+}
+
+.kf-editor-ui-thumb-right {
+    width: 5px;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: url( ../images/scrollbar/mo/thumb-right.png ) no-repeat 0 0;
 }
