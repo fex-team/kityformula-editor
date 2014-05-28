@@ -70,7 +70,8 @@ define( function ( require ) {
                 leftButton: createElement( doc, "div", "left-button" ),
                 rightButton: createElement( doc, "div", "right-button" ),
                 track: createElement( doc, "div", "track" ),
-                thumb: createElement( doc, "div", "thumb" )
+                thumb: createElement( doc, "div", "thumb" ),
+                thumbBody: createElement( doc, "div", "thumb-body" )
             };
 
         },
@@ -129,6 +130,7 @@ define( function ( require ) {
                 container.appendChild( widgets[ wgtName ] );
             }
 
+            widgets.thumb.appendChild( widgets.thumbBody );
             widgets.track.appendChild( widgets.thumb );
 
         },
@@ -161,6 +163,7 @@ define( function ( require ) {
 
             this.values.thumbWidth = thumbWidth;
             this.widgets.thumb.style.width = thumbWidth + "px";
+            this.widgets.thumbBody.style.width = thumbWidth - 10 + "px";
 
         },
 
@@ -230,12 +233,13 @@ define( function ( require ) {
         var node = doc.createElement( eleName ),
             str = '<div class="$1"></div><div class="$2"></div>';
 
-        className = CLASS_PREFIX + className;
+        node.className = CLASS_PREFIX + className;
 
-        node.className = className;
-
-        node.innerHTML = str.replace( '$1', className+'-left' )
-                             .replace( '$2', className+'-right' );
+        if ( className === "thumb" ) {
+            className = CLASS_PREFIX + className;
+            node.innerHTML = str.replace( '$1', className+'-left' )
+                .replace( '$2', className+'-right' );
+        }
 
         return node;
 

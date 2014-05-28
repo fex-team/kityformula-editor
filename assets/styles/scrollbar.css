@@ -47,7 +47,6 @@
     left: 0;
     width: 0;
     height: 100%;
-    background: url(../images/scrollbar/edit/thumb-bg.png) repeat-x 0 0;
 }
 
 .kf-editor-ui-thumb-left {
@@ -67,4 +66,13 @@
     top: 0;
     right: 0;
     background: url(../images/scrollbar/edit/thumb-right.png) no-repeat 0 0;
+}
+
+.kf-editor-ui-thumb-body {
+    position: absolute;
+    top: 0;
+    left: 5px;
+    width: 0;
+    height: 100%;
+    background: url(../images/scrollbar/edit/thumb-bg.png) repeat-x 0 0;
 }
