@@ -36,6 +36,8 @@ define( function ( require ) {
 
             var dataUrl = this.getBase64DataUrl();
 
+            window.open( dataUrl );
+
         },
 
         getImageData: function () {

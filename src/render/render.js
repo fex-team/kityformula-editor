@@ -77,7 +77,7 @@ define( function ( require ) {
                 } );
 
                 this.kfEditor.registerService( "render.clear.canvas.transform", this, {
-                    clearCanvasOffset: this.setCanvasToCenter
+                    clearCanvasOffset: this.clearCanvasTransform
                 } );
 
                 this.kfEditor.registerService( "render.set.canvas.offset", this, {
@@ -412,16 +412,12 @@ define( function ( require ) {
              */
             clearCanvasTransform: function () {
 
-                var canvasInfo = this.record.canvas,
-                    viewPort = this.formula.getViewPort();
+                var canvasInfo = this.record.canvas;
 
                 canvasInfo.viewBox = this.formula.getViewBox();
-                canvasInfo.viewPortZoom = viewPort.zoom;
                 canvasInfo.contentOffset = this.formula.container.getTranslate();
 
-                viewPort.zoom = 1;
-
-                this.formula.setViewPort( viewPort );
+                this.setCanvasToCenter();
                 this.formula.node.removeAttribute( "viewBox" );
                 this.formula.container.setTranslate( 0, 0 );
 
@@ -435,8 +431,7 @@ define( function ( require ) {
             revertCanvasTransform: function () {
 
                 var canvasInfo = this.record.canvas,
-                    viewBox = canvasInfo.viewBox,
-                    viewPort = null;
+                    viewBox = canvasInfo.viewBox;
 
                 if ( !viewBox ) {
                     return false;
@@ -445,13 +440,7 @@ define( function ( require ) {
                 this.formula.setViewBox( viewBox.x, viewBox.y, viewBox.width, viewBox.height );
                 this.formula.container.setTranslate( canvasInfo.contentOffset );
 
-                viewPort = this.formula.getViewPort();
-                viewPort.zoom = canvasInfo.viewPortZoom;
-
-                this.formula.setViewPort( viewPort );
-
                 canvasInfo.viewBox = null;
-                canvasInfo.viewPortZoom = null;
                 canvasInfo.contentOffset = null;
 
             },
