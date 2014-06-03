@@ -95,7 +95,11 @@ module.exports = function (grunt) {
                     ' * Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
                     ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %>\n' +
                     ' * ====================================================\n' +
-                    ' */\n'
+                    ' */\n',
+
+                beautify: {
+                    ascii_only: true
+                }
 
             },
 

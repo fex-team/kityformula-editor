@@ -1,6 +1,6 @@
 /*!
  * ====================================================
- * Kity Formula - v1.0.0 - 2014-06-03
+ * Kity Formula - v1.0.0 - 2014-05-29
  * https://github.com/kitygraph/formula
  * GitHub: https://github.com/kitygraph/formula.git 
  * Copyright (c) 2014 Baidu Kity Group; Licensed MIT
@@ -85,26 +85,21 @@ function use ( id ) {
     return require( id );
 
 }
-define("char/char", [ "kity", "signgroup", "def/gtype" ], function(require, exports, module) {
-    var kity = require("kity");
+/**
+ * 字符类
+ */
+define("char/char", [ "kity", "font/manager", "signgroup", "def/gtype" ], function(require, exports, module) {
+    var kity = require("kity"), FontManager = require("font/manager");
     return kity.createClass("Char", {
         base: require("signgroup"),
-        constructor: function(value, type) {
+        constructor: function(value, options) {
             var currentData;
-            type = type || "std";
-            currentData = CHAR_DATA[type][value];
-            if (!currentData) {
-                currentData = CHAR_DATA["std"][value];
-            }
-            if (!currentData) {
-                throw new Error("invalid character: " + value);
-            }
             this.callBase();
             this.value = value;
             this.contentShape = new kity.Group();
-            this.box = new kity.Rect(currentData.size[0] + currentData.offset.x * 2, currentData.size[1]).fill("transparent");
-            this.char = new kity.Path(currentData.path).fill("black");
-            this.char.translate(currentData.offset.x, currentData.offset.y);
+            var pathData = FontManager.getCharacterData(value, options["font-family"]);
+            this.box = new kity.Rect(0, 0, 0, 0).fill("transparent");
+            this.char = new kity.Path(pathData).fill("black");
             this.contentShape.addShape(this.box);
             this.contentShape.addShape(this.char);
             this.addShape(this.contentShape);
@@ -117,349 +112,370 @@ define("char/char", [ "kity", "signgroup", "def/gtype" ], function(require, expo
         },
         getBoxWidth: function() {
             return this.box.getWidth();
+        },
+        addedCall: function() {
+            var renderBox = this.char.getRenderBox();
+            if (renderBox.height === 0) {
+                return;
+            }
+            this.char.scale(50 / renderBox.height);
         }
     });
 });
+/*!
+ * 字符配置
+ */
 define("char/conf", [], function(require) {
     return {
+        // 默认字体
         defaultFont: "KF AMS MAIN"
     };
 });
+/*!
+ * Created by hn on 14-4-4.
+ */
 define("char/map", [], function(require) {
     return {
-        Alpha: "\u0391",
-        Beta: "\u0392",
-        Gamma: "\u0393",
-        Delta: "\u0394",
-        Epsilon: "\u0395",
-        Zeta: "\u0396",
-        Eta: "\u0397",
-        Theta: "\u0398",
-        Iota: "\u0399",
-        Kappa: "\u039a",
-        Lambda: "\u039b",
-        Mu: "\u039c",
-        Nu: "\u039d",
-        Xi: "\u039e",
-        Omicron: "\u039f",
-        Pi: "\u03a0",
-        Rho: "\u03a1",
-        Sigma: "\u03a3",
-        Tau: "\u03a4",
-        Upsilon: "\u03a5",
-        Phi: "\u03a6",
-        Chi: "\u03a7",
-        Psi: "\u03a8",
-        Omega: "\u03a9",
-        alpha: "\u03b1",
-        beta: "\u03b2",
-        gamma: "\u03b3",
-        delta: "\u03b4",
-        epsilon: "\u03b5",
-        varepsilon: "\u03b5",
-        zeta: "\u03b6",
-        eta: "\u03b7",
-        theta: "\u03b8",
-        iota: "\u03b9",
-        kappa: "\u03ba",
-        lambda: "\u03bb",
-        mu: "\u03bc",
-        nu: "\u03bd",
-        xi: "\u03be",
-        omicron: "\u03bf",
-        pi: "\u03c0",
-        rho: "\u03c1",
-        sigma: "\u03c3",
-        tau: "\u03c4",
-        upsilon: "\u03c5",
-        phi: "\u03c6",
-        varphi: "\u03c6",
-        chi: "\u03c7",
-        psi: "\u03c8",
-        omega: "\u03c9",
-        doublecap: "\u22d2",
-        Cap: "\u22d2",
-        dobulecup: "\u22d3",
-        Cup: "\u22d3",
-        ast: "\u2217",
-        divideontimes: "\u22c7",
-        rightthreetimes: "\u22cc",
-        leftthreetimes: "\u22cb",
-        cdot: "\xb7",
-        dotplus: "\u2214",
-        rtimes: "\u22ca",
-        ltimes: "\u22c9",
-        centerdot: "\u25aa",
-        doublebarwedge: "\u2480",
-        setminus: "\u2481",
-        amalg: "\u2210",
-        circ: "\u25e6",
-        bigcirc: "\xa9",
-        gtrdot: "\u22d7",
-        lessdot: "\u22d6",
-        smallsetminus: "\u2485",
-        circledast: "\u229b",
-        circledcirc: "\u229a",
-        intercal: "\u22ba",
-        sqcap: "\u2293",
-        sqcup: "\u2294",
-        barwedge: "\u22bc",
-        circleddash: "\u229d",
-        star: "\u2486",
-        bigtriangledown: "\u25bd",
-        bigtriangleup: "\u25b3",
-        cup: "\x92a",
-        cap: "\x929",
-        times: "\xd7",
-        mp: "\u2213",
-        pm: "\xb1",
-        triangleleft: "\u22b2",
-        triangleright: "\u22b3",
-        boxdot: "\u22a1",
-        curlyvee: "\u22cf",
-        curlywedge: "\u22ce",
-        boxminus: "\u229f",
-        ominus: "\u2296",
-        oplus: "\u2295",
-        oslash: "\u2298",
-        otimes: "\u2297",
-        uplus: "\u228e",
-        boxplus: "\u229e",
-        dagger: "\u2020",
-        ddagger: "\u2021",
-        vee: "\u2228",
-        lor: "\u2228",
-        veebar: "\u22bb",
-        bullet: "\u2022",
-        diamond: "\u22c4",
-        wedge: "\u2227",
-        land: "\u2227",
-        div: "\xf7",
-        wr: "\u2240",
-        geqq: "\u2267",
-        lll: "\u2488",
-        llless: "\u2488",
-        ggg: "\u2489",
-        gggtr: "\u2489",
-        preccurlyeq: "\u248a",
-        geqslant: "\u248b",
-        lnapprox: "\u2268",
-        preceq: "\u227c",
-        gg: "\u226b",
-        lneq: "\u2490",
-        precnapprox: "\u2492",
-        approx: "\u2248",
-        lneqq: "\u2493",
-        precneqq: "\u2494",
-        approxeq: "\u24a5",
-        gnapprox: "\u2269",
-        lnsim: "\u22e6",
-        precnsim: "\u22e8",
-        asymp: "\u224d",
-        gneq: "\u2491",
-        lvertneqq: "\u2496",
-        precsim: "\u227e",
-        backsim: "\u223d",
-        gneqq: "\u2498",
-        ncong: "\u2247",
-        risingdotseq: "\u2253",
-        backsimeq: "\u22cd",
-        gnsim: "\u22e7",
-        sim: "\u223c",
-        simeq: "\u2243",
-        bumpeq: "\u2499",
-        gtrapprox: "\u249b",
-        ngeq: "\u2271",
-        Bumpeq: "\u249a",
-        gtreqless: "\u22db",
-        ngeqq: "\u24e0",
-        succ: "\u227b",
-        circeq: "\u249c",
-        gtreqqless: "\u24e4",
-        ngeqslant: "\u24e6",
-        succapprox: "\u249d",
-        cong: "\u24a1",
-        gtrless: "\u2277",
-        ngtr: "\u226f",
-        succcurlyeq: "\u248d",
-        curlyeqprec: "\u24a2",
-        gtrsim: "\u2273",
-        nleq: "\u2270",
-        succeq: "\u227d",
-        curlyeqsucc: "\u24a3",
-        gvertneqq: "\u2497",
-        nleqq: "\u24e1",
-        succnapprox: "\u24a4",
-        doteq: "\u249f",
-        leq: "\u2264",
-        le: "\u2264",
-        nleqslant: "\u24e5",
-        succneqq: "\u2495",
-        doteqdot: "\u2251",
-        Doteq: "\u2251",
-        leqq: "\u2266",
-        nless: "\u226e",
-        succnsim: "\u22e9",
-        leqslant: "\u248c",
-        nprec: "\u2280",
-        succsim: "\u227f",
-        eqsim: "\u2242",
-        lessapprox: "\u24a6",
-        npreceq: "\u22e0",
-        eqslantgtr: "\u22dd",
-        lesseqgtr: "\u22da",
-        nsim: "\u2241",
-        eqslantless: "\u24a9",
-        lesseqqgtr: "\u24e4",
-        nsucc: "\u2281",
-        triangleq: "\u225c",
-        eqcirc: "\u2256",
-        equiv: "\u2261",
-        lessgtr: "\u2276",
-        nsucceq: "\u22e1",
-        fallingdotseq: "\u2252",
-        lesssim: "\u2272",
-        prec: "\u227a",
-        geq: "\u2265",
-        ge: "\u2265",
-        ll: "\u226a",
-        precapprox: "\u249e",
-        uparrow: "\u2191",
-        downarrow: "\u2193",
-        updownarrow: "\u2195",
-        Uparrow: "\u21d1",
-        Downarrow: "\u21d3",
-        Updownarrow: "\u21d5",
-        circlearrowleft: "\u21ba",
-        circlearrowright: "\u21bb",
-        curvearrowleft: "\u21b6",
-        curvearrowright: "\u21b7",
-        downdownarrows: "\u21ca",
-        downharpoonleft: "\u21c3",
-        downharpoonright: "\u21c2",
-        leftarrow: "\u2190",
-        gets: "\u2190",
-        Leftarrow: "\u21d0",
-        leftarrowtail: "\u21a2",
-        leftharpoondown: "\u24ac",
-        leftharpoonup: "\u24aa",
-        leftleftarrows: "\u24ae",
-        leftrightarrow: "\u2194",
-        Leftrightarrow: "\u21d4",
-        leftrightarrows: "\u21c4",
-        leftrightharpoons: "\u21cb",
-        leftrightsquigarrow: "\u21ad",
-        Llfetarrow: "\u21da",
-        looparrowleft: "\u21ab",
-        looparrowright: "\u21ac",
-        multimap: "\u22b8",
-        nLeftarrow: "\u21cd",
-        nRightarrow: "\u21cf",
-        nLeftrightarrow: "\u21ce",
-        nearrow: "\u2197",
-        nleftarrow: "\u24b0",
-        nleftrightarrow: "\u21ae",
-        nrightarrow: "\u24b1",
-        nwarrow: "\u2196",
-        rightarrow: "\u2192",
-        to: "\u2192",
-        Rightarrow: "\u21d2",
-        rightarrowtail: "\u21a3",
-        rightharpoondown: "\u24ad",
-        rightharpoonup: "\u24ab",
-        rightleftarrows: "\u21c6",
-        rightleftharpoons: "\u21cc",
-        rigtrightarrows: "\u24af",
-        rightsquigarrow: "\u21dd",
-        Rightarrow: "\u21db",
-        searrow: "\u2198",
-        swarrow: "\u2199",
-        twoheadleftarrow: "\u219e",
-        twoheadrightarrow: "\u21a0",
-        upharpoonleft: "\u21bf",
-        upharpoonright: "\u21be",
+        // char
+        Alpha: "Α",
+        Beta: "Β",
+        Gamma: "Γ",
+        Delta: "Δ",
+        Epsilon: "Ε",
+        Zeta: "Ζ",
+        Eta: "Η",
+        Theta: "Θ",
+        Iota: "Ι",
+        Kappa: "Κ",
+        Lambda: "Λ",
+        Mu: "Μ",
+        Nu: "Ν",
+        Xi: "Ξ",
+        Omicron: "Ο",
+        Pi: "Π",
+        Rho: "Ρ",
+        Sigma: "Σ",
+        Tau: "Τ",
+        Upsilon: "Υ",
+        Phi: "Φ",
+        Chi: "Χ",
+        Psi: "Ψ",
+        Omega: "Ω",
+        alpha: "α",
+        beta: "β",
+        gamma: "γ",
+        delta: "δ",
+        epsilon: "ε",
+        varepsilon: "ε",
+        zeta: "ζ",
+        eta: "η",
+        theta: "θ",
+        iota: "ι",
+        kappa: "κ",
+        lambda: "λ",
+        mu: "μ",
+        nu: "ν",
+        xi: "ξ",
+        omicron: "ο",
+        pi: "π",
+        rho: "ρ",
+        sigma: "σ",
+        tau: "τ",
+        upsilon: "υ",
+        phi: "φ",
+        varphi: "φ",
+        chi: "χ",
+        psi: "ψ",
+        omega: "ω",
+        // symbol
+        doublecap: "⋒",
+        Cap: "⋒",
+        dobulecup: "⋓",
+        Cup: "⋓",
+        ast: "∗",
+        divideontimes: "⋇",
+        rightthreetimes: "⋌",
+        leftthreetimes: "⋋",
+        cdot: "·",
+        dotplus: "∔",
+        rtimes: "⋊",
+        ltimes: "⋉",
+        centerdot: "▪",
+        doublebarwedge: "⒀",
+        setminus: "⒁",
+        amalg: "∐",
+        circ: "◦",
+        bigcirc: "©",
+        gtrdot: "⋗",
+        lessdot: "⋖",
+        smallsetminus: "⒅",
+        circledast: "⊛",
+        circledcirc: "⊚",
+        intercal: "⊺",
+        sqcap: "⊓",
+        sqcup: "⊔",
+        barwedge: "⊼",
+        circleddash: "⊝",
+        star: "⒆",
+        bigtriangledown: "▽",
+        bigtriangleup: "△",
+        cup: "a",
+        cap: "9",
+        times: "×",
+        mp: "∓",
+        pm: "±",
+        triangleleft: "⊲",
+        triangleright: "⊳",
+        boxdot: "⊡",
+        curlyvee: "⋏",
+        curlywedge: "⋎",
+        boxminus: "⊟",
+        ominus: "⊖",
+        oplus: "⊕",
+        oslash: "⊘",
+        otimes: "⊗",
+        uplus: "⊎",
+        boxplus: "⊞",
+        dagger: "†",
+        ddagger: "‡",
+        vee: "∨",
+        lor: "∨",
+        veebar: "⊻",
+        bullet: "•",
+        diamond: "⋄",
+        wedge: "∧",
+        land: "∧",
+        div: "÷",
+        wr: "≀",
+        geqq: "≧",
+        lll: "⒈",
+        llless: "⒈",
+        ggg: "⒉",
+        gggtr: "⒉",
+        preccurlyeq: "⒊",
+        geqslant: "⒋",
+        lnapprox: "≨",
+        preceq: "≼",
+        gg: "≫",
+        lneq: "⒐",
+        precnapprox: "⒒",
+        approx: "≈",
+        lneqq: "⒓",
+        precneqq: "⒔",
+        approxeq: "⒥",
+        gnapprox: "≩",
+        lnsim: "⋦",
+        precnsim: "⋨",
+        asymp: "≍",
+        gneq: "⒑",
+        lvertneqq: "⒖",
+        precsim: "≾",
+        backsim: "∽",
+        gneqq: "⒘",
+        ncong: "≇",
+        risingdotseq: "≓",
+        backsimeq: "⋍",
+        gnsim: "⋧",
+        sim: "∼",
+        simeq: "≃",
+        bumpeq: "⒙",
+        gtrapprox: "⒛",
+        ngeq: "≱",
+        Bumpeq: "⒚",
+        gtreqless: "⋛",
+        ngeqq: "ⓠ",
+        succ: "≻",
+        circeq: "⒜",
+        gtreqqless: "ⓤ",
+        ngeqslant: "ⓦ",
+        succapprox: "⒝",
+        cong: "⒡",
+        gtrless: "≷",
+        ngtr: "≯",
+        succcurlyeq: "⒍",
+        curlyeqprec: "⒢",
+        gtrsim: "≳",
+        nleq: "≰",
+        succeq: "≽",
+        curlyeqsucc: "⒣",
+        gvertneqq: "⒗",
+        nleqq: "ⓡ",
+        succnapprox: "⒤",
+        doteq: "⒟",
+        leq: "≤",
+        le: "≤",
+        nleqslant: "ⓥ",
+        succneqq: "⒕",
+        doteqdot: "≑",
+        Doteq: "≑",
+        leqq: "≦",
+        nless: "≮",
+        succnsim: "⋩",
+        leqslant: "⒌",
+        nprec: "⊀",
+        succsim: "≿",
+        eqsim: "≂",
+        lessapprox: "⒦",
+        npreceq: "⋠",
+        eqslantgtr: "⋝",
+        lesseqgtr: "⋚",
+        nsim: "≁",
+        eqslantless: "⒩",
+        lesseqqgtr: "ⓤ",
+        nsucc: "⊁",
+        triangleq: "≜",
+        eqcirc: "≖",
+        equiv: "≡",
+        lessgtr: "≶",
+        nsucceq: "⋡",
+        fallingdotseq: "≒",
+        lesssim: "≲",
+        prec: "≺",
+        geq: "≥",
+        ge: "≥",
+        ll: "≪",
+        precapprox: "⒞",
+        // arrows
+        uparrow: "↑",
+        downarrow: "↓",
+        updownarrow: "↕",
+        Uparrow: "⇑",
+        Downarrow: "⇓",
+        Updownarrow: "⇕",
+        circlearrowleft: "↺",
+        circlearrowright: "↻",
+        curvearrowleft: "↶",
+        curvearrowright: "↷",
+        downdownarrows: "⇊",
+        downharpoonleft: "⇃",
+        downharpoonright: "⇂",
+        leftarrow: "←",
+        gets: "←",
+        Leftarrow: "⇐",
+        leftarrowtail: "↢",
+        leftharpoondown: "⒬",
+        leftharpoonup: "⒪",
+        leftleftarrows: "⒮",
+        leftrightarrow: "↔",
+        Leftrightarrow: "⇔",
+        leftrightarrows: "⇄",
+        leftrightharpoons: "⇋",
+        leftrightsquigarrow: "↭",
+        Llfetarrow: "⇚",
+        looparrowleft: "↫",
+        looparrowright: "↬",
+        multimap: "⊸",
+        nLeftarrow: "⇍",
+        nRightarrow: "⇏",
+        nLeftrightarrow: "⇎",
+        nearrow: "↗",
+        nleftarrow: "⒰",
+        nleftrightarrow: "↮",
+        nrightarrow: "⒱",
+        nwarrow: "↖",
+        rightarrow: "→",
+        to: "→",
+        Rightarrow: "⇒",
+        rightarrowtail: "↣",
+        rightharpoondown: "⒭",
+        rightharpoonup: "⒫",
+        rightleftarrows: "⇆",
+        rightleftharpoons: "⇌",
+        rigtrightarrows: "⒯",
+        rightsquigarrow: "⇝",
+        Rightarrow: "⇛",
+        searrow: "↘",
+        swarrow: "↙",
+        twoheadleftarrow: "↞",
+        twoheadrightarrow: "↠",
+        upharpoonleft: "↿",
+        upharpoonright: "↾",
         restriction: "be",
-        upuparrows: "\u21c8",
-        backepsilon: "\u2108",
-        because: "\u2235",
-        therefore: "\u2234",
-        between: "\u226c",
-        blacktriangleleft: "\u25c0",
-        blacktriangleright: "\u25b8",
-        dashv: "\u22a3",
-        frown: "\u2322",
-        "in": "\u2208",
-        mid: "\u24cc",
+        upuparrows: "⇈",
+        // relation
+        backepsilon: "℈",
+        because: "∵",
+        therefore: "∴",
+        between: "≬",
+        blacktriangleleft: "◀",
+        blacktriangleright: "▸",
+        dashv: "⊣",
+        frown: "⌢",
+        "in": "∈",
+        mid: "Ⓦ",
         parallel: "d0",
-        models: "\u22a8",
-        ni: "\u220b",
-        owns: "\u220b",
-        nmid: "\u2224",
-        nparallel: "\u2226",
-        nshortmid: "\u24b5",
-        nshortparallel: "\u24b6",
-        nsubseteq: "\u2288",
-        nsubseteqq: "\u24b7",
-        nsupseteq: "\u2289",
-        nsupseteqq: "\u24b8",
-        ntriangleleft: "\u22ea",
-        ntrianglelefteq: "\u22ec",
-        ntriangleright: "\u22eb",
-        ntrianglerighteq: "\u22ed",
-        nvdash: "\u22ac",
-        nVdash: "\u24c0",
-        nvDash: "\u24c1",
-        nVDash: "\u22af",
-        perp: "\u22a5",
-        pitchfork: "\u22d4",
-        propto: "\u221d",
-        shortmid: "\u2483",
-        shortparallel: "\u2484",
-        smile: "\u2323",
-        sqsubset: "\u228f",
-        sqsubseteq: "\u2291",
-        sqsupset: "\u2290",
-        sqsupseteq: "\u2292",
-        subset: "\u2282",
-        Subset: "\u22d0",
-        subseteq: "\u2286",
-        subseteqq: "\u24bd",
-        subsetneq: "\u228a",
-        subsetneqq: "\u24b9",
-        supset: "\u2283",
-        Supset: "\u22d1",
-        supseteq: "\u2287",
-        supseteqq: "\u24be",
-        supsetneq: "\u228b",
-        supsetneqq: "\u24ba",
-        trianglelefteq: "\u22b4",
-        trianglerighteq: "\u22b5",
-        varpropto: "\u24b2",
-        varsubsetneq: "\u24b3",
-        varsubsetneqq: "\u24bb",
-        varsupsetneq: "\u24b4",
-        varsupsetneqq: "\u24bc",
-        vdash: "\u22a2",
-        Vdash: "\u22a9",
-        vDash: "\u22a8",
-        Vvdash: "\u22aa",
+        models: "⊨",
+        ni: "∋",
+        owns: "∋",
+        nmid: "∤",
+        nparallel: "∦",
+        nshortmid: "⒵",
+        nshortparallel: "Ⓐ",
+        nsubseteq: "⊈",
+        nsubseteqq: "Ⓑ",
+        nsupseteq: "⊉",
+        nsupseteqq: "Ⓒ",
+        ntriangleleft: "⋪",
+        ntrianglelefteq: "⋬",
+        ntriangleright: "⋫",
+        ntrianglerighteq: "⋭",
+        nvdash: "⊬",
+        nVdash: "Ⓚ",
+        nvDash: "Ⓛ",
+        nVDash: "⊯",
+        perp: "⊥",
+        pitchfork: "⋔",
+        propto: "∝",
+        shortmid: "⒃",
+        shortparallel: "⒄",
+        smile: "⌣",
+        sqsubset: "⊏",
+        sqsubseteq: "⊑",
+        sqsupset: "⊐",
+        sqsupseteq: "⊒",
+        subset: "⊂",
+        Subset: "⋐",
+        subseteq: "⊆",
+        subseteqq: "Ⓗ",
+        subsetneq: "⊊",
+        subsetneqq: "Ⓓ",
+        supset: "⊃",
+        Supset: "⋑",
+        supseteq: "⊇",
+        supseteqq: "Ⓘ",
+        supsetneq: "⊋",
+        supsetneqq: "Ⓔ",
+        trianglelefteq: "⊴",
+        trianglerighteq: "⊵",
+        varpropto: "⒲",
+        varsubsetneq: "⒳",
+        varsubsetneqq: "Ⓕ",
+        varsupsetneq: "⒴",
+        varsupsetneqq: "Ⓖ",
+        vdash: "⊢",
+        Vdash: "⊩",
+        vDash: "⊨",
+        Vvdash: "⊪",
         vert: "|",
-        Vert: "\u01c1",
-        "|": "\u01c1",
-        backslash: "\u01c2",
-        langle: "\u3008",
-        rangle: "\u3009",
-        lceil: "\u2308",
-        rceil: "\u2309",
+        Vert: "ǁ",
+        "|": "ǁ",
+        backslash: "ǂ",
+        langle: "〈",
+        rangle: "〉",
+        lceil: "⌈",
+        rceil: "⌉",
         lbrace: "{",
         rbrace: "}",
-        lfloor: "\u230a",
-        rfllor: "\u230b",
-        colon: "\u01c4",
+        lfloor: "⌊",
+        rfllor: "⌋",
+        colon: "Ǆ",
         "#": "#",
-        bot: "\u22a5"
+        bot: "⊥"
     };
 });
+/**
+ * 文本
+ */
 define("char/text", [ "kity", "font/manager", "signgroup", "def/gtype" ], function(require, exports, module) {
     var kity = require("kity"), FontManager = require("font/manager");
     return kity.createClass("Text", {
@@ -504,19 +520,23 @@ define("char/text", [ "kity", "font/manager", "signgroup", "def/gtype" ], functi
         },
         translation: function(content) {
             var fontFamily = this.fontFamily;
-            return content.replace(/``/g, "\u201c").replace(/\\([a-zA-Z,{}]+)\\/g, function(match, input) {
+            // 首先特殊处理掉两个相连的"`"符号
+            return content.replace(/``/g, "“").replace(/\\([a-zA-Z,{}]+)\\/g, function(match, input) {
                 if (input === ",") {
-                    return "\ufffc \ufffc";
+                    return "￼ ￼";
                 }
                 var data = FontManager.getCharacterValue(input, fontFamily);
                 if (!data) {
-                    console.error(input + "\u4e22\u5931");
+                    console.error(input + "丢失");
                 }
                 return data;
             });
         }
     });
 });
+/*!
+ * 全局定义
+ */
 define("conf", [ "font/kf-ams-main", "font/kf-ams-cal", "font/kf-ams-roman", "font/kf-ams-frak", "font/kf-ams-bb" ], function(require) {
     return {
         font: {
@@ -525,6 +545,9 @@ define("conf", [ "font/kf-ams-main", "font/kf-ams-cal", "font/kf-ams-roman", "fo
         }
     };
 });
+/**
+ * 定义公式中各种对象的类型
+ */
 define("def/gtype", [], function() {
     return {
         UNKNOWN: -1,
@@ -533,12 +556,18 @@ define("def/gtype", [], function() {
         OP: 2
     };
 });
+/**
+ * 定义公式中上下标的类型
+ */
 define("def/script-type", [], function() {
     return {
         SIDE: "side",
         FOLLOW: "follow"
     };
 });
+/**
+ * 分数表达式
+ */
 define("expression/compound-exp/binary-exp/fraction", [ "kity", "operator/binary-opr/fraction", "operator/binary-opr/up-down", "expression/compound-exp/binary-exp/up-down", "expression/compound-exp/binary" ], function(require, exports, modules) {
     var kity = require("kity"), FractionOperator = require("operator/binary-opr/fraction");
     return kity.createClass("FractionExpression", {
@@ -550,6 +579,10 @@ define("expression/compound-exp/binary-exp/fraction", [ "kity", "operator/binary
         }
     });
 });
+/**
+ * 左右结合二元表达式
+ * @abstract
+ */
 define("expression/compound-exp/binary-exp/left-right", [ "kity", "expression/compound-exp/binary", "expression/compound" ], function(require, exports, modules) {
     var kity = require("kity");
     return kity.createClass("LeftRightExpression", {
@@ -568,10 +601,18 @@ define("expression/compound-exp/binary-exp/left-right", [ "kity", "expression/co
         }
     });
 });
+/**
+ * 方根表达式
+ */
 define("expression/compound-exp/binary-exp/radical", [ "kity", "operator/binary-opr/radical", "operator/binary", "expression/compound-exp/binary", "expression/compound" ], function(require, exports, modules) {
     var kity = require("kity"), RadicalOperator = require("operator/binary-opr/radical");
     return kity.createClass("RadicalExpression", {
         base: require("expression/compound-exp/binary"),
+        /**
+         * 构造开方表达式
+         * @param radicand 被开方数
+         * @param exponent 指数
+         */
         constructor: function(radicand, exponent) {
             this.callBase(radicand, exponent);
             this.setFlag("Radicand");
@@ -591,6 +632,9 @@ define("expression/compound-exp/binary-exp/radical", [ "kity", "operator/binary-
         }
     });
 });
+/**
+ * 下标表达式
+ */
 define("expression/compound-exp/binary-exp/subscript", [ "kity", "expression/compound-exp/script", "operator/script", "expression/compound" ], function(require, exports, modules) {
     var kity = require("kity");
     return kity.createClass("SubscriptExpression", {
@@ -601,6 +645,9 @@ define("expression/compound-exp/binary-exp/subscript", [ "kity", "expression/com
         }
     });
 });
+/**
+ * 上标表达式
+ */
 define("expression/compound-exp/binary-exp/superscript", [ "kity", "expression/compound-exp/script", "operator/script", "expression/compound" ], function(require, exports, modules) {
     var kity = require("kity");
     return kity.createClass("SuperscriptExpression", {
@@ -611,6 +658,10 @@ define("expression/compound-exp/binary-exp/superscript", [ "kity", "expression/c
         }
     });
 });
+/**
+ * 上下结合二元表达式
+ * @abstract
+ */
 define("expression/compound-exp/binary-exp/up-down", [ "kity", "expression/compound-exp/binary", "expression/compound" ], function(require, exports, modules) {
     var kity = require("kity");
     return kity.createClass("UpDownExpression", {
@@ -629,6 +680,10 @@ define("expression/compound-exp/binary-exp/up-down", [ "kity", "expression/compo
         }
     });
 });
+/**
+ * 二元操作表达式
+ * @abstract
+ */
 define("expression/compound-exp/binary", [ "kity", "expression/compound", "def/gtype", "expression/expression" ], function(require, exports, modules) {
     var kity = require("kity");
     return kity.createClass("BinaryExpression", {
@@ -652,13 +707,26 @@ define("expression/compound-exp/binary", [ "kity", "expression/compound", "def/g
         }
     });
 });
+/**
+ * 自动增长括号表达式
+ */
 define("expression/compound-exp/brackets", [ "kity", "operator/brackets", "font/manager", "operator/operator", "expression/compound", "def/gtype", "expression/expression" ], function(require, exports, modules) {
     var kity = require("kity"), BracketsOperator = require("operator/brackets");
     return kity.createClass("BracketsExpression", {
         base: require("expression/compound"),
+        /**
+         * 构造函数调用方式：
+         *  new Constructor( 左括号, 右括号, 表达式 )
+         *  或者
+         *  new Constructor( 括号, 表达式 ), 该构造函数转换成上面的构造函数，是： new Constructor( 括号, 括号, 表达式 )
+         * @param left 左括号
+         * @param right 右括号
+         * @param exp 表达式
+         */
         constructor: function(left, right, exp) {
             this.callBase();
             this.setFlag("Brackets");
+            // 参数整理
             if (arguments.length === 2) {
                 exp = right;
                 right = left;
@@ -676,6 +744,10 @@ define("expression/compound-exp/brackets", [ "kity", "operator/brackets", "font/
         }
     });
 });
+/**
+ * 组合表达式
+ * 可以组合多个表达式
+ */
 define("expression/compound-exp/combination", [ "kity", "operator/combination", "operator/operator", "expression/compound", "def/gtype", "expression/expression" ], function(require, exports, modules) {
     var kity = require("kity"), CombinationOperator = require("operator/combination");
     return kity.createClass("CombinationExpression", {
@@ -690,10 +762,20 @@ define("expression/compound-exp/combination", [ "kity", "operator/combination", 
         }
     });
 });
+/**
+ * 函数表达式
+ */
 define("expression/compound-exp/func", [ "kity", "operator/func", "char/text", "operator/common/script-controller", "operator/operator", "expression/compound", "def/gtype", "expression/expression" ], function(require, exports, modules) {
     var kity = require("kity"), FunctionOperator = require("operator/func");
     return kity.createClass("FunctionExpression", {
         base: require("expression/compound"),
+        /**
+         * function表达式构造函数
+         * @param funcName function名称
+         * @param expr 函数表达式
+         * @param sup 上标
+         * @param sub 下标
+         */
         constructor: function(funcName, expr, sup, sub) {
             this.callBase();
             this.setFlag("Func");
@@ -713,9 +795,18 @@ define("expression/compound-exp/func", [ "kity", "operator/func", "char/text", "
         }
     });
 });
+/**
+ * 积分表达式
+ */
 define("expression/compound-exp/integration", [ "kity", "operator/integration", "operator/common/script-controller", "operator/operator", "expression/compound", "def/gtype", "expression/expression" ], function(require, exports, modules) {
     var kity = require("kity"), IntegrationOperator = require("operator/integration"), IntegrationExpression = kity.createClass("IntegrationExpression", {
         base: require("expression/compound"),
+        /**
+             * 构造积分表达式
+             * @param integrand 被积函数
+             * @param supOperand 上限
+             * @param subOperand 下限
+             */
         constructor: function(integrand, superscript, subscript) {
             this.callBase();
             this.setFlag("Integration");
@@ -744,6 +835,9 @@ define("expression/compound-exp/integration", [ "kity", "operator/integration", 
     });
     return IntegrationExpression;
 });
+/**
+ * 上标表达式
+ */
 define("expression/compound-exp/script", [ "kity", "operator/script", "operator/common/script-controller", "operator/operator", "expression/compound", "def/gtype", "expression/expression" ], function(require, exports, modules) {
     var kity = require("kity"), ScriptOperator = require("operator/script");
     return kity.createClass("ScriptExpression", {
@@ -767,10 +861,20 @@ define("expression/compound-exp/script", [ "kity", "operator/script", "operator/
         }
     });
 });
+/**
+ * 求和表达式
+ * @abstract
+ */
 define("expression/compound-exp/summation", [ "kity", "operator/summation", "operator/common/script-controller", "operator/operator", "expression/compound", "def/gtype", "expression/expression" ], function(require, exports, modules) {
     var kity = require("kity"), SummationOperator = require("operator/summation");
     return kity.createClass("SummationExpression", {
         base: require("expression/compound"),
+        /**
+         * 构造求和表达式
+         * @param expr 求和表达式
+         * @param upOperand 上标
+         * @param downOperand 下标
+         */
         constructor: function(expr, superscript, subscript) {
             this.callBase();
             this.setFlag("Summation");
@@ -790,6 +894,10 @@ define("expression/compound-exp/summation", [ "kity", "operator/summation", "ope
         }
     });
 });
+/**
+ * 复合表达式
+ * @abstract
+ */
 define("expression/compound", [ "kity", "def/gtype", "expression/expression", "signgroup" ], function(require, exports, modules) {
     var kity = require("kity"), GTYPE = require("def/gtype"), Expression = require("expression/expression");
     return kity.createClass("CompoundExpression", {
@@ -806,6 +914,7 @@ define("expression/compound", [ "kity", "def/gtype", "expression/expression", "s
             this.setChildren(0, this.operatorBox);
             this.setChildren(1, this.operandBox);
         },
+        // 操作符存储在第1位置
         setOperator: function(operator) {
             if (operator === undefined) {
                 return this;
@@ -816,13 +925,16 @@ define("expression/compound", [ "kity", "def/gtype", "expression/expression", "s
             this.operatorBox.addShape(operator);
             this.operator = operator;
             this.operator.setParentExpression(this);
+            // 表达式关联到操作符
             operator.expression = this;
             return this;
         },
         getOperator: function() {
             return this.operator;
         },
+        // 操作数存储位置是从1开始
         setOperand: function(operand, index, isWrap) {
+            // 不包装操作数
             if (isWrap === false) {
                 this.operands[index] = operand;
                 return this;
@@ -847,6 +959,10 @@ define("expression/compound", [ "kity", "def/gtype", "expression/expression", "s
         }
     });
 });
+/**
+ * 空表达式
+ * 该表达式主要用途是用于站位
+ */
 define("expression/empty", [ "kity", "expression/expression", "def/gtype", "signgroup" ], function(require, exports, module) {
     var kity = require("kity"), Expression = require("expression/expression"), EmptyExpression = kity.createClass("EmptyExpression", {
         base: Expression,
@@ -855,6 +971,7 @@ define("expression/empty", [ "kity", "expression/expression", "def/gtype", "sign
             this.setFlag("Empty");
         }
     });
+    // 注册打包函数
     Expression.registerWrap("empty", function(operand) {
         if (operand === null || operand === undefined) {
             return new EmptyExpression();
@@ -862,8 +979,14 @@ define("expression/empty", [ "kity", "expression/expression", "def/gtype", "sign
     });
     return EmptyExpression;
 });
+/**
+ * 基础表达式， 该类是表达式和操作数的高层抽象
+ * @abstract
+ */
 define("expression/expression", [ "kity", "def/gtype", "signgroup" ], function(require, exports, module) {
-    var kity = require("kity"), GTYPE = require("def/gtype"), WRAP_FN = [], WRAP_FN_INDEX = {}, Expression = kity.createClass("Expression", {
+    var kity = require("kity"), GTYPE = require("def/gtype"), // 打包函数列表
+    WRAP_FN = [], // 注册的打包函数的名称与其在注册器列表中的索引之间的对应关系
+    WRAP_FN_INDEX = {}, Expression = kity.createClass("Expression", {
         base: require("signgroup"),
         constructor: function() {
             this.callBase();
@@ -885,6 +1008,7 @@ define("expression/expression", [ "kity", "def/gtype", "signgroup" ], function(r
             this.setAttr("data-flag", flag || "Expression");
         },
         setChildren: function(index, exp) {
+            // 首先清理掉之前的表达式
             if (this.children[index]) {
                 this.children[index].remove();
             }
@@ -912,6 +1036,7 @@ define("expression/expression", [ "kity", "def/gtype", "signgroup" ], function(r
             return this.box;
         }
     });
+    // 表达式自动打包
     kity.Utils.extend(Expression, {
         registerWrap: function(name, fn) {
             WRAP_FN_INDEX[name] = WRAP_FN.length;
@@ -926,6 +1051,7 @@ define("expression/expression", [ "kity", "def/gtype", "signgroup" ], function(r
             }
             return fn;
         },
+        // 打包函数
         wrap: function(operand) {
             var result = undefined;
             kity.Utils.each(WRAP_FN, function(fn) {
@@ -942,6 +1068,9 @@ define("expression/expression", [ "kity", "def/gtype", "signgroup" ], function(r
     });
     return Expression;
 });
+/**
+ * Text表达式
+ */
 define("expression/text", [ "char/text", "kity", "font/manager", "signgroup", "char/conf", "expression/expression", "def/gtype" ], function(require, exports, module) {
     var Text = require("char/text"), kity = require("kity"), FONT_CONF = require("char/conf"), Expression = require("expression/expression"), TextExpression = kity.createClass("TextExpression", {
         base: require("expression/expression"),
@@ -967,6 +1096,7 @@ define("expression/text", [ "char/text", "kity", "font/manager", "signgroup", "c
             return this;
         }
     });
+    // 注册文本表达式的打包函数
     Expression.registerWrap("text", function(operand) {
         var operandType = typeof operand;
         if (operandType === "number" || operandType === "string") {
@@ -976,27 +1106,28 @@ define("expression/text", [ "char/text", "kity", "font/manager", "signgroup", "c
     });
     return TextExpression;
 });
+/*!
+ * 字体管理器
+ */
 define("font/installer", [ "kity" ], function(require) {
     var kity = require("kity"), NS = "http://www.w3.org/2000/svg";
     return kity.createClass("FontInstaller", {
         constructor: function(paper) {
             this.paper = paper;
         },
+        // 挂载字体
         mount: function(fontData) {
-            var chardata = fontData.data, font = document.createElementNS(NS, "font"), attr = fontData.meta.attr;
-            font.setAttribute("horiz-adv-x", fontData.meta.x);
-            var strArr = [ "<font-face " + attr + ' font-family="' + fontData.meta.fontFamily + '" units-per-em="' + fontData.meta["units-per-em"] + '"></font-face>' ];
-            kity.Utils.each(chardata, function(char, key) {
-                strArr.push('<glyph unicode="' + key + '"' + (char.x !== null ? ' horiz-adv-x="' + char.x + '"' : "") + ' d="' + char.d + '"/>');
-            });
-            strArr = strArr.join("");
-            font.innerHTML = strArr;
-            this.paper.addResource({
-                node: font
-            });
+            var linkNode = document.createElement("link");
+            linkNode.rel = "stylesheet";
+            linkNode.type = "text/css";
+            linkNode.href = "test.css";
+            document.head.appendChild(linkNode);
         }
     });
 });
+/*!
+ * 双线字体
+ */
 define("font/kf-ams-bb", [], function(require) {
     return {
         meta: {
@@ -1113,6 +1244,9 @@ define("font/kf-ams-bb", [], function(require) {
         }
     };
 });
+/*!
+ * 手写体
+ */
 define("font/kf-ams-cal", [], function(require) {
     return {
         meta: {
@@ -1229,6 +1363,9 @@ define("font/kf-ams-cal", [], function(require) {
         }
     };
 });
+/*!
+ * 花体
+ */
 define("font/kf-ams-frak", [], function(require) {
     return {
         meta: {
@@ -1449,9 +1586,13 @@ define("font/kf-ams-frak", [], function(require) {
         }
     };
 });
+/**
+ * Created by hn on 14-4-4.
+ */
 define("font/kf-ams-main", [], function(require) {
     return {
         meta: {
+            fontSrc: "main2.woff",
             fontFamily: "KF AMS MAIN",
             x: 911,
             "units-per-em": 1e3,
@@ -3352,421 +3493,428 @@ define("font/kf-ams-main", [], function(require) {
             }
         },
         map: {
-            Alpha: "\u0391",
-            Beta: "\u0392",
-            Gamma: "\u0393",
-            Delta: "\u0394",
-            Epsilon: "\u0395",
-            Zeta: "\u0396",
-            Eta: "\u0397",
-            Theta: "\u0398",
-            Iota: "\u0399",
-            Kappa: "\u039a",
-            Lambda: "\u039b",
-            Mu: "\u039c",
-            Nu: "\u039d",
-            Xi: "\u039e",
-            Omicron: "\u039f",
-            Pi: "\u03a0",
-            Rho: "\u03a1",
-            Sigma: "\u03a3",
-            Tau: "\u03a4",
-            Upsilon: "\u03a5",
-            Phi: "\u03a6",
-            Chi: "\u03a7",
-            Psi: "\u03a8",
-            Omega: "\u03a9",
-            alpha: "\u03b1",
-            beta: "\u03b2",
-            gamma: "\u03b3",
-            delta: "\u03b4",
-            epsilon: "\u03b5",
-            varepsilon: "\u03b5",
-            zeta: "\u03b6",
-            eta: "\u03b7",
-            theta: "\u03b8",
-            iota: "\u03b9",
-            kappa: "\u03ba",
-            lambda: "\u03bb",
-            mu: "\u03bc",
-            nu: "\u03bd",
-            xi: "\u03be",
-            omicron: "\u03bf",
-            pi: "\u03c0",
-            rho: "\u03c1",
-            sigma: "\u03c3",
-            tau: "\u03c4",
-            upsilon: "\u03c5",
-            phi: "\u03c6",
-            varkappa: "\u03f0",
-            chi: "\u03c7",
-            psi: "\u03c8",
-            omega: "\u03c9",
-            digamma: "\u03dc",
-            varepsilon: "\u03f5",
-            varrho: "\u03f1",
-            varphi: "\u03d5",
-            vartheta: "\u03d1",
-            varpi: "\u03d6",
-            varsigma: "\u03f9",
-            aleph: "\u2135",
-            beth: "\u2136",
-            daleth: "\u2138",
-            gimel: "\u2137",
-            eth: "\xf0",
-            hbar: "\u210e",
-            hslash: "\u210f",
-            mho: "\u2127",
-            partial: "\u2202",
-            wp: "\u2118",
-            Game: "\u2141",
-            Bbbk: "\u214c",
-            Finv: "\u2132",
-            Im: "\u2111",
-            Re: "\u211c",
-            complement: "\u2201",
-            ell: "\u2113",
-            circledS: "\u24c8",
-            imath: "\u0131",
-            jmath: "\u0237",
-            doublecap: "\u22d2",
-            Cap: "\u22d2",
-            doublecup: "\u22d3",
-            Cup: "\u22d3",
+            // char
+            Alpha: "Α",
+            Beta: "Β",
+            Gamma: "Γ",
+            Delta: "Δ",
+            Epsilon: "Ε",
+            Zeta: "Ζ",
+            Eta: "Η",
+            Theta: "Θ",
+            Iota: "Ι",
+            Kappa: "Κ",
+            Lambda: "Λ",
+            Mu: "Μ",
+            Nu: "Ν",
+            Xi: "Ξ",
+            Omicron: "Ο",
+            Pi: "Π",
+            Rho: "Ρ",
+            Sigma: "Σ",
+            Tau: "Τ",
+            Upsilon: "Υ",
+            Phi: "Φ",
+            Chi: "Χ",
+            Psi: "Ψ",
+            Omega: "Ω",
+            alpha: "α",
+            beta: "β",
+            gamma: "γ",
+            delta: "δ",
+            epsilon: "ε",
+            varepsilon: "ε",
+            zeta: "ζ",
+            eta: "η",
+            theta: "θ",
+            iota: "ι",
+            kappa: "κ",
+            lambda: "λ",
+            mu: "μ",
+            nu: "ν",
+            xi: "ξ",
+            omicron: "ο",
+            pi: "π",
+            rho: "ρ",
+            sigma: "σ",
+            tau: "τ",
+            upsilon: "υ",
+            phi: "φ",
+            varkappa: "ϰ",
+            chi: "χ",
+            psi: "ψ",
+            omega: "ω",
+            digamma: "Ϝ",
+            varepsilon: "ϵ",
+            varrho: "ϱ",
+            varphi: "ϕ",
+            vartheta: "ϑ",
+            varpi: "ϖ",
+            varsigma: "Ϲ",
+            aleph: "ℵ",
+            beth: "ℶ",
+            daleth: "ℸ",
+            gimel: "ℷ",
+            eth: "ð",
+            hbar: "ℎ",
+            hslash: "ℏ",
+            mho: "℧",
+            partial: "∂",
+            wp: "℘",
+            Game: "⅁",
+            Bbbk: "⅌",
+            Finv: "Ⅎ",
+            Im: "ℑ",
+            Re: "ℜ",
+            complement: "∁",
+            ell: "ℓ",
+            circledS: "Ⓢ",
+            imath: "ı",
+            jmath: "ȷ",
+            // symbol
+            doublecap: "⋒",
+            Cap: "⋒",
+            doublecup: "⋓",
+            Cup: "⋓",
             ast: "*",
-            divideontimes: "\u22c7",
-            rightthreetimes: "\u22cc",
-            leftthreetimes: "\u22cb",
-            cdot: "\xb7",
-            odot: "\u2299",
-            dotplus: "\u2214",
-            rtimes: "\u22ca",
-            ltimes: "\u22c9",
-            centerdot: "\u25aa",
-            doublebarwedge: "\u232d",
-            setminus: "\u2481",
-            amalg: "\u2210",
-            circ: "\u25e6",
-            bigcirc: "\u25ef",
-            gtrdot: "\u22d7",
-            lessdot: "\u22d6",
-            smallsetminus: "\u2485",
-            circledast: "\u229b",
-            circledcirc: "\u229a",
-            sqcap: "\u2293",
-            sqcup: "\u2294",
-            barwedge: "\u22bc",
-            circleddash: "\u229d",
-            star: "\u22c6",
-            bigtriangledown: "\u25bd",
-            bigtriangleup: "\u25b3",
-            cup: "\u222a",
-            cap: "\u2229",
-            times: "\xd7",
-            mp: "\u2213",
-            pm: "\xb1",
-            triangleleft: "\u22b2",
-            triangleright: "\u22b3",
-            boxdot: "\u22a1",
-            curlyvee: "\u22cf",
-            curlywedge: "\u22ce",
-            boxminus: "\u229f",
-            boxtimes: "\u22a0",
-            ominus: "\u2296",
-            oplus: "\u2295",
-            oslash: "\u2298",
-            otimes: "\u2297",
-            uplus: "\u228e",
-            boxplus: "\u229e",
-            dagger: "\u2020",
-            ddagger: "\u2021",
-            vee: "\u2228",
-            lor: "\u2228",
-            veebar: "\u22bb",
-            bullet: "\u2022",
-            diamond: "\u22c4",
-            wedge: "\u2227",
-            land: "\u2227",
-            div: "\xf7",
-            wr: "\u2240",
-            geqq: "\u2267",
-            lll: "\u22d8",
-            llless: "\u22d8",
-            ggg: "\u22d9",
-            gggtr: "\u22d9",
-            preccurlyeq: "\u227c",
-            geqslant: "\u2a7e",
-            lnapprox: "\u2a89",
-            preceq: "\u2aaf",
-            gg: "\u226b",
-            lneq: "\u2a87",
-            precnapprox: "\u2ab9",
-            approx: "\u2248",
-            lneqq: "\u2268",
-            precneqq: "\u2ab5",
-            approxeq: "\u224a",
-            gnapprox: "\u2a8a",
-            lnsim: "\u22e6",
-            precnsim: "\u22e8",
-            asymp: "\u224d",
-            gneq: "\u2a88",
-            lvertneqq: "\u232e",
-            precsim: "\u227e",
-            backsim: "\u223d",
-            gneqq: "\u2269",
-            ncong: "\u2247",
-            risingdotseq: "\u2253",
-            backsimeq: "\u22cd",
-            gnsim: "\u22e7",
-            sim: "\u223c",
-            simeq: "\u2243",
-            bumpeq: "\u224f",
-            gtrapprox: "\u2a86",
-            ngeq: "\u2271",
-            Bumpeq: "\u224e",
-            gtreqless: "\u22db",
-            ngeqq: "\u2331",
-            succ: "\u227b",
-            circeq: "\u2257",
-            gtreqqless: "\u2a8c",
-            ngeqslant: "\u2333",
-            succapprox: "\u2ab8",
-            cong: "\u2245",
-            gtrless: "\u2277",
-            ngtr: "\u226f",
-            succcurlyeq: "\u227d",
-            curlyeqprec: "\u22de",
-            gtrsim: "\u2273",
-            nleq: "\u2270",
-            succeq: "\u2ab0",
-            curlyeqsucc: "\u22df",
-            gvertneqq: "\u232f",
-            neq: "\u2260",
-            ne: "\u2260",
-            nequiv: "\u2262",
-            nleqq: "\u2330",
-            succnapprox: "\u2aba",
-            doteq: "\u2250",
-            leq: "\u2264",
-            le: "\u2264",
-            nleqslant: "\u2332",
-            succneqq: "\u2ab6",
-            doteqdot: "\u2251",
-            Doteq: "\u2251",
-            leqq: "\u2266",
-            nless: "\u226e",
-            succnsim: "\u22e9",
-            leqslant: "\u2a7d",
-            nprec: "\u2280",
-            succsim: "\u227f",
-            eqsim: "\u2242",
-            lessapprox: "\u2a85",
-            npreceq: "\u22e0",
-            eqslantgtr: "\u2a96",
-            lesseqgtr: "\u22da",
-            nsim: "\u2241",
-            eqslantless: "\u2a95",
-            lesseqqgtr: "\u2a8b",
-            nsucc: "\u2281",
-            triangleq: "\u225c",
-            eqcirc: "\u2256",
-            equiv: "\u2261",
-            lessgtr: "\u2276",
-            nsucceq: "\u22e1",
-            fallingdotseq: "\u2252",
-            lesssim: "\u2272",
-            prec: "\u227a",
-            geq: "\u2265",
-            ge: "\u2265",
-            ll: "\u226a",
-            precapprox: "\u2ab7",
-            uparrow: "\u2191",
-            downarrow: "\u2193",
-            updownarrow: "\u2195",
-            Uparrow: "\u21d1",
-            Downarrow: "\u21d3",
-            Updownarrow: "\u21d5",
-            circlearrowleft: "\u21ba",
-            circlearrowright: "\u21bb",
-            curvearrowleft: "\u21b6",
-            curvearrowright: "\u21b7",
-            downdownarrows: "\u21ca",
-            downharpoonleft: "\u21c3",
-            downharpoonright: "\u21c2",
-            leftarrow: "\u2190",
-            gets: "\u2190",
-            Leftarrow: "\u21d0",
-            leftarrowtail: "\u21a2",
-            leftharpoondown: "\u21bd",
-            leftharpoonup: "\u21bc",
-            leftleftarrows: "\u21c7",
-            leftrightarrow: "\u2194",
-            Leftrightarrow: "\u21d4",
-            leftrightarrows: "\u21c4",
-            leftrightharpoons: "\u21cb",
-            leftrightsquigarrow: "\u21ad",
-            Lleftarrow: "\u21da",
-            looparrowleft: "\u21ab",
-            looparrowright: "\u21ac",
-            multimap: "\u22b8",
-            nLeftarrow: "\u21cd",
-            nRightarrow: "\u21cf",
-            nLeftrightarrow: "\u21ce",
-            nearrow: "\u2197",
-            nleftarrow: "\u219a",
-            nleftrightarrow: "\u21ae",
-            nrightarrow: "\u219b",
-            nwarrow: "\u2196",
-            rightarrow: "\u2192",
-            to: "\u2192",
-            Rightarrow: "\u21d2",
-            rightarrowtail: "\u21a3",
-            rightharpoondown: "\u21c1",
-            rightharpoonup: "\u21c0",
-            rightleftarrows: "\u21c6",
-            rightleftharpoons: "\u21cc",
-            rightrightarrows: "\u21c9",
-            rightsquigarrow: "\u21dd",
-            Rrightarrow: "\u21db",
-            searrow: "\u2198",
-            swarrow: "\u2199",
-            twoheadleftarrow: "\u219e",
-            twoheadrightarrow: "\u21a0",
-            upharpoonleft: "\u21bf",
-            upharpoonright: "\u21be",
-            restriction: "\u21be",
-            upuparrows: "\u21c8",
-            Lsh: "\u21b0",
-            Rsh: "\u21b1",
-            longleftarrow: "\u27f5",
-            longrightarrow: "\u27f6",
-            Longleftarrow: "\u27f8",
-            Longrightarrow: "\u27f9",
-            implies: "\u27f9",
-            longleftrightarrow: "\u27f7",
-            Longleftrightarrow: "\u27fa",
-            backepsilon: "\u220d",
-            because: "\u2235",
-            therefore: "\u2234",
-            between: "\u226c",
-            blacktriangleleft: "\u25c0",
-            blacktriangleright: "\u25b8",
-            dashv: "\u22a3",
-            bowtie: "\u22c8",
-            frown: "\u2322",
-            "in": "\u2208",
-            notin: "\u2209",
-            mid: "\u2223",
-            parallel: "\u2225",
-            models: "\u22a8",
-            ni: "\u220b",
-            owns: "\u220b",
-            nmid: "\u2224",
-            nparallel: "\u2226",
-            nshortmid: "\u23d2",
-            nshortparallel: "\u23d3",
-            nsubseteq: "\u2288",
-            nsubseteqq: "\u2ac7",
-            nsupseteq: "\u2289",
-            nsupseteqq: "\u2ac8",
-            ntriangleleft: "\u22ea",
-            ntrianglelefteq: "\u22ec",
-            ntriangleright: "\u22eb",
-            ntrianglerighteq: "\u22ed",
-            nvdash: "\u22ac",
-            nVdash: "\u22ae",
-            nvDash: "\u22ad",
-            nVDash: "\u22af",
-            perp: "\u22a5",
-            pitchfork: "\u22d4",
-            propto: "\u221d",
-            shortmid: "\u23d0",
-            shortparallel: "\u23d1",
-            smile: "\u2323",
-            sqsubset: "\u228f",
-            sqsubseteq: "\u2291",
-            sqsupset: "\u2290",
-            sqsupseteq: "\u2292",
-            subset: "\u2282",
-            Subset: "\u22d0",
-            subseteq: "\u2286",
-            subseteqq: "\u2ac5",
-            subsetneq: "\u228a",
-            subsetneqq: "\u2acb",
-            supset: "\u2283",
-            Supset: "\u22d1",
-            supseteq: "\u2287",
-            supseteqq: "\u2ac6",
-            supsetneq: "\u228b",
-            supsetneqq: "\u2acc",
-            trianglelefteq: "\u22b4",
-            trianglerighteq: "\u22b5",
-            varpropto: "\u2ac9",
-            varsubsetneq: "\u23d4",
-            varsubsetneqq: "\u23d6",
-            varsupsetneq: "\u23d5",
-            varsupsetneqq: "\u23d7",
-            vdash: "\u22a2",
-            Vdash: "\u22a9",
-            vDash: "\u22a8",
-            Vvdash: "\u22aa",
+            divideontimes: "⋇",
+            rightthreetimes: "⋌",
+            leftthreetimes: "⋋",
+            cdot: "·",
+            odot: "⊙",
+            dotplus: "∔",
+            rtimes: "⋊",
+            ltimes: "⋉",
+            centerdot: "▪",
+            doublebarwedge: "⌭",
+            setminus: "⒁",
+            amalg: "∐",
+            circ: "◦",
+            bigcirc: "◯",
+            gtrdot: "⋗",
+            lessdot: "⋖",
+            smallsetminus: "⒅",
+            circledast: "⊛",
+            circledcirc: "⊚",
+            sqcap: "⊓",
+            sqcup: "⊔",
+            barwedge: "⊼",
+            circleddash: "⊝",
+            star: "⋆",
+            bigtriangledown: "▽",
+            bigtriangleup: "△",
+            cup: "∪",
+            cap: "∩",
+            times: "×",
+            mp: "∓",
+            pm: "±",
+            triangleleft: "⊲",
+            triangleright: "⊳",
+            boxdot: "⊡",
+            curlyvee: "⋏",
+            curlywedge: "⋎",
+            boxminus: "⊟",
+            boxtimes: "⊠",
+            ominus: "⊖",
+            oplus: "⊕",
+            oslash: "⊘",
+            otimes: "⊗",
+            uplus: "⊎",
+            boxplus: "⊞",
+            dagger: "†",
+            ddagger: "‡",
+            vee: "∨",
+            lor: "∨",
+            veebar: "⊻",
+            bullet: "•",
+            diamond: "⋄",
+            wedge: "∧",
+            land: "∧",
+            div: "÷",
+            wr: "≀",
+            geqq: "≧",
+            lll: "⋘",
+            llless: "⋘",
+            ggg: "⋙",
+            gggtr: "⋙",
+            preccurlyeq: "≼",
+            geqslant: "⩾",
+            lnapprox: "⪉",
+            preceq: "⪯",
+            gg: "≫",
+            lneq: "⪇",
+            precnapprox: "⪹",
+            approx: "≈",
+            lneqq: "≨",
+            precneqq: "⪵",
+            approxeq: "≊",
+            gnapprox: "⪊",
+            lnsim: "⋦",
+            precnsim: "⋨",
+            asymp: "≍",
+            gneq: "⪈",
+            lvertneqq: "⌮",
+            precsim: "≾",
+            backsim: "∽",
+            gneqq: "≩",
+            ncong: "≇",
+            risingdotseq: "≓",
+            backsimeq: "⋍",
+            gnsim: "⋧",
+            sim: "∼",
+            simeq: "≃",
+            bumpeq: "≏",
+            gtrapprox: "⪆",
+            ngeq: "≱",
+            Bumpeq: "≎",
+            gtreqless: "⋛",
+            ngeqq: "⌱",
+            succ: "≻",
+            circeq: "≗",
+            gtreqqless: "⪌",
+            ngeqslant: "⌳",
+            succapprox: "⪸",
+            cong: "≅",
+            gtrless: "≷",
+            ngtr: "≯",
+            succcurlyeq: "≽",
+            curlyeqprec: "⋞",
+            gtrsim: "≳",
+            nleq: "≰",
+            succeq: "⪰",
+            curlyeqsucc: "⋟",
+            gvertneqq: "⌯",
+            neq: "≠",
+            ne: "≠",
+            nequiv: "≢",
+            nleqq: "⌰",
+            succnapprox: "⪺",
+            doteq: "≐",
+            leq: "≤",
+            le: "≤",
+            nleqslant: "⌲",
+            succneqq: "⪶",
+            doteqdot: "≑",
+            Doteq: "≑",
+            leqq: "≦",
+            nless: "≮",
+            succnsim: "⋩",
+            leqslant: "⩽",
+            nprec: "⊀",
+            succsim: "≿",
+            eqsim: "≂",
+            lessapprox: "⪅",
+            npreceq: "⋠",
+            eqslantgtr: "⪖",
+            lesseqgtr: "⋚",
+            nsim: "≁",
+            eqslantless: "⪕",
+            lesseqqgtr: "⪋",
+            nsucc: "⊁",
+            triangleq: "≜",
+            eqcirc: "≖",
+            equiv: "≡",
+            lessgtr: "≶",
+            nsucceq: "⋡",
+            fallingdotseq: "≒",
+            lesssim: "≲",
+            prec: "≺",
+            geq: "≥",
+            ge: "≥",
+            ll: "≪",
+            precapprox: "⪷",
+            // arrows
+            uparrow: "↑",
+            downarrow: "↓",
+            updownarrow: "↕",
+            Uparrow: "⇑",
+            Downarrow: "⇓",
+            Updownarrow: "⇕",
+            circlearrowleft: "↺",
+            circlearrowright: "↻",
+            curvearrowleft: "↶",
+            curvearrowright: "↷",
+            downdownarrows: "⇊",
+            downharpoonleft: "⇃",
+            downharpoonright: "⇂",
+            leftarrow: "←",
+            gets: "←",
+            Leftarrow: "⇐",
+            leftarrowtail: "↢",
+            leftharpoondown: "↽",
+            leftharpoonup: "↼",
+            leftleftarrows: "⇇",
+            leftrightarrow: "↔",
+            Leftrightarrow: "⇔",
+            leftrightarrows: "⇄",
+            leftrightharpoons: "⇋",
+            leftrightsquigarrow: "↭",
+            Lleftarrow: "⇚",
+            looparrowleft: "↫",
+            looparrowright: "↬",
+            multimap: "⊸",
+            nLeftarrow: "⇍",
+            nRightarrow: "⇏",
+            nLeftrightarrow: "⇎",
+            nearrow: "↗",
+            nleftarrow: "↚",
+            nleftrightarrow: "↮",
+            nrightarrow: "↛",
+            nwarrow: "↖",
+            rightarrow: "→",
+            to: "→",
+            Rightarrow: "⇒",
+            rightarrowtail: "↣",
+            rightharpoondown: "⇁",
+            rightharpoonup: "⇀",
+            rightleftarrows: "⇆",
+            rightleftharpoons: "⇌",
+            rightrightarrows: "⇉",
+            rightsquigarrow: "⇝",
+            Rrightarrow: "⇛",
+            searrow: "↘",
+            swarrow: "↙",
+            twoheadleftarrow: "↞",
+            twoheadrightarrow: "↠",
+            upharpoonleft: "↿",
+            upharpoonright: "↾",
+            restriction: "↾",
+            upuparrows: "⇈",
+            Lsh: "↰",
+            Rsh: "↱",
+            longleftarrow: "⟵",
+            longrightarrow: "⟶",
+            Longleftarrow: "⟸",
+            Longrightarrow: "⟹",
+            implies: "⟹",
+            longleftrightarrow: "⟷",
+            Longleftrightarrow: "⟺",
+            // relation
+            backepsilon: "∍",
+            because: "∵",
+            therefore: "∴",
+            between: "≬",
+            blacktriangleleft: "◀",
+            blacktriangleright: "▸",
+            dashv: "⊣",
+            bowtie: "⋈",
+            frown: "⌢",
+            "in": "∈",
+            notin: "∉",
+            mid: "∣",
+            parallel: "∥",
+            models: "⊨",
+            ni: "∋",
+            owns: "∋",
+            nmid: "∤",
+            nparallel: "∦",
+            nshortmid: "⏒",
+            nshortparallel: "⏓",
+            nsubseteq: "⊈",
+            nsubseteqq: "⫇",
+            nsupseteq: "⊉",
+            nsupseteqq: "⫈",
+            ntriangleleft: "⋪",
+            ntrianglelefteq: "⋬",
+            ntriangleright: "⋫",
+            ntrianglerighteq: "⋭",
+            nvdash: "⊬",
+            nVdash: "⊮",
+            nvDash: "⊭",
+            nVDash: "⊯",
+            perp: "⊥",
+            pitchfork: "⋔",
+            propto: "∝",
+            shortmid: "⏐",
+            shortparallel: "⏑",
+            smile: "⌣",
+            sqsubset: "⊏",
+            sqsubseteq: "⊑",
+            sqsupset: "⊐",
+            sqsupseteq: "⊒",
+            subset: "⊂",
+            Subset: "⋐",
+            subseteq: "⊆",
+            subseteqq: "⫅",
+            subsetneq: "⊊",
+            subsetneqq: "⫋",
+            supset: "⊃",
+            Supset: "⋑",
+            supseteq: "⊇",
+            supseteqq: "⫆",
+            supsetneq: "⊋",
+            supsetneqq: "⫌",
+            trianglelefteq: "⊴",
+            trianglerighteq: "⊵",
+            varpropto: "⫉",
+            varsubsetneq: "⏔",
+            varsubsetneqq: "⏖",
+            varsupsetneq: "⏕",
+            varsupsetneqq: "⏗",
+            vdash: "⊢",
+            Vdash: "⊩",
+            vDash: "⊨",
+            Vvdash: "⊪",
             vert: "|",
-            Vert: "\u01c1",
-            "|": "\u01c1",
+            Vert: "ǁ",
+            "|": "ǁ",
             "{": "{",
             "}": "}",
             backslash: "\\",
-            langle: "\u3008",
-            rangle: "\u3009",
-            lceil: "\u2308",
-            rceil: "\u2309",
+            langle: "〈",
+            rangle: "〉",
+            lceil: "⌈",
+            rceil: "⌉",
             lbrace: "{",
             rbrace: "}",
-            lfloor: "\u230a",
-            rfloor: "\u230b",
-            cdots: "\u22ef",
-            ddots: "\u22f0",
-            vdots: "\u22ee",
-            dots: "\u2026",
-            ldots: "\u2026",
+            lfloor: "⌊",
+            rfloor: "⌋",
+            cdots: "⋯",
+            ddots: "⋰",
+            vdots: "⋮",
+            dots: "…",
+            ldots: "…",
             "#": "#",
-            bot: "\u22a5",
-            angle: "\u2220",
-            backprime: "\u2035",
-            bigstar: "\u2605",
-            blacklozenge: "\u25c6",
-            blacksquare: "\u25a0",
-            blacktriangle: "\u25b2",
-            blacktriangledown: "\u25bc",
-            clubsuit: "\u2663",
-            diagdown: "\u2481",
-            diagup: "\u2482",
-            diamondsuit: "\u2662",
-            emptyset: "\xf8",
-            exists: "\u2203",
-            flat: "\u266d",
-            forall: "\u2200",
-            heartsuit: "\u2661",
-            infty: "\u221e",
-            lozenge: "\u25c7",
-            measuredangle: "\u2221",
-            nabla: "\u2207",
-            natural: "\u266e",
-            neg: "\xac",
-            lnot: "\xac",
-            nexists: "\u2204",
-            prime: "\u2032",
-            sharp: "\u266f",
-            spadesuit: "\u2660",
-            sphericalangle: "\u2222",
-            surd: "\u221a",
-            top: "\u22a4",
-            varnothing: "\u2205",
-            triangle: "\u25b3",
-            triangledown: "\u25bd"
+            bot: "⊥",
+            angle: "∠",
+            backprime: "‵",
+            bigstar: "★",
+            blacklozenge: "◆",
+            blacksquare: "■",
+            blacktriangle: "▲",
+            blacktriangledown: "▼",
+            clubsuit: "♣",
+            diagdown: "⒁",
+            diagup: "⒂",
+            diamondsuit: "♢",
+            emptyset: "ø",
+            exists: "∃",
+            flat: "♭",
+            forall: "∀",
+            heartsuit: "♡",
+            infty: "∞",
+            lozenge: "◇",
+            measuredangle: "∡",
+            nabla: "∇",
+            natural: "♮",
+            neg: "¬",
+            lnot: "¬",
+            nexists: "∄",
+            prime: "′",
+            sharp: "♯",
+            spadesuit: "♠",
+            sphericalangle: "∢",
+            surd: "√",
+            top: "⊤",
+            varnothing: "∅",
+            triangle: "△",
+            triangledown: "▽"
         }
     };
 });
+/*!
+ * 罗马字体
+ */
 define("font/kf-ams-roman", [], function(require) {
     return {
         meta: {
@@ -3987,6 +4135,9 @@ define("font/kf-ams-roman", [], function(require) {
         }
     };
 });
+/*!
+ * 字体管理器
+ */
 define("font/manager", [], function(require) {
     var FONT_LIST = {};
     return {
@@ -4009,6 +4160,12 @@ define("font/manager", [], function(require) {
                 return null;
             }
         },
+        /**
+         * 按照指定的字体族， 返回给定的转义序列str所对应的unicode字符
+         * 如果不存在对应的字体族或者该族内不存在对应的转义序列， 则返回空串
+         * @param str 需要转义的序列
+         * @param fontFamily 参考的字体族
+         */
         getCharacterValue: function(str, fontFamily) {
             var map = this.getCharacterMap(fontFamily);
             if (!map) {
@@ -4018,6 +4175,9 @@ define("font/manager", [], function(require) {
         }
     };
 });
+/**
+ * 公式对象，表达式容器
+ */
 define("formula", [ "kity", "def/gtype", "conf", "font/kf-ams-main", "font/kf-ams-cal", "font/kf-ams-roman", "font/kf-ams-frak", "font/kf-ams-bb", "font/manager", "font/installer", "fpaper" ], function(require, exports, module) {
     var kity = require("kity"), GTYPE = require("def/gtype"), CONF = require("conf"), FontManager = require("font/manager"), FontInstaller = require("font/installer"), DEFAULT_OPTIONS = {
         fontsize: 50,
@@ -4082,6 +4242,7 @@ define("formula", [ "kity", "def/gtype", "conf", "font/kf-ams-main", "font/kf-am
         },
         insertExpression: function(expression, index) {
             var expWrap = this.wrap(expression);
+            // clear zoom
             this.container.clearTransform();
             this.expressions.splice(index, 0, expWrap.getWrapShape());
             this.addShape(expWrap.getWrapShape());
@@ -4124,11 +4285,13 @@ define("formula", [ "kity", "def/gtype", "conf", "font/kf-ams-main", "font/kf-am
             FontManager.registerFont(fontData);
         }
     });
+    // 自运行， 注册配置好的字体
     (function() {
         kity.Utils.each(CONF.font.list, function(fontData) {
             Formula.registerFont(fontData);
         });
     })();
+    // 调整表达式之间的偏移
     function correctOffset() {
         var exprOffset = 0;
         kity.Utils.each(this.expressions, function(expr) {
@@ -4143,6 +4306,7 @@ define("formula", [ "kity", "def/gtype", "conf", "font/kf-ams-main", "font/kf-am
         });
         return this;
     }
+    // 通知表达式已接入到paper
     function notifyExpression(expression) {
         var len = 0, childGroup = null;
         if (!expression) {
@@ -4153,15 +4317,20 @@ define("formula", [ "kity", "def/gtype", "conf", "font/kf-ams-main", "font/kf-am
                 notifyExpression(expression.getChild(i));
             }
         } else if (expression.getType() === GTYPE.COMPOUND_EXP) {
+            // 操作数处理
             for (var i = 0, len = expression.getOperands().length; i < len; i++) {
                 notifyExpression(expression.getOperand(i));
             }
+            // 处理操作符
             notifyExpression(expression.getOperator());
         }
         expression.addedCall && expression.addedCall();
     }
     return Formula;
 });
+/**
+ * 公式专用paper
+ */
 define("fpaper", [ "kity" ], function(require, exports, module) {
     var kity = require("kity");
     return kity.createClass("FPaper", {
@@ -4197,12 +4366,18 @@ define("fpaper", [ "kity" ], function(require, exports, module) {
         }
     });
 });
+/**
+ * kity库封包
+ */
 define("kity", [], function(require, exports, module) {
     if (!window.kity) {
         throw new Error("Missing Kity Graphic Lib");
     }
     return window.kity;
 });
+/**
+ * 分数操作符
+ */
 define("operator/binary-opr/fraction", [ "kity", "operator/binary-opr/up-down", "operator/binary" ], function(require, exports, modules) {
     var kity = require("kity");
     return kity.createClass("FractionOperator", {
@@ -4213,10 +4388,13 @@ define("operator/binary-opr/fraction", [ "kity", "operator/binary-opr/up-down", 
         applyOperand: function(upOperand, downOperand) {
             upOperand.scale(.66);
             downOperand.scale(.66);
-            var upWidth = Math.ceil(upOperand.getWidth()), downWidth = Math.ceil(downOperand.getWidth()), upHeight = Math.ceil(upOperand.getHeight()), downHeight = Math.ceil(downOperand.getHeight()), offset = 3, boxPadding = 5, maxWidth = Math.max(upWidth, downWidth), padding = 3, maxHeight = Math.max(upHeight, downHeight), operatorShape = generateOperator(maxWidth, offset);
+            var upWidth = Math.ceil(upOperand.getWidth()), downWidth = Math.ceil(downOperand.getWidth()), upHeight = Math.ceil(upOperand.getHeight()), downHeight = Math.ceil(downOperand.getHeight()), offset = 3, // 整体padding
+            boxPadding = 5, maxWidth = Math.max(upWidth, downWidth), // 内部padding
+            padding = 3, maxHeight = Math.max(upHeight, downHeight), operatorShape = generateOperator(maxWidth, offset);
             this.addOperatorShape(operatorShape);
             upOperand.translate((maxWidth - upWidth) / 2 + offset, maxHeight - upHeight);
             operatorShape.translate(0, maxHeight + padding);
+            // 下部不需要偏移
             downOperand.translate((maxWidth - downWidth) / 2 + offset, maxHeight + padding + operatorShape.getHeight());
             this.parentExpression.setBoxSize(maxWidth + offset * 2, maxHeight * 2 + operatorShape.getHeight() + padding * 2);
             this.parentExpression.expand(boxPadding, boxPadding);
@@ -4227,22 +4405,38 @@ define("operator/binary-opr/fraction", [ "kity", "operator/binary-opr/up-down", 
         return new kity.Rect(width + offset * 2, 1).fill("black");
     }
 });
+/**
+ * 左右结合二元操作符
+ * @abstract
+ */
 define("operator/binary-opr/left-right", [ "kity", "operator/binary", "operator/operator" ], function(require, exports, modules) {
     var kity = require("kity");
     return kity.createClass("LeftRightOperator", {
         base: require("operator/binary"),
         applyOperand: function(leftOperand, rightOperand) {
-            var operator = this, operatorBox = operator.getFixRenderBox(), leftOperandBox = leftOperand.getFixRenderBox(), rightOperandBox = rightOperand.getFixRenderBox(), offset = 0, maxHeight = Math.max(leftOperandBox.height, rightOperandBox.height, operatorBox.height);
+            var operator = this, operatorBox = operator.getFixRenderBox(), // 操作数特殊处理
+            leftOperandBox = leftOperand.getFixRenderBox(), rightOperandBox = rightOperand.getFixRenderBox(), // 偏移量
+            offset = 0, // 操作对象最大高度
+            maxHeight = Math.max(leftOperandBox.height, rightOperandBox.height, operatorBox.height);
+            // 左操作数
             leftOperand.translate(offset, (maxHeight - leftOperandBox.height) / 2);
+            // 操作符
             offset += leftOperandBox.width + leftOperandBox.x;
             operator.translate(offset, (maxHeight - operatorBox.height) / 2);
+            // 右操作数
             offset += operatorBox.width + operatorBox.x;
             rightOperand.translate(offset, (maxHeight - rightOperandBox.height) / 2);
         }
     });
 });
+/**
+ * 开方操作符
+ */
 define("operator/binary-opr/radical", [ "kity", "operator/binary", "operator/operator" ], function(require, exports, modules) {
-    var kity = require("kity"), SHAPE_DATA_WIDTH = 1, radians = 2 * Math.PI / 360, sin20 = Math.sin(20 * radians), cos20 = Math.cos(20 * radians), tan20 = Math.tan(20 * radians), atan20 = Math.atan(20 * radians);
+    var kity = require("kity"), // 符号图形属性
+    // 线条宽度
+    SHAPE_DATA_WIDTH = 1, // 计算公式
+    radians = 2 * Math.PI / 360, sin20 = Math.sin(20 * radians), cos20 = Math.cos(20 * radians), tan20 = Math.tan(20 * radians), atan20 = Math.atan(20 * radians);
     return kity.createClass("RadicalOperator", {
         base: require("operator/binary"),
         constructor: function() {
@@ -4252,6 +4446,9 @@ define("operator/binary-opr/radical", [ "kity", "operator/binary", "operator/ope
             generateOperator.call(this, radicand, exponent);
         }
     });
+    // 根据给定的操作数生成操作符的pathData
+    // radicand 表示被开方数
+    // exponent 表示指数
     function generateOperator(radicand, exponent) {
         var decoration = generateDecoration(radicand), vLine = generateVLine(radicand), hLine = generateHLine(radicand);
         this.addOperatorShape(decoration);
@@ -4261,8 +4458,11 @@ define("operator/binary-opr/radical", [ "kity", "operator/binary", "operator/ope
         this.parentExpression.expand(0, 10);
         this.parentExpression.translateElement(0, 5);
     }
+    // 生成根号中的左边装饰部分
     function generateDecoration(radicand) {
-        var shape = new kity.Path(), a = SHAPE_DATA_WIDTH, h = radicand.getHeight() / 3, drawer = shape.getDrawer();
+        var shape = new kity.Path(), // 命名为a以便于精简表达式
+        a = SHAPE_DATA_WIDTH, h = radicand.getHeight() / 3, drawer = shape.getDrawer();
+        // 根号尾部左上角开始
         drawer.moveTo(0, cos20 * a * 6);
         drawer.lineBy(sin20 * a, cos20 * a);
         drawer.lineBy(cos20 * a * 3, -sin20 * a * 3);
@@ -4272,6 +4472,7 @@ define("operator/binary-opr/radical", [ "kity", "operator/binary", "operator/ope
         drawer.close();
         return shape.fill("black");
     }
+    // 根据操作数生成根号的竖直线部分
     function generateVLine(operand) {
         var shape = new kity.Path(), h = operand.getHeight(), drawer = shape.getDrawer();
         drawer.moveTo(tan20 * h, 0);
@@ -4281,21 +4482,26 @@ define("operator/binary-opr/radical", [ "kity", "operator/binary", "operator/ope
         drawer.close();
         return shape.fill("black");
     }
+    // 根据操作数生成根号的水平线部分
     function generateHLine(operand) {
+        // 表达式宽度
         var w = operand.getWidth() + 2 * SHAPE_DATA_WIDTH;
         return new kity.Rect(w, 2 * SHAPE_DATA_WIDTH).fill("black");
     }
+    // 合并根号的各个部分， 并返回根号的关键点位置数据
     function mergeShape(decoration, vLine, hLine) {
         var decoBox = decoration.getFixRenderBox(), vLineBox = vLine.getFixRenderBox();
         vLine.translate(decoBox.width - sin20 * SHAPE_DATA_WIDTH * 3, 0);
         decoration.translate(0, vLineBox.height - decoBox.height);
         vLineBox = vLine.getFixRenderBox();
         hLine.translate(vLineBox.x + vLineBox.width - SHAPE_DATA_WIDTH / cos20, 0);
+        // 返回关键点数据
         return {
             x: vLineBox.x + vLineBox.width - SHAPE_DATA_WIDTH / cos20,
             y: 0
         };
     }
+    // 调整整个根号表达式的各个部分： 位置、操作符、被开方数、指数
     function adjustmentPosition(position, operator, radicand, exponent) {
         var exponentBox = null, opOffset = {
             x: 0,
@@ -4305,6 +4511,7 @@ define("operator/binary-opr/radical", [ "kity", "operator/binary", "operator/ope
         exponentBox = exponent.getFixRenderBox();
         if (exponentBox.width > 0 && exponentBox.height > 0) {
             opOffset.y = exponentBox.height - opBox.height / 2;
+            // 指数不超出根号， 则移动指数
             if (opOffset.y < 0) {
                 exponent.translate(0, -opOffset.y);
                 opOffset.y = 0;
@@ -4315,6 +4522,10 @@ define("operator/binary-opr/radical", [ "kity", "operator/binary", "operator/ope
         radicand.translate(opOffset.x + position.x + SHAPE_DATA_WIDTH, opOffset.y + 2 * SHAPE_DATA_WIDTH);
     }
 });
+/**
+ * 上下结合二元操作符
+ * @abstract
+ */
 define("operator/binary-opr/up-down", [ "kity", "operator/binary", "operator/operator" ], function(require, exports, modules) {
     var kity = require("kity");
     return kity.createClass("UpDownOperator", {
@@ -4324,6 +4535,10 @@ define("operator/binary-opr/up-down", [ "kity", "operator/binary", "operator/ope
         }
     });
 });
+/**
+ * 二元操作符抽象类
+ * @abstract
+ */
 define("operator/binary", [ "kity", "operator/operator", "def/gtype", "signgroup" ], function(require, exports, modules) {
     var kity = require("kity");
     return kity.createClass("BinaryOperator", {
@@ -4333,6 +4548,9 @@ define("operator/binary", [ "kity", "operator/operator", "def/gtype", "signgroup
         }
     });
 });
+/**
+ * 小括号操作符：()
+ */
 define("operator/brackets", [ "kity", "font/manager", "operator/operator", "def/gtype", "signgroup" ], function(require, exports, modules) {
     var kity = require("kity"), FontManager = require("font/manager");
     return kity.createClass("BracketsOperator", {
@@ -4345,7 +4563,8 @@ define("operator/brackets", [ "kity", "font/manager", "operator/operator", "def/
         }
     });
     function generate(exp) {
-        var left = this.getParentExpression().getLeftSymbol(), right = this.getParentExpression().getRightSymbol(), leftPath = FontManager.getCharacterData(left, "KF AMS MAIN"), rightPath = FontManager.getCharacterData(right, "KF AMS MAIN"), group = new kity.Group(), leftOp = new kity.Path(leftPath).fill("black"), rightOp = new kity.Path(rightPath).fill("black"), expSpaceSize = exp.getFixRenderBox(), leftOpSize = null, rightOpSize = null, leftZoom = 1, rightZoom = 1, SPACE = 0, offset = 0;
+        var left = this.getParentExpression().getLeftSymbol(), right = this.getParentExpression().getRightSymbol(), leftPath = FontManager.getCharacterData(left, "KF AMS MAIN"), rightPath = FontManager.getCharacterData(right, "KF AMS MAIN"), group = new kity.Group(), leftOp = new kity.Path(leftPath).fill("black"), rightOp = new kity.Path(rightPath).fill("black"), expSpaceSize = exp.getFixRenderBox(), leftOpSize = null, rightOpSize = null, leftZoom = 1, rightZoom = 1, // 左右空间大小
+        SPACE = 0, offset = 0;
         this.addOperatorShape(group.addShape(leftOp).addShape(rightOp));
         leftOpSize = leftOp.getFixRenderBox();
         rightOpSize = rightOp.getFixRenderBox();
@@ -4353,6 +4572,7 @@ define("operator/brackets", [ "kity", "font/manager", "operator/operator", "def/
         rightZoom = expSpaceSize.height ? expSpaceSize.height / rightOpSize.height : 1;
         leftOp.scale(leftZoom);
         rightOp.scale(rightZoom);
+        // 重新获取大小
         leftOpSize = leftOp.getFixRenderBox();
         rightOpSize = rightOp.getFixRenderBox();
         offset -= leftOpSize.x;
@@ -4365,6 +4585,10 @@ define("operator/brackets", [ "kity", "font/manager", "operator/operator", "def/
         this.parentExpression.translateElement(5, 0);
     }
 });
+/**
+ * 组合操作符
+ * 操作多个表达式组合在一起
+ */
 define("operator/combination", [ "kity", "operator/operator", "def/gtype", "signgroup" ], function(require, exports, modules) {
     var kity = require("kity");
     return kity.createClass("CombinationOperator", {
@@ -4373,7 +4597,10 @@ define("operator/combination", [ "kity", "operator/operator", "def/gtype", "sign
             this.callBase("Combination");
         },
         applyOperand: function() {
-            var offset = 0, operands = arguments, maxHeight = 0, cached = [];
+            // 偏移量
+            var offset = 0, // 操作数
+            operands = arguments, // 操作对象最大高度
+            maxHeight = 0, cached = [];
             kity.Utils.each(operands, function(operand) {
                 var box = operand.getFixRenderBox();
                 cached.push(box);
@@ -4388,10 +4615,14 @@ define("operator/combination", [ "kity", "operator/operator", "def/gtype", "sign
         }
     });
 });
+/*!
+ * 上下标控制器`  1``     ``  `   `       `432    1`
+ */
 define("operator/common/script-controller", [ "kity" ], function(require) {
     var kity = require("kity"), defaultOptions = {
         subOffset: 0,
         supOffset: 0,
+        // 上下标的默认缩放值
         zoom: .66
     };
     return kity.createClass("ScriptController", {
@@ -4402,11 +4633,13 @@ define("operator/common/script-controller", [ "kity" ], function(require) {
             this.sub = sub;
             this.options = kity.Utils.extend({}, defaultOptions, options);
         },
+        // 上下标记
         applyUpDown: function() {
             var target = this.target, sup = this.sup, sub = this.sub, options = this.options;
             sup.scale(options.zoom);
             sub.scale(options.zoom);
             var targetBox = target.getFixRenderBox();
+            // 基础空间大小
             var supBox = sup.getFixRenderBox(), subBox = sub.getFixRenderBox(), maxOffset = Math.max(supBox.height, subBox.height), space = {
                 width: Math.max(targetBox.width, supBox.width, subBox.width),
                 height: maxOffset * 2 + targetBox.height
@@ -4414,21 +4647,26 @@ define("operator/common/script-controller", [ "kity" ], function(require) {
             if (supBox.height < maxOffset) {
                 vOffset = maxOffset - supBox.height;
             }
+            // 位置调整
             sup.translate((space.width - supBox.width) / 2, vOffset);
             target.translate((space.width - targetBox.width) / 2, maxOffset);
             sub.translate((space.width - subBox.width) / 2, maxOffset + targetBox.height);
             return space;
         },
+        // 侧面标记
         applySide: function() {
             var target = this.target, sup = this.sup, sub = this.sub, options = this.options;
             sup.scale(options.zoom);
             sub.scale(options.zoom);
             var targetBox = target.getFixRenderBox();
+            // 默认字符高度
             targetBox.height = targetBox.height || 50;
+            // 基础空间大小
             var supBox = sup.getFixRenderBox(), subBox = sub.getFixRenderBox(), maxOffset = Math.max(supBox.height, subBox.height), space = {
                 width: targetBox.width + Math.max(supBox.width + options.supOffset, subBox.width + options.subOffset),
                 height: 0
             }, targetHeight = targetBox.height, vOffset = 0;
+            // 水平方向调整
             sup.translate(targetBox.width + options.supOffset, 0);
             sub.translate(targetBox.width + options.subOffset, 0);
             if (maxOffset * 2 < targetHeight) {
@@ -4453,6 +4691,9 @@ define("operator/common/script-controller", [ "kity" ], function(require) {
         }
     });
 });
+/**
+ * 函数操作符
+ */
 define("operator/func", [ "kity", "char/text", "font/manager", "signgroup", "operator/common/script-controller", "operator/operator", "def/gtype" ], function(require, exports, modules) {
     var kity = require("kity"), Text = require("char/text"), ScriptController = require("operator/common/script-controller");
     return kity.createClass("FunctionOperator", {
@@ -4461,6 +4702,12 @@ define("operator/func", [ "kity", "char/text", "font/manager", "signgroup", "ope
             this.callBase("Function: " + funcName);
             this.funcName = funcName;
         },
+        /*
+         * 积分操作符应用操作数
+         * @param expr 函数表达式
+         * @param sup 上限
+         * @param sub 下限
+         */
         applyOperand: function(expr, sup, sub) {
             var opShape = generateOperator.call(this), padding = 5, expBox = expr.getFixRenderBox(), space = new ScriptController(this, opShape, sup, sub, {
                 zoom: .5
@@ -4478,23 +4725,29 @@ define("operator/func", [ "kity", "char/text", "font/manager", "signgroup", "ope
             this.parentExpression.translateElement(padding, padding);
         }
     });
+    /* 返回操作符对象 */
     function generateOperator() {
         var opShape = new Text(this.funcName, "KF AMS ROMAN");
         this.addOperatorShape(opShape);
         return opShape;
     }
 });
+/**
+ * 积分操作符：∫
+ */
 define("operator/integration", [ "kity", "operator/common/script-controller", "operator/operator", "def/gtype", "signgroup" ], function(require, exports, modules) {
     var kity = require("kity"), ScriptController = require("operator/common/script-controller");
     return kity.createClass("IntegrationOperator", {
         base: require("operator/operator"),
         constructor: function(type) {
             this.callBase("Integration");
+            // 默认是普通单重积分
             this.opType = type || 1;
         },
         setType: function(type) {
             this.opType = type | 0;
         },
+        // 重置类型
         resetType: function() {
             this.opType = 1;
         },
@@ -4533,6 +4786,10 @@ define("operator/integration", [ "kity", "operator/common/script-controller", "o
         }
     });
 });
+/**
+ * 操作符抽象类
+ * @abstract
+ */
 define("operator/operator", [ "kity", "def/gtype", "signgroup" ], function(require, exports, modules) {
     var kity = require("kity"), GTYPE = require("def/gtype");
     return kity.createClass("Operator", {
@@ -4540,8 +4797,11 @@ define("operator/operator", [ "kity", "def/gtype", "signgroup" ], function(requi
         constructor: function(operatorName) {
             this.callBase();
             this.type = GTYPE.OP;
+            // 该操作符所属的表达式
             this.parentExpression = null;
+            // 操作符名称
             this.operatorName = operatorName;
+            // 操作符图形
             this.operatorShape = new kity.Group();
             this.addShape(this.operatorShape);
         },
@@ -4557,6 +4817,7 @@ define("operator/operator", [ "kity", "def/gtype", "signgroup" ], function(requi
         clearParentExpression: function() {
             this.parentExpression = null;
         },
+        // 提供给具体实现类附加其绘制的操作符图形的接口
         addOperatorShape: function(shpae) {
             return this.operatorShape.addShape(shpae);
         },
@@ -4565,6 +4826,9 @@ define("operator/operator", [ "kity", "def/gtype", "signgroup" ], function(requi
         }
     });
 });
+/**
+ * 上下标操作符
+ */
 define("operator/script", [ "kity", "operator/common/script-controller", "operator/operator", "def/gtype", "signgroup" ], function(require, exports, module) {
     var kity = require("kity"), ScriptController = require("operator/common/script-controller");
     return kity.createClass("ScriptOperator", {
@@ -4580,6 +4844,9 @@ define("operator/script", [ "kity", "operator/common/script-controller", "operat
         }
     });
 });
+/**
+ * 求和操作符：∑
+ */
 define("operator/summation", [ "kity", "operator/common/script-controller", "operator/operator", "def/gtype", "signgroup" ], function(require, exports, modules) {
     var kity = require("kity"), ScriptController = require("operator/common/script-controller");
     return kity.createClass("SummationOperator", {
@@ -4620,6 +4887,9 @@ define("operator/summation", [ "kity", "operator/common/script-controller", "ope
         }
     });
 });
+/**
+ * Created by hn on 13-12-3.
+ */
 define("signgroup", [ "kity", "def/gtype" ], function(require, exports, module) {
     var kity = require("kity"), GTYPE = require("def/gtype");
     return kity.createClass("SignGroup", {
