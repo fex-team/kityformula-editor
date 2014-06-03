@@ -425,7 +425,7 @@ define( function () {
                 "height": 75
             }
         },
-        "\\sin{2x}": {
+        "\\cos{2x}": {
             "pos": {
                 "x": 3486,
                 "y": 0

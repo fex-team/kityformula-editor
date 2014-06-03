@@ -1,6 +1,6 @@
 /*!
  * ====================================================
- * kityformula-editor - v1.0.0 - 2014-05-13
+ * kityformula-editor - v1.0.0 - 2014-06-03
  * https://github.com/HanCong03/kityformula-editor
  * GitHub: https://github.com/kitygraph/kityformula-editor.git 
  * Copyright (c) 2014 Baidu Kity Group; Licensed MIT
@@ -85,11 +85,8 @@ function use ( id ) {
     return require( id );
 
 }
-/*!
- * 装配器
- */
 define("assembly", [], function(require, exports, module) {
-    var CONSTRUCT_MAPPING = {}, CURSOR_CHAR = "";
+    var CONSTRUCT_MAPPING = {}, CURSOR_CHAR = "\uf155";
     function Assembly(container, config) {
         this.formula = new kf.Formula(container, config);
     }
@@ -112,25 +109,15 @@ define("assembly", [], function(require, exports, module) {
         this.formula.clearExpressions();
         return this.generateBy(data);
     };
-    /**
-     * 根据提供的树信息生成表达式
-     * @param tree 中间格式的解析树
-     * @return {kf.Expression} 生成的表达式
-     */
     function generateExpression(originTree, tree, objTree, mapping, selectInfo) {
-        var currentOperand = null, exp = null, // 记录光标位置
-        cursorLocation = [], operand = tree.operand || [], constructor = null, constructorProxy;
+        var currentOperand = null, exp = null, cursorLocation = [], operand = tree.operand || [], constructor = null, constructorProxy;
         objTree.operand = [];
-        // 文本表达式已经不需要再处理了
         if (tree.name.indexOf("text") === -1) {
-            // 处理操作数
             for (var i = 0, len = operand.length; i < len; i++) {
                 currentOperand = operand[i];
-                //TODO 光标定位， 配合编辑器， 后期应该考虑是否有更佳的方案来实现
                 if (currentOperand === CURSOR_CHAR) {
                     cursorLocation.push(i);
                     if (!selectInfo.hasOwnProperty("startOffset")) {
-                        // 字符串中的开始偏移是需要修正的
                         selectInfo.startOffset = i;
                     }
                     selectInfo.endOffset = i;
@@ -143,7 +130,6 @@ define("assembly", [], function(require, exports, module) {
                     operand[i] = createObject("empty");
                     objTree.operand.push(operand[i]);
                 } else if (typeof currentOperand === "string") {
-                    // 括号表达式不能对前2个参数做处理， 这两个参数是代表括号类型
                     if (tree.name === "brackets" && i < 2) {
                         operand[i] = currentOperand;
                     } else if (tree.name === "function" && i === 0) {
@@ -157,7 +143,6 @@ define("assembly", [], function(require, exports, module) {
                     operand[i] = arguments.callee(originTree.operand[i], currentOperand, objTree.operand[objTree.operand.length - 1], mapping, selectInfo);
                 }
             }
-            // 包含有选区时， 需要修正一下偏移
             if (cursorLocation.length === 2) {
                 selectInfo.endOffset -= 1;
             }
@@ -177,7 +162,6 @@ define("assembly", [], function(require, exports, module) {
         exp = new constructorProxy();
         constructor.apply(exp, operand);
         objTree.func = exp;
-        // 调用配置函数
         for (var fn in tree.callFn) {
             if (!tree.callFn.hasOwnProperty(fn) || !exp[fn]) {
                 continue;
@@ -210,9 +194,6 @@ define("assembly", [], function(require, exports, module) {
             return new kf.TextExpression(value);
         }
     }
-    /**
-     * 根据操作符获取对应的构造器
-     */
     function getConstructor(name) {
         return CONSTRUCT_MAPPING[name] || kf[name.replace(/^[a-z]/i, function(match) {
             return match.toUpperCase();
@@ -252,9 +233,6 @@ define("assembly", [], function(require, exports, module) {
         }
     };
 });
-/**
- * latex实现工具包
- */
 define("impl/latex/base/latex-utils", [ "impl/latex/base/rpn", "impl/latex/base/utils", "impl/latex/define/type", "impl/latex/base/tree", "impl/latex/handler/combination" ], function(require, exports, module) {
     return {
         toRPNExpression: require("impl/latex/base/rpn"),
@@ -265,10 +243,8 @@ define("impl/latex/base/rpn", [ "impl/latex/base/utils", "impl/latex/define/oper
     var Utils = require("impl/latex/base/utils");
     return function(units) {
         var signStack = [], TYPE = require("impl/latex/define/type"), currentUnit = null;
-        // 先处理函数
         units = processFunction(units);
         while (currentUnit = units.shift()) {
-            // 移除brackets中外层包裹的combination节点
             if (currentUnit.name === "combination" && currentUnit.operand.length === 1 && currentUnit.operand[0].name === "brackets") {
                 currentUnit = currentUnit.operand[0];
             }
@@ -278,19 +254,12 @@ define("impl/latex/base/rpn", [ "impl/latex/base/utils", "impl/latex/define/oper
             }
             signStack.push(currentUnit);
         }
-        // 要处理brackets被附加的包裹元素
         return signStack;
     };
-    /**
-     * “latex函数”处理器
-     * @param units 单元组
-     * @returns {Array} 处理过后的单元组
-     */
     function processFunction(units) {
         var processed = [], currentUnit = null;
         while ((currentUnit = units.pop()) !== undefined) {
             if (currentUnit && typeof currentUnit === "object" && (currentUnit.sign === false || currentUnit.name === "function")) {
-                // 预先处理不可作为独立符号的函数
                 var tt = currentUnit.handler(currentUnit, [], processed.reverse());
                 processed.unshift(tt);
                 processed.reverse();
@@ -301,9 +270,6 @@ define("impl/latex/base/rpn", [ "impl/latex/base/utils", "impl/latex/define/oper
         return processed.reverse();
     }
 });
-/**
- * 从单元组构建树
- */
 define("impl/latex/base/tree", [ "impl/latex/define/type", "impl/latex/handler/combination", "impl/latex/base/utils", "impl/latex/define/operator", "impl/latex/define/func", "impl/latex/handler/func" ], function(require) {
     var TYPE = require("impl/latex/define/type"), mergeHandler = require("impl/latex/handler/combination"), Utils = require("impl/latex/base/utils");
     return function(units) {
@@ -315,7 +281,6 @@ define("impl/latex/base/tree", [ "impl/latex/define/type", "impl/latex/handler/c
         }
         while (currentUnit = units.shift()) {
             if (typeof currentUnit === "object" && currentUnit.handler) {
-                // 后操作数
                 tree.push(currentUnit.handler(currentUnit, tree, units));
             } else {
                 tree.push(currentUnit);
@@ -324,15 +289,10 @@ define("impl/latex/base/tree", [ "impl/latex/define/type", "impl/latex/handler/c
         return mergeHandler(tree);
     };
 });
-/**
- * 通用工具包
- */
 define("impl/latex/base/utils", [ "impl/latex/define/operator", "impl/latex/handler/script", "impl/latex/define/type", "impl/latex/handler/fraction", "impl/latex/handler/sqrt", "impl/latex/handler/summation", "impl/latex/handler/integration", "impl/latex/handler/brackets", "impl/latex/handler/mathcal", "impl/latex/handler/mathfrak", "impl/latex/handler/mathbb", "impl/latex/handler/mathrm", "impl/latex/define/func", "impl/latex/handler/func", "impl/latex/handler/lib/script-extractor" ], function(require, exports, module) {
     var OPERATOR_LIST = require("impl/latex/define/operator"), FUNCTION_LIST = require("impl/latex/define/func"), FUNCTION_HANDLER = require("impl/latex/handler/func"), Utils = {
-        // 根据输入的latex字符串， 检测出该字符串所对应的kf的类型
         getLatexType: function(str) {
             str = str.replace(/^\\/, "");
-            // 操作符
             if (OPERATOR_LIST[str]) {
                 return "operator";
             }
@@ -370,9 +330,6 @@ define("impl/latex/base/utils", [ "impl/latex/define/operator", "impl/latex/hand
     };
     return Utils;
 });
-/**
- * 定义括号类型， 对于属于括号类型的符号或表达式， 则可以应用brackets函数处理
- */
 define("impl/latex/define/brackets", [], function(require, exports, module) {
     var t = true;
     return {
@@ -386,9 +343,6 @@ define("impl/latex/define/brackets", [], function(require, exports, module) {
         "|": t
     };
 });
-/**
- * 函数列表
- */
 define("impl/latex/define/func", [], function(require, exports, module) {
     return {
         sin: 1,
@@ -426,9 +380,6 @@ define("impl/latex/define/func", [], function(require, exports, module) {
         sup: 1
     };
 });
-/**
- * 操作符列表
- */
 define("impl/latex/define/operator", [ "impl/latex/handler/script", "impl/latex/define/type", "impl/latex/handler/fraction", "impl/latex/handler/sqrt", "impl/latex/handler/combination", "impl/latex/handler/summation", "impl/latex/handler/lib/script-extractor", "impl/latex/handler/integration", "impl/latex/handler/brackets", "impl/latex/define/brackets", "impl/latex/handler/mathcal", "impl/latex/handler/mathfrak", "impl/latex/handler/mathbb", "impl/latex/handler/mathrm" ], function(require, exports, module) {
     var scriptHandler = require("impl/latex/handler/script"), TYPE = require("impl/latex/define/type");
     return {
@@ -497,20 +448,12 @@ define("impl/latex/define/operator", [ "impl/latex/handler/script", "impl/latex/
         }
     };
 });
-/**
- * 预处理器列表
- */
 define("impl/latex/define/pre", [ "impl/latex/pre/int", "impl/latex/pre/quot" ], function(require, exports, module) {
     return {
-        // 积分预处理器
         "int": require("impl/latex/pre/int"),
-        // 引号预处理
         quot: require("impl/latex/pre/quot")
     };
 });
-/*!
- * 逆解析对照表
- */
 define("impl/latex/define/reverse", [ "impl/latex/reverse/combination", "impl/latex/reverse/fraction", "impl/latex/reverse/func", "impl/latex/reverse/integration", "impl/latex/reverse/subscript", "impl/latex/reverse/superscript", "impl/latex/reverse/script", "impl/latex/reverse/sqrt", "impl/latex/reverse/summation", "impl/latex/reverse/brackets", "impl/latex/reverse/mathcal", "impl/latex/reverse/mathfrak", "impl/latex/reverse/mathbb", "impl/latex/reverse/mathrm" ], function(require) {
     return {
         combination: require("impl/latex/reverse/combination"),
@@ -529,9 +472,6 @@ define("impl/latex/define/reverse", [ "impl/latex/reverse/combination", "impl/la
         mathrm: require("impl/latex/reverse/mathrm")
     };
 });
-/*!
- * 特殊字符定义
- */
 define("impl/latex/define/special", [], function() {
     return {
         "#": 1,
@@ -545,22 +485,15 @@ define("impl/latex/define/special", [], function() {
         "~": 1
     };
 });
-/**
- * 操作符类型定义
- */
 define("impl/latex/define/type", [], function(require, exports, module) {
     return {
         OP: 1,
         FN: 2
     };
 });
-/*!
- * 括号处理器
- */
 define("impl/latex/handler/brackets", [ "impl/latex/define/brackets" ], function(require, exports, module) {
     var BRACKETS_TYPE = require("impl/latex/define/brackets");
     return function(info, processedStack, unprocessedStack) {
-        // 括号验证
         for (var i = 0, len = info.params.length; i < len; i++) {
             if (!(info.params[i] in BRACKETS_TYPE)) {
                 throw new Error("Brackets: invalid params");
@@ -573,9 +506,6 @@ define("impl/latex/handler/brackets", [ "impl/latex/define/brackets" ], function
         return info;
     };
 });
-/*!
- * 合并处理(特殊处理函数)
- */
 define("impl/latex/handler/combination", [], function(require, exports, module) {
     return function() {
         return {
@@ -584,15 +514,9 @@ define("impl/latex/handler/combination", [], function(require, exports, module) 
         };
     };
 });
-/*!
- * 分数函数处理器
- */
 define("impl/latex/handler/fraction", [], function(require, exports, module) {
-    // 处理函数接口
     return function(info, processedStack, unprocessedStack) {
-        var numerator = unprocessedStack.shift(), // 分子
-        denominator = unprocessedStack.shift();
-        // 分母
+        var numerator = unprocessedStack.shift(), denominator = unprocessedStack.shift();
         if (numerator === undefined || denominator === undefined) {
             throw new Error("Frac: Syntax Error");
         }
@@ -601,12 +525,8 @@ define("impl/latex/handler/fraction", [], function(require, exports, module) {
         return info;
     };
 });
-/*!
- * 函数表达式处理器
- */
 define("impl/latex/handler/func", [ "impl/latex/handler/lib/script-extractor" ], function(require, exports, module) {
     var ScriptExtractor = require("impl/latex/handler/lib/script-extractor");
-    // 处理函数接口
     return function(info, processedStack, unprocessedStack) {
         var params = ScriptExtractor.exec(unprocessedStack);
         info.operand = [ info.params, params.expr, params.superscript, params.subscript ];
@@ -615,15 +535,11 @@ define("impl/latex/handler/func", [ "impl/latex/handler/lib/script-extractor" ],
         return info;
     };
 });
-/*!
- * 积分函数处理器
- */
 define("impl/latex/handler/integration", [ "impl/latex/handler/lib/script-extractor" ], function(require, exports, module) {
     var ScriptExtractor = require("impl/latex/handler/lib/script-extractor");
     return function(info, processedStack, unprocessedStack) {
         var count = unprocessedStack.shift(), params = ScriptExtractor.exec(unprocessedStack);
         info.operand = [ params.expr, params.superscript, params.subscript ];
-        // 参数配置调用
         info.callFn = {
             setType: [ count | 0 ]
         };
@@ -631,13 +547,9 @@ define("impl/latex/handler/integration", [ "impl/latex/handler/lib/script-extrac
         return info;
     };
 });
-/*!
- * 通用上下标提取器
- */
 define("impl/latex/handler/lib/script-extractor", [], function(require) {
     return {
         exec: function(stack) {
-            // 提取上下标
             var result = extractScript(stack), expr = stack.shift();
             if (expr && expr.name && expr.name.indexOf("script") !== -1) {
                 throw new Error("Script: syntax error!");
@@ -680,9 +592,6 @@ define("impl/latex/handler/lib/script-extractor", [], function(require) {
         return null;
     }
 });
-/*!
- * 双线处理
- */
 define("impl/latex/handler/mathbb", [], function(require, exports, module) {
     return function(info, processedStack, unprocessedStack) {
         var chars = unprocessedStack.shift();
@@ -701,9 +610,6 @@ define("impl/latex/handler/mathbb", [], function(require, exports, module) {
         return info;
     };
 });
-/*!
- * 手写体处理
- */
 define("impl/latex/handler/mathcal", [], function(require, exports, module) {
     return function(info, processedStack, unprocessedStack) {
         var chars = unprocessedStack.shift();
@@ -722,9 +628,6 @@ define("impl/latex/handler/mathcal", [], function(require, exports, module) {
         return info;
     };
 });
-/*!
- * 花体处理
- */
 define("impl/latex/handler/mathfrak", [], function(require, exports, module) {
     return function(info, processedStack, unprocessedStack) {
         var chars = unprocessedStack.shift();
@@ -743,9 +646,6 @@ define("impl/latex/handler/mathfrak", [], function(require, exports, module) {
         return info;
     };
 });
-/*!
- * 罗马处理
- */
 define("impl/latex/handler/mathrm", [], function(require, exports, module) {
     return function(info, processedStack, unprocessedStack) {
         var chars = unprocessedStack.shift();
@@ -764,11 +664,7 @@ define("impl/latex/handler/mathrm", [], function(require, exports, module) {
         return info;
     };
 });
-/*!
- * 上下标操作符函数处理
- */
 define("impl/latex/handler/script", [], function(require, exports, module) {
-    // 处理函数接口
     return function(info, processedStack, unprocessedStack) {
         var base = processedStack.pop(), script = unprocessedStack.shift() || null;
         if (!script) {
@@ -778,7 +674,6 @@ define("impl/latex/handler/script", [], function(require, exports, module) {
         if (base.name === info.name || base.name === "script") {
             throw new Error("script error");
         }
-        // 执行替换
         if (base.name === "subscript") {
             base.name = "script";
             base.operand[2] = base.operand[1];
@@ -790,20 +685,14 @@ define("impl/latex/handler/script", [], function(require, exports, module) {
             return base;
         }
         info.operand = [ base, script ];
-        // 删除处理器
         delete info.handler;
         return info;
     };
 });
-/*!
- * 方根函数处理器
- */
 define("impl/latex/handler/sqrt", [ "impl/latex/handler/combination" ], function(require, exports, module) {
     var mergeHandler = require("impl/latex/handler/combination");
-    // 处理函数接口
     return function(info, processedStack, unprocessedStack) {
-        var exponent = unprocessedStack.shift(), tmp = null, // 被开方数
-        radicand = null;
+        var exponent = unprocessedStack.shift(), tmp = null, radicand = null;
         if (exponent === "[") {
             exponent = [];
             while (tmp = unprocessedStack.shift()) {
@@ -827,9 +716,6 @@ define("impl/latex/handler/sqrt", [ "impl/latex/handler/combination" ], function
         return info;
     };
 });
-/*!
- * 求和函数处理器
- */
 define("impl/latex/handler/summation", [ "impl/latex/handler/lib/script-extractor" ], function(require, exports, module) {
     var ScriptExtractor = require("impl/latex/handler/lib/script-extractor");
     return function(info, processedStack, unprocessedStack) {
@@ -839,13 +725,9 @@ define("impl/latex/handler/summation", [ "impl/latex/handler/lib/script-extracto
         return info;
     };
 });
-/**
- * Kity Formula Latex解析器实现
- */
 define("impl/latex/latex", [ "parser", "impl/latex/base/latex-utils", "impl/latex/base/rpn", "impl/latex/base/tree", "impl/latex/define/pre", "impl/latex/pre/int", "impl/latex/pre/quot", "impl/latex/serialization", "impl/latex/define/reverse", "impl/latex/define/special", "impl/latex/define/operator", "impl/latex/handler/script", "impl/latex/define/type", "impl/latex/handler/fraction", "impl/latex/handler/sqrt", "impl/latex/handler/summation", "impl/latex/handler/integration", "impl/latex/handler/brackets", "impl/latex/handler/mathcal", "impl/latex/handler/mathfrak", "impl/latex/handler/mathbb", "impl/latex/handler/mathrm", "impl/latex/reverse/combination", "impl/latex/reverse/fraction", "impl/latex/reverse/func", "impl/latex/reverse/integration", "impl/latex/reverse/subscript", "impl/latex/reverse/superscript", "impl/latex/reverse/script", "impl/latex/reverse/sqrt", "impl/latex/reverse/summation", "impl/latex/reverse/brackets", "impl/latex/reverse/mathcal", "impl/latex/reverse/mathfrak", "impl/latex/reverse/mathbb", "impl/latex/reverse/mathrm", "impl/latex/base/utils", "impl/latex/define/func", "impl/latex/handler/func" ], function(require, exports, module) {
     var Parser = require("parser").Parser, LatexUtils = require("impl/latex/base/latex-utils"), PRE_HANDLER = require("impl/latex/define/pre"), serialization = require("impl/latex/serialization"), OP_DEFINE = require("impl/latex/define/operator"), REVERSE_DEFINE = require("impl/latex/define/reverse"), SPECIAL_LIST = require("impl/latex/define/special"), Utils = require("impl/latex/base/utils");
-    // data
-    var leftChar = "￸", rightChar = "￼", clearCharPattern = new RegExp(leftChar + "|" + rightChar, "g"), leftCharPattern = new RegExp(leftChar, "g"), rightCharPattern = new RegExp(rightChar, "g");
+    var leftChar = "\ufff8", rightChar = "\ufffc", clearCharPattern = new RegExp(leftChar + "|" + rightChar, "g"), leftCharPattern = new RegExp(leftChar, "g"), rightCharPattern = new RegExp(rightChar, "g");
     Parser.register("latex", Parser.implement({
         parse: function(data) {
             var units = this.split(this.format(data));
@@ -871,7 +753,6 @@ define("impl/latex/latex", [ "parser", "impl/latex/base/latex-utils", "impl/late
                 }
                 REVERSE_DEFINE[key.replace(/\\/g, "")] = reverseObj[key];
             }
-            // 预处理
             if (preObj) {
                 for (var key in preObj) {
                     if (!preObj.hasOwnProperty(key)) {
@@ -881,13 +762,9 @@ define("impl/latex/latex", [ "parser", "impl/latex/base/latex-utils", "impl/late
                 }
             }
         },
-        // 格式化输入数据
         format: function(input) {
-            // 清理多余的空格
             input = clearEmpty(input);
-            // 处理输入的“{”和“}”
             input = input.replace(clearCharPattern, "").replace(/\\{/gi, leftChar).replace(/\\}/gi, rightChar);
-            // 预处理器处理
             for (var key in PRE_HANDLER) {
                 if (PRE_HANDLER.hasOwnProperty(key)) {
                     input = PRE_HANDLER[key](input);
@@ -906,14 +783,8 @@ define("impl/latex/latex", [ "parser", "impl/latex/base/latex-utils", "impl/late
             }
             return units;
         },
-        /**
-         * 根据解析出来的语法单元生成树
-         * @param units 单元
-         * @return 生成的树对象
-         */
         generateTree: function(units) {
             var tree = [], currentUnit = null;
-            // 递归处理
             while (currentUnit = units.shift()) {
                 if (Utils.isArray(currentUnit)) {
                     tree.push(this.generateTree(currentUnit));
@@ -940,22 +811,18 @@ define("impl/latex/latex", [ "parser", "impl/latex/base/latex-utils", "impl/late
                     group = groupStack.pop();
                     break;
 
-                  // left-right分组
-                    case "\\left":
+                  case "\\left":
                     bracketsCount++;
                     groupStack.push(group);
-                    // 进入两层
                     group.push([ [] ]);
                     group = group[group.length - 1][0];
                     group.type = "brackets";
-                    // 读取左括号
                     i++;
                     group.leftBrackets = units[i].replace(leftCharPattern, "{").replace(rightCharPattern, "}");
                     break;
 
                   case "\\right":
                     bracketsCount--;
-                    // 读取右括号
                     i++;
                     group.rightBrackets = units[i].replace(leftCharPattern, "{").replace(rightCharPattern, "}");
                     group = groupStack.pop();
@@ -979,13 +846,9 @@ define("impl/latex/latex", [ "parser", "impl/latex/base/latex-utils", "impl/late
             for (var i = 0, len = units.length; i < len; i++) {
                 if (Utils.isArray(units[i])) {
                     if (units[i].type === "brackets") {
-                        // 处理自动调整大小的括号组
-                        // 获取括号组定义
                         structs.push(Utils.getBracketsDefine(units[i].leftBrackets, units[i].rightBrackets));
-                        // 处理内部表达式
                         structs.push(this.parseToStruct(units[i]));
                     } else {
-                        // 普通组
                         structs.push(this.parseToStruct(units[i]));
                     }
                 } else {
@@ -995,11 +858,7 @@ define("impl/latex/latex", [ "parser", "impl/latex/base/latex-utils", "impl/late
             return structs;
         }
     }));
-    /**
-     * 把序列化的字符串表示法转化为中间格式的结构化表示
-     */
     function parseStruct(str) {
-        // 特殊控制字符优先处理
         if (isSpecialCharacter(str)) {
             return str.substring(1);
         }
@@ -1011,11 +870,9 @@ define("impl/latex/latex", [ "parser", "impl/latex/base/latex-utils", "impl/late
             return Utils.getFuncDefine(str);
 
           default:
-            // text
             return transformSpecialCharacters(str);
         }
     }
-    // 转换特殊的文本字符
     function transformSpecialCharacters(char) {
         if (char.indexOf("\\") === 0) {
             return char + "\\";
@@ -1034,9 +891,6 @@ define("impl/latex/latex", [ "parser", "impl/latex/base/latex-utils", "impl/late
         });
     }
 });
-/**
- * “开方”预处理器
- */
 define("impl/latex/pre/int", [], function(require) {
     return function(input) {
         return input.replace(/\\(i+)nt(\b|[^a-zA-Z])/g, function(match, sign, suffix) {
@@ -1044,24 +898,12 @@ define("impl/latex/pre/int", [], function(require) {
         });
     };
 });
-/**
- * “双引号”预处理器
- */
 define("impl/latex/pre/quot", [], function(require) {
     return function(input) {
-        return input.replace(/``/g, "“");
+        return input.replace(/``/g, "\u201c");
     };
 });
-/*!
- * 逆解析处理函数: brackets
- */
 define("impl/latex/reverse/brackets", [], function() {
-    /**
-     * operands中元素对照表
-     * 0: 左符号
-     * 1: 右符号
-     * 2: 表达式
-     */
     return function(operands) {
         if (operands[0] === "{" || operands[0] === "}") {
             operands[0] = "\\" + operands[0];
@@ -1072,11 +914,8 @@ define("impl/latex/reverse/brackets", [], function() {
         return [ "\\left", operands[0], operands[2], "\\right", operands[1] ].join(" ");
     };
 });
-/*!
- * 逆解析处理函数：combination
- */
 define("impl/latex/reverse/combination", [], function() {
-    var pattern = new RegExp("", "g");
+    var pattern = new RegExp("\uf155", "g");
     return function(operands, options) {
         if (this.attr["data-root"] || this.attr["data-placeholder"]) {
             return operands.join("");
@@ -1084,31 +923,17 @@ define("impl/latex/reverse/combination", [], function() {
         return "{" + operands.join("") + "}";
     };
 });
-/*!
- * 逆解析处理函数: fraction
- */
 define("impl/latex/reverse/fraction", [], function() {
     return function(operands) {
         return "\\frac " + operands[0] + " " + operands[1];
     };
 });
-/*!
- * 逆解析处理函数: func
- */
 define("impl/latex/reverse/func", [], function() {
-    /**
-     * operands中元素对照表
-     * 0: 函数名
-     * 1: 上标
-     * 2: 下标
-     */
     return function(operands) {
         var result = [ "\\" + operands[0] ];
-        // 上标
         if (operands[2]) {
             result.push("^" + operands[2]);
         }
-        // 下标
         if (operands[3]) {
             result.push("_" + operands[3]);
         }
@@ -1118,18 +943,9 @@ define("impl/latex/reverse/func", [], function() {
         return result.join("");
     };
 });
-/*!
- * 逆解析处理函数: integration
- */
 define("impl/latex/reverse/integration", [], function() {
-    /**
-     * operands中元素对照表
-     * 0: 上标
-     * 1: 下标
-     */
     return function(operands) {
         var result = [ "\\int " ];
-        // 修正多重积分的序列化
         if (this.callFn && this.callFn.setType) {
             result = [ "\\" ];
             for (var i = 0, len = this.callFn.setType; i < len; i++) {
@@ -1137,11 +953,9 @@ define("impl/latex/reverse/integration", [], function() {
             }
             result.push("nt ");
         }
-        // 上标
         if (operands[1]) {
             result.push("^" + operands[1]);
         }
-        // 下标
         if (operands[2]) {
             result.push("_" + operands[2]);
         }
@@ -1151,64 +965,34 @@ define("impl/latex/reverse/integration", [], function() {
         return result.join("");
     };
 });
-/*!
- * 逆解析处理函数: mathbb
- */
 define("impl/latex/reverse/mathbb", [], function() {
     return function(operands) {
         return "\\mathbb{" + operands[0] + "}";
     };
 });
-/*!
- * 逆解析处理函数: mathcal
- */
 define("impl/latex/reverse/mathcal", [], function() {
     return function(operands) {
         return "\\mathcal{" + operands[0] + "}";
     };
 });
-/*!
- * 逆解析处理函数: mathfrak
- */
 define("impl/latex/reverse/mathfrak", [], function() {
     return function(operands) {
         return "\\mathfrak{" + operands[0] + "}";
     };
 });
-/*!
- * 逆解析处理函数: mathcal
- */
 define("impl/latex/reverse/mathrm", [], function() {
     return function(operands) {
         return "\\mathrm{" + operands[0] + "}";
     };
 });
-/*!
- * 逆解析处理函数: script
- */
 define("impl/latex/reverse/script", [], function() {
-    /**
-     * operands中元素对照表
-     * 0: 表达式
-     * 1: 上标
-     * 2: 下标
-     */
     return function(operands) {
         return operands[0] + "^" + operands[1] + "_" + operands[2];
     };
 });
-/*!
- * 逆解析处理函数: sqrt
- */
 define("impl/latex/reverse/sqrt", [], function() {
-    /**
-     * operands中元素对照表
-     * 0: 表达式
-     * 1: 指数
-     */
     return function(operands) {
         var result = [ "\\sqrt" ];
-        // 上标
         if (operands[1]) {
             result.push("[" + operands[1] + "]");
         }
@@ -1216,35 +1000,17 @@ define("impl/latex/reverse/sqrt", [], function() {
         return result.join("");
     };
 });
-/*!
- * 逆解析处理函数: subscript
- */
 define("impl/latex/reverse/subscript", [], function() {
-    /**
-     * operands中元素对照表
-     * 0: 表达式
-     * 1: 下标
-     */
     return function(operands) {
         return operands[0] + "_" + operands[1];
     };
 });
-/*!
- * 逆解析处理函数: summation
- */
 define("impl/latex/reverse/summation", [], function() {
-    /**
-     * operands中元素对照表
-     * 0: 上标
-     * 1: 下标
-     */
     return function(operands) {
         var result = [ "\\sum " ];
-        // 上标
         if (operands[1]) {
             result.push("^" + operands[1]);
         }
-        // 下标
         if (operands[2]) {
             result.push("_" + operands[2]);
         }
@@ -1254,22 +1020,11 @@ define("impl/latex/reverse/summation", [], function() {
         return result.join("");
     };
 });
-/*!
- * 逆解析处理函数: superscript
- */
 define("impl/latex/reverse/superscript", [], function() {
-    /**
-     * operands中元素对照表
-     * 0: 表达式
-     * 1: 上标
-     */
     return function(operands) {
         return operands[0] + "^" + operands[1];
     };
 });
-/**
- * Created by hn on 14-3-20.
- */
 define("impl/latex/serialization", [ "impl/latex/define/reverse", "impl/latex/reverse/combination", "impl/latex/reverse/fraction", "impl/latex/reverse/func", "impl/latex/reverse/integration", "impl/latex/reverse/subscript", "impl/latex/reverse/superscript", "impl/latex/reverse/script", "impl/latex/reverse/sqrt", "impl/latex/reverse/summation", "impl/latex/reverse/brackets", "impl/latex/reverse/mathcal", "impl/latex/reverse/mathfrak", "impl/latex/reverse/mathbb", "impl/latex/reverse/mathrm", "impl/latex/define/special" ], function(require) {
     var reverseHandlerTable = require("impl/latex/define/reverse"), SPECIAL_LIST = require("impl/latex/define/special"), specialCharPattern = /(\\(?:[\w]+)|(?:[^a-z]))\\/gi;
     return function(tree, options) {
@@ -1277,7 +1032,6 @@ define("impl/latex/serialization", [ "impl/latex/define/reverse", "impl/latex/re
     };
     function reverseParse(tree, options) {
         var operands = [], reverseHandlerName = null, originalOperands = null;
-        // 字符串处理， 需要处理特殊字符
         if (typeof tree !== "object") {
             if (isSpecialCharacter(tree)) {
                 return "\\" + tree + " ";
@@ -1286,7 +1040,6 @@ define("impl/latex/serialization", [ "impl/latex/define/reverse", "impl/latex/re
                 return group + " ";
             });
         }
-        // combination需要特殊处理, 重复嵌套的combination节点要删除
         if (tree.name === "combination" && tree.operand.length === 1 && tree.operand[0].name === "combination") {
             tree = tree.operand[0];
         }
@@ -1309,13 +1062,8 @@ define("impl/latex/serialization", [ "impl/latex/define/reverse", "impl/latex/re
         return !!SPECIAL_LIST[char];
     }
 });
-/*!
- * Kity Formula 公式表示法Parser接口
- */
 define("parser", [], function(require, exports, module) {
-    // Parser 配置列表
-    var CONF = {}, IMPL_POLL = {}, // 内部简单工具类
-    Utils = {
+    var CONF = {}, IMPL_POLL = {}, Utils = {
         extend: function(target, sources) {
             var source = null;
             sources = [].slice.call(arguments, 1);
@@ -1338,14 +1086,10 @@ define("parser", [], function(require, exports, module) {
                     }
                 }
             } else {
-                // 配置项类型错误
                 throw new Error("invalid option");
             }
         }
     };
-    /**
-     * 解析器
-     */
     var Parser = {
         use: function(type) {
             if (!IMPL_POLL[type]) {
@@ -1357,16 +1101,10 @@ define("parser", [], function(require, exports, module) {
             Utils.setData(CONF, key, value);
             return this;
         },
-        /**
-         * 注册解析器实现
-         * @param type 解析器所属类型
-         * @param parserImpl 解析器实现
-         */
         register: function(type, parserImpl) {
             IMPL_POLL[type.toLowerCase()] = parserImpl;
             return this;
         },
-        // 提供构造器的实现的默认结构
         implement: function(parser) {
             var impl = function() {}, constructor = parser.constructor || function() {}, result = function() {
                 ParserInterface.call(this);
@@ -1382,20 +1120,10 @@ define("parser", [], function(require, exports, module) {
             }
             return result;
         },
-        /**
-         * 代理给定的parser实现
-         * @private
-         * @param parserImpl 需代理的parser实现
-         */
         proxy: function(parserImpl) {
             return new ParserProxy(parserImpl);
         }
     };
-    /**
-     * parser实现的代理对象， 所有实现均通过该代理对象对外提供统一接口
-     * @constructor
-     * @param parserImpl 需代理的对象
-     */
     function ParserProxy(parserImpl) {
         this.impl = new parserImpl();
         this.conf = {};
@@ -1404,18 +1132,12 @@ define("parser", [], function(require, exports, module) {
         config: function(key, value) {
             Utils.setData(this.conf, key, value);
         },
-        /**
-         * 设置特定解析器实现所需的配置项，参数也可以是一个Key-Value Mapping
-         * @param key 配置项名称
-         * @param value 配置项值
-         */
         set: function(key, value) {
             this.impl.set(key, value);
         },
         parse: function(data) {
             var result = {
                 config: {},
-                // 调用实现获取解析树
                 tree: this.impl.parse(data)
             };
             Utils.extend(result.config, CONF, this.conf);
@@ -1428,10 +1150,6 @@ define("parser", [], function(require, exports, module) {
             this.impl.expand(obj);
         }
     });
-    /**
-     * 解析器所需实现的接口
-     * @constructor
-     */
     function ParserInterface() {
         this.conf = {};
     }
@@ -1439,16 +1157,10 @@ define("parser", [], function(require, exports, module) {
         set: function(key, value) {
             Utils.extend(this.conf, key, value);
         },
-        /**
-         * 需要特定解析器实现， 该方法是解析器的核心方法，解析器的实现者应该完成该方法对给定数据进行解析
-         * @param data 待解析的数据
-         * @return 解析树， 具体格式庆参考Kity Formula Parser 的文档
-         */
         parse: function(data) {
             throw new Error("Abstract function");
         }
     });
-    // exports
     module.exports = {
         Parser: Parser,
         ParserInterface: ParserInterface

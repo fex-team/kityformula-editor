@@ -402,7 +402,7 @@ define( function ( require ) {
                             }
                         }, {
                             item: {
-                                val: "\\sin{2x}"
+                                val: "\\cos{2x}"
                             }
                         }, {
                             item: {

@@ -14,7 +14,11 @@ module.exports = function (grunt) {
 
                 // module path
                 paths: [ 'src' ],
-                debug: false
+                debug: false,
+                uglify: {
+                    beautify: true,
+                    ascii_only: true
+                }
 
             },
 
