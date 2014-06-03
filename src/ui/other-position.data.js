@@ -15,29 +15,19 @@ define( function () {
                 "height": 73
             }
         },
-        "{\\left(x+a\\right)}^2=\\sum^n_{k=0}{\\left(^n_k\\right)x^ka^{n-k}}": {
+        "{\\placeholder/\\placeholder}": {
             "pos": {
                 "x": 315,
                 "y": 0
             },
             "size": {
-                "width": 310,
-                "height": 73
-            }
-        },
-        "a^2+b^2=c^2": {
-            "pos": {
-                "x": 630,
-                "y": 0
-            },
-            "size": {
-                "width": 310,
-                "height": 73
+                "width": 56,
+                "height": 75
             }
         },
         "\\frac \\placeholder\\placeholder": {
             "pos": {
-                "x": 945,
+                "x": 376,
                 "y": 0
             },
             "size": {
@@ -45,14 +35,24 @@ define( function () {
                 "height": 75
             }
         },
-        "{\\placeholder/\\placeholder}": {
+        "a^2+b^2=c^2": {
             "pos": {
-                "x": 1006,
+                "x": 437,
                 "y": 0
             },
             "size": {
-                "width": 56,
-                "height": 75
+                "width": 310,
+                "height": 73
+            }
+        },
+        "{\\left(x+a\\right)}^2=\\sum^n_{k=0}{\\left(^n_k\\right)x^ka^{n-k}}": {
+            "pos": {
+                "x": 752,
+                "y": 0
+            },
+            "size": {
+                "width": 310,
+                "height": 73
             }
         },
         "\\frac {dy}{dx}": {
@@ -155,7 +155,7 @@ define( function () {
                 "height": 75
             }
         },
-        "^n_1Y": {
+        "{}^n_1Y": {
             "pos": {
                 "x": 1677,
                 "y": 0
@@ -305,7 +305,7 @@ define( function () {
                 "height": 75
             }
         },
-        "\\left(\\placeholder\\right)": {
+        "\\sum_\\placeholder\\placeholder": {
             "pos": {
                 "x": 2754,
                 "y": 0
@@ -315,7 +315,7 @@ define( function () {
                 "height": 75
             }
         },
-        "\\sum_\\placeholder\\placeholder": {
+        "\\left(\\placeholder\\right)": {
             "pos": {
                 "x": 2815,
                 "y": 0

@@ -80,7 +80,7 @@
 
         var dataUrl = canvas.toDataURL();
 
-//        console.log( dataUrl )
+        console.log( dataUrl )
         console.log( JSON.stringify( position, null, 4 ) )
 
     }
