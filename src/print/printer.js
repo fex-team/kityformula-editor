@@ -109,28 +109,31 @@ define( function ( require ) {
 
     function getBase64DataURL ( data, tyep ) {
 
-        var canvas = document.createElement( "canvas" ),
+        var canvas = getImageCanvas( type ),
             ctx = canvas.getContext( "2d" ),
             type = getImageType( tyep );
 
         canvas.width = data.width;
         canvas.height = data.height;
 
-
-        if ( type !== "image/png" ) {
-            ctx.fillStyle = "white";
-            ctx.fillRect( 0, 0, canvas.width, canvas.height );
-        }
-
         if ( isSafari() ) {
             canvg( canvas, data.content );
+            return canvas.toDataURL( type );
         } else {
-            var image = new Image();
-            image.src = getSVGDataURL( data );
-            ctx.drawImage( image, 0, 0 );
+            try {
+                var image = new Image();
+                image.src = getSVGDataURL( data );
+                ctx.drawImage( image, 0, 0 );
+                return canvas.toDataURL( type );
+            } catch ( e ) {
+                // 重新获取一个未被污染的canvas
+                canvas = getImageCanvas( type );
+                canvas.width = data.width;
+                canvas.height = data.height;
+                canvg( canvas, data.content );
+                return canvas.toDataURL( type );
+            }
         }
-
-        return canvas.toDataURL( type );
 
     }
 
@@ -166,6 +169,19 @@ define( function ( require ) {
     function isSafari () {
         var userAgent = window.navigator.userAgent;
         return userAgent.indexOf( "Safari" ) !== -1 && userAgent.indexOf( "Chrome" ) === -1;
+    }
+
+    function getImageCanvas ( type ) {
+
+        var canvas = document.createElement( "canvas" ),
+            ctx = canvas.getContext( "2d" );
+
+        if ( type !== "image/png" ) {
+            ctx.fillStyle = "white";
+            ctx.fillRect( 0, 0, canvas.width, canvas.height );
+        }
+
+        return canvas;
     }
 
 } );

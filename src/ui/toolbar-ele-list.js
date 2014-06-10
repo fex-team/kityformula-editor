@@ -471,7 +471,7 @@ define( function ( require ) {
                 "forall", "partial", "surd", "cup", "cap", "varnothing", "%",
                 "circ", "exists", "nexists", "in", "ni", "gets", "uparrow",
                 "to", "downarrow", "leftrightarrow", "therefore", "because",
-                "+", "-", "neg", "ast", "cdot", "vdots", "ddots", "aleph",
+                "+", "-", "neg", "ast", "cdot", "vdots",/* "ddots",*/ "aleph",
                 "beth", "blacksquare"
 
             ],
