@@ -4,7 +4,8 @@
 
 define( function ( require ) {
 
-    var kity = require( "kity" );
+    var kity = require( "kity" ),
+        canvg = require( "canvg/canvg" );
 
     return kity.createClass( "Printer", {
 
@@ -99,7 +100,7 @@ define( function ( require ) {
             return {
                 width: Math.floor( contentSpace.width ),
                 height: Math.floor( contentSpace.height ),
-                content: canvasCopiesNode.outerHTML.replace( '"<"', '"&#x3c;"' )
+                content: getOuterHTML( canvasCopiesNode ).replace( '"<"', '"&#x3c;"' )
             };
 
         }
@@ -115,22 +116,26 @@ define( function ( require ) {
         canvas.width = data.width;
         canvas.height = data.height;
 
-        var image = new Image();
-        image.src = getSVGDataURL( data );
 
         if ( type !== "image/png" ) {
             ctx.fillStyle = "white";
             ctx.fillRect( 0, 0, canvas.width, canvas.height );
         }
 
-        ctx.drawImage( image, 0, 0 );
+        if ( isSafari() ) {
+            canvg( canvas, data.content );
+        } else {
+            var image = new Image();
+            image.src = getSVGDataURL( data );
+            ctx.drawImage( image, 0, 0 );
+        }
 
         return canvas.toDataURL( type );
 
     }
 
     function getSVGDataURL ( data ) {
-        return "data:image/svg+xml;charset=utf-8," + data.content;
+        return "data:image/svg+xml;base64," + window.btoa(unescape(encodeURIComponent( data.content )));
     }
 
     function getImageType ( type ) {
@@ -148,4 +153,21 @@ define( function ( require ) {
 
     }
 
+    function getOuterHTML ( node ) {
+
+        var container = node.ownerDocument.createElement( "div" );
+
+        container.appendChild( node.cloneNode( true ) );
+
+        return container.innerHTML;
+
+    }
+
+    function isSafari () {
+        var userAgent = window.navigator.userAgent;
+        return userAgent.indexOf( "Safari" ) !== -1 && userAgent.indexOf( "Chrome" ) === -1;
+    }
+
 } );
+
+
