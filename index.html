@@ -19,17 +19,22 @@
     <script>
         jQuery( function ($) {
 
-            var KFEditor = kf.Editor;
+            var factory = kf.EditorFactory.create( $( "#kfEditorContainer" )[ 0 ], {
+                resource: {
+                    path: "./resource/"
+                }
+            } );
 
-            var editor = new KFEditor( $( "#kfEditorContainer" )[ 0 ] );
+            factory.ready( function ( KFEditor ) {
 
-//            editor.execCommand( "render", "asdfasfdasdasdfasfdasdasdfasfdasdasdfasfdasdasdfasfdsdfasfdasdasdfasfdasdasdfasfdasdasdfasfdasdasdfasfdasdasdfasfdasdasdfasfdasdasdfasfdsdfasfdasdasdfasfdasdasdfasfdasd" );
-            editor.execCommand( "render", "abcdeafdapoiuoiuomassdfasdfasdfasjkljpoijdf" );
-//            editor.execCommand( "render", "\\placeholder" );
+                // this指向KFEditor
 
-            editor.execCommand( "focus" );
+                this.execCommand( "render", "abcdeafdapoiuoiuomassdfasdfasdfasjkljpoijdf" );
+                this.execCommand( "focus" );
 
-            window.editor = editor;
+                window.kfe = this;
+
+            } );
 
         } );
     </script>

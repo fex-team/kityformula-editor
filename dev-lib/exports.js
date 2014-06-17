@@ -6,7 +6,8 @@
 
     define( 'kf.start', function ( require ) {
 
-        var KFEditor = require( "editor/editor" );
+        var KFEditor = require( "editor/editor"),
+            Factory = require( "editor/factory" );
 
         // 注册组件
         KFEditor.registerComponents( "ui", require( "ui/ui" ) );
@@ -17,7 +18,7 @@
         KFEditor.registerComponents( "control", require( "control/controller" ) );
         KFEditor.registerComponents( "print", require( "print/printer" ) );
 
-        kf.Editor = KFEditor;
+        kf.EditorFactory = Factory;
 
     } );
 

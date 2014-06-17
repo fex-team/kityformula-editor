@@ -1,6 +1,6 @@
 /*!
  * ====================================================
- * kityformula-editor - v1.0.0 - 2014-06-03
+ * kityformula-editor - v1.0.0 - 2014-06-17
  * https://github.com/HanCong03/kityformula-editor
  * GitHub: https://github.com/kitygraph/kityformula-editor.git 
  * Copyright (c) 2014 Baidu Kity Group; Licensed MIT
@@ -87,15 +87,12 @@ function use ( id ) {
 }
 define("assembly", [], function(require, exports, module) {
     var CONSTRUCT_MAPPING = {}, CURSOR_CHAR = "\uf155";
-    function Assembly(container, config) {
-        this.formula = new kf.Formula(container, config);
+    function Assembly(formula) {
+        this.formula = formula;
     }
     Assembly.prototype.generateBy = function(data) {
         var tree = data.tree, objTree = {}, selectInfo = {}, mapping = {};
-        if (typeof tree === "string") {
-            objTree = new kf.TextExpression(tree);
-            this.formula.appendExpression(objTree);
-        } else {
+        if (typeof tree === "string") {} else {
             this.formula.appendExpression(generateExpression(tree, deepCopy(tree), objTree, mapping, selectInfo));
             return {
                 select: selectInfo,
@@ -227,11 +224,7 @@ define("assembly", [], function(require, exports, module) {
         }
         return deepCopy(source);
     }
-    return {
-        use: function(container, config) {
-            return new Assembly(container, config);
-        }
-    };
+    return Assembly;
 });
 define("impl/latex/base/latex-utils", [ "impl/latex/base/rpn", "impl/latex/base/utils", "impl/latex/define/type", "impl/latex/base/tree", "impl/latex/handler/combination" ], function(require, exports, module) {
     return {

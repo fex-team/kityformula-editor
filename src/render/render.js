@@ -16,7 +16,12 @@ define( function ( require ) {
 
         RenderComponenet = kity.createClass( 'RenderComponent', {
 
+            // 异步组件
+            base: require( "base/component" ),
+
             constructor: function ( kfEditor ) {
+
+                this.callBase();
 
                 this.kfEditor = kfEditor;
                 this.assembly = null;
@@ -42,11 +47,11 @@ define( function ( require ) {
 
             initCanvas: function () {
 
-                var canvasContainer = this.kfEditor.requestService( "ui.get.canvas.container" );
+                var canvasContainer = this.kfEditor.requestService( "ui.get.canvas.container" ),
+                    Formula = this.kfEditor.getFormulaClass();
 
-                this.assembly = Assembly.use( canvasContainer, DEFAULT_OPTIONS );
+                this.assembly = new Assembly( new Formula( canvasContainer, DEFAULT_OPTIONS ) );
                 this.formula = this.assembly.formula;
-
                 this.setCanvasToCenter();
 
             },
