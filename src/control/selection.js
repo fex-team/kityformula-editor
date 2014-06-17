@@ -196,7 +196,7 @@ define( function ( require, exports, module ) {
             } else {
 
                 // 存在包含关系
-                if ( startGroupInfo.groupInfo.groupObj.contains( currentGroupInfo.groupInfo.groupObj ) ) {
+                if ( kfUtils.contains( startGroupInfo.groupInfo.groupObj, currentGroupInfo.groupInfo.groupObj ) ) {
 
                     cursorInfo = {
                         groupId: startGroupInfo.groupInfo.id,
@@ -204,7 +204,7 @@ define( function ( require, exports, module ) {
                         endOffset: this.getIndex( startGroupInfo.groupInfo.groupObj, target, x )
                     };
 
-                } else if ( currentGroupInfo.groupInfo.groupObj.contains( startGroupInfo.groupInfo.groupObj ) ) {
+                } else if ( kfUtils.contains( currentGroupInfo.groupInfo.groupObj, startGroupInfo.groupInfo.groupObj ) ) {
 
                     cursorInfo = {
                         groupId: currentGroupInfo.groupInfo.id,
@@ -382,7 +382,7 @@ define( function ( require, exports, module ) {
 
                 targetGroup = bigBoundingGroup.group.groupObj;
 
-                if ( bigBoundingGroup.group.groupObj.contains( endGroupInfo.groupObj ) ) {
+                if ( kfUtils.contains( bigBoundingGroup.group.groupObj, endGroupInfo.groupObj ) ) {
                     break;
                 }
 

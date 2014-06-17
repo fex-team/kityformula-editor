@@ -357,7 +357,7 @@ define( function ( require ) {
                     transform = null,
                     currentSelect = this.record.select.lastSelect;
 
-                if ( !currentSelect ) {
+                if ( !currentSelect || !currentSelect.node.ownerSVGElement ) {
                     return;
                 }
 

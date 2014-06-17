@@ -84,7 +84,7 @@ define( function ( require ) {
 
                     index = i;
 
-                    if ( child.contains( targetNode ) ) {
+                    if ( kfUtils.contains( child, targetNode ) ) {
                         return false;
                     }
 
@@ -176,7 +176,7 @@ define( function ( require ) {
 
                     result.index = i;
 
-                    if ( containerInfo.content[ i ].contains( target ) ) {
+                    if ( kfUtils.contains( containerInfo.content[ i ], target ) ) {
                         break;
                     }
 
@@ -185,25 +185,6 @@ define( function ( require ) {
                 result.group = containerInfo;
 
                 return result;
-
-//                oldTarget = target;
-//                while ( target = getGroup( target, true, false ) ) {
-//
-//                    if ( target.getAttribute( "data-type" ) === "kf-editor-group" ) {
-//                        break;
-//                    }
-//
-//                    oldTarget = target
-//
-//                }
-//
-//                result = {
-//                    group: this.kfEditor.requestService( "syntax.get.group.content", target.id )
-//                };
-//
-//                result.index = result.group.content.indexOf( oldTarget );
-//
-//                return result;
 
             },
 
