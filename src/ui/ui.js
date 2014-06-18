@@ -162,7 +162,8 @@ define( function ( require, exports, modules ) {
                     contentRect = null;
 
                 if ( this.canvasRect === null ) {
-                    this.canvasRect = canvas.node.getBoundingClientRect();
+                    // 兼容firfox， 获取容器大小，而不是获取画布大小
+                    this.canvasRect = this.canvasContainer.getBoundingClientRect();
                 }
 
                 contentRect = contentContainer.getRenderBox( "paper" );
