@@ -1,6 +1,6 @@
 /*!
  * ====================================================
- * Kity Formula - v1.0.0 - 2014-06-17
+ * Kity Formula - v1.0.0 - 2014-06-18
  * https://github.com/kitygraph/formula
  * GitHub: https://github.com/kitygraph/formula.git 
  * Copyright (c) 2014 Baidu Kity Group; Licensed MIT
@@ -460,8 +460,32 @@ define("char/map", [], function(require) {
         bot: "\u22a5"
     };
 });
-define("char/text", [ "kity", "sysconf", "font/map/kf-ams-main", "font/map/kf-ams-cal", "font/map/kf-ams-frak", "font/map/kf-ams-bb", "font/map/kf-ams-roman", "font/manager", "signgroup", "def/gtype" ], function(require, exports, module) {
-    var kity = require("kity"), FONT_CONF = require("sysconf").font, FontManager = require("font/manager");
+define("char/text-factory", [ "kity" ], function(require) {
+    var kity = require("kity"), divNode = document.createElement("div"), NAMESPACE = "http://www.w3.org/XML/1998/namespace";
+    function createText(content) {
+        var text = new kity.Text();
+        if ("innerHTML" in text.node) {
+            text.node.setAttributeNS(NAMESPACE, "xml:space", "preserve");
+        } else {
+            if (content.indexOf(" ") != -1) {
+                content = convertContent(content);
+            }
+        }
+        text.setContent(content);
+        return text;
+    }
+    function convertContent(content) {
+        divNode.innerHTML = '<svg><text gg="asfdas">' + content.replace(/\s/gi, "&nbsp;") + "</text></svg>";
+        return divNode.firstChild.firstChild.textContent;
+    }
+    return {
+        create: function(content) {
+            return createText(content);
+        }
+    };
+});
+define("char/text", [ "kity", "sysconf", "font/map/kf-ams-main", "font/map/kf-ams-cal", "font/map/kf-ams-frak", "font/map/kf-ams-bb", "font/map/kf-ams-roman", "font/manager", "char/text-factory", "signgroup", "def/gtype" ], function(require, exports, module) {
+    var kity = require("kity"), FONT_CONF = require("sysconf").font, FontManager = require("font/manager"), TextFactory = require("char/text-factory");
     return kity.createClass("Text", {
         base: require("signgroup"),
         constructor: function(content, fontFamily) {
@@ -477,7 +501,7 @@ define("char/text", [ "kity", "sysconf", "font/map/kf-ams-main", "font/map/kf-am
             this.addShape(this.contentShape);
         },
         createContent: function() {
-            var contentNode = new kity.Text(this.translationContent);
+            var contentNode = TextFactory.create(this.translationContent);
             contentNode.setAttr({
                 "font-family": this.fontFamily,
                 "font-size": 50,
@@ -507,7 +531,7 @@ define("char/text", [ "kity", "sysconf", "font/map/kf-ams-main", "font/map/kf-am
             var fontFamily = this.fontFamily;
             return content.replace(/``/g, "\u201c").replace(/\\([a-zA-Z,]+)\\/g, function(match, input) {
                 if (input === ",") {
-                    return "\ufffc \ufffc";
+                    return " ";
                 }
                 var data = FontManager.getCharacterValue(input, fontFamily);
                 if (!data) {
@@ -600,21 +624,48 @@ define("expression/compound-exp/brackets", [ "kity", "operator/brackets", "char/
         }
     });
 });
-define("expression/compound-exp/combination", [ "kity", "operator/combination", "operator/operator", "expression/compound", "def/gtype", "expression/expression" ], function(require, exports, modules) {
-    var kity = require("kity"), CombinationOperator = require("operator/combination");
+define("expression/compound-exp/combination", [ "kity", "sysconf", "font/map/kf-ams-main", "font/map/kf-ams-cal", "font/map/kf-ams-frak", "font/map/kf-ams-bb", "font/map/kf-ams-roman", "operator/combination", "operator/operator", "expression/compound", "def/gtype", "expression/expression" ], function(require, exports, modules) {
+    var kity = require("kity"), FONT_CONF = require("sysconf").font, CombinationOperator = require("operator/combination");
     return kity.createClass("CombinationExpression", {
         base: require("expression/compound"),
-        constructor: function() {
+        constructor: function(abc) {
             this.callBase();
             this.setFlag("Combination");
             this.setOperator(new CombinationOperator());
             kity.Utils.each(arguments, function(operand, index) {
                 this.setOperand(operand, index);
             }, this);
+        },
+        getRenderBox: function(refer) {
+            var rectBox = this.callBase(refer);
+            if (this.getOperands().length === 0) {
+                rectBox.height = FONT_CONF.spaceHeight;
+            }
+            return rectBox;
+        },
+        getBaseline: function(refer) {
+            var maxBaseline = 0, operands = this.getOperands();
+            if (operands.length === 0) {
+                return this.callBase(refer);
+            }
+            kity.Utils.each(operands, function(operand) {
+                maxBaseline = Math.max(operand.getBaseline(refer), maxBaseline);
+            });
+            return maxBaseline;
+        },
+        getMeanline: function(refer) {
+            var minMeanline = 1e7, operands = this.getOperands();
+            if (operands.length === 0) {
+                return this.callBase(refer);
+            }
+            kity.Utils.each(operands, function(operand) {
+                minMeanline = Math.min(operand.getMeanline(refer), minMeanline);
+            });
+            return minMeanline;
         }
     });
 });
-define("expression/compound-exp/fraction", [ "kity", "operator/fraction", "operator/operator", "expression/compound-exp/binary", "expression/compound" ], function(require, exports, modules) {
+define("expression/compound-exp/fraction", [ "kity", "operator/fraction", "sysconf", "operator/operator", "expression/compound-exp/binary", "expression/compound" ], function(require, exports, modules) {
     var kity = require("kity"), FractionOperator = require("operator/fraction");
     return kity.createClass("FractionExpression", {
         base: require("expression/compound-exp/binary"),
@@ -623,12 +674,13 @@ define("expression/compound-exp/fraction", [ "kity", "operator/fraction", "opera
             this.setFlag("Fraction");
             this.setOperator(new FractionOperator());
         },
-        getBaseline: function() {
-            var downOperand = this.getOperand(1), rectBox = downOperand.getFixRenderBox();
-            return rectBox.y + this.getOperand(1).getBaseline();
+        getBaseline: function(refer) {
+            var downOperand = this.getOperand(1), rectBox = downOperand.getRenderBox(refer);
+            return rectBox.y + downOperand.getBaselineProportion() * rectBox.height;
         },
-        getMeanline: function() {
-            return this.getOperand(0).getMeanline();
+        getMeanline: function(refer) {
+            var upOperand = this.getOperand(0), rectBox = upOperand.getRenderBox(refer);
+            return upOperand.getMeanlineProportion() * rectBox.height;
         }
     });
 });
@@ -894,11 +946,17 @@ define("expression/expression", [ "kity", "def/gtype", "sysconf", "font/map/kf-a
             this.children[index] = exp;
             this.expContent.addShape(exp);
         },
-        getBaseline: function() {
-            return this.getFixRenderBox().height * FONT_CONF.baselinePosition - 3;
+        getBaselineProportion: function() {
+            return FONT_CONF.baselinePosition;
         },
-        getMeanline: function() {
-            return this.getFixRenderBox().height * FONT_CONF.meanlinePosition - 1;
+        getMeanlineProportion: function() {
+            return FONT_CONF.meanlinePosition;
+        },
+        getBaseline: function(refer) {
+            return this.getRenderBox(refer).height * FONT_CONF.baselinePosition - 3;
+        },
+        getMeanline: function(refer) {
+            return this.getRenderBox(refer).height * FONT_CONF.meanlinePosition - 1;
         },
         getAscenderline: function() {
             return this.getFixRenderBox().height * FONT_CONF.ascenderPosition;
@@ -957,7 +1015,7 @@ define("expression/expression", [ "kity", "def/gtype", "sysconf", "font/map/kf-a
     });
     return Expression;
 });
-define("expression/text", [ "char/text", "kity", "sysconf", "font/manager", "signgroup", "char/conf", "expression/expression", "def/gtype" ], function(require, exports, module) {
+define("expression/text", [ "char/text", "kity", "sysconf", "font/manager", "char/text-factory", "signgroup", "char/conf", "expression/expression", "def/gtype" ], function(require, exports, module) {
     var Text = require("char/text"), kity = require("kity"), FONT_CONF = require("char/conf"), Expression = require("expression/expression"), TextExpression = kity.createClass("TextExpression", {
         base: require("expression/expression"),
         constructor: function(content, fontFamily) {
@@ -4250,7 +4308,7 @@ define("kity", [], function(require, exports, module) {
     }
     return window.kity;
 });
-define("operator/brackets", [ "kity", "char/text", "sysconf", "font/manager", "signgroup", "operator/operator", "def/gtype" ], function(require, exports, modules) {
+define("operator/brackets", [ "kity", "char/text", "sysconf", "font/manager", "char/text-factory", "signgroup", "operator/operator", "def/gtype" ], function(require, exports, modules) {
     var kity = require("kity"), Text = require("char/text"), FontManager = require("font/manager");
     return kity.createClass("BracketsOperator", {
         base: require("operator/operator"),
@@ -4308,7 +4366,7 @@ define("operator/common/script-controller", [ "kity", "expression/empty", "sysco
     };
     return kity.createClass("ScriptController", {
         constructor: function(opObj, target, sup, sub, options) {
-            this.opObj = opObj;
+            this.observer = opObj.getParentExpression();
             this.target = target;
             this.sup = sup;
             this.sub = sub;
@@ -4335,19 +4393,11 @@ define("operator/common/script-controller", [ "kity", "expression/empty", "sysco
                     return this.applyUpDownScript(target, sup, sub);
                 }
             }
-            target.translate((space.width - targetBox.width) / 2, supBox.height);
-            sub.translate((space.width - subBox.width) / 2, supBox.height + targetBox.height);
-            if (diff > 0) {
-                space.bottom = diff;
-            } else {
-                space.top = -diff;
-            }
-            return space;
         },
         applySide: function() {
-            var target = this.target, sup = this.sup, sub = this.sub, options = this.options;
+            var target = this.target, sup = this.sup, sub = this.sub;
             if (EmptyExpression.isEmpty(sup) && EmptyExpression.isEmpty(sub)) {
-                var targetRectBox = target.getFixRenderBox();
+                var targetRectBox = target.getRenderBox(this.observer);
                 return {
                     width: targetRectBox.width,
                     height: targetRectBox.height,
@@ -4366,7 +4416,7 @@ define("operator/common/script-controller", [ "kity", "expression/empty", "sysco
         },
         applySideSuper: function(target, sup) {
             sup.scale(this.options.zoom);
-            var targetRectBox = target.getFixRenderBox(), supRectBox = sup.getFixRenderBox(), targetMeanline = target.getMeanline(), targetBaseline = target.getBaseline(), supBaseline = sup.getBaseline(), positionline = targetMeanline, diff = supBaseline - positionline, space = {
+            var targetRectBox = target.getRenderBox(this.observer), supRectBox = sup.getRenderBox(this.observer), targetMeanline = target.getMeanline(this.observer), supBaseline = sup.getBaseline(this.observer), positionline = targetMeanline, diff = supBaseline - positionline, space = {
                 top: 0,
                 bottom: 0,
                 width: targetRectBox.width + supRectBox.width,
@@ -4387,7 +4437,7 @@ define("operator/common/script-controller", [ "kity", "expression/empty", "sysco
         },
         applySideSub: function(target, sub) {
             sub.scale(this.options.zoom);
-            var targetRectBox = target.getFixRenderBox(), subRectBox = sub.getFixRenderBox(), subOffset = sub.getOffset(), targetBaseline = target.getBaseline(), subPosition = (subRectBox.height + subOffset.top + subOffset.bottom) / 2, diff = targetRectBox.height - targetBaseline - subPosition, space = {
+            var targetRectBox = target.getRenderBox(this.observer), subRectBox = sub.getRenderBox(this.observer), subOffset = sub.getOffset(), targetBaseline = target.getBaseline(this.observer), subPosition = (subRectBox.height + subOffset.top + subOffset.bottom) / 2, diff = targetRectBox.height - targetBaseline - subPosition, space = {
                 top: 0,
                 bottom: 0,
                 width: targetRectBox.width + subRectBox.width,
@@ -4406,7 +4456,7 @@ define("operator/common/script-controller", [ "kity", "expression/empty", "sysco
         applySideScript: function(target, sup, sub) {
             sup.scale(this.options.zoom);
             sub.scale(this.options.zoom);
-            var targetRectBox = target.getFixRenderBox(), subRectBox = sub.getFixRenderBox(), supRectBox = sup.getFixRenderBox(), targetMeanline = target.getMeanline(), targetBaseline = target.getBaseline(), supBaseline = sup.getBaseline(), subAscenderline = sub.getAscenderline(), supPosition = targetMeanline, subPosition = targetMeanline + (targetBaseline - targetMeanline) * 2 / 3, topDiff = supPosition - supBaseline, bottomDiff = targetRectBox.height - subPosition - (subRectBox.height - subAscenderline), space = {
+            var targetRectBox = target.getRenderBox(this.observer), subRectBox = sub.getRenderBox(this.observer), supRectBox = sup.getRenderBox(this.observer), targetMeanline = target.getMeanline(this.observer), targetBaseline = target.getBaseline(this.observer), supBaseline = sup.getBaseline(this.observer), subAscenderline = sub.getAscenderline(this.observer), supPosition = targetMeanline, subPosition = targetMeanline + (targetBaseline - targetMeanline) * 2 / 3, topDiff = supPosition - supBaseline, bottomDiff = targetRectBox.height - subPosition - (subRectBox.height - subAscenderline), space = {
                 top: 0,
                 bottom: 0,
                 width: targetRectBox.width + Math.max(subRectBox.width, supRectBox.width),
@@ -4469,16 +4519,16 @@ define("operator/common/script-controller", [ "kity", "expression/empty", "sysco
         }
     });
 });
-define("operator/fraction", [ "kity", "operator/operator", "def/gtype", "signgroup" ], function(require, exports, modules) {
-    var kity = require("kity");
+define("operator/fraction", [ "kity", "sysconf", "font/map/kf-ams-main", "font/map/kf-ams-cal", "font/map/kf-ams-frak", "font/map/kf-ams-bb", "font/map/kf-ams-roman", "operator/operator", "def/gtype", "signgroup" ], function(require, exports, modules) {
+    var kity = require("kity"), ZOOM = require("sysconf").zoom;
     return kity.createClass("FractionOperator", {
         base: require("operator/operator"),
         constructor: function() {
             this.callBase("Fraction");
         },
         applyOperand: function(upOperand, downOperand) {
-            upOperand.scale(.66);
-            downOperand.scale(.66);
+            upOperand.scale(ZOOM);
+            downOperand.scale(ZOOM);
             var upWidth = Math.ceil(upOperand.getWidth()), downWidth = Math.ceil(downOperand.getWidth()), upHeight = Math.ceil(upOperand.getHeight()), downHeight = Math.ceil(downOperand.getHeight()), overflow = 3, padding = 1, maxWidth = Math.max(upWidth, downWidth), maxHeight = Math.max(upHeight, downHeight), operatorShape = generateOperator(maxWidth, overflow);
             this.addOperatorShape(operatorShape);
             upOperand.translate((maxWidth - upWidth) / 2 + overflow, 0);
@@ -4493,7 +4543,7 @@ define("operator/fraction", [ "kity", "operator/operator", "def/gtype", "signgro
         return new kity.Rect(width + overflow * 2, 1).fill("black");
     }
 });
-define("operator/func", [ "kity", "char/text", "sysconf", "font/manager", "signgroup", "operator/common/script-controller", "expression/empty", "operator/operator", "def/gtype" ], function(require, exports, modules) {
+define("operator/func", [ "kity", "char/text", "sysconf", "font/manager", "char/text-factory", "signgroup", "operator/common/script-controller", "expression/empty", "operator/operator", "def/gtype" ], function(require, exports, modules) {
     var kity = require("kity"), Text = require("char/text"), ScriptController = require("operator/common/script-controller");
     return kity.createClass("FunctionOperator", {
         base: require("operator/operator"),
@@ -4812,6 +4862,7 @@ define("signgroup", [ "kity", "def/gtype" ], function(require, exports, module) 
 });
 define("sysconf", [ "font/map/kf-ams-main", "font/map/kf-ams-cal", "font/map/kf-ams-frak", "font/map/kf-ams-bb", "font/map/kf-ams-roman" ], function(require) {
     return {
+        zoom: .66,
         font: {
             meanline: Math.round(380 / 1e3 * 50),
             baseline: Math.round(800 / 1e3 * 50),
