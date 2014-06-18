@@ -10,7 +10,7 @@ define( function ( require ) {
 
         DEFAULT_OPTIONS = {
             autoresize: false,
-            fontsize: 30,
+            fontsize: 50,
             padding: [ 20, 50 ]
         },
 
@@ -19,9 +19,11 @@ define( function ( require ) {
             // 异步组件
             base: require( "base/component" ),
 
-            constructor: function ( kfEditor ) {
+            constructor: function ( kfEditor, options ) {
 
                 this.callBase();
+
+                this.options = kity.Utils.extend( {}, DEFAULT_OPTIONS, options );
 
                 this.kfEditor = kfEditor;
                 this.assembly = null;
@@ -50,7 +52,7 @@ define( function ( require ) {
                 var canvasContainer = this.kfEditor.requestService( "ui.get.canvas.container" ),
                     Formula = this.kfEditor.getFormulaClass();
 
-                this.assembly = new Assembly( new Formula( canvasContainer, DEFAULT_OPTIONS ) );
+                this.assembly = new Assembly( new Formula( canvasContainer, this.options ) );
                 this.formula = this.assembly.formula;
                 this.setCanvasToCenter();
 
