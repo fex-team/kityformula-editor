@@ -102,15 +102,15 @@ define( function ( require ) {
             },
 
             toggleSelect: function () {
-                this.element.classList.toggle( PREFIX + "button-in" );
+                $$.getClassList( this.element ).toggle( PREFIX + "button-in" );
             },
 
             unselect: function () {
-                this.element.classList.remove( PREFIX + "button-in" );
+                $$.getClassList( this.element ).remove( PREFIX + "button-in" );
             },
 
             select: function () {
-                this.element.classList.add( PREFIX + "button-in" );
+                $$.getClassList( this.element ).add( PREFIX + "button-in" );
             },
 
             show: function () {
@@ -242,12 +242,12 @@ define( function ( require ) {
 
             disable: function () {
                 this.disabled = true;
-                this.element.classList.remove( PREFIX + "enabled" );
+                $$.getClassList( this.element ).remove( PREFIX + "enabled" );
             },
 
             enable: function () {
                 this.disabled = false;
-                this.element.classList.add( PREFIX + "enabled" );
+                $$.getClassList( this.element ).add( PREFIX + "enabled" );
             },
 
             mergeElement: function () {
