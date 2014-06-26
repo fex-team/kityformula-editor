@@ -1,7 +1,7 @@
 /* 工具栏 */
 .kf-editor-toolbar {
     width: 100%;
-    padding: 2px 10px;
+    padding: 1px 10px;
     position: relative;
     top: 0;
     left: 0;
@@ -11,13 +11,13 @@
     -moz-box-shadow:1px 1px 1px rgba( 0, 0, 0, 0.1 );
     -webkit-box-shadow:1px 1px 1px rgba( 0, 0, 0, 0.1 );
     box-shadow:1px 1px 1px rgba( 0, 0, 0, 0.1 );
-    color: #333;
+    color: #000;
     font-family: Helvetica, Arial, "微软雅黑", "Microsoft YaHei", "宋体", sans-serif;
 }
 
 /* 按钮 */
 .kf-editor-ui-button {
-    padding: 8px 5px;
+    padding: 8px 6px;
     height: 79px;
     font-size: 12px;
     display: inline-block;
@@ -30,6 +30,7 @@
     z-index: 3;
     vertical-align: top;
     opacity: 0.5;
+    margin-right: 1px;
 }
 
 .kf-editor-toolbar .kf-editor-ui-overlap-button {
@@ -46,7 +47,7 @@
 }
 
 .kf-editor-ui-button-label {
-    color: #333;
+    color: #666;
     text-align: center;
     display: block;
     font-size: 12px;
@@ -66,7 +67,7 @@
     width: 0;
     height: 0;
     display: inline-block;
-    margin: 6px auto;
+    margin: 8px auto;
     vertical-align: top;
 }
 
@@ -92,15 +93,15 @@
 }
 
 .kf-editor-toolbar .kf-editor-ui-button-in {
-    border-color: #99c99b;
-    background: #e6fae7;
+    border-color: #8fcc91!important;
+    background: #e0f0dd!important;
 }
 
 .kf-editor-toolbar .kf-editor-ui-overlap-button {
     padding-top: 0;
     padding-bottom: 0;
-    border-color: #53b856;
-    background: #53b856;
+    border-color: #61b864!important;
+    background: #61b864!important;
 }
 
 /* 分割符 */
@@ -111,8 +112,8 @@
 }
 
 .kf-editor-ui-enabled.kf-editor-ui-button:HOVER {
-    border: 1px solid #99c99b;
-    background: #e6fae7;
+    border: 1px solid #a9d9ab;
+    background: #ebf7e6;
 }
 
 .kf-editor-ui-enabled.kf-editor-ui-overlap-button:HOVER {
@@ -129,19 +130,21 @@
 
 /* box */
 .kf-editor-ui-box {
-    border: 1px solid #b7b2be;
+    border: 1px solid #b3aead;
     border-radius: 3px;
     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.11);
     background: white;
     position: absolute;
     top: 0;
     left: -1px;
-    overflow-x: hidden;
-    overflow-y: auto;
+}
+
+.kf-editor-ui-area .kf-editor-ui-box {
+    border-color: #61b864;
 }
 
 .kf-editor-ui-box-container {
-    font-size: 14px;
+    font-size: 12px;
 }
 
 .kf-editor-ui-box-group-title {
@@ -170,6 +173,7 @@
     border-top-color: white;
     border-width: 4px;
     margin-left: 10px;
+    margin-top: 8px;
 }
 
 .kf-editor-ui-yushe-btn .kf-editor-ui-box-item {
@@ -187,7 +191,7 @@
 }
 
 .kf-editor-ui-box-item-content:HOVER .kf-editor-ui-box-item-val {
-    border-color: #53b856;
+    border-color: #6eb864;
 }
 
 .kf-editor-ui-area .kf-editor-ui-box-item {
@@ -297,36 +301,37 @@
 }
 
 .kf-editor-ui-moveup-button {
-    background: url( "../images/toolbar/button/up.png" ) 0 9px no-repeat;
+    background: url( "../images/toolbar/btn.png" ) -304px 9px no-repeat;
 }
 
 .kf-editor-ui-movedown-button {
     border: 1px solid #D3D3D3;
     border-width: 1px 0;
-    background: url( "../images/toolbar/button/down.png" ) 0 9px no-repeat;
+    background: url( "../images/toolbar/btn.png" ) -325px 9px no-repeat;
 }
 
 .kf-editor-ui-area-button {
     width: 100%;
     height: 50px;
     line-height: 26px;
-    background: url( "../images/toolbar/button/open.png" ) 0 0 no-repeat;
+    background: url( "../images/toolbar/btn.png" ) -346px 0 no-repeat;
 }
 
 .kf-editor-ui-enabled .kf-editor-ui-area-button:HOVER {
-    background-color: #e6fae7;
+    background-color: #e5e4e1;
 }
 
 .kf-editor-ui-enabled .kf-editor-ui-moveup-button:HOVER {
-    background-color: #e6fae7;
+    background-color: #e5e4e1;
 }
 
 .kf-editor-ui-enabled .kf-editor-ui-movedown-button:HOVER {
-    background-color: #e6fae7;
+    background-color: #e5e4e1;
 }
 
-.kf-editor-ui-disabled {
+.kf-editor-ui-area-button-container .kf-editor-ui-disabled {
     opacity: 0.25;
+    background-color: transparent!important;
 }
 
 .kf-editor-ui-area-mount {
@@ -343,9 +348,8 @@
 
 /* list */
 .kf-editor-ui-list {
-    background: white;
-    padding: 1px;
-    border: 1px solid #b7b2be;
+    background: #f9f8f5;
+    border: 1px solid #b3aead;
     border-radius: 3px;
     position: fixed;
     top: 0;
@@ -368,11 +372,24 @@
     line-height: 24px;
     padding: 2px 6px;
     border: 1px solid transparent;
+    border-width: 1px 0;
+}
+
+.kf-editor-ui-list-item-select {
+    color: #61b864;
+    font-weight: bold;
+}
+
+.kf-editor-ui-list-item-select .kf-editor-ui-list-item-icon {
+    visibility: visible;
+    width: 16px;
+    height: 16px;
+    background: url( ../../assets/images/toolbar/btn.png ) no-repeat -367px 0;
 }
 
 .kf-editor-ui-list-item:HOVER {
-    border-color: #83d286;
-    background-color: #e6fae7;
+    border-color: #beddbf;
+    background-color: #ecf3e9;
 }
 
 .kf-editor-ui-list-item-icon {
@@ -395,28 +412,32 @@
 }
 
 .kf-editor-ui-area-item-inner {
-    width: 26px;
-    height: 26px;
+    width: 34px;
+    height: 34px;
     border: 1px solid white;
     position: absolute;
-    top: -1px;
-    left: -1px;
+    top: -4px;
+    left: -4px;
     -webkit-transition: all 0.1s linear;
     -moz-transition: all 0.1s linear;
     transition: all 0.1s linear;
+
+    -webkit-transform: scale( 0.76 );
+    -moz-transform: scale( 0.76 );
+    transform: scale( 0.76 );
 }
 
 .kf-editor-ui-enabled .kf-editor-ui-area-item-inner:HOVER {
-    width: 32px;
-    height: 32px;
-    top: -3px;
-    left: -3px;
     border-color: #dff3df;
+
+    -webkit-transform: scale( 1 );
+    -moz-transform: scale( 1 );
+    transform: scale( 1 );
 }
 
 .kf-editor-ui-area-item-img {
-    width: 24px;
-    height: 24px;
+    width: 32px;
+    height: 32px;
     border: 1px solid #808080;
     -webkit-transition: all 0.1s linear;
     -moz-transition: all 0.1s linear;
@@ -424,9 +445,7 @@
 }
 
 .kf-editor-ui-enabled .kf-editor-ui-area-item-inner:HOVER .kf-editor-ui-area-item-img {
-    width: 30px;
-    height: 30px;
-    border-color: #53b856;
+    border-color: #6eb864;
 }
 
 .kf-editor-ui-enabled {
@@ -450,27 +469,27 @@
 /* scrollbar */
 .kf-editor-ui-box::-webkit-scrollbar {
     width: 17px;
-    background: url( ./images2/bg.png ) 0 0 repeat-y white;
+    background: url(../images/scrollbar/custom/bg.png) 0 0 repeat-y white;
 }
 
 .kf-editor-ui-box::-webkit-scrollbar-button:end:increment {
-    height: 13px;
-    background: url(./images2/down.png) 0 0 no-repeat white;
+    height: 5px;
+    background: url(../images/scrollbar/custom/down.png) 0 0 repeat-y white;
 }
 /*定义滚动条渐减按扭的样式 */
 .kf-editor-ui-box::-webkit-scrollbar-button:start:decrement {
-    height: 13px;
-    background: url(./images2/up.png) 0 0 no-repeat white;
+    height: 5px;
+    background: url(../images/scrollbar/custom/up.png) 0 0 repeat-y white;
 }
 
 /* 垂直滚动条的第三层轨道的上段 */
 .kf-editor-ui-box::-webkit-scrollbar-track-piece:vertical:start {
-    background-image: url(./images2/top.png), url( ./images2/bg.png );
+    background-image: url(../images/scrollbar/custom/top.png), url(../images/scrollbar/custom/bg.png);
     background-repeat: no-repeat, repeat-y;
 }
 /* 垂直滚动条的第三层轨道的下段 */
 .kf-editor-ui-box::-webkit-scrollbar-track-piece:vertical:end {
-    background-image: url(./images2/bottom.png), url( ./images2/bg.png );
+    background-image: url(../images/scrollbar/custom/bottom.png), url(../images/scrollbar/custom/bg.png);
     background-repeat: no-repeat, repeat-y;
     background-position: 0 bottom, 0 0;
 }
@@ -478,40 +497,38 @@
 .kf-editor-ui-box::-webkit-scrollbar-thumb:vertical {
     /*background: url(./images2/bar.png) 6px 0 no-repeat;*/
     /*background-size: 6px;*/
-    -webkit-border-image: url(./images2/bar.png) 8;
+    -webkit-border-image: url(../images/scrollbar/custom/bar.png) 8;
     border-width: 10px;
 }
 
 .kf-editor-ui-wrap-group::-webkit-scrollbar {
     width: 17px;
-    background: url( ./images2/bg.png ) 0 0 repeat-y white;
+    background: url(../images/scrollbar/custom/bg.png) 0 0 repeat-y white;
 }
 
 .kf-editor-ui-wrap-group::-webkit-scrollbar-button:end:increment {
-    height: 13px;
-    background: url(./images2/down.png) 0 0 no-repeat white;
+    height: 5px;
+    background: url(../images/scrollbar/custom/down.png) 0 0 repeat-y white;
 }
 /*定义滚动条渐减按扭的样式 */
 .kf-editor-ui-wrap-group::-webkit-scrollbar-button:start:decrement {
-    height: 13px;
-    background: url(./images2/up.png) 0 0 no-repeat white;
+    height: 5px;
+    background: url(../images/scrollbar/custom/up.png) 0 0 repeat-y white;
 }
 
 /* 垂直滚动条的第三层轨道的上段 */
 .kf-editor-ui-wrap-group::-webkit-scrollbar-track-piece:vertical:start {
-    background-image: url(./images2/top.png), url( ./images2/bg.png );
+    background-image: url(../images/scrollbar/custom/top.png), url(../images/scrollbar/custom/bg.png);
     background-repeat: no-repeat, repeat-y;
 }
 /* 垂直滚动条的第三层轨道的下段 */
 .kf-editor-ui-wrap-group::-webkit-scrollbar-track-piece:vertical:end {
-    background-image: url(./images2/bottom.png), url( ./images2/bg.png );
+    background-image: url(../images/scrollbar/custom/bottom.png), url(../images/scrollbar/custom/bg.png);
     background-repeat: no-repeat, repeat-y;
     background-position: 0 bottom, 0 0;
 }
 /* 垂直滚动条的滑动块 */
 .kf-editor-ui-wrap-group::-webkit-scrollbar-thumb:vertical {
-    /*background: url(./images2/bar.png) 6px 0 no-repeat;*/
-    /*background-size: 6px;*/
-    -webkit-border-image: url(./images2/bar.png) 8;
+    -webkit-border-image: url(../images/scrollbar/custom/bar.png) 8;
     border-width: 10px;
 }

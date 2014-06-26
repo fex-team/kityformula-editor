@@ -3,37 +3,43 @@
 <head>
     <title>公式编辑器</title>
     <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
     <script src="dev-lib/jquery-1.11.0.min.js"></script>
     <script src="dev-lib/kitygraph.all.js"></script>
-    <script src="dev-lib/kitygraph.all.js"></script>
-    <script src="dev-lib/kity-formula.all.js"></script>
-    <script src="dev-lib/kityformula-parser.all.js"></script>
-    <script src="dev-lib/dev-define.js"></script>
-    <script>
-        inc.config({
-            base: './src'
-        });
-    </script>
-    <script src="dev-lib/exports.js"></script>
-    <script src="dev-lib/dev-start.js"></script>
-    <script>
-
-
-
-    </script>
+    <script src="dev-lib/kity-formula-render.all.js"></script>
+    <script src="dev-lib/kity-formula-parser.all.js"></script>
+    <!--<script src="dev-lib/dev-define.js"></script>-->
+    <!--<script>-->
+        <!--inc.config({-->
+            <!--base: './src'-->
+        <!--});-->
+    <!--</script>-->
+    <!--<script src="dev-lib/exports.js"></script>-->
+    <!--<script src="dev-lib/start.js"></script>-->
+    <!--<script src="dev-lib/dev-start.js"></script>-->
+    <script src="dist/kityformula-editor.all.min.js"></script>
     <script>
         jQuery( function ($) {
 
-            var KFEditor = kf.Editor;
+            var factory = kf.EditorFactory.create( $( "#kfEditorContainer" )[ 0 ], {
+                render: {
+                    fontsize: 40
+                },
+                resource: {
+                    path: "http://172.22.65.30/kityformula/src/resource/"
+                }
+            } );
 
-            var editor = new KFEditor( $( "#kfEditorContainer" )[ 0 ] );
+            factory.ready( function ( KFEditor ) {
 
-            editor.execCommand( "render", "asdfasfdasdasdfasfdasdasdfasfdasdasdfasfdasdasdfasfdsdfasfdasdasdfasfdasdasdfasfdasdasdfasfdasdasdfasfdasdasdfasfdasdasdfasfdasdasdfasfdsdfasfdasdasdfasfdasdasdfasfdasd" );
-//            editor.execCommand( "render", "abcdeafdapoiuoiuomassdfasdfasdfasjkljpoijdf" );
+                // this指向KFEditor
 
-            editor.execCommand( "focus" );
+                this.execCommand( "render", "abcdeafdapoiuoiuomassdfasdfasdfasjkljpoijdf" );
+                this.execCommand( "focus" );
 
-            window.editor = editor;
+                window.kfe = this;
+
+            } );
 
         } );
     </script>

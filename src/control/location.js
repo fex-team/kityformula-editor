@@ -81,8 +81,7 @@ define( function ( require, exports, module ) {
 
         updateCursorInfo: function ( evt ) {
 
-            var cursorInfo = null,
-                wrapNode = null,
+            var wrapNode = null,
                 groupInfo = null,
                 index = -1;
 
@@ -167,7 +166,7 @@ define( function ( require, exports, module ) {
                 paperContainerRect = getRect( this.paper.container.node ),
                 cursorOffset = 0,
                 focusChildRect = getRect( focusChild ),
-                cursorTransform = this.cursorShape.getTransform(),
+                cursorTransform = this.cursorShape.getTransform( this.cursorShape ),
                 canvasZoom = this.kfEditor.requestService( "render.get.canvas.zoom" ),
                 formulaZoom = this.paper.getZoom();
 

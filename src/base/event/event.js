@@ -1,12 +1,13 @@
-/**
- * Created by hn on 14-3-17.
+/*!
+ * event模块
  */
+
+/* jshint camelcase: false */
 
 define( function ( require, exports, modules ) {
 
     var EVENT_LISTENER = {},
         eid = 0,
-        Utils = this,
         BEFORE_RESULT = true,
         KFEvent = require( "base/event/kfevent" ),
         commonUtils = require( "base/common" ),

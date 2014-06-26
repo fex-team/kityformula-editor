@@ -6,6 +6,8 @@ define( function ( require ) {
 
     var UI_ELE_TYPE = require( "ui/ui-impl/def/ele-type" ),
         BOX_TYPE = require( "ui/ui-impl/def/box-type" ),
+        CHAR_POSITION = require( "ui/char-position.data" ),
+        OTHER_POSITION = require( "ui/other-position.data" ),
         kity = require( "kity" );
 
     var config = [ {
@@ -14,7 +16,11 @@ define( function ( require ) {
             button: {
                 label: '预设<br/>',
                 className: 'yushe-btn',
-                icon: "assets/images/toolbar/button/fx.png",
+                icon: {
+                    src: "assets/images/toolbar/btn.png",
+                    x: 0,
+                    y: 0
+                },
                 iconSize: {
                     w: 40
                 }
@@ -28,19 +34,16 @@ define( function ( require ) {
                         content: [ {
                             label: "二次公式",
                             item: {
-                                show: 'assets/images/toolbar/ys/1.png',
                                 val: "x=\\frac {-b\\pm\\sqrt {b^2-4ac}}{2a}"
                             }
                         }, {
                             label: "二项式定理",
                             item: {
-                                show: 'assets/images/toolbar/ys/2.png',
                                 val: "{\\left(x+a\\right)}^2=\\sum^n_{k=0}{\\left(^n_k\\right)x^ka^{n-k}}"
                             }
                         }, {
                             label: "勾股定理",
                             item: {
-                                show: 'assets/images/toolbar/ys/3.png',
                                 val: "a^2+b^2=c^2"
                             }
                         } ]
@@ -85,7 +88,11 @@ define( function ( require ) {
         options: {
             button: {
                 label: "分数<br/>",
-                icon: "assets/images/toolbar/button/frac.png"
+                icon: {
+                    src: "assets/images/toolbar/btn.png",
+                    x: 45,
+                    y: 0
+                }
             },
             box: {
                 width: 332,
@@ -95,12 +102,10 @@ define( function ( require ) {
                         title: "分数",
                         content: [ {
                             item: {
-                                show: 'assets/images/toolbar/frac/1.png',
                                 val: "\\frac \\placeholder\\placeholder"
                             }
                         }, {
                             item: {
-                                show: 'assets/images/toolbar/frac/2.png',
                                 val: "{\\placeholder/\\placeholder}"
                             }
                         } ]
@@ -108,22 +113,18 @@ define( function ( require ) {
                         title: "常用分数",
                         content: [ {
                             item: {
-                                show: 'assets/images/toolbar/frac/c1.png',
                                 val: "\\frac {dy}{dx}"
                             }
                         }, {
                             item: {
-                                show: 'assets/images/toolbar/frac/c2.png',
                                 val: "\\frac {\\Delta y}{\\Delta x}"
                             }
                         }, {
                             item: {
-                                show: 'assets/images/toolbar/frac/c4.png',
                                 val: "\\frac {\\delta y}{\\delta x}"
                             }
                         }, {
                             item: {
-                                show: 'assets/images/toolbar/frac/c5.png',
                                 val: "\\frac \\pi 2"
                             }
                         } ]
@@ -136,7 +137,11 @@ define( function ( require ) {
         options: {
             button: {
                 label: "上下标<br/>",
-                icon: "assets/images/toolbar/button/script.png"
+                icon: {
+                    src: "assets/images/toolbar/btn.png",
+                    x: 82,
+                    y: 0
+                }
             },
             box: {
                 width: 332,
@@ -146,22 +151,18 @@ define( function ( require ) {
                         title: "上标和下标",
                         content: [ {
                             item: {
-                                show: 'assets/images/toolbar/script/1.png',
                                 val: "\\placeholder^\\placeholder"
                             }
                         }, {
                             item: {
-                                show: 'assets/images/toolbar/script/2.png',
                                 val: "\\placeholder_\\placeholder"
                             }
                         }, {
                             item: {
-                                show: 'assets/images/toolbar/script/3.png',
                                 val: "\\placeholder^\\placeholder_\\placeholder"
                             }
                         }, {
                             item: {
-                                show: 'assets/images/toolbar/script/4.png',
                                 val: "{^\\placeholder_\\placeholder\\placeholder}"
                             }
                         } ]
@@ -169,18 +170,15 @@ define( function ( require ) {
                         title: "常用的上标和下标",
                         content: [ {
                             item: {
-                                show: 'assets/images/toolbar/script/c1.png',
                                 val: "e^{-i\\omega t}"
                             }
                         }, {
                             item: {
-                                show: 'assets/images/toolbar/script/c2.png',
                                 val: "x^2"
                             }
                         }, {
                             item: {
-                                show: 'assets/images/toolbar/script/c3.png',
-                                val: "^n_1Y"
+                                val: "{}^n_1Y"
                             }
                         } ]
                     } ]
@@ -192,7 +190,11 @@ define( function ( require ) {
         options: {
             button: {
                 label: "根式<br/>",
-                icon: "assets/images/toolbar/button/sqrt.png"
+                icon: {
+                    src: "assets/images/toolbar/btn.png",
+                    x: 119,
+                    y: 0
+                }
             },
             box: {
                 width: 342,
@@ -202,22 +204,18 @@ define( function ( require ) {
                         title: "根式",
                         content: [ {
                             item: {
-                                show: 'assets/images/toolbar/sqrt/1.png',
                                 val: "\\sqrt \\placeholder"
                             }
                         }, {
                             item: {
-                                show: 'assets/images/toolbar/sqrt/2.png',
                                 val: "\\sqrt [\\placeholder] \\placeholder"
                             }
                         }, {
                             item: {
-                                show: 'assets/images/toolbar/sqrt/3.png',
                                 val: "\\sqrt [2] \\placeholder"
                             }
                         }, {
                             item: {
-                                show: 'assets/images/toolbar/sqrt/4.png',
                                 val: "\\sqrt [3] \\placeholder"
                             }
                         } ]
@@ -225,12 +223,10 @@ define( function ( require ) {
                         title: "常用根式",
                         content: [ {
                             item: {
-                                show: 'assets/images/toolbar/sqrt/c1.png',
                                 val: "\\frac {-b\\pm\\sqrt{b^2-4ac}}{2a}"
                             }
                         }, {
                             item: {
-                                show: 'assets/images/toolbar/sqrt/c2.png',
                                 val: "\\sqrt {a^2+b^2}"
                             }
                         } ]
@@ -243,7 +239,11 @@ define( function ( require ) {
         options: {
             button: {
                 label: "积分<br/>",
-                icon: "assets/images/toolbar/button/int.png"
+                icon: {
+                    src: "assets/images/toolbar/btn.png",
+                    x: 156,
+                    y: 0
+                }
             },
             box: {
                 width: 332,
@@ -253,32 +253,26 @@ define( function ( require ) {
                         title: "积分",
                         content: [ {
                             item: {
-                                show: 'assets/images/toolbar/int/1.png',
                                 val: "\\int \\placeholder"
                             }
                         }, {
                             item: {
-                                show: 'assets/images/toolbar/int/2.png',
                                 val: "\\int^\\placeholder_\\placeholder\\placeholder"
                             }
                         }, {
                             item: {
-                                show: 'assets/images/toolbar/int/3.png',
                                 val: "\\iint\\placeholder"
                             }
                         }, {
                             item: {
-                                show: 'assets/images/toolbar/int/4.png',
                                 val: "\\iint^\\placeholder_\\placeholder\\placeholder"
                             }
                         }, {
                             item: {
-                                show: 'assets/images/toolbar/int/5.png',
                                 val: "\\iiint\\placeholder"
                             }
                         }, {
                             item: {
-                                show: 'assets/images/toolbar/int/6.png',
                                 val: "\\iiint^\\placeholder_\\placeholder\\placeholder"
                             }
                         } ]
@@ -291,7 +285,11 @@ define( function ( require ) {
         options: {
             button: {
                 label: "大型<br/>运算符",
-                icon: "assets/images/toolbar/button/sum.png"
+                icon: {
+                    src: "assets/images/toolbar/btn.png",
+                    x: 193,
+                    y: 0
+                }
             },
             box: {
                 width: 332,
@@ -301,17 +299,14 @@ define( function ( require ) {
                         title: "求和",
                         content: [ {
                             item: {
-                                show: 'assets/images/toolbar/large/1.png',
                                 val: "\\sum\\placeholder"
                             }
                         }, {
                             item: {
-                                show: 'assets/images/toolbar/large/2.png',
                                 val: "\\sum^\\placeholder_\\placeholder\\placeholder"
                             }
                         }, {
                             item: {
-                                show: 'assets/images/toolbar/large/3.png',
                                 val: "\\sum_\\placeholder\\placeholder"
                             }
                         } ]
@@ -324,7 +319,11 @@ define( function ( require ) {
         options: {
             button: {
                 label: "括号<br/>",
-                icon: "assets/images/toolbar/button/brackets.png"
+                icon: {
+                    src: "assets/images/toolbar/btn.png",
+                    x: 230,
+                    y: 0
+                }
             },
             box: {
                 width: 332,
@@ -334,22 +333,18 @@ define( function ( require ) {
                         title: "方括号",
                         content: [ {
                             item: {
-                                show: 'assets/images/toolbar/brackets/1.png',
                                 val: "\\left(\\placeholder\\right)"
                             }
                         }, {
                             item: {
-                                show: 'assets/images/toolbar/brackets/2.png',
                                 val: "\\left[\\placeholder\\right]"
                             }
                         }, {
                             item: {
-                                show: 'assets/images/toolbar/brackets/3.png',
                                 val: "\\left\\{\\placeholder\\right\\}"
                             }
                         }, {
                             item: {
-                                show: 'assets/images/toolbar/brackets/4.png',
                                 val: "\\left|\\placeholder\\right|"
                             }
                         } ]
@@ -362,7 +357,11 @@ define( function ( require ) {
         options: {
             button: {
                 label: "函数<br/>",
-                icon: "assets/images/toolbar/button/sin.png"
+                icon: {
+                    src: "assets/images/toolbar/btn.png",
+                    x: 267,
+                    y: 0
+                }
             },
             box: {
                 width: 340,
@@ -372,32 +371,26 @@ define( function ( require ) {
                         title: "三角函数",
                         content: [ {
                             item: {
-                                show: 'assets/images/toolbar/func/1.png',
                                 val: "\\sin\\placeholder"
                             }
                         }, {
                             item: {
-                                show: 'assets/images/toolbar/func/2.png',
                                 val: "\\cos\\placeholder"
                             }
                         }, {
                             item: {
-                                show: 'assets/images/toolbar/func/3.png',
                                 val: "\\tan\\placeholder"
                             }
                         }, {
                             item: {
-                                show: 'assets/images/toolbar/func/4.png',
                                 val: "\\csc\\placeholder"
                             }
                         }, {
                             item: {
-                                show: 'assets/images/toolbar/func/5.png',
                                 val: "\\sec\\placeholder"
                             }
                         }, {
                             item: {
-                                show: 'assets/images/toolbar/func/6.png',
                                 val: "\\cot\\placeholder"
                             }
                         } ]
@@ -405,17 +398,14 @@ define( function ( require ) {
                         title: "常用函数",
                         content: [ {
                             item: {
-                                show: 'assets/images/toolbar/func/c1.png',
                                 val: "\\sin\\theta"
                             }
                         }, {
                             item: {
-                                show: 'assets/images/toolbar/func/c2.png',
-                                val: "\\sin{2x}"
+                                val: "\\cos{2x}"
                             }
                         }, {
                             item: {
-                                show: 'assets/images/toolbar/func/c3.png',
                                 val: "\\tan\\theta=\\frac {\\sin\\theta}{\\cos\\theta}"
                             }
                         } ]
@@ -425,52 +415,76 @@ define( function ( require ) {
         }
     } ];
 
-    // 初始化基础数学
+    //--------------------------------------------- 初始化特殊字符区域以外的配置项
+    ( function () {
+
+        var tmp = [],
+            otherImageSrc = "assets/images/toolbar/other.png",
+            currentConf = [];
+
+        kity.Utils.each( config, function ( conf ) {
+
+            if ( conf.type === UI_ELE_TYPE.DELIMITER ) {
+                return;
+            }
+
+            conf = conf.options.box.group;
+
+            tmp = tmp.concat( conf );
+
+        } );
+
+        kity.Utils.each( tmp, function ( conf ) {
+
+            conf = conf.items;
+
+            for ( var i = 0, len = conf.length; i < len; i++ ) {
+                currentConf = currentConf.concat( conf[ i ].content );
+            }
+
+        } );
+
+        // 添加定位信息
+        kity.Utils.each( currentConf, function ( conf ) {
+
+            var data = OTHER_POSITION[ conf.item.val ];
+
+            if ( !data ) {
+                return;
+            }
+
+            conf.item.img = otherImageSrc;
+            conf.item.pos = data.pos;
+            conf.item.size = data.size;
+
+        } );
+
+    } )();
+
+    //--------------------------------------------- 初始化特殊字符区域
+    // 基础数学
     ( function () {
 
         var list = [
-                "pm", "infty", {
-                    key: "=",
-                    img: "eq"
-                }, "sim", "times", "div", {
-                    key: "!",
-                    img: "tanhao"
-                }, {
-                    key: "<",
-                    img: "lt"
-                }, "ll", {
-                    key: ">",
-                    img: "gt"
-                },
-                "gg", "leq", "geq", "mp", "cong", "equiv", "propto", "approx", "forall", "partial",
-                "surd", "cup", "cap", "varnothing", {
-                    key: "%",
-                    img: "baifenhao"
-                },
-                "circ", "exists", "nexists", "in", "ni", "gets", "uparrow", "to", "downarrow",
-                "leftrightarrow", "therefore", "because", {
-                    key: "+",
-                    img: "plus"
-                }, {
-                    key: "-",
-                    img: "minus"
-                },
-                "neg", "ast", "cdot", "vdots", "ddots", "aleph", "beth", "blacksquare"
+                "pm", "infty", "=", "sim", "times", "div", "!", "<", "ll", ">",
+                "gg", "leq", "geq", "mp", "cong", "equiv", "propto", "approx",
+                "forall", "partial", "surd", "cup", "cap", "varnothing", "%",
+                "circ", "exists", "nexists", "in", "ni", "gets", "uparrow",
+                "to", "downarrow", "leftrightarrow", "therefore", "because",
+                "+", "-", "neg", "ast", "cdot", "vdots",/* "ddots",*/ "aleph",
+                "beth", "blacksquare"
 
             ],
             configList = config[ 2 ].options.box.group[ 0 ].items;
 
         configList.push( {
             title: "基础数学",
-            content: getContents( {
-                path: "assets/images/toolbar/char/math/",
-                values: list
-            } )
+            content: getIconContents( list, "assets/images/toolbar/char.png" )
         } );
 
     } )();
 
-    // 初始化希腊字符配置
+    // 希腊字符配置
     ( function () {
 
         var greekList = [ {
@@ -488,33 +502,24 @@ define( function ( require ) {
         // 小写处理
         greekConfigList.push( {
             title: greekList[ 0 ].title,
-            content: getContents( {
-                path: "assets/images/toolbar/char/greek/lower/",
-                values: greekList[ 0 ].values
-            } )
+            content: getIconContents( greekList[ 0 ].values, "assets/images/toolbar/char.png" )
         } );
 
         // 大写处理
         greekConfigList.push( {
             title: greekList[ 1 ].title,
-            content: getContents( {
-                path: "assets/images/toolbar/char/greek/upper/",
-                values: greekList[ 1 ].values
-            } )
+            content: getIconContents( greekList[ 1 ].values, "assets/images/toolbar/char.png" )
         } );
 
         // 变体处理
         greekConfigList.push( {
             title: greekList[ 2 ].title,
-            content: getContents( {
-                path: "assets/images/toolbar/char/greek/misc/",
-                values: greekList[ 2 ].values
-            } )
+            content: getIconContents( greekList[ 2 ].values, "assets/images/toolbar/char.png" )
         } );
 
     } )();
 
-    // 初始化求反运算符
+    // 求反运算符
     ( function () {
 
         var greekList = [ {
@@ -524,31 +529,20 @@ define( function ( require ) {
                     "gneqq", "nprec", "nsucc", "notin", "nsubseteq", "nsupseteq",
                     "subsetneq", "supsetneq", "lnsim", "gnsim", "precnsim",
                     "succnsim", "ntriangleleft", "ntriangleright", "ntrianglelefteq",
-                    "ntrianglerighteq", "nmid", "nparallel", "nvdash", {
-                        key: "\\nVdash",
-                        img: "nvdash-1"
-                    }, {
-                        key: "\\nvDash",
-                        img: "nvdash-2"
-                    }, {
-                        key: "\\nVDash",
-                        img: "nvdash-3"
-                    }, "nexists"
+                    "ntrianglerighteq", "nmid", "nparallel", "nvdash", "nVdash",
+                    "nvDash", "nVDash", "nexists"
                 ]
             } ],
             greekConfigList = config[ 2 ].options.box.group[ 2 ].items;
 
         greekConfigList.push( {
             title: greekList[ 0 ].title,
-            content: getContents( {
-                path: "assets/images/toolbar/char/not/",
-                values: greekList[ 0 ].values
-            } )
+            content: getIconContents( greekList[ 0 ].values, "assets/images/toolbar/char.png" )
         } );
 
     } )();
 
-    // 初始字母类符号
+    // 字母类符号
     ( function () {
 
         var list = [
@@ -560,76 +554,27 @@ define( function ( require ) {
 
         configList.push( {
             title: "字母类符号",
-            content: getContents( {
-                path: "assets/images/toolbar/alphabetic/",
-                values: list
-            } )
+            content: getIconContents( list, "assets/images/toolbar/char.png" )
         } );
 
     } )();
 
+    // 化箭头
     ( function () {
 
         var list = [
                 "gets", "to", "uparrow", "downarrow", "leftrightarrow", "updownarrow",
-                {
-                    key: "\\Leftarrow",
-                    img: "u-leftarrow"
-                }, {
-                    key: "\\Rightarrow",
-                    img: "u-rightarrow"
-                }, {
-                    key: "\\Uparrow",
-                    img: "u-uparrow"
-                }, {
-                    key: "\\Downarrow",
-                    img: "u-downarrow"
-                }, {
-                    key: "\\Leftrightarrow",
-                    img: "u-leftrightarrow"
-                }, {
-                    key: "\\Updownarrow",
-                    img: "u-updownarrow"
-                }, "longleftarrow", "longrightarrow", "longleftrightarrow",
-                {
-                    key: "\\Longleftarrow",
-                    img: "u-longleftarrow"
-                }, {
-                    key: "\\Longrightarrow",
-                    img: "u-longrightarrow"
-                }, {
-                    key: "\\Longleftrightarrow",
-                    img: "u-longleftrightarrow"
-                }, "nearrow",
+                "Leftarrow", "Rightarrow", "Uparrow", "Downarrow", "Leftrightarrow",
+                "Updownarrow", "longleftarrow", "longrightarrow", "longleftrightarrow",
+                "Longleftarrow", "Longrightarrow", "Longleftrightarrow", "nearrow",
                 "nwarrow", "searrow", "swarrow", "nleftarrow", "nrightarrow",
-                {
-                    key: "\\nLeftarrow",
-                    img: "u-nleftarrow"
-                }, {
-                    key: "\\nRightarrow",
-                    img: "u-nrightarrow"
-                }, {
-                    key: "\\nLeftrightarrow",
-                    img: "u-nleftrightarrow"
-                }, "leftharpoonup", "leftharpoondown", "rightharpoonup",
-                "rightharpoondown", "upharpoonleft", "upharpoonright", "downharpoonleft",
+                "nLeftarrow", "nRightarrow", "nLeftrightarrow", "leftharpoonup",
+                "leftharpoondown", "rightharpoonup", "rightharpoondown", "upharpoonleft",
+                "upharpoonright", "downharpoonleft",
                 "downharpoonright", "leftrightharpoons", "rightleftharpoons", "leftleftarrows",
                 "rightrightarrows", "upuparrows", "downdownarrows", "leftrightarrows",
                 "rightleftarrows", "looparrowleft", "looparrowright", "leftarrowtail",
-                "rightarrowtail",
-                {
-                    key: "\\Lsh",
-                    img: "u-lsh"
-                }, {
-                    key: "\\Rsh",
-                    img: "u-rsh"
-                }, {
-                    key: "\\Lleftarrow",
-                    img: "u-lleftarrow"
-                }, {
-                    key: "\\Rrightarrow",
-                    img: "u-rrightarrow"
-                }, "curvearrowleft",
+                "rightarrowtail", "Lsh", "Rsh", "Lleftarrow", "Rrightarrow", "curvearrowleft",
                 "curvearrowright", "circlearrowleft", "circlearrowright", "multimap",
                 "leftrightsquigarrow", "twoheadleftarrow", "twoheadrightarrow", "rightsquigarrow"
             ],
@@ -637,14 +582,12 @@ define( function ( require ) {
 
         configList.push( {
             title: "箭头",
-            content: getContents( {
-                path: "assets/images/toolbar/arrow/",
-                values: list
-            } )
+            content: getIconContents( list, "assets/images/toolbar/char.png" )
         } );
 
     } )();
 
+    // 手写体
     ( function () {
 
         var list = [ {
@@ -683,102 +626,65 @@ define( function ( require ) {
 
         kity.Utils.each( list[ 0 ].values, function ( item, index ) {
 
-            list[ 0 ].values[ index ] = {
-                key: "\\mathcal{" + item + "}",
-                img: item.toLowerCase()
-            }
+            list[ 0 ].values[ index ] = "mathcal{" + item + "}";
 
         } );
 
         kity.Utils.each( list[ 1 ].values, function ( item, index ) {
 
-            list[ 1 ].values[ index ] = {
-                key: "\\mathfrak{" + item + "}",
-                img: item.replace( /[A-Z]/, function ( match ) {
-                    return "u" + match.toLowerCase();
-                } )
-            }
+            list[ 1 ].values[ index ] = "mathfrak{" + item + "}";
 
         } );
 
         kity.Utils.each( list[ 2 ].values, function ( item, index ) {
 
-            list[ 2 ].values[ index ] = {
-                key: "\\mathbb{" + item + "}",
-                img: item.toLowerCase()
-            }
+            list[ 2 ].values[ index ] = "mathbb{" + item + "}";
 
         } );
 
         kity.Utils.each( list[ 3 ].values, function ( item, index ) {
 
-            list[ 3 ].values[ index ] = {
-                key: "\\mathrm{" + item + "}",
-                img: item.replace( /[A-Z]/, function ( match ) {
-                    return "u" + match.toLowerCase();
-                } )
-            }
+            list[ 3 ].values[ index ] = "mathrm{" + item + "}";
 
         } );
 
         // 手写体
         configList.push( {
             title: list[ 0 ].title,
-            content: getContents( {
-                path: "assets/images/toolbar/char/cal/",
-                values: list[ 0 ].values
-            } )
+            content: getIconContents( list[ 0 ].values, "assets/images/toolbar/char.png" )
         } );
 
         configList.push( {
             title: list[ 1 ].title,
-            content: getContents( {
-                path: "assets/images/toolbar/char/frak/",
-                values: list[ 1 ].values
-            } )
+            content: getIconContents( list[ 1 ].values, "assets/images/toolbar/char.png" )
         } );
 
         configList.push( {
             title: list[ 2 ].title,
-            content: getContents( {
-                path: "assets/images/toolbar/char/bb/",
-                values: list[ 2 ].values
-            } )
+            content: getIconContents( list[ 2 ].values, "assets/images/toolbar/char.png" )
         } );
 
         configList.push( {
             title: list[ 3 ].title,
-            content: getContents( {
-                path: "assets/images/toolbar/char/rm/",
-                values: list[ 3 ].values
-            } )
+            content: getIconContents( list[ 3 ].values, "assets/images/toolbar/char.png" )
         } );
 
     } )();
 
-    function getContents ( data ) {
+    function getIconContents ( keySet, imgSrc ) {
 
-        var result = [],
-            path = data.path,
-            values = data.values;
+        var result = [];
 
-        kity.Utils.each( values, function ( value ) {
+        kity.Utils.each( keySet, function ( key ) {
 
-            var img = value,
-                val = value;
-
-            if ( typeof value !== "string" ) {
-                img = value.img;
-                val = value.key;
-            } else {
-                val = "\\" + value;
+            if ( key.length > 1 ) {
+                key = "\\" + key;
             }
 
             result.push( {
-                item: {
-                    show: '' + path + img.toLowerCase() +'.png',
-                    val: val
-                }
+                key: key,
+                img: imgSrc,
+                pos: CHAR_POSITION[ key ]
             } );
 
         } );

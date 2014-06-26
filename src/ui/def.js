@@ -16,6 +16,6 @@ define( function ( require ) {
             step: 50,
             thumbMinSize: 50
         }
-    }
+    };
 
 } );

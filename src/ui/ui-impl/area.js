@@ -112,13 +112,13 @@ define( function ( require ) {
             disable: function () {
                 this.disabled = true;
                 this.boxObject.disable();
-                this.element.classList.remove( PREFIX + "enabled" );
+                $$.getClassList( this.element ).remove( PREFIX + "enabled" );
             },
 
             enable: function () {
                 this.disabled = false;
                 this.boxObject.enable();
-                this.element.classList.add( PREFIX + "enabled" );
+                $$.getClassList( this.element ).add( PREFIX + "enabled" );
             },
 
             setListener: function () {
@@ -177,15 +177,13 @@ define( function ( require ) {
 
                     kity.Utils.each( contents, function ( currentContent, index ) {
 
-                        currentContent = currentContent.item;
-
                         lineno = Math.floor( count / lineMaxCount );
                         colno = count % lineMaxCount;
                         count++;
 
                         style = "top: " + ( lineno * 33 + 5 ) + "px; left: " + ( colno * 32 + 5 ) + "px;" ;
 
-                        newContent.push( '<div class="'+ PREFIX +'area-item" data-value="'+ currentContent.val +'" style="'+ style +'"><div class="'+ PREFIX +'area-item-inner"><img class="'+ PREFIX +'area-item-img" src="'+ currentContent.show +'"></div></div>' );
+                        newContent.push( '<div class="'+ PREFIX +'area-item" data-value="'+ currentContent.key +'" style="'+ style +'"><div class="'+ PREFIX +'area-item-inner"><div class="'+ PREFIX +'area-item-img" style="background: url('+ currentContent.img +') no-repeat '+ -currentContent.pos.x + 'px ' + -currentContent.pos.y +'px;"></div></div></div>' );
 
                     } );
 
@@ -301,22 +299,22 @@ define( function ( require ) {
 
             disablePanelUp: function () {
                 this.disabledUp = true;
-                this.moveUpButton.classList.add( "kf-editor-ui-disabled" );
+                $$.getClassList( this.moveUpButton ).add( "kf-editor-ui-disabled" );
             },
 
             enablePanelUp: function () {
                 this.disabledUp = false;
-                this.moveUpButton.classList.remove( "kf-editor-ui-disabled" );
+                $$.getClassList( this.moveUpButton ).remove( "kf-editor-ui-disabled" );
             },
 
             disablePanelDown: function () {
                 this.disabledDown = true;
-                this.moveDownButton.classList.add( "kf-editor-ui-disabled" );
+                $$.getClassList( this.moveDownButton ).add( "kf-editor-ui-disabled" );
             },
 
             enablePanelDown: function () {
                 this.disabledDown = false;
-                this.moveDownButton.classList.remove( "kf-editor-ui-disabled" )
+                $$.getClassList( this.moveDownButton ).remove( "kf-editor-ui-disabled" );
             },
 
             updatePanelButtonState: function () {
@@ -385,9 +383,5 @@ define( function ( require ) {
         } );
 
     return Area;
-
-    function getRect ( node ) {
-        return node.getBoundingClientRect();
-    }
 
 } );

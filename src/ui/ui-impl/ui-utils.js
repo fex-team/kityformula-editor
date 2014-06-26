@@ -8,7 +8,7 @@ define( function ( require ) {
         kity = require( "kity" ),
         TOPIC_POOL = {};
 
-    return {
+    var Utils = {
 
         ele: function ( doc, name, options ) {
 
@@ -71,8 +71,75 @@ define( function ( require ) {
 
             TOPIC_POOL[ topic ].push( callback );
 
+        },
+
+        getClassList: function ( node ) {
+
+            return node.classList || new ClassList( node );
+
         }
 
     };
+
+
+    //注意： 仅保证兼容IE9以上
+    function ClassList ( node ) {
+
+        this.node = node;
+        this.classes = node.className.replace( /^\s+|\s+$/g, '' ).split( /\s+/ );
+
+    }
+
+    ClassList.prototype = {
+
+        constructor: ClassList,
+
+        contains: function ( className ) {
+
+            return this.classes.indexOf( className ) !== -1;
+
+        },
+
+        add: function ( className ) {
+
+            if ( this.classes.indexOf( className ) == -1 ) {
+                this.classes.push( className );
+            }
+
+            this._update();
+
+            return this;
+
+        },
+
+        remove: function ( className ) {
+
+            var index = this.classes.indexOf( className );
+
+            if ( index !== -1 ) {
+                this.classes.splice( index, 1 );
+                this._update();
+            }
+
+            return this;
+        },
+
+        toggle: function ( className ) {
+
+            var method = this.contains( className ) ? 'remove' : 'add';
+
+            return this[ method ]( className );
+
+        },
+
+        _update: function () {
+
+            this.node.className = this.classes.join( " " );
+
+        }
+
+    };
+
+    return Utils;
 
 } );

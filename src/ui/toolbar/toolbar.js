@@ -107,8 +107,6 @@ define( function ( require ) {
             // 接受到关闭通知
             notify: function ( type ) {
 
-                var caller = null;
-
                 switch ( type ) {
 
                     // 关闭所有组件

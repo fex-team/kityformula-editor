@@ -5,7 +5,6 @@
 define( function ( require ) {
 
     var kf = require( "kf" ),
-        kity = require( "kity" ),
         SELECT_COLOR = require( "kf-ext/def" ).selectColor,
         ALL_SELECT_COLOR = require( "kf-ext/def" ).allSelectColor;
 
@@ -27,7 +26,7 @@ define( function ( require ) {
 
             this.box.fill( "transparent" );
 
-        }
+        };
 
         // 扩展解析和逆解析
         parser.getKFParser().expand( {

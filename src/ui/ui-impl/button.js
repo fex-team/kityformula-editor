@@ -102,15 +102,15 @@ define( function ( require ) {
             },
 
             toggleSelect: function () {
-                this.element.classList.toggle( PREFIX + "button-in" );
+                $$.getClassList( this.element ).toggle( PREFIX + "button-in" );
             },
 
             unselect: function () {
-                this.element.classList.remove( PREFIX + "button-in" );
+                $$.getClassList( this.element ).remove( PREFIX + "button-in" );
             },
 
             select: function () {
-                this.element.classList.add( PREFIX + "button-in" );
+                $$.getClassList( this.element ).add( PREFIX + "button-in" );
             },
 
             show: function () {
@@ -130,8 +130,8 @@ define( function ( require ) {
 
                 if ( this.fixOffset ) {
 
-                    var tt = this.element.getBoundingClientRect();
-                    this.mountElement.setOffset( tt.left + LIST_OFFSET, tt.bottom - 5 );
+                    var elementRect = this.element.getBoundingClientRect();
+                    this.mountElement.setOffset( elementRect.left + LIST_OFFSET, elementRect.bottom );
 
                 }
 
@@ -190,7 +190,11 @@ define( function ( require ) {
                     className: PREFIX + "button-icon"
                 } );
 
-                iconNode.style.backgroundImage = "url(" + this.options.icon + ")";
+                if ( typeof this.options.icon === "string" ) {
+                    iconNode.style.backgroundImage = "url(" + this.options.icon + ") no-repeat";
+                } else {
+                    iconNode.style.background = getBackgroundStyle( this.options.icon );
+                }
 
                 if ( this.options.iconSize.w ) {
                     iconNode.style.width = this.options.iconSize.w + "px";
@@ -238,12 +242,12 @@ define( function ( require ) {
 
             disable: function () {
                 this.disabled = true;
-                this.element.classList.remove( PREFIX + "enabled" );
+                $$.getClassList( this.element ).remove( PREFIX + "enabled" );
             },
 
             enable: function () {
                 this.disabled = false;
-                this.element.classList.add( PREFIX + "enabled" );
+                $$.getClassList( this.element ).add( PREFIX + "enabled" );
             },
 
             mergeElement: function () {
@@ -256,6 +260,17 @@ define( function ( require ) {
             }
 
         } );
+
+    function getBackgroundStyle ( data ) {
+
+        var style = "url( " + data.src + " ) no-repeat ";
+
+        style += -data.x + 'px ';
+        style += -data.y + 'px';
+
+        return style;
+
+    }
 
     return Button;
 

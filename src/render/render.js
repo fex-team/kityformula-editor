@@ -10,13 +10,20 @@ define( function ( require ) {
 
         DEFAULT_OPTIONS = {
             autoresize: false,
-            fontsize: 30,
+            fontsize: 50,
             padding: [ 20, 50 ]
         },
 
         RenderComponenet = kity.createClass( 'RenderComponent', {
 
-            constructor: function ( kfEditor ) {
+            // 异步组件
+            base: require( "base/component" ),
+
+            constructor: function ( kfEditor, options ) {
+
+                this.callBase();
+
+                this.options = kity.Utils.extend( {}, DEFAULT_OPTIONS, options );
 
                 this.kfEditor = kfEditor;
                 this.assembly = null;
@@ -42,11 +49,11 @@ define( function ( require ) {
 
             initCanvas: function () {
 
-                var canvasContainer = this.kfEditor.requestService( "ui.get.canvas.container" );
+                var canvasContainer = this.kfEditor.requestService( "ui.get.canvas.container" ),
+                    Formula = this.kfEditor.getFormulaClass();
 
-                this.assembly = Assembly.use( canvasContainer, DEFAULT_OPTIONS );
+                this.assembly = new Assembly( new Formula( canvasContainer, this.options ) );
                 this.formula = this.assembly.formula;
-
                 this.setCanvasToCenter();
 
             },
@@ -77,7 +84,7 @@ define( function ( require ) {
                 } );
 
                 this.kfEditor.registerService( "render.clear.canvas.transform", this, {
-                    clearCanvasOffset: this.setCanvasToCenter
+                    clearCanvasOffset: this.clearCanvasTransform
                 } );
 
                 this.kfEditor.registerService( "render.set.canvas.offset", this, {
@@ -163,8 +170,6 @@ define( function ( require ) {
             },
 
             initCommands: function () {
-
-                var _self = this;
 
                 this.kfEditor.registerCommand( "render", this, function ( str ) {
                     this.render( str );
@@ -349,10 +354,9 @@ define( function ( require ) {
             clearSelect: function () {
 
                 var box = null,
-                    transform = null,
                     currentSelect = this.record.select.lastSelect;
 
-                if ( !currentSelect ) {
+                if ( !currentSelect || !currentSelect.node.ownerSVGElement ) {
                     return;
                 }
 
@@ -412,16 +416,12 @@ define( function ( require ) {
              */
             clearCanvasTransform: function () {
 
-                var canvasInfo = this.record.canvas,
-                    viewPort = this.formula.getViewPort();
+                var canvasInfo = this.record.canvas;
 
                 canvasInfo.viewBox = this.formula.getViewBox();
-                canvasInfo.viewPortZoom = viewPort.zoom;
                 canvasInfo.contentOffset = this.formula.container.getTranslate();
 
-                viewPort.zoom = 1;
-
-                this.formula.setViewPort( viewPort );
+                this.setCanvasToCenter();
                 this.formula.node.removeAttribute( "viewBox" );
                 this.formula.container.setTranslate( 0, 0 );
 
@@ -435,8 +435,7 @@ define( function ( require ) {
             revertCanvasTransform: function () {
 
                 var canvasInfo = this.record.canvas,
-                    viewBox = canvasInfo.viewBox,
-                    viewPort = null;
+                    viewBox = canvasInfo.viewBox;
 
                 if ( !viewBox ) {
                     return false;
@@ -445,13 +444,7 @@ define( function ( require ) {
                 this.formula.setViewBox( viewBox.x, viewBox.y, viewBox.width, viewBox.height );
                 this.formula.container.setTranslate( canvasInfo.contentOffset );
 
-                viewPort = this.formula.getViewPort();
-                viewPort.zoom = canvasInfo.viewPortZoom;
-
-                this.formula.setViewPort( viewPort );
-
                 canvasInfo.viewBox = null;
-                canvasInfo.viewPortZoom = null;
                 canvasInfo.contentOffset = null;
 
             },

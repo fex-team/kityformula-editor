@@ -6,6 +6,8 @@
 ( function ( global ) {
 
     var _modules = {},
+        // 记录模块执行顺序的key列表
+        keyList = [],
         loaded = {};
 
     global.inc = {
@@ -16,6 +18,10 @@
 
             this.base = options.base || '';
 
+        },
+
+        record: function ( key ) {
+            keyList.push( key );
         },
 
         use: function ( id ) {
@@ -40,9 +46,8 @@
         switch ( argLen ) {
 
             case 1:
-                var scriptNode = document.getElementsByTagName( 'script' );
                 f = id;
-                id = scriptNode[ scriptNode.length - 1 ].getAttribute( "data-id" );
+                id = keyList.shift();
                 break;
 
             case 2:
@@ -52,9 +57,8 @@
 
                 } else {
 
-                    var scriptNode = document.getElementsByTagName( 'script' );
                     f = deps;
-                    id = scriptNode[ scriptNode.length - 1 ].getAttribute( "data-id" );
+                    id = keyList.shift();
 
                 }
 
@@ -148,6 +152,7 @@
 
             loaded[ key ] = true;
 
+            document.write( '<script>inc.record("'+ key +'")</script>' );
             document.write( '<script src="'+ uri + inc.base + '/' + key +'.js" onload="inc.remove(this)" data-id="'+ key +'"></script>' );
 
         }

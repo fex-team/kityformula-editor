@@ -19,7 +19,10 @@ define( function ( require ) {
 
         };
 
-    var COMPONENTS = {};
+    // 同步组件列表
+    var COMPONENTS = {},
+        // 异步组件列表
+        ResourceManager = require( "kf" ).ResourceManager;
 
     var KFEditor = kity.createClass( 'KFEditor', {
 
@@ -27,11 +30,44 @@ define( function ( require ) {
 
             this.options = Utils.extend( true, {}, defaultOpt, opt );
 
+            this.FormulaClass = null;
+            // 就绪状态
+            this._readyState = false;
+            this._callbacks = [];
+            this._readyCount = 0;
+
             this.container = container;
             this.services = {};
             this.commands = {};
 
-            this.initComponents();
+            this.initResource();
+
+        },
+
+        isReady: function () {
+
+            return !!this._readyState;
+
+        },
+
+        triggerReady: function () {
+
+            var cb = null,
+                _self = this;
+
+            while ( cb = this._callbacks.shift() ) {
+                cb.call( _self, _self );
+            }
+
+        },
+
+        ready: function ( cb ) {
+
+            if ( this._readyState ) {
+                cb.call( this, this );
+            } else {
+                this._callbacks.push( cb );
+            }
 
         },
 
@@ -43,17 +79,39 @@ define( function ( require ) {
             return this.container.ownerDocument;
         },
 
+        getFormulaClass: function () {
+            return this.FormulaClass;
+        },
+
         getOptions: function () {
             return this.options;
         },
 
+        initResource: function () {
+
+            var _self = this;
+
+            ResourceManager.ready( function ( Formula ) {
+
+                _self.FormulaClass = Formula;
+                _self.initComponents();
+                _self._readyState = true;
+                _self.triggerReady();
+
+            }, this.options.resource );
+
+        },
+
+        /**
+         * 初始化同步组件
+         */
         initComponents: function () {
 
             var _self = this;
 
-            Utils.each( COMPONENTS, function ( component, name ) {
+            Utils.each( COMPONENTS, function ( Component, name ) {
 
-                new component( _self, _self.options[ name ] );
+                new Component( _self, _self.options[ name ] );
 
             } );
 
@@ -139,7 +197,6 @@ define( function ( require ) {
         }
 
     } );
-
 
     return KFEditor;
 

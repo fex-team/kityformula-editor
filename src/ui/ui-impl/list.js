@@ -30,6 +30,7 @@ define( function ( require ) {
 
             },
 
+            // 预定义的方法留空
             onselectHandler: function ( index, oldIndex ) {},
 
             setSelectHandler: function ( selectHandler ) {
@@ -69,7 +70,7 @@ define( function ( require ) {
 
                 this.currentSelect = index;
 
-                this.itemGroups.items[ index ].firstChild.style.visibility = "visible";
+                $$.getClassList( this.itemGroups.items[ index ] ).add( PREFIX + "list-item-select" );
 
                 this.onselectHandler( index, oldSelect );
 
@@ -77,7 +78,7 @@ define( function ( require ) {
 
             unselect: function ( index ) {
 
-                this.itemGroups.items[ index ].firstChild.style.visibility = "hidden";
+                $$.getClassList( this.itemGroups.items[ index ] ).remove( PREFIX + "list-item-select" );
 
             },
 
@@ -138,7 +139,6 @@ define( function ( require ) {
 
                     iconNode = groupNode.cloneNode( false );
                     iconNode.className = PREFIX + "list-item-icon";
-                    iconNode.innerHTML = '<img src="assets/images/toolbar/button/tick.png">';
 
                     itemNode.appendChild( iconNode );
                     itemNode.appendChild( $$.ele( doc, "text", itemText ) );

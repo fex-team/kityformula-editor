@@ -38,6 +38,21 @@ define( function ( require ) {
 
             },
 
+            /**
+             * 返回给定节点parent是否包含target节点
+             * @param parent
+             * @param target
+             */
+            contains: function ( parent, target ) {
+
+                if ( parent.contains ) {
+                    return parent.contains( target );
+                } else if ( parent.compareDocumentPosition ) {
+                    return !!( parent.compareDocumentPosition( target ) & 16 );
+                }
+
+            },
+
             getRect: function ( node ) {
                 return node.getBoundingClientRect();
             },

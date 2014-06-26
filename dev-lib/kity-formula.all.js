@@ -1,6 +1,6 @@
 /*!
  * ====================================================
- * Kity Formula - v1.0.0 - 2014-05-19
+ * Kity Formula - v1.0.0 - 2014-06-23
  * https://github.com/kitygraph/formula
  * GitHub: https://github.com/kitygraph/formula.git 
  * Copyright (c) 2014 Baidu Kity Group; Licensed MIT
@@ -85,16 +85,3008 @@ function use ( id ) {
     return require( id );
 
 }
-/**
- * 字符类
- */
+define("base/canvg", [], function(require) {
+    function RGBColor(color_string) {
+        this.ok = false;
+        if (color_string.charAt(0) == "#") {
+            color_string = color_string.substr(1, 6);
+        }
+        color_string = color_string.replace(/ /g, "");
+        color_string = color_string.toLowerCase();
+        var simple_colors = {
+            aliceblue: "f0f8ff",
+            antiquewhite: "faebd7",
+            aqua: "00ffff",
+            aquamarine: "7fffd4",
+            azure: "f0ffff",
+            beige: "f5f5dc",
+            bisque: "ffe4c4",
+            black: "000000",
+            blanchedalmond: "ffebcd",
+            blue: "0000ff",
+            blueviolet: "8a2be2",
+            brown: "a52a2a",
+            burlywood: "deb887",
+            cadetblue: "5f9ea0",
+            chartreuse: "7fff00",
+            chocolate: "d2691e",
+            coral: "ff7f50",
+            cornflowerblue: "6495ed",
+            cornsilk: "fff8dc",
+            crimson: "dc143c",
+            cyan: "00ffff",
+            darkblue: "00008b",
+            darkcyan: "008b8b",
+            darkgoldenrod: "b8860b",
+            darkgray: "a9a9a9",
+            darkgreen: "006400",
+            darkkhaki: "bdb76b",
+            darkmagenta: "8b008b",
+            darkolivegreen: "556b2f",
+            darkorange: "ff8c00",
+            darkorchid: "9932cc",
+            darkred: "8b0000",
+            darksalmon: "e9967a",
+            darkseagreen: "8fbc8f",
+            darkslateblue: "483d8b",
+            darkslategray: "2f4f4f",
+            darkturquoise: "00ced1",
+            darkviolet: "9400d3",
+            deeppink: "ff1493",
+            deepskyblue: "00bfff",
+            dimgray: "696969",
+            dodgerblue: "1e90ff",
+            feldspar: "d19275",
+            firebrick: "b22222",
+            floralwhite: "fffaf0",
+            forestgreen: "228b22",
+            fuchsia: "ff00ff",
+            gainsboro: "dcdcdc",
+            ghostwhite: "f8f8ff",
+            gold: "ffd700",
+            goldenrod: "daa520",
+            gray: "808080",
+            green: "008000",
+            greenyellow: "adff2f",
+            honeydew: "f0fff0",
+            hotpink: "ff69b4",
+            indianred: "cd5c5c",
+            indigo: "4b0082",
+            ivory: "fffff0",
+            khaki: "f0e68c",
+            lavender: "e6e6fa",
+            lavenderblush: "fff0f5",
+            lawngreen: "7cfc00",
+            lemonchiffon: "fffacd",
+            lightblue: "add8e6",
+            lightcoral: "f08080",
+            lightcyan: "e0ffff",
+            lightgoldenrodyellow: "fafad2",
+            lightgrey: "d3d3d3",
+            lightgreen: "90ee90",
+            lightpink: "ffb6c1",
+            lightsalmon: "ffa07a",
+            lightseagreen: "20b2aa",
+            lightskyblue: "87cefa",
+            lightslateblue: "8470ff",
+            lightslategray: "778899",
+            lightsteelblue: "b0c4de",
+            lightyellow: "ffffe0",
+            lime: "00ff00",
+            limegreen: "32cd32",
+            linen: "faf0e6",
+            magenta: "ff00ff",
+            maroon: "800000",
+            mediumaquamarine: "66cdaa",
+            mediumblue: "0000cd",
+            mediumorchid: "ba55d3",
+            mediumpurple: "9370d8",
+            mediumseagreen: "3cb371",
+            mediumslateblue: "7b68ee",
+            mediumspringgreen: "00fa9a",
+            mediumturquoise: "48d1cc",
+            mediumvioletred: "c71585",
+            midnightblue: "191970",
+            mintcream: "f5fffa",
+            mistyrose: "ffe4e1",
+            moccasin: "ffe4b5",
+            navajowhite: "ffdead",
+            navy: "000080",
+            oldlace: "fdf5e6",
+            olive: "808000",
+            olivedrab: "6b8e23",
+            orange: "ffa500",
+            orangered: "ff4500",
+            orchid: "da70d6",
+            palegoldenrod: "eee8aa",
+            palegreen: "98fb98",
+            paleturquoise: "afeeee",
+            palevioletred: "d87093",
+            papayawhip: "ffefd5",
+            peachpuff: "ffdab9",
+            peru: "cd853f",
+            pink: "ffc0cb",
+            plum: "dda0dd",
+            powderblue: "b0e0e6",
+            purple: "800080",
+            red: "ff0000",
+            rosybrown: "bc8f8f",
+            royalblue: "4169e1",
+            saddlebrown: "8b4513",
+            salmon: "fa8072",
+            sandybrown: "f4a460",
+            seagreen: "2e8b57",
+            seashell: "fff5ee",
+            sienna: "a0522d",
+            silver: "c0c0c0",
+            skyblue: "87ceeb",
+            slateblue: "6a5acd",
+            slategray: "708090",
+            snow: "fffafa",
+            springgreen: "00ff7f",
+            steelblue: "4682b4",
+            tan: "d2b48c",
+            teal: "008080",
+            thistle: "d8bfd8",
+            tomato: "ff6347",
+            turquoise: "40e0d0",
+            violet: "ee82ee",
+            violetred: "d02090",
+            wheat: "f5deb3",
+            white: "ffffff",
+            whitesmoke: "f5f5f5",
+            yellow: "ffff00",
+            yellowgreen: "9acd32"
+        };
+        for (var key in simple_colors) {
+            if (color_string == key) {
+                color_string = simple_colors[key];
+            }
+        }
+        var color_defs = [ {
+            re: /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/,
+            example: [ "rgb(123, 234, 45)", "rgb(255,234,245)" ],
+            process: function(bits) {
+                return [ parseInt(bits[1]), parseInt(bits[2]), parseInt(bits[3]) ];
+            }
+        }, {
+            re: /^(\w{2})(\w{2})(\w{2})$/,
+            example: [ "#00ff00", "336699" ],
+            process: function(bits) {
+                return [ parseInt(bits[1], 16), parseInt(bits[2], 16), parseInt(bits[3], 16) ];
+            }
+        }, {
+            re: /^(\w{1})(\w{1})(\w{1})$/,
+            example: [ "#fb0", "f0f" ],
+            process: function(bits) {
+                return [ parseInt(bits[1] + bits[1], 16), parseInt(bits[2] + bits[2], 16), parseInt(bits[3] + bits[3], 16) ];
+            }
+        } ];
+        for (var i = 0; i < color_defs.length; i++) {
+            var re = color_defs[i].re;
+            var processor = color_defs[i].process;
+            var bits = re.exec(color_string);
+            if (bits) {
+                channels = processor(bits);
+                this.r = channels[0];
+                this.g = channels[1];
+                this.b = channels[2];
+                this.ok = true;
+            }
+        }
+        this.r = this.r < 0 || isNaN(this.r) ? 0 : this.r > 255 ? 255 : this.r;
+        this.g = this.g < 0 || isNaN(this.g) ? 0 : this.g > 255 ? 255 : this.g;
+        this.b = this.b < 0 || isNaN(this.b) ? 0 : this.b > 255 ? 255 : this.b;
+        this.toRGB = function() {
+            return "rgb(" + this.r + ", " + this.g + ", " + this.b + ")";
+        };
+        this.toHex = function() {
+            var r = this.r.toString(16);
+            var g = this.g.toString(16);
+            var b = this.b.toString(16);
+            if (r.length == 1) r = "0" + r;
+            if (g.length == 1) g = "0" + g;
+            if (b.length == 1) b = "0" + b;
+            return "#" + r + g + b;
+        };
+        this.getHelpXML = function() {
+            var examples = new Array();
+            for (var i = 0; i < color_defs.length; i++) {
+                var example = color_defs[i].example;
+                for (var j = 0; j < example.length; j++) {
+                    examples[examples.length] = example[j];
+                }
+            }
+            for (var sc in simple_colors) {
+                examples[examples.length] = sc;
+            }
+            var xml = document.createElement("ul");
+            xml.setAttribute("id", "rgbcolor-examples");
+            for (var i = 0; i < examples.length; i++) {
+                try {
+                    var list_item = document.createElement("li");
+                    var list_color = new RGBColor(examples[i]);
+                    var example_div = document.createElement("div");
+                    example_div.style.cssText = "margin: 3px; " + "border: 1px solid black; " + "background:" + list_color.toHex() + "; " + "color:" + list_color.toHex();
+                    example_div.appendChild(document.createTextNode("test"));
+                    var list_item_value = document.createTextNode(" " + examples[i] + " -> " + list_color.toRGB() + " -> " + list_color.toHex());
+                    list_item.appendChild(example_div);
+                    list_item.appendChild(list_item_value);
+                    xml.appendChild(list_item);
+                } catch (e) {}
+            }
+            return xml;
+        };
+    }
+    var mul_table = [ 512, 512, 456, 512, 328, 456, 335, 512, 405, 328, 271, 456, 388, 335, 292, 512, 454, 405, 364, 328, 298, 271, 496, 456, 420, 388, 360, 335, 312, 292, 273, 512, 482, 454, 428, 405, 383, 364, 345, 328, 312, 298, 284, 271, 259, 496, 475, 456, 437, 420, 404, 388, 374, 360, 347, 335, 323, 312, 302, 292, 282, 273, 265, 512, 497, 482, 468, 454, 441, 428, 417, 405, 394, 383, 373, 364, 354, 345, 337, 328, 320, 312, 305, 298, 291, 284, 278, 271, 265, 259, 507, 496, 485, 475, 465, 456, 446, 437, 428, 420, 412, 404, 396, 388, 381, 374, 367, 360, 354, 347, 341, 335, 329, 323, 318, 312, 307, 302, 297, 292, 287, 282, 278, 273, 269, 265, 261, 512, 505, 497, 489, 482, 475, 468, 461, 454, 447, 441, 435, 428, 422, 417, 411, 405, 399, 394, 389, 383, 378, 373, 368, 364, 359, 354, 350, 345, 341, 337, 332, 328, 324, 320, 316, 312, 309, 305, 301, 298, 294, 291, 287, 284, 281, 278, 274, 271, 268, 265, 262, 259, 257, 507, 501, 496, 491, 485, 480, 475, 470, 465, 460, 456, 451, 446, 442, 437, 433, 428, 424, 420, 416, 412, 408, 404, 400, 396, 392, 388, 385, 381, 377, 374, 370, 367, 363, 360, 357, 354, 350, 347, 344, 341, 338, 335, 332, 329, 326, 323, 320, 318, 315, 312, 310, 307, 304, 302, 299, 297, 294, 292, 289, 287, 285, 282, 280, 278, 275, 273, 271, 269, 267, 265, 263, 261, 259 ];
+    var shg_table = [ 9, 11, 12, 13, 13, 14, 14, 15, 15, 15, 15, 16, 16, 16, 16, 17, 17, 17, 17, 17, 17, 17, 18, 18, 18, 18, 18, 18, 18, 18, 18, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24 ];
+    function stackBlurImage(imageID, canvasID, radius, blurAlphaChannel) {
+        var img = document.getElementById(imageID);
+        var w = img.naturalWidth;
+        var h = img.naturalHeight;
+        var canvas = document.getElementById(canvasID);
+        canvas.style.width = w + "px";
+        canvas.style.height = h + "px";
+        canvas.width = w;
+        canvas.height = h;
+        var context = canvas.getContext("2d");
+        context.clearRect(0, 0, w, h);
+        context.drawImage(img, 0, 0);
+        if (isNaN(radius) || radius < 1) return;
+        if (blurAlphaChannel) stackBlurCanvasRGBA(canvasID, 0, 0, w, h, radius); else stackBlurCanvasRGB(canvasID, 0, 0, w, h, radius);
+    }
+    function stackBlurCanvasRGBA(id, top_x, top_y, width, height, radius) {
+        if (isNaN(radius) || radius < 1) return;
+        radius |= 0;
+        var canvas = document.getElementById(id);
+        var context = canvas.getContext("2d");
+        var imageData;
+        try {
+            try {
+                imageData = context.getImageData(top_x, top_y, width, height);
+            } catch (e) {
+                try {
+                    netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
+                    imageData = context.getImageData(top_x, top_y, width, height);
+                } catch (e) {
+                    alert("Cannot access local image");
+                    throw new Error("unable to access local image data: " + e);
+                    return;
+                }
+            }
+        } catch (e) {
+            alert("Cannot access image");
+            throw new Error("unable to access image data: " + e);
+        }
+        var pixels = imageData.data;
+        var x, y, i, p, yp, yi, yw, r_sum, g_sum, b_sum, a_sum, r_out_sum, g_out_sum, b_out_sum, a_out_sum, r_in_sum, g_in_sum, b_in_sum, a_in_sum, pr, pg, pb, pa, rbs;
+        var div = radius + radius + 1;
+        var w4 = width << 2;
+        var widthMinus1 = width - 1;
+        var heightMinus1 = height - 1;
+        var radiusPlus1 = radius + 1;
+        var sumFactor = radiusPlus1 * (radiusPlus1 + 1) / 2;
+        var stackStart = new BlurStack();
+        var stack = stackStart;
+        for (i = 1; i < div; i++) {
+            stack = stack.next = new BlurStack();
+            if (i == radiusPlus1) var stackEnd = stack;
+        }
+        stack.next = stackStart;
+        var stackIn = null;
+        var stackOut = null;
+        yw = yi = 0;
+        var mul_sum = mul_table[radius];
+        var shg_sum = shg_table[radius];
+        for (y = 0; y < height; y++) {
+            r_in_sum = g_in_sum = b_in_sum = a_in_sum = r_sum = g_sum = b_sum = a_sum = 0;
+            r_out_sum = radiusPlus1 * (pr = pixels[yi]);
+            g_out_sum = radiusPlus1 * (pg = pixels[yi + 1]);
+            b_out_sum = radiusPlus1 * (pb = pixels[yi + 2]);
+            a_out_sum = radiusPlus1 * (pa = pixels[yi + 3]);
+            r_sum += sumFactor * pr;
+            g_sum += sumFactor * pg;
+            b_sum += sumFactor * pb;
+            a_sum += sumFactor * pa;
+            stack = stackStart;
+            for (i = 0; i < radiusPlus1; i++) {
+                stack.r = pr;
+                stack.g = pg;
+                stack.b = pb;
+                stack.a = pa;
+                stack = stack.next;
+            }
+            for (i = 1; i < radiusPlus1; i++) {
+                p = yi + ((widthMinus1 < i ? widthMinus1 : i) << 2);
+                r_sum += (stack.r = pr = pixels[p]) * (rbs = radiusPlus1 - i);
+                g_sum += (stack.g = pg = pixels[p + 1]) * rbs;
+                b_sum += (stack.b = pb = pixels[p + 2]) * rbs;
+                a_sum += (stack.a = pa = pixels[p + 3]) * rbs;
+                r_in_sum += pr;
+                g_in_sum += pg;
+                b_in_sum += pb;
+                a_in_sum += pa;
+                stack = stack.next;
+            }
+            stackIn = stackStart;
+            stackOut = stackEnd;
+            for (x = 0; x < width; x++) {
+                pixels[yi + 3] = pa = a_sum * mul_sum >> shg_sum;
+                if (pa != 0) {
+                    pa = 255 / pa;
+                    pixels[yi] = (r_sum * mul_sum >> shg_sum) * pa;
+                    pixels[yi + 1] = (g_sum * mul_sum >> shg_sum) * pa;
+                    pixels[yi + 2] = (b_sum * mul_sum >> shg_sum) * pa;
+                } else {
+                    pixels[yi] = pixels[yi + 1] = pixels[yi + 2] = 0;
+                }
+                r_sum -= r_out_sum;
+                g_sum -= g_out_sum;
+                b_sum -= b_out_sum;
+                a_sum -= a_out_sum;
+                r_out_sum -= stackIn.r;
+                g_out_sum -= stackIn.g;
+                b_out_sum -= stackIn.b;
+                a_out_sum -= stackIn.a;
+                p = yw + ((p = x + radius + 1) < widthMinus1 ? p : widthMinus1) << 2;
+                r_in_sum += stackIn.r = pixels[p];
+                g_in_sum += stackIn.g = pixels[p + 1];
+                b_in_sum += stackIn.b = pixels[p + 2];
+                a_in_sum += stackIn.a = pixels[p + 3];
+                r_sum += r_in_sum;
+                g_sum += g_in_sum;
+                b_sum += b_in_sum;
+                a_sum += a_in_sum;
+                stackIn = stackIn.next;
+                r_out_sum += pr = stackOut.r;
+                g_out_sum += pg = stackOut.g;
+                b_out_sum += pb = stackOut.b;
+                a_out_sum += pa = stackOut.a;
+                r_in_sum -= pr;
+                g_in_sum -= pg;
+                b_in_sum -= pb;
+                a_in_sum -= pa;
+                stackOut = stackOut.next;
+                yi += 4;
+            }
+            yw += width;
+        }
+        for (x = 0; x < width; x++) {
+            g_in_sum = b_in_sum = a_in_sum = r_in_sum = g_sum = b_sum = a_sum = r_sum = 0;
+            yi = x << 2;
+            r_out_sum = radiusPlus1 * (pr = pixels[yi]);
+            g_out_sum = radiusPlus1 * (pg = pixels[yi + 1]);
+            b_out_sum = radiusPlus1 * (pb = pixels[yi + 2]);
+            a_out_sum = radiusPlus1 * (pa = pixels[yi + 3]);
+            r_sum += sumFactor * pr;
+            g_sum += sumFactor * pg;
+            b_sum += sumFactor * pb;
+            a_sum += sumFactor * pa;
+            stack = stackStart;
+            for (i = 0; i < radiusPlus1; i++) {
+                stack.r = pr;
+                stack.g = pg;
+                stack.b = pb;
+                stack.a = pa;
+                stack = stack.next;
+            }
+            yp = width;
+            for (i = 1; i <= radius; i++) {
+                yi = yp + x << 2;
+                r_sum += (stack.r = pr = pixels[yi]) * (rbs = radiusPlus1 - i);
+                g_sum += (stack.g = pg = pixels[yi + 1]) * rbs;
+                b_sum += (stack.b = pb = pixels[yi + 2]) * rbs;
+                a_sum += (stack.a = pa = pixels[yi + 3]) * rbs;
+                r_in_sum += pr;
+                g_in_sum += pg;
+                b_in_sum += pb;
+                a_in_sum += pa;
+                stack = stack.next;
+                if (i < heightMinus1) {
+                    yp += width;
+                }
+            }
+            yi = x;
+            stackIn = stackStart;
+            stackOut = stackEnd;
+            for (y = 0; y < height; y++) {
+                p = yi << 2;
+                pixels[p + 3] = pa = a_sum * mul_sum >> shg_sum;
+                if (pa > 0) {
+                    pa = 255 / pa;
+                    pixels[p] = (r_sum * mul_sum >> shg_sum) * pa;
+                    pixels[p + 1] = (g_sum * mul_sum >> shg_sum) * pa;
+                    pixels[p + 2] = (b_sum * mul_sum >> shg_sum) * pa;
+                } else {
+                    pixels[p] = pixels[p + 1] = pixels[p + 2] = 0;
+                }
+                r_sum -= r_out_sum;
+                g_sum -= g_out_sum;
+                b_sum -= b_out_sum;
+                a_sum -= a_out_sum;
+                r_out_sum -= stackIn.r;
+                g_out_sum -= stackIn.g;
+                b_out_sum -= stackIn.b;
+                a_out_sum -= stackIn.a;
+                p = x + ((p = y + radiusPlus1) < heightMinus1 ? p : heightMinus1) * width << 2;
+                r_sum += r_in_sum += stackIn.r = pixels[p];
+                g_sum += g_in_sum += stackIn.g = pixels[p + 1];
+                b_sum += b_in_sum += stackIn.b = pixels[p + 2];
+                a_sum += a_in_sum += stackIn.a = pixels[p + 3];
+                stackIn = stackIn.next;
+                r_out_sum += pr = stackOut.r;
+                g_out_sum += pg = stackOut.g;
+                b_out_sum += pb = stackOut.b;
+                a_out_sum += pa = stackOut.a;
+                r_in_sum -= pr;
+                g_in_sum -= pg;
+                b_in_sum -= pb;
+                a_in_sum -= pa;
+                stackOut = stackOut.next;
+                yi += width;
+            }
+        }
+        context.putImageData(imageData, top_x, top_y);
+    }
+    function stackBlurCanvasRGB(id, top_x, top_y, width, height, radius) {
+        if (isNaN(radius) || radius < 1) return;
+        radius |= 0;
+        var canvas = document.getElementById(id);
+        var context = canvas.getContext("2d");
+        var imageData;
+        try {
+            try {
+                imageData = context.getImageData(top_x, top_y, width, height);
+            } catch (e) {
+                try {
+                    netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
+                    imageData = context.getImageData(top_x, top_y, width, height);
+                } catch (e) {
+                    alert("Cannot access local image");
+                    throw new Error("unable to access local image data: " + e);
+                    return;
+                }
+            }
+        } catch (e) {
+            alert("Cannot access image");
+            throw new Error("unable to access image data: " + e);
+        }
+        var pixels = imageData.data;
+        var x, y, i, p, yp, yi, yw, r_sum, g_sum, b_sum, r_out_sum, g_out_sum, b_out_sum, r_in_sum, g_in_sum, b_in_sum, pr, pg, pb, rbs;
+        var div = radius + radius + 1;
+        var w4 = width << 2;
+        var widthMinus1 = width - 1;
+        var heightMinus1 = height - 1;
+        var radiusPlus1 = radius + 1;
+        var sumFactor = radiusPlus1 * (radiusPlus1 + 1) / 2;
+        var stackStart = new BlurStack();
+        var stack = stackStart;
+        for (i = 1; i < div; i++) {
+            stack = stack.next = new BlurStack();
+            if (i == radiusPlus1) var stackEnd = stack;
+        }
+        stack.next = stackStart;
+        var stackIn = null;
+        var stackOut = null;
+        yw = yi = 0;
+        var mul_sum = mul_table[radius];
+        var shg_sum = shg_table[radius];
+        for (y = 0; y < height; y++) {
+            r_in_sum = g_in_sum = b_in_sum = r_sum = g_sum = b_sum = 0;
+            r_out_sum = radiusPlus1 * (pr = pixels[yi]);
+            g_out_sum = radiusPlus1 * (pg = pixels[yi + 1]);
+            b_out_sum = radiusPlus1 * (pb = pixels[yi + 2]);
+            r_sum += sumFactor * pr;
+            g_sum += sumFactor * pg;
+            b_sum += sumFactor * pb;
+            stack = stackStart;
+            for (i = 0; i < radiusPlus1; i++) {
+                stack.r = pr;
+                stack.g = pg;
+                stack.b = pb;
+                stack = stack.next;
+            }
+            for (i = 1; i < radiusPlus1; i++) {
+                p = yi + ((widthMinus1 < i ? widthMinus1 : i) << 2);
+                r_sum += (stack.r = pr = pixels[p]) * (rbs = radiusPlus1 - i);
+                g_sum += (stack.g = pg = pixels[p + 1]) * rbs;
+                b_sum += (stack.b = pb = pixels[p + 2]) * rbs;
+                r_in_sum += pr;
+                g_in_sum += pg;
+                b_in_sum += pb;
+                stack = stack.next;
+            }
+            stackIn = stackStart;
+            stackOut = stackEnd;
+            for (x = 0; x < width; x++) {
+                pixels[yi] = r_sum * mul_sum >> shg_sum;
+                pixels[yi + 1] = g_sum * mul_sum >> shg_sum;
+                pixels[yi + 2] = b_sum * mul_sum >> shg_sum;
+                r_sum -= r_out_sum;
+                g_sum -= g_out_sum;
+                b_sum -= b_out_sum;
+                r_out_sum -= stackIn.r;
+                g_out_sum -= stackIn.g;
+                b_out_sum -= stackIn.b;
+                p = yw + ((p = x + radius + 1) < widthMinus1 ? p : widthMinus1) << 2;
+                r_in_sum += stackIn.r = pixels[p];
+                g_in_sum += stackIn.g = pixels[p + 1];
+                b_in_sum += stackIn.b = pixels[p + 2];
+                r_sum += r_in_sum;
+                g_sum += g_in_sum;
+                b_sum += b_in_sum;
+                stackIn = stackIn.next;
+                r_out_sum += pr = stackOut.r;
+                g_out_sum += pg = stackOut.g;
+                b_out_sum += pb = stackOut.b;
+                r_in_sum -= pr;
+                g_in_sum -= pg;
+                b_in_sum -= pb;
+                stackOut = stackOut.next;
+                yi += 4;
+            }
+            yw += width;
+        }
+        for (x = 0; x < width; x++) {
+            g_in_sum = b_in_sum = r_in_sum = g_sum = b_sum = r_sum = 0;
+            yi = x << 2;
+            r_out_sum = radiusPlus1 * (pr = pixels[yi]);
+            g_out_sum = radiusPlus1 * (pg = pixels[yi + 1]);
+            b_out_sum = radiusPlus1 * (pb = pixels[yi + 2]);
+            r_sum += sumFactor * pr;
+            g_sum += sumFactor * pg;
+            b_sum += sumFactor * pb;
+            stack = stackStart;
+            for (i = 0; i < radiusPlus1; i++) {
+                stack.r = pr;
+                stack.g = pg;
+                stack.b = pb;
+                stack = stack.next;
+            }
+            yp = width;
+            for (i = 1; i <= radius; i++) {
+                yi = yp + x << 2;
+                r_sum += (stack.r = pr = pixels[yi]) * (rbs = radiusPlus1 - i);
+                g_sum += (stack.g = pg = pixels[yi + 1]) * rbs;
+                b_sum += (stack.b = pb = pixels[yi + 2]) * rbs;
+                r_in_sum += pr;
+                g_in_sum += pg;
+                b_in_sum += pb;
+                stack = stack.next;
+                if (i < heightMinus1) {
+                    yp += width;
+                }
+            }
+            yi = x;
+            stackIn = stackStart;
+            stackOut = stackEnd;
+            for (y = 0; y < height; y++) {
+                p = yi << 2;
+                pixels[p] = r_sum * mul_sum >> shg_sum;
+                pixels[p + 1] = g_sum * mul_sum >> shg_sum;
+                pixels[p + 2] = b_sum * mul_sum >> shg_sum;
+                r_sum -= r_out_sum;
+                g_sum -= g_out_sum;
+                b_sum -= b_out_sum;
+                r_out_sum -= stackIn.r;
+                g_out_sum -= stackIn.g;
+                b_out_sum -= stackIn.b;
+                p = x + ((p = y + radiusPlus1) < heightMinus1 ? p : heightMinus1) * width << 2;
+                r_sum += r_in_sum += stackIn.r = pixels[p];
+                g_sum += g_in_sum += stackIn.g = pixels[p + 1];
+                b_sum += b_in_sum += stackIn.b = pixels[p + 2];
+                stackIn = stackIn.next;
+                r_out_sum += pr = stackOut.r;
+                g_out_sum += pg = stackOut.g;
+                b_out_sum += pb = stackOut.b;
+                r_in_sum -= pr;
+                g_in_sum -= pg;
+                b_in_sum -= pb;
+                stackOut = stackOut.next;
+                yi += width;
+            }
+        }
+        context.putImageData(imageData, top_x, top_y);
+    }
+    function BlurStack() {
+        this.r = 0;
+        this.g = 0;
+        this.b = 0;
+        this.a = 0;
+        this.next = null;
+    }
+    (function() {
+        this.canvg = function(target, s, opts) {
+            if (target == null && s == null && opts == null) {
+                var svgTags = document.getElementsByTagName("svg");
+                for (var i = 0; i < svgTags.length; i++) {
+                    var svgTag = svgTags[i];
+                    var c = document.createElement("canvas");
+                    c.width = svgTag.clientWidth;
+                    c.height = svgTag.clientHeight;
+                    svgTag.parentNode.insertBefore(c, svgTag);
+                    svgTag.parentNode.removeChild(svgTag);
+                    var div = document.createElement("div");
+                    div.appendChild(svgTag);
+                    canvg(c, div.innerHTML);
+                }
+                return;
+            }
+            opts = opts || {};
+            if (typeof target == "string") {
+                target = document.getElementById(target);
+            }
+            if (target.svg != null) target.svg.stop();
+            var svg = build();
+            if (!(target.childNodes.length == 1 && target.childNodes[0].nodeName == "OBJECT")) target.svg = svg;
+            svg.opts = opts;
+            var ctx = target.getContext("2d");
+            if (typeof s.documentElement != "undefined") {
+                svg.loadXmlDoc(ctx, s);
+            } else if (s.substr(0, 1) == "<") {
+                svg.loadXml(ctx, s);
+            } else {
+                svg.load(ctx, s);
+            }
+        };
+        function build() {
+            var svg = {};
+            svg.FRAMERATE = 30;
+            svg.MAX_VIRTUAL_PIXELS = 3e4;
+            svg.init = function(ctx) {
+                var uniqueId = 0;
+                svg.UniqueId = function() {
+                    uniqueId++;
+                    return "canvg" + uniqueId;
+                };
+                svg.Definitions = {};
+                svg.Styles = {};
+                svg.Animations = [];
+                svg.Images = [];
+                svg.ctx = ctx;
+                svg.ViewPort = new function() {
+                    this.viewPorts = [];
+                    this.Clear = function() {
+                        this.viewPorts = [];
+                    };
+                    this.SetCurrent = function(width, height) {
+                        this.viewPorts.push({
+                            width: width,
+                            height: height
+                        });
+                    };
+                    this.RemoveCurrent = function() {
+                        this.viewPorts.pop();
+                    };
+                    this.Current = function() {
+                        return this.viewPorts[this.viewPorts.length - 1];
+                    };
+                    this.width = function() {
+                        return this.Current().width;
+                    };
+                    this.height = function() {
+                        return this.Current().height;
+                    };
+                    this.ComputeSize = function(d) {
+                        if (d != null && typeof d == "number") return d;
+                        if (d == "x") return this.width();
+                        if (d == "y") return this.height();
+                        return Math.sqrt(Math.pow(this.width(), 2) + Math.pow(this.height(), 2)) / Math.sqrt(2);
+                    };
+                }();
+            };
+            svg.init();
+            svg.ImagesLoaded = function() {
+                for (var i = 0; i < svg.Images.length; i++) {
+                    if (!svg.Images[i].loaded) return false;
+                }
+                return true;
+            };
+            svg.trim = function(s) {
+                return s.replace(/^\s+|\s+$/g, "");
+            };
+            svg.compressSpaces = function(s) {
+                return s.replace(/[\s\r\t\n]+/gm, " ");
+            };
+            svg.ajax = function(url) {
+                var AJAX;
+                if (window.XMLHttpRequest) {
+                    AJAX = new XMLHttpRequest();
+                } else {
+                    AJAX = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                if (AJAX) {
+                    AJAX.open("GET", url, false);
+                    AJAX.send(null);
+                    return AJAX.responseText;
+                }
+                return null;
+            };
+            svg.parseXml = function(xml) {
+                if (window.DOMParser) {
+                    var parser = new DOMParser();
+                    return parser.parseFromString(xml, "text/xml");
+                } else {
+                    xml = xml.replace(/<!DOCTYPE svg[^>]*>/, "");
+                    var xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
+                    xmlDoc.async = "false";
+                    xmlDoc.loadXML(xml);
+                    return xmlDoc;
+                }
+            };
+            svg.Property = function(name, value) {
+                this.name = name;
+                this.value = value;
+            };
+            svg.Property.prototype.getValue = function() {
+                return this.value;
+            };
+            svg.Property.prototype.hasValue = function() {
+                return this.value != null && this.value !== "";
+            };
+            svg.Property.prototype.numValue = function() {
+                if (!this.hasValue()) return 0;
+                var n = parseFloat(this.value);
+                if ((this.value + "").match(/%$/)) {
+                    n = n / 100;
+                }
+                return n;
+            };
+            svg.Property.prototype.valueOrDefault = function(def) {
+                if (this.hasValue()) return this.value;
+                return def;
+            };
+            svg.Property.prototype.numValueOrDefault = function(def) {
+                if (this.hasValue()) return this.numValue();
+                return def;
+            };
+            svg.Property.prototype.addOpacity = function(opacity) {
+                var newValue = this.value;
+                if (opacity != null && opacity != "" && typeof this.value == "string") {
+                    var color = new RGBColor(this.value);
+                    if (color.ok) {
+                        newValue = "rgba(" + color.r + ", " + color.g + ", " + color.b + ", " + opacity + ")";
+                    }
+                }
+                return new svg.Property(this.name, newValue);
+            };
+            svg.Property.prototype.getDefinition = function() {
+                var name = this.value.match(/#([^\)'"]+)/);
+                if (name) {
+                    name = name[1];
+                }
+                if (!name) {
+                    name = this.value;
+                }
+                return svg.Definitions[name];
+            };
+            svg.Property.prototype.isUrlDefinition = function() {
+                return this.value.indexOf("url(") == 0;
+            };
+            svg.Property.prototype.getFillStyleDefinition = function(e, opacityProp) {
+                var def = this.getDefinition();
+                if (def != null && def.createGradient) {
+                    return def.createGradient(svg.ctx, e, opacityProp);
+                }
+                if (def != null && def.createPattern) {
+                    if (def.getHrefAttribute().hasValue()) {
+                        var pt = def.attribute("patternTransform");
+                        def = def.getHrefAttribute().getDefinition();
+                        if (pt.hasValue()) {
+                            def.attribute("patternTransform", true).value = pt.value;
+                        }
+                    }
+                    return def.createPattern(svg.ctx, e);
+                }
+                return null;
+            };
+            svg.Property.prototype.getDPI = function(viewPort) {
+                return 96;
+            };
+            svg.Property.prototype.getEM = function(viewPort) {
+                var em = 12;
+                var fontSize = new svg.Property("fontSize", svg.Font.Parse(svg.ctx.font).fontSize);
+                if (fontSize.hasValue()) em = fontSize.toPixels(viewPort);
+                return em;
+            };
+            svg.Property.prototype.getUnits = function() {
+                var s = this.value + "";
+                return s.replace(/[0-9\.\-]/g, "");
+            };
+            svg.Property.prototype.toPixels = function(viewPort, processPercent) {
+                if (!this.hasValue()) return 0;
+                var s = this.value + "";
+                if (s.match(/em$/)) return this.numValue() * this.getEM(viewPort);
+                if (s.match(/ex$/)) return this.numValue() * this.getEM(viewPort) / 2;
+                if (s.match(/px$/)) return this.numValue();
+                if (s.match(/pt$/)) return this.numValue() * this.getDPI(viewPort) * (1 / 72);
+                if (s.match(/pc$/)) return this.numValue() * 15;
+                if (s.match(/cm$/)) return this.numValue() * this.getDPI(viewPort) / 2.54;
+                if (s.match(/mm$/)) return this.numValue() * this.getDPI(viewPort) / 25.4;
+                if (s.match(/in$/)) return this.numValue() * this.getDPI(viewPort);
+                if (s.match(/%$/)) return this.numValue() * svg.ViewPort.ComputeSize(viewPort);
+                var n = this.numValue();
+                if (processPercent && n < 1) return n * svg.ViewPort.ComputeSize(viewPort);
+                return n;
+            };
+            svg.Property.prototype.toMilliseconds = function() {
+                if (!this.hasValue()) return 0;
+                var s = this.value + "";
+                if (s.match(/s$/)) return this.numValue() * 1e3;
+                if (s.match(/ms$/)) return this.numValue();
+                return this.numValue();
+            };
+            svg.Property.prototype.toRadians = function() {
+                if (!this.hasValue()) return 0;
+                var s = this.value + "";
+                if (s.match(/deg$/)) return this.numValue() * (Math.PI / 180);
+                if (s.match(/grad$/)) return this.numValue() * (Math.PI / 200);
+                if (s.match(/rad$/)) return this.numValue();
+                return this.numValue() * (Math.PI / 180);
+            };
+            svg.Font = new function() {
+                this.Styles = "normal|italic|oblique|inherit";
+                this.Variants = "normal|small-caps|inherit";
+                this.Weights = "normal|bold|bolder|lighter|100|200|300|400|500|600|700|800|900|inherit";
+                this.CreateFont = function(fontStyle, fontVariant, fontWeight, fontSize, fontFamily, inherit) {
+                    var f = inherit != null ? this.Parse(inherit) : this.CreateFont("", "", "", "", "", svg.ctx.font);
+                    return {
+                        fontFamily: fontFamily || f.fontFamily,
+                        fontSize: fontSize || f.fontSize,
+                        fontStyle: fontStyle || f.fontStyle,
+                        fontWeight: fontWeight || f.fontWeight,
+                        fontVariant: fontVariant || f.fontVariant,
+                        toString: function() {
+                            return [ this.fontStyle, this.fontVariant, this.fontWeight, this.fontSize, this.fontFamily ].join(" ");
+                        }
+                    };
+                };
+                var that = this;
+                this.Parse = function(s) {
+                    var f = {};
+                    var d = svg.trim(svg.compressSpaces(s || "")).split(" ");
+                    var set = {
+                        fontSize: false,
+                        fontStyle: false,
+                        fontWeight: false,
+                        fontVariant: false
+                    };
+                    var ff = "";
+                    for (var i = 0; i < d.length; i++) {
+                        if (!set.fontStyle && that.Styles.indexOf(d[i]) != -1) {
+                            if (d[i] != "inherit") f.fontStyle = d[i];
+                            set.fontStyle = true;
+                        } else if (!set.fontVariant && that.Variants.indexOf(d[i]) != -1) {
+                            if (d[i] != "inherit") f.fontVariant = d[i];
+                            set.fontStyle = set.fontVariant = true;
+                        } else if (!set.fontWeight && that.Weights.indexOf(d[i]) != -1) {
+                            if (d[i] != "inherit") f.fontWeight = d[i];
+                            set.fontStyle = set.fontVariant = set.fontWeight = true;
+                        } else if (!set.fontSize) {
+                            if (d[i] != "inherit") f.fontSize = d[i].split("/")[0];
+                            set.fontStyle = set.fontVariant = set.fontWeight = set.fontSize = true;
+                        } else {
+                            if (d[i] != "inherit") ff += d[i];
+                        }
+                    }
+                    if (ff != "") f.fontFamily = ff;
+                    return f;
+                };
+            }();
+            svg.ToNumberArray = function(s) {
+                var a = svg.trim(svg.compressSpaces((s || "").replace(/,/g, " "))).split(" ");
+                for (var i = 0; i < a.length; i++) {
+                    a[i] = parseFloat(a[i]);
+                }
+                return a;
+            };
+            svg.Point = function(x, y) {
+                this.x = x;
+                this.y = y;
+            };
+            svg.Point.prototype.angleTo = function(p) {
+                return Math.atan2(p.y - this.y, p.x - this.x);
+            };
+            svg.Point.prototype.applyTransform = function(v) {
+                var xp = this.x * v[0] + this.y * v[2] + v[4];
+                var yp = this.x * v[1] + this.y * v[3] + v[5];
+                this.x = xp;
+                this.y = yp;
+            };
+            svg.CreatePoint = function(s) {
+                var a = svg.ToNumberArray(s);
+                return new svg.Point(a[0], a[1]);
+            };
+            svg.CreatePath = function(s) {
+                var a = svg.ToNumberArray(s);
+                var path = [];
+                for (var i = 0; i < a.length; i += 2) {
+                    path.push(new svg.Point(a[i], a[i + 1]));
+                }
+                return path;
+            };
+            svg.BoundingBox = function(x1, y1, x2, y2) {
+                this.x1 = Number.NaN;
+                this.y1 = Number.NaN;
+                this.x2 = Number.NaN;
+                this.y2 = Number.NaN;
+                this.x = function() {
+                    return this.x1;
+                };
+                this.y = function() {
+                    return this.y1;
+                };
+                this.width = function() {
+                    return this.x2 - this.x1;
+                };
+                this.height = function() {
+                    return this.y2 - this.y1;
+                };
+                this.addPoint = function(x, y) {
+                    if (x != null) {
+                        if (isNaN(this.x1) || isNaN(this.x2)) {
+                            this.x1 = x;
+                            this.x2 = x;
+                        }
+                        if (x < this.x1) this.x1 = x;
+                        if (x > this.x2) this.x2 = x;
+                    }
+                    if (y != null) {
+                        if (isNaN(this.y1) || isNaN(this.y2)) {
+                            this.y1 = y;
+                            this.y2 = y;
+                        }
+                        if (y < this.y1) this.y1 = y;
+                        if (y > this.y2) this.y2 = y;
+                    }
+                };
+                this.addX = function(x) {
+                    this.addPoint(x, null);
+                };
+                this.addY = function(y) {
+                    this.addPoint(null, y);
+                };
+                this.addBoundingBox = function(bb) {
+                    this.addPoint(bb.x1, bb.y1);
+                    this.addPoint(bb.x2, bb.y2);
+                };
+                this.addQuadraticCurve = function(p0x, p0y, p1x, p1y, p2x, p2y) {
+                    var cp1x = p0x + 2 / 3 * (p1x - p0x);
+                    var cp1y = p0y + 2 / 3 * (p1y - p0y);
+                    var cp2x = cp1x + 1 / 3 * (p2x - p0x);
+                    var cp2y = cp1y + 1 / 3 * (p2y - p0y);
+                    this.addBezierCurve(p0x, p0y, cp1x, cp2x, cp1y, cp2y, p2x, p2y);
+                };
+                this.addBezierCurve = function(p0x, p0y, p1x, p1y, p2x, p2y, p3x, p3y) {
+                    var p0 = [ p0x, p0y ], p1 = [ p1x, p1y ], p2 = [ p2x, p2y ], p3 = [ p3x, p3y ];
+                    this.addPoint(p0[0], p0[1]);
+                    this.addPoint(p3[0], p3[1]);
+                    for (i = 0; i <= 1; i++) {
+                        var f = function(t) {
+                            return Math.pow(1 - t, 3) * p0[i] + 3 * Math.pow(1 - t, 2) * t * p1[i] + 3 * (1 - t) * Math.pow(t, 2) * p2[i] + Math.pow(t, 3) * p3[i];
+                        };
+                        var b = 6 * p0[i] - 12 * p1[i] + 6 * p2[i];
+                        var a = -3 * p0[i] + 9 * p1[i] - 9 * p2[i] + 3 * p3[i];
+                        var c = 3 * p1[i] - 3 * p0[i];
+                        if (a == 0) {
+                            if (b == 0) continue;
+                            var t = -c / b;
+                            if (0 < t && t < 1) {
+                                if (i == 0) this.addX(f(t));
+                                if (i == 1) this.addY(f(t));
+                            }
+                            continue;
+                        }
+                        var b2ac = Math.pow(b, 2) - 4 * c * a;
+                        if (b2ac < 0) continue;
+                        var t1 = (-b + Math.sqrt(b2ac)) / (2 * a);
+                        if (0 < t1 && t1 < 1) {
+                            if (i == 0) this.addX(f(t1));
+                            if (i == 1) this.addY(f(t1));
+                        }
+                        var t2 = (-b - Math.sqrt(b2ac)) / (2 * a);
+                        if (0 < t2 && t2 < 1) {
+                            if (i == 0) this.addX(f(t2));
+                            if (i == 1) this.addY(f(t2));
+                        }
+                    }
+                };
+                this.isPointInBox = function(x, y) {
+                    return this.x1 <= x && x <= this.x2 && this.y1 <= y && y <= this.y2;
+                };
+                this.addPoint(x1, y1);
+                this.addPoint(x2, y2);
+            };
+            svg.Transform = function(v) {
+                var that = this;
+                this.Type = {};
+                this.Type.translate = function(s) {
+                    this.p = svg.CreatePoint(s);
+                    this.apply = function(ctx) {
+                        ctx.translate(this.p.x || 0, this.p.y || 0);
+                    };
+                    this.unapply = function(ctx) {
+                        ctx.translate(-1 * this.p.x || 0, -1 * this.p.y || 0);
+                    };
+                    this.applyToPoint = function(p) {
+                        p.applyTransform([ 1, 0, 0, 1, this.p.x || 0, this.p.y || 0 ]);
+                    };
+                };
+                this.Type.rotate = function(s) {
+                    var a = svg.ToNumberArray(s);
+                    this.angle = new svg.Property("angle", a[0]);
+                    this.cx = a[1] || 0;
+                    this.cy = a[2] || 0;
+                    this.apply = function(ctx) {
+                        ctx.translate(this.cx, this.cy);
+                        ctx.rotate(this.angle.toRadians());
+                        ctx.translate(-this.cx, -this.cy);
+                    };
+                    this.unapply = function(ctx) {
+                        ctx.translate(this.cx, this.cy);
+                        ctx.rotate(-1 * this.angle.toRadians());
+                        ctx.translate(-this.cx, -this.cy);
+                    };
+                    this.applyToPoint = function(p) {
+                        var a = this.angle.toRadians();
+                        p.applyTransform([ 1, 0, 0, 1, this.p.x || 0, this.p.y || 0 ]);
+                        p.applyTransform([ Math.cos(a), Math.sin(a), -Math.sin(a), Math.cos(a), 0, 0 ]);
+                        p.applyTransform([ 1, 0, 0, 1, -this.p.x || 0, -this.p.y || 0 ]);
+                    };
+                };
+                this.Type.scale = function(s) {
+                    this.p = svg.CreatePoint(s);
+                    this.apply = function(ctx) {
+                        ctx.scale(this.p.x || 1, this.p.y || this.p.x || 1);
+                    };
+                    this.unapply = function(ctx) {
+                        ctx.scale(1 / this.p.x || 1, 1 / this.p.y || this.p.x || 1);
+                    };
+                    this.applyToPoint = function(p) {
+                        p.applyTransform([ this.p.x || 0, 0, 0, this.p.y || 0, 0, 0 ]);
+                    };
+                };
+                this.Type.matrix = function(s) {
+                    this.m = svg.ToNumberArray(s);
+                    this.apply = function(ctx) {
+                        ctx.transform(this.m[0], this.m[1], this.m[2], this.m[3], this.m[4], this.m[5]);
+                    };
+                    this.applyToPoint = function(p) {
+                        p.applyTransform(this.m);
+                    };
+                };
+                this.Type.SkewBase = function(s) {
+                    this.base = that.Type.matrix;
+                    this.base(s);
+                    this.angle = new svg.Property("angle", s);
+                };
+                this.Type.SkewBase.prototype = new this.Type.matrix();
+                this.Type.skewX = function(s) {
+                    this.base = that.Type.SkewBase;
+                    this.base(s);
+                    this.m = [ 1, 0, Math.tan(this.angle.toRadians()), 1, 0, 0 ];
+                };
+                this.Type.skewX.prototype = new this.Type.SkewBase();
+                this.Type.skewY = function(s) {
+                    this.base = that.Type.SkewBase;
+                    this.base(s);
+                    this.m = [ 1, Math.tan(this.angle.toRadians()), 0, 1, 0, 0 ];
+                };
+                this.Type.skewY.prototype = new this.Type.SkewBase();
+                this.transforms = [];
+                this.apply = function(ctx) {
+                    for (var i = 0; i < this.transforms.length; i++) {
+                        this.transforms[i].apply(ctx);
+                    }
+                };
+                this.unapply = function(ctx) {
+                    for (var i = this.transforms.length - 1; i >= 0; i--) {
+                        this.transforms[i].unapply(ctx);
+                    }
+                };
+                this.applyToPoint = function(p) {
+                    for (var i = 0; i < this.transforms.length; i++) {
+                        this.transforms[i].applyToPoint(p);
+                    }
+                };
+                var data = svg.trim(svg.compressSpaces(v)).replace(/\)(\s?,\s?)/g, ") ").split(/\s(?=[a-z])/);
+                for (var i = 0; i < data.length; i++) {
+                    var type = svg.trim(data[i].split("(")[0]);
+                    var s = data[i].split("(")[1].replace(")", "");
+                    var transform = new this.Type[type](s);
+                    transform.type = type;
+                    this.transforms.push(transform);
+                }
+            };
+            svg.AspectRatio = function(ctx, aspectRatio, width, desiredWidth, height, desiredHeight, minX, minY, refX, refY) {
+                aspectRatio = svg.compressSpaces(aspectRatio);
+                aspectRatio = aspectRatio.replace(/^defer\s/, "");
+                var align = aspectRatio.split(" ")[0] || "xMidYMid";
+                var meetOrSlice = aspectRatio.split(" ")[1] || "meet";
+                var scaleX = width / desiredWidth;
+                var scaleY = height / desiredHeight;
+                var scaleMin = Math.min(scaleX, scaleY);
+                var scaleMax = Math.max(scaleX, scaleY);
+                if (meetOrSlice == "meet") {
+                    desiredWidth *= scaleMin;
+                    desiredHeight *= scaleMin;
+                }
+                if (meetOrSlice == "slice") {
+                    desiredWidth *= scaleMax;
+                    desiredHeight *= scaleMax;
+                }
+                refX = new svg.Property("refX", refX);
+                refY = new svg.Property("refY", refY);
+                if (refX.hasValue() && refY.hasValue()) {
+                    ctx.translate(-scaleMin * refX.toPixels("x"), -scaleMin * refY.toPixels("y"));
+                } else {
+                    if (align.match(/^xMid/) && (meetOrSlice == "meet" && scaleMin == scaleY || meetOrSlice == "slice" && scaleMax == scaleY)) ctx.translate(width / 2 - desiredWidth / 2, 0);
+                    if (align.match(/YMid$/) && (meetOrSlice == "meet" && scaleMin == scaleX || meetOrSlice == "slice" && scaleMax == scaleX)) ctx.translate(0, height / 2 - desiredHeight / 2);
+                    if (align.match(/^xMax/) && (meetOrSlice == "meet" && scaleMin == scaleY || meetOrSlice == "slice" && scaleMax == scaleY)) ctx.translate(width - desiredWidth, 0);
+                    if (align.match(/YMax$/) && (meetOrSlice == "meet" && scaleMin == scaleX || meetOrSlice == "slice" && scaleMax == scaleX)) ctx.translate(0, height - desiredHeight);
+                }
+                if (align == "none") ctx.scale(scaleX, scaleY); else if (meetOrSlice == "meet") ctx.scale(scaleMin, scaleMin); else if (meetOrSlice == "slice") ctx.scale(scaleMax, scaleMax);
+                ctx.translate(minX == null ? 0 : -minX, minY == null ? 0 : -minY);
+            };
+            svg.Element = {};
+            svg.EmptyProperty = new svg.Property("EMPTY", "");
+            svg.Element.ElementBase = function(node) {
+                this.attributes = {};
+                this.styles = {};
+                this.children = [];
+                this.attribute = function(name, createIfNotExists) {
+                    var a = this.attributes[name];
+                    if (a != null) return a;
+                    if (createIfNotExists == true) {
+                        a = new svg.Property(name, "");
+                        this.attributes[name] = a;
+                    }
+                    return a || svg.EmptyProperty;
+                };
+                this.getHrefAttribute = function() {
+                    for (var a in this.attributes) {
+                        if (a.match(/:href$/)) {
+                            return this.attributes[a];
+                        }
+                    }
+                    return svg.EmptyProperty;
+                };
+                this.style = function(name, createIfNotExists) {
+                    var s = this.styles[name];
+                    if (s != null) return s;
+                    var a = this.attribute(name);
+                    if (a != null && a.hasValue()) {
+                        this.styles[name] = a;
+                        return a;
+                    }
+                    var p = this.parent;
+                    if (p != null) {
+                        var ps = p.style(name);
+                        if (ps != null && ps.hasValue()) {
+                            return ps;
+                        }
+                    }
+                    if (createIfNotExists == true) {
+                        s = new svg.Property(name, "");
+                        this.styles[name] = s;
+                    }
+                    return s || svg.EmptyProperty;
+                };
+                this.render = function(ctx) {
+                    if (this.style("display").value == "none") return;
+                    if (this.attribute("visibility").value == "hidden") return;
+                    ctx.save();
+                    if (this.attribute("mask").hasValue()) {
+                        var mask = this.attribute("mask").getDefinition();
+                        if (mask != null) mask.apply(ctx, this);
+                    } else if (this.style("filter").hasValue()) {
+                        var filter = this.style("filter").getDefinition();
+                        if (filter != null) filter.apply(ctx, this);
+                    } else {
+                        this.setContext(ctx);
+                        this.renderChildren(ctx);
+                        this.clearContext(ctx);
+                    }
+                    ctx.restore();
+                };
+                this.setContext = function(ctx) {};
+                this.clearContext = function(ctx) {};
+                this.renderChildren = function(ctx) {
+                    for (var i = 0; i < this.children.length; i++) {
+                        this.children[i].render(ctx);
+                    }
+                };
+                this.addChild = function(childNode, create) {
+                    var child = childNode;
+                    if (create) child = svg.CreateElement(childNode);
+                    child.parent = this;
+                    this.children.push(child);
+                };
+                if (node != null && node.nodeType == 1) {
+                    for (var i = 0; i < node.childNodes.length; i++) {
+                        var childNode = node.childNodes[i];
+                        if (childNode.nodeType == 1) this.addChild(childNode, true);
+                        if (this.captureTextNodes && childNode.nodeType == 3) {
+                            var text = childNode.nodeValue || childNode.text || "";
+                            if (svg.trim(svg.compressSpaces(text)) != "") {
+                                this.addChild(new svg.Element.tspan(childNode), false);
+                            }
+                        }
+                    }
+                    for (var i = 0; i < node.attributes.length; i++) {
+                        var attribute = node.attributes[i];
+                        this.attributes[attribute.nodeName] = new svg.Property(attribute.nodeName, attribute.nodeValue);
+                    }
+                    var styles = svg.Styles[node.nodeName];
+                    if (styles != null) {
+                        for (var name in styles) {
+                            this.styles[name] = styles[name];
+                        }
+                    }
+                    if (this.attribute("class").hasValue()) {
+                        var classes = svg.compressSpaces(this.attribute("class").value).split(" ");
+                        for (var j = 0; j < classes.length; j++) {
+                            styles = svg.Styles["." + classes[j]];
+                            if (styles != null) {
+                                for (var name in styles) {
+                                    this.styles[name] = styles[name];
+                                }
+                            }
+                            styles = svg.Styles[node.nodeName + "." + classes[j]];
+                            if (styles != null) {
+                                for (var name in styles) {
+                                    this.styles[name] = styles[name];
+                                }
+                            }
+                        }
+                    }
+                    if (this.attribute("id").hasValue()) {
+                        var styles = svg.Styles["#" + this.attribute("id").value];
+                        if (styles != null) {
+                            for (var name in styles) {
+                                this.styles[name] = styles[name];
+                            }
+                        }
+                    }
+                    if (this.attribute("style").hasValue()) {
+                        var styles = this.attribute("style").value.split(";");
+                        for (var i = 0; i < styles.length; i++) {
+                            if (svg.trim(styles[i]) != "") {
+                                var style = styles[i].split(":");
+                                var name = svg.trim(style[0]);
+                                var value = svg.trim(style[1]);
+                                this.styles[name] = new svg.Property(name, value);
+                            }
+                        }
+                    }
+                    if (this.attribute("id").hasValue()) {
+                        if (svg.Definitions[this.attribute("id").value] == null) {
+                            svg.Definitions[this.attribute("id").value] = this;
+                        }
+                    }
+                }
+            };
+            svg.Element.RenderedElementBase = function(node) {
+                this.base = svg.Element.ElementBase;
+                this.base(node);
+                this.setContext = function(ctx) {
+                    if (this.style("fill").isUrlDefinition()) {
+                        var fs = this.style("fill").getFillStyleDefinition(this, this.style("fill-opacity"));
+                        if (fs != null) ctx.fillStyle = fs;
+                    } else if (this.style("fill").hasValue()) {
+                        var fillStyle = this.style("fill");
+                        if (fillStyle.value == "currentColor") fillStyle.value = this.style("color").value;
+                        ctx.fillStyle = fillStyle.value == "none" ? "rgba(0,0,0,0)" : fillStyle.value;
+                    }
+                    if (this.style("fill-opacity").hasValue()) {
+                        var fillStyle = new svg.Property("fill", ctx.fillStyle);
+                        fillStyle = fillStyle.addOpacity(this.style("fill-opacity").value);
+                        ctx.fillStyle = fillStyle.value;
+                    }
+                    if (this.style("stroke").isUrlDefinition()) {
+                        var fs = this.style("stroke").getFillStyleDefinition(this, this.style("stroke-opacity"));
+                        if (fs != null) ctx.strokeStyle = fs;
+                    } else if (this.style("stroke").hasValue()) {
+                        var strokeStyle = this.style("stroke");
+                        if (strokeStyle.value == "currentColor") strokeStyle.value = this.style("color").value;
+                        ctx.strokeStyle = strokeStyle.value == "none" ? "rgba(0,0,0,0)" : strokeStyle.value;
+                    }
+                    if (this.style("stroke-opacity").hasValue()) {
+                        var strokeStyle = new svg.Property("stroke", ctx.strokeStyle);
+                        strokeStyle = strokeStyle.addOpacity(this.style("stroke-opacity").value);
+                        ctx.strokeStyle = strokeStyle.value;
+                    }
+                    if (this.style("stroke-width").hasValue()) {
+                        var newLineWidth = this.style("stroke-width").toPixels();
+                        ctx.lineWidth = newLineWidth == 0 ? .001 : newLineWidth;
+                    }
+                    if (this.style("stroke-linecap").hasValue()) ctx.lineCap = this.style("stroke-linecap").value;
+                    if (this.style("stroke-linejoin").hasValue()) ctx.lineJoin = this.style("stroke-linejoin").value;
+                    if (this.style("stroke-miterlimit").hasValue()) ctx.miterLimit = this.style("stroke-miterlimit").value;
+                    if (this.style("stroke-dasharray").hasValue()) {
+                        var gaps = svg.ToNumberArray(this.style("stroke-dasharray").value);
+                        if (typeof ctx.setLineDash != "undefined") {
+                            ctx.setLineDash(gaps);
+                        } else if (typeof ctx.webkitLineDash != "undefined") {
+                            ctx.webkitLineDash = gaps;
+                        } else if (typeof ctx.mozDash != "undefined") {
+                            ctx.mozDash = gaps;
+                        }
+                        var offset = this.style("stroke-dashoffset").numValueOrDefault(1);
+                        if (typeof ctx.lineDashOffset != "undefined") {
+                            ctx.lineDashOffset = offset;
+                        } else if (typeof ctx.webkitLineDashOffset != "undefined") {
+                            ctx.webkitLineDashOffset = offset;
+                        } else if (typeof ctx.mozDashOffset != "undefined") {
+                            ctx.mozDashOffset = offset;
+                        }
+                    }
+                    if (typeof ctx.font != "undefined") {
+                        ctx.font = svg.Font.CreateFont(this.style("font-style").value, this.style("font-variant").value, this.style("font-weight").value, this.style("font-size").hasValue() ? this.style("font-size").toPixels() + "px" : "", this.style("font-family").value).toString();
+                    }
+                    if (this.attribute("transform").hasValue()) {
+                        var transform = new svg.Transform(this.attribute("transform").value);
+                        transform.apply(ctx);
+                    }
+                    if (this.style("clip-path").hasValue()) {
+                        var clip = this.style("clip-path").getDefinition();
+                        if (clip != null) clip.apply(ctx);
+                    }
+                    if (this.style("opacity").hasValue()) {
+                        ctx.globalAlpha = this.style("opacity").numValue();
+                    }
+                };
+            };
+            svg.Element.RenderedElementBase.prototype = new svg.Element.ElementBase();
+            svg.Element.PathElementBase = function(node) {
+                this.base = svg.Element.RenderedElementBase;
+                this.base(node);
+                this.path = function(ctx) {
+                    if (ctx != null) ctx.beginPath();
+                    return new svg.BoundingBox();
+                };
+                this.renderChildren = function(ctx) {
+                    this.path(ctx);
+                    svg.Mouse.checkPath(this, ctx);
+                    if (ctx.fillStyle != "") {
+                        if (this.attribute("fill-rule").hasValue()) {
+                            ctx.fill(this.attribute("fill-rule").value);
+                        } else {
+                            ctx.fill();
+                        }
+                    }
+                    if (ctx.strokeStyle != "") ctx.stroke();
+                    var markers = this.getMarkers();
+                    if (markers != null) {
+                        if (this.style("marker-start").isUrlDefinition()) {
+                            var marker = this.style("marker-start").getDefinition();
+                            marker.render(ctx, markers[0][0], markers[0][1]);
+                        }
+                        if (this.style("marker-mid").isUrlDefinition()) {
+                            var marker = this.style("marker-mid").getDefinition();
+                            for (var i = 1; i < markers.length - 1; i++) {
+                                marker.render(ctx, markers[i][0], markers[i][1]);
+                            }
+                        }
+                        if (this.style("marker-end").isUrlDefinition()) {
+                            var marker = this.style("marker-end").getDefinition();
+                            marker.render(ctx, markers[markers.length - 1][0], markers[markers.length - 1][1]);
+                        }
+                    }
+                };
+                this.getBoundingBox = function() {
+                    return this.path();
+                };
+                this.getMarkers = function() {
+                    return null;
+                };
+            };
+            svg.Element.PathElementBase.prototype = new svg.Element.RenderedElementBase();
+            svg.Element.svg = function(node) {
+                this.base = svg.Element.RenderedElementBase;
+                this.base(node);
+                this.baseClearContext = this.clearContext;
+                this.clearContext = function(ctx) {
+                    this.baseClearContext(ctx);
+                    svg.ViewPort.RemoveCurrent();
+                };
+                this.baseSetContext = this.setContext;
+                this.setContext = function(ctx) {
+                    ctx.strokeStyle = "rgba(0,0,0,0)";
+                    ctx.lineCap = "butt";
+                    ctx.lineJoin = "miter";
+                    ctx.miterLimit = 4;
+                    this.baseSetContext(ctx);
+                    if (!this.attribute("x").hasValue()) this.attribute("x", true).value = 0;
+                    if (!this.attribute("y").hasValue()) this.attribute("y", true).value = 0;
+                    ctx.translate(this.attribute("x").toPixels("x"), this.attribute("y").toPixels("y"));
+                    var width = svg.ViewPort.width();
+                    var height = svg.ViewPort.height();
+                    if (!this.attribute("width").hasValue()) this.attribute("width", true).value = "100%";
+                    if (!this.attribute("height").hasValue()) this.attribute("height", true).value = "100%";
+                    if (typeof this.root == "undefined") {
+                        width = this.attribute("width").toPixels("x");
+                        height = this.attribute("height").toPixels("y");
+                        var x = 0;
+                        var y = 0;
+                        if (this.attribute("refX").hasValue() && this.attribute("refY").hasValue()) {
+                            x = -this.attribute("refX").toPixels("x");
+                            y = -this.attribute("refY").toPixels("y");
+                        }
+                        ctx.beginPath();
+                        ctx.moveTo(x, y);
+                        ctx.lineTo(width, y);
+                        ctx.lineTo(width, height);
+                        ctx.lineTo(x, height);
+                        ctx.closePath();
+                        ctx.clip();
+                    }
+                    svg.ViewPort.SetCurrent(width, height);
+                    if (this.attribute("viewBox").hasValue()) {
+                        var viewBox = svg.ToNumberArray(this.attribute("viewBox").value);
+                        var minX = viewBox[0];
+                        var minY = viewBox[1];
+                        width = viewBox[2];
+                        height = viewBox[3];
+                        svg.AspectRatio(ctx, this.attribute("preserveAspectRatio").value, svg.ViewPort.width(), width, svg.ViewPort.height(), height, minX, minY, this.attribute("refX").value, this.attribute("refY").value);
+                        svg.ViewPort.RemoveCurrent();
+                        svg.ViewPort.SetCurrent(viewBox[2], viewBox[3]);
+                    }
+                };
+            };
+            svg.Element.svg.prototype = new svg.Element.RenderedElementBase();
+            svg.Element.rect = function(node) {
+                this.base = svg.Element.PathElementBase;
+                this.base(node);
+                this.path = function(ctx) {
+                    var x = this.attribute("x").toPixels("x");
+                    var y = this.attribute("y").toPixels("y");
+                    var width = this.attribute("width").toPixels("x");
+                    var height = this.attribute("height").toPixels("y");
+                    var rx = this.attribute("rx").toPixels("x");
+                    var ry = this.attribute("ry").toPixels("y");
+                    if (this.attribute("rx").hasValue() && !this.attribute("ry").hasValue()) ry = rx;
+                    if (this.attribute("ry").hasValue() && !this.attribute("rx").hasValue()) rx = ry;
+                    rx = Math.min(rx, width / 2);
+                    ry = Math.min(ry, height / 2);
+                    if (ctx != null) {
+                        ctx.beginPath();
+                        ctx.moveTo(x + rx, y);
+                        ctx.lineTo(x + width - rx, y);
+                        ctx.quadraticCurveTo(x + width, y, x + width, y + ry);
+                        ctx.lineTo(x + width, y + height - ry);
+                        ctx.quadraticCurveTo(x + width, y + height, x + width - rx, y + height);
+                        ctx.lineTo(x + rx, y + height);
+                        ctx.quadraticCurveTo(x, y + height, x, y + height - ry);
+                        ctx.lineTo(x, y + ry);
+                        ctx.quadraticCurveTo(x, y, x + rx, y);
+                        ctx.closePath();
+                    }
+                    return new svg.BoundingBox(x, y, x + width, y + height);
+                };
+            };
+            svg.Element.rect.prototype = new svg.Element.PathElementBase();
+            svg.Element.circle = function(node) {
+                this.base = svg.Element.PathElementBase;
+                this.base(node);
+                this.path = function(ctx) {
+                    var cx = this.attribute("cx").toPixels("x");
+                    var cy = this.attribute("cy").toPixels("y");
+                    var r = this.attribute("r").toPixels();
+                    if (ctx != null) {
+                        ctx.beginPath();
+                        ctx.arc(cx, cy, r, 0, Math.PI * 2, true);
+                        ctx.closePath();
+                    }
+                    return new svg.BoundingBox(cx - r, cy - r, cx + r, cy + r);
+                };
+            };
+            svg.Element.circle.prototype = new svg.Element.PathElementBase();
+            svg.Element.ellipse = function(node) {
+                this.base = svg.Element.PathElementBase;
+                this.base(node);
+                this.path = function(ctx) {
+                    var KAPPA = 4 * ((Math.sqrt(2) - 1) / 3);
+                    var rx = this.attribute("rx").toPixels("x");
+                    var ry = this.attribute("ry").toPixels("y");
+                    var cx = this.attribute("cx").toPixels("x");
+                    var cy = this.attribute("cy").toPixels("y");
+                    if (ctx != null) {
+                        ctx.beginPath();
+                        ctx.moveTo(cx, cy - ry);
+                        ctx.bezierCurveTo(cx + KAPPA * rx, cy - ry, cx + rx, cy - KAPPA * ry, cx + rx, cy);
+                        ctx.bezierCurveTo(cx + rx, cy + KAPPA * ry, cx + KAPPA * rx, cy + ry, cx, cy + ry);
+                        ctx.bezierCurveTo(cx - KAPPA * rx, cy + ry, cx - rx, cy + KAPPA * ry, cx - rx, cy);
+                        ctx.bezierCurveTo(cx - rx, cy - KAPPA * ry, cx - KAPPA * rx, cy - ry, cx, cy - ry);
+                        ctx.closePath();
+                    }
+                    return new svg.BoundingBox(cx - rx, cy - ry, cx + rx, cy + ry);
+                };
+            };
+            svg.Element.ellipse.prototype = new svg.Element.PathElementBase();
+            svg.Element.line = function(node) {
+                this.base = svg.Element.PathElementBase;
+                this.base(node);
+                this.getPoints = function() {
+                    return [ new svg.Point(this.attribute("x1").toPixels("x"), this.attribute("y1").toPixels("y")), new svg.Point(this.attribute("x2").toPixels("x"), this.attribute("y2").toPixels("y")) ];
+                };
+                this.path = function(ctx) {
+                    var points = this.getPoints();
+                    if (ctx != null) {
+                        ctx.beginPath();
+                        ctx.moveTo(points[0].x, points[0].y);
+                        ctx.lineTo(points[1].x, points[1].y);
+                    }
+                    return new svg.BoundingBox(points[0].x, points[0].y, points[1].x, points[1].y);
+                };
+                this.getMarkers = function() {
+                    var points = this.getPoints();
+                    var a = points[0].angleTo(points[1]);
+                    return [ [ points[0], a ], [ points[1], a ] ];
+                };
+            };
+            svg.Element.line.prototype = new svg.Element.PathElementBase();
+            svg.Element.polyline = function(node) {
+                this.base = svg.Element.PathElementBase;
+                this.base(node);
+                this.points = svg.CreatePath(this.attribute("points").value);
+                this.path = function(ctx) {
+                    var bb = new svg.BoundingBox(this.points[0].x, this.points[0].y);
+                    if (ctx != null) {
+                        ctx.beginPath();
+                        ctx.moveTo(this.points[0].x, this.points[0].y);
+                    }
+                    for (var i = 1; i < this.points.length; i++) {
+                        bb.addPoint(this.points[i].x, this.points[i].y);
+                        if (ctx != null) ctx.lineTo(this.points[i].x, this.points[i].y);
+                    }
+                    return bb;
+                };
+                this.getMarkers = function() {
+                    var markers = [];
+                    for (var i = 0; i < this.points.length - 1; i++) {
+                        markers.push([ this.points[i], this.points[i].angleTo(this.points[i + 1]) ]);
+                    }
+                    markers.push([ this.points[this.points.length - 1], markers[markers.length - 1][1] ]);
+                    return markers;
+                };
+            };
+            svg.Element.polyline.prototype = new svg.Element.PathElementBase();
+            svg.Element.polygon = function(node) {
+                this.base = svg.Element.polyline;
+                this.base(node);
+                this.basePath = this.path;
+                this.path = function(ctx) {
+                    var bb = this.basePath(ctx);
+                    if (ctx != null) {
+                        ctx.lineTo(this.points[0].x, this.points[0].y);
+                        ctx.closePath();
+                    }
+                    return bb;
+                };
+            };
+            svg.Element.polygon.prototype = new svg.Element.polyline();
+            svg.Element.path = function(node) {
+                this.base = svg.Element.PathElementBase;
+                this.base(node);
+                var d = this.attribute("d").value;
+                d = d.replace(/,/gm, " ");
+                d = d.replace(/([MmZzLlHhVvCcSsQqTtAa])([MmZzLlHhVvCcSsQqTtAa])/gm, "$1 $2");
+                d = d.replace(/([MmZzLlHhVvCcSsQqTtAa])([MmZzLlHhVvCcSsQqTtAa])/gm, "$1 $2");
+                d = d.replace(/([MmZzLlHhVvCcSsQqTtAa])([^\s])/gm, "$1 $2");
+                d = d.replace(/([^\s])([MmZzLlHhVvCcSsQqTtAa])/gm, "$1 $2");
+                d = d.replace(/([0-9])([+\-])/gm, "$1 $2");
+                d = d.replace(/(\.[0-9]*)(\.)/gm, "$1 $2");
+                d = d.replace(/([Aa](\s+[0-9]+){3})\s+([01])\s*([01])/gm, "$1 $3 $4 ");
+                d = svg.compressSpaces(d);
+                d = svg.trim(d);
+                this.PathParser = new function(d) {
+                    this.tokens = d.split(" ");
+                    this.reset = function() {
+                        this.i = -1;
+                        this.command = "";
+                        this.previousCommand = "";
+                        this.start = new svg.Point(0, 0);
+                        this.control = new svg.Point(0, 0);
+                        this.current = new svg.Point(0, 0);
+                        this.points = [];
+                        this.angles = [];
+                    };
+                    this.isEnd = function() {
+                        return this.i >= this.tokens.length - 1;
+                    };
+                    this.isCommandOrEnd = function() {
+                        if (this.isEnd()) return true;
+                        return this.tokens[this.i + 1].match(/^[A-Za-z]$/) != null;
+                    };
+                    this.isRelativeCommand = function() {
+                        switch (this.command) {
+                          case "m":
+                          case "l":
+                          case "h":
+                          case "v":
+                          case "c":
+                          case "s":
+                          case "q":
+                          case "t":
+                          case "a":
+                          case "z":
+                            return true;
+                            break;
+                        }
+                        return false;
+                    };
+                    this.getToken = function() {
+                        this.i++;
+                        return this.tokens[this.i];
+                    };
+                    this.getScalar = function() {
+                        return parseFloat(this.getToken());
+                    };
+                    this.nextCommand = function() {
+                        this.previousCommand = this.command;
+                        this.command = this.getToken();
+                    };
+                    this.getPoint = function() {
+                        var p = new svg.Point(this.getScalar(), this.getScalar());
+                        return this.makeAbsolute(p);
+                    };
+                    this.getAsControlPoint = function() {
+                        var p = this.getPoint();
+                        this.control = p;
+                        return p;
+                    };
+                    this.getAsCurrentPoint = function() {
+                        var p = this.getPoint();
+                        this.current = p;
+                        return p;
+                    };
+                    this.getReflectedControlPoint = function() {
+                        if (this.previousCommand.toLowerCase() != "c" && this.previousCommand.toLowerCase() != "s" && this.previousCommand.toLowerCase() != "q" && this.previousCommand.toLowerCase() != "t") {
+                            return this.current;
+                        }
+                        var p = new svg.Point(2 * this.current.x - this.control.x, 2 * this.current.y - this.control.y);
+                        return p;
+                    };
+                    this.makeAbsolute = function(p) {
+                        if (this.isRelativeCommand()) {
+                            p.x += this.current.x;
+                            p.y += this.current.y;
+                        }
+                        return p;
+                    };
+                    this.addMarker = function(p, from, priorTo) {
+                        if (priorTo != null && this.angles.length > 0 && this.angles[this.angles.length - 1] == null) {
+                            this.angles[this.angles.length - 1] = this.points[this.points.length - 1].angleTo(priorTo);
+                        }
+                        this.addMarkerAngle(p, from == null ? null : from.angleTo(p));
+                    };
+                    this.addMarkerAngle = function(p, a) {
+                        this.points.push(p);
+                        this.angles.push(a);
+                    };
+                    this.getMarkerPoints = function() {
+                        return this.points;
+                    };
+                    this.getMarkerAngles = function() {
+                        for (var i = 0; i < this.angles.length; i++) {
+                            if (this.angles[i] == null) {
+                                for (var j = i + 1; j < this.angles.length; j++) {
+                                    if (this.angles[j] != null) {
+                                        this.angles[i] = this.angles[j];
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        return this.angles;
+                    };
+                }(d);
+                this.path = function(ctx) {
+                    var pp = this.PathParser;
+                    pp.reset();
+                    var bb = new svg.BoundingBox();
+                    if (ctx != null) ctx.beginPath();
+                    while (!pp.isEnd()) {
+                        pp.nextCommand();
+                        switch (pp.command) {
+                          case "M":
+                          case "m":
+                            var p = pp.getAsCurrentPoint();
+                            pp.addMarker(p);
+                            bb.addPoint(p.x, p.y);
+                            if (ctx != null) ctx.moveTo(p.x, p.y);
+                            pp.start = pp.current;
+                            while (!pp.isCommandOrEnd()) {
+                                var p = pp.getAsCurrentPoint();
+                                pp.addMarker(p, pp.start);
+                                bb.addPoint(p.x, p.y);
+                                if (ctx != null) ctx.lineTo(p.x, p.y);
+                            }
+                            break;
+
+                          case "L":
+                          case "l":
+                            while (!pp.isCommandOrEnd()) {
+                                var c = pp.current;
+                                var p = pp.getAsCurrentPoint();
+                                pp.addMarker(p, c);
+                                bb.addPoint(p.x, p.y);
+                                if (ctx != null) ctx.lineTo(p.x, p.y);
+                            }
+                            break;
+
+                          case "H":
+                          case "h":
+                            while (!pp.isCommandOrEnd()) {
+                                var newP = new svg.Point((pp.isRelativeCommand() ? pp.current.x : 0) + pp.getScalar(), pp.current.y);
+                                pp.addMarker(newP, pp.current);
+                                pp.current = newP;
+                                bb.addPoint(pp.current.x, pp.current.y);
+                                if (ctx != null) ctx.lineTo(pp.current.x, pp.current.y);
+                            }
+                            break;
+
+                          case "V":
+                          case "v":
+                            while (!pp.isCommandOrEnd()) {
+                                var newP = new svg.Point(pp.current.x, (pp.isRelativeCommand() ? pp.current.y : 0) + pp.getScalar());
+                                pp.addMarker(newP, pp.current);
+                                pp.current = newP;
+                                bb.addPoint(pp.current.x, pp.current.y);
+                                if (ctx != null) ctx.lineTo(pp.current.x, pp.current.y);
+                            }
+                            break;
+
+                          case "C":
+                          case "c":
+                            while (!pp.isCommandOrEnd()) {
+                                var curr = pp.current;
+                                var p1 = pp.getPoint();
+                                var cntrl = pp.getAsControlPoint();
+                                var cp = pp.getAsCurrentPoint();
+                                pp.addMarker(cp, cntrl, p1);
+                                bb.addBezierCurve(curr.x, curr.y, p1.x, p1.y, cntrl.x, cntrl.y, cp.x, cp.y);
+                                if (ctx != null) ctx.bezierCurveTo(p1.x, p1.y, cntrl.x, cntrl.y, cp.x, cp.y);
+                            }
+                            break;
+
+                          case "S":
+                          case "s":
+                            while (!pp.isCommandOrEnd()) {
+                                var curr = pp.current;
+                                var p1 = pp.getReflectedControlPoint();
+                                var cntrl = pp.getAsControlPoint();
+                                var cp = pp.getAsCurrentPoint();
+                                pp.addMarker(cp, cntrl, p1);
+                                bb.addBezierCurve(curr.x, curr.y, p1.x, p1.y, cntrl.x, cntrl.y, cp.x, cp.y);
+                                if (ctx != null) ctx.bezierCurveTo(p1.x, p1.y, cntrl.x, cntrl.y, cp.x, cp.y);
+                            }
+                            break;
+
+                          case "Q":
+                          case "q":
+                            while (!pp.isCommandOrEnd()) {
+                                var curr = pp.current;
+                                var cntrl = pp.getAsControlPoint();
+                                var cp = pp.getAsCurrentPoint();
+                                pp.addMarker(cp, cntrl, cntrl);
+                                bb.addQuadraticCurve(curr.x, curr.y, cntrl.x, cntrl.y, cp.x, cp.y);
+                                if (ctx != null) ctx.quadraticCurveTo(cntrl.x, cntrl.y, cp.x, cp.y);
+                            }
+                            break;
+
+                          case "T":
+                          case "t":
+                            while (!pp.isCommandOrEnd()) {
+                                var curr = pp.current;
+                                var cntrl = pp.getReflectedControlPoint();
+                                pp.control = cntrl;
+                                var cp = pp.getAsCurrentPoint();
+                                pp.addMarker(cp, cntrl, cntrl);
+                                bb.addQuadraticCurve(curr.x, curr.y, cntrl.x, cntrl.y, cp.x, cp.y);
+                                if (ctx != null) ctx.quadraticCurveTo(cntrl.x, cntrl.y, cp.x, cp.y);
+                            }
+                            break;
+
+                          case "A":
+                          case "a":
+                            while (!pp.isCommandOrEnd()) {
+                                var curr = pp.current;
+                                var rx = pp.getScalar();
+                                var ry = pp.getScalar();
+                                var xAxisRotation = pp.getScalar() * (Math.PI / 180);
+                                var largeArcFlag = pp.getScalar();
+                                var sweepFlag = pp.getScalar();
+                                var cp = pp.getAsCurrentPoint();
+                                var currp = new svg.Point(Math.cos(xAxisRotation) * (curr.x - cp.x) / 2 + Math.sin(xAxisRotation) * (curr.y - cp.y) / 2, -Math.sin(xAxisRotation) * (curr.x - cp.x) / 2 + Math.cos(xAxisRotation) * (curr.y - cp.y) / 2);
+                                var l = Math.pow(currp.x, 2) / Math.pow(rx, 2) + Math.pow(currp.y, 2) / Math.pow(ry, 2);
+                                if (l > 1) {
+                                    rx *= Math.sqrt(l);
+                                    ry *= Math.sqrt(l);
+                                }
+                                var s = (largeArcFlag == sweepFlag ? -1 : 1) * Math.sqrt((Math.pow(rx, 2) * Math.pow(ry, 2) - Math.pow(rx, 2) * Math.pow(currp.y, 2) - Math.pow(ry, 2) * Math.pow(currp.x, 2)) / (Math.pow(rx, 2) * Math.pow(currp.y, 2) + Math.pow(ry, 2) * Math.pow(currp.x, 2)));
+                                if (isNaN(s)) s = 0;
+                                var cpp = new svg.Point(s * rx * currp.y / ry, s * -ry * currp.x / rx);
+                                var centp = new svg.Point((curr.x + cp.x) / 2 + Math.cos(xAxisRotation) * cpp.x - Math.sin(xAxisRotation) * cpp.y, (curr.y + cp.y) / 2 + Math.sin(xAxisRotation) * cpp.x + Math.cos(xAxisRotation) * cpp.y);
+                                var m = function(v) {
+                                    return Math.sqrt(Math.pow(v[0], 2) + Math.pow(v[1], 2));
+                                };
+                                var r = function(u, v) {
+                                    return (u[0] * v[0] + u[1] * v[1]) / (m(u) * m(v));
+                                };
+                                var a = function(u, v) {
+                                    return (u[0] * v[1] < u[1] * v[0] ? -1 : 1) * Math.acos(r(u, v));
+                                };
+                                var a1 = a([ 1, 0 ], [ (currp.x - cpp.x) / rx, (currp.y - cpp.y) / ry ]);
+                                var u = [ (currp.x - cpp.x) / rx, (currp.y - cpp.y) / ry ];
+                                var v = [ (-currp.x - cpp.x) / rx, (-currp.y - cpp.y) / ry ];
+                                var ad = a(u, v);
+                                if (r(u, v) <= -1) ad = Math.PI;
+                                if (r(u, v) >= 1) ad = 0;
+                                var dir = 1 - sweepFlag ? 1 : -1;
+                                var ah = a1 + dir * (ad / 2);
+                                var halfWay = new svg.Point(centp.x + rx * Math.cos(ah), centp.y + ry * Math.sin(ah));
+                                pp.addMarkerAngle(halfWay, ah - dir * Math.PI / 2);
+                                pp.addMarkerAngle(cp, ah - dir * Math.PI);
+                                bb.addPoint(cp.x, cp.y);
+                                if (ctx != null) {
+                                    var r = rx > ry ? rx : ry;
+                                    var sx = rx > ry ? 1 : rx / ry;
+                                    var sy = rx > ry ? ry / rx : 1;
+                                    ctx.translate(centp.x, centp.y);
+                                    ctx.rotate(xAxisRotation);
+                                    ctx.scale(sx, sy);
+                                    ctx.arc(0, 0, r, a1, a1 + ad, 1 - sweepFlag);
+                                    ctx.scale(1 / sx, 1 / sy);
+                                    ctx.rotate(-xAxisRotation);
+                                    ctx.translate(-centp.x, -centp.y);
+                                }
+                            }
+                            break;
+
+                          case "Z":
+                          case "z":
+                            if (ctx != null) ctx.closePath();
+                            pp.current = pp.start;
+                        }
+                    }
+                    return bb;
+                };
+                this.getMarkers = function() {
+                    var points = this.PathParser.getMarkerPoints();
+                    var angles = this.PathParser.getMarkerAngles();
+                    var markers = [];
+                    for (var i = 0; i < points.length; i++) {
+                        markers.push([ points[i], angles[i] ]);
+                    }
+                    return markers;
+                };
+            };
+            svg.Element.path.prototype = new svg.Element.PathElementBase();
+            svg.Element.pattern = function(node) {
+                this.base = svg.Element.ElementBase;
+                this.base(node);
+                this.createPattern = function(ctx, element) {
+                    var width = this.attribute("width").toPixels("x", true);
+                    var height = this.attribute("height").toPixels("y", true);
+                    var tempSvg = new svg.Element.svg();
+                    tempSvg.attributes["viewBox"] = new svg.Property("viewBox", this.attribute("viewBox").value);
+                    tempSvg.attributes["width"] = new svg.Property("width", width + "px");
+                    tempSvg.attributes["height"] = new svg.Property("height", height + "px");
+                    tempSvg.attributes["transform"] = new svg.Property("transform", this.attribute("patternTransform").value);
+                    tempSvg.children = this.children;
+                    var c = document.createElement("canvas");
+                    c.width = width;
+                    c.height = height;
+                    var cctx = c.getContext("2d");
+                    if (this.attribute("x").hasValue() && this.attribute("y").hasValue()) {
+                        cctx.translate(this.attribute("x").toPixels("x", true), this.attribute("y").toPixels("y", true));
+                    }
+                    for (var x = -1; x <= 1; x++) {
+                        for (var y = -1; y <= 1; y++) {
+                            cctx.save();
+                            cctx.translate(x * c.width, y * c.height);
+                            tempSvg.render(cctx);
+                            cctx.restore();
+                        }
+                    }
+                    var pattern = ctx.createPattern(c, "repeat");
+                    return pattern;
+                };
+            };
+            svg.Element.pattern.prototype = new svg.Element.ElementBase();
+            svg.Element.marker = function(node) {
+                this.base = svg.Element.ElementBase;
+                this.base(node);
+                this.baseRender = this.render;
+                this.render = function(ctx, point, angle) {
+                    ctx.translate(point.x, point.y);
+                    if (this.attribute("orient").valueOrDefault("auto") == "auto") ctx.rotate(angle);
+                    if (this.attribute("markerUnits").valueOrDefault("strokeWidth") == "strokeWidth") ctx.scale(ctx.lineWidth, ctx.lineWidth);
+                    ctx.save();
+                    var tempSvg = new svg.Element.svg();
+                    tempSvg.attributes["viewBox"] = new svg.Property("viewBox", this.attribute("viewBox").value);
+                    tempSvg.attributes["refX"] = new svg.Property("refX", this.attribute("refX").value);
+                    tempSvg.attributes["refY"] = new svg.Property("refY", this.attribute("refY").value);
+                    tempSvg.attributes["width"] = new svg.Property("width", this.attribute("markerWidth").value);
+                    tempSvg.attributes["height"] = new svg.Property("height", this.attribute("markerHeight").value);
+                    tempSvg.attributes["fill"] = new svg.Property("fill", this.attribute("fill").valueOrDefault("black"));
+                    tempSvg.attributes["stroke"] = new svg.Property("stroke", this.attribute("stroke").valueOrDefault("none"));
+                    tempSvg.children = this.children;
+                    tempSvg.render(ctx);
+                    ctx.restore();
+                    if (this.attribute("markerUnits").valueOrDefault("strokeWidth") == "strokeWidth") ctx.scale(1 / ctx.lineWidth, 1 / ctx.lineWidth);
+                    if (this.attribute("orient").valueOrDefault("auto") == "auto") ctx.rotate(-angle);
+                    ctx.translate(-point.x, -point.y);
+                };
+            };
+            svg.Element.marker.prototype = new svg.Element.ElementBase();
+            svg.Element.defs = function(node) {
+                this.base = svg.Element.ElementBase;
+                this.base(node);
+                this.render = function(ctx) {};
+            };
+            svg.Element.defs.prototype = new svg.Element.ElementBase();
+            svg.Element.GradientBase = function(node) {
+                this.base = svg.Element.ElementBase;
+                this.base(node);
+                this.gradientUnits = this.attribute("gradientUnits").valueOrDefault("objectBoundingBox");
+                this.stops = [];
+                for (var i = 0; i < this.children.length; i++) {
+                    var child = this.children[i];
+                    if (child.type == "stop") this.stops.push(child);
+                }
+                this.getGradient = function() {};
+                this.createGradient = function(ctx, element, parentOpacityProp) {
+                    var stopsContainer = this;
+                    if (this.getHrefAttribute().hasValue()) {
+                        stopsContainer = this.getHrefAttribute().getDefinition();
+                    }
+                    var addParentOpacity = function(color) {
+                        if (parentOpacityProp.hasValue()) {
+                            var p = new svg.Property("color", color);
+                            return p.addOpacity(parentOpacityProp.value).value;
+                        }
+                        return color;
+                    };
+                    var g = this.getGradient(ctx, element);
+                    if (g == null) return addParentOpacity(stopsContainer.stops[stopsContainer.stops.length - 1].color);
+                    for (var i = 0; i < stopsContainer.stops.length; i++) {
+                        g.addColorStop(stopsContainer.stops[i].offset, addParentOpacity(stopsContainer.stops[i].color));
+                    }
+                    if (this.attribute("gradientTransform").hasValue()) {
+                        var rootView = svg.ViewPort.viewPorts[0];
+                        var rect = new svg.Element.rect();
+                        rect.attributes["x"] = new svg.Property("x", -svg.MAX_VIRTUAL_PIXELS / 3);
+                        rect.attributes["y"] = new svg.Property("y", -svg.MAX_VIRTUAL_PIXELS / 3);
+                        rect.attributes["width"] = new svg.Property("width", svg.MAX_VIRTUAL_PIXELS);
+                        rect.attributes["height"] = new svg.Property("height", svg.MAX_VIRTUAL_PIXELS);
+                        var group = new svg.Element.g();
+                        group.attributes["transform"] = new svg.Property("transform", this.attribute("gradientTransform").value);
+                        group.children = [ rect ];
+                        var tempSvg = new svg.Element.svg();
+                        tempSvg.attributes["x"] = new svg.Property("x", 0);
+                        tempSvg.attributes["y"] = new svg.Property("y", 0);
+                        tempSvg.attributes["width"] = new svg.Property("width", rootView.width);
+                        tempSvg.attributes["height"] = new svg.Property("height", rootView.height);
+                        tempSvg.children = [ group ];
+                        var c = document.createElement("canvas");
+                        c.width = rootView.width;
+                        c.height = rootView.height;
+                        var tempCtx = c.getContext("2d");
+                        tempCtx.fillStyle = g;
+                        tempSvg.render(tempCtx);
+                        return tempCtx.createPattern(c, "no-repeat");
+                    }
+                    return g;
+                };
+            };
+            svg.Element.GradientBase.prototype = new svg.Element.ElementBase();
+            svg.Element.linearGradient = function(node) {
+                this.base = svg.Element.GradientBase;
+                this.base(node);
+                this.getGradient = function(ctx, element) {
+                    var bb = element.getBoundingBox();
+                    if (!this.attribute("x1").hasValue() && !this.attribute("y1").hasValue() && !this.attribute("x2").hasValue() && !this.attribute("y2").hasValue()) {
+                        this.attribute("x1", true).value = 0;
+                        this.attribute("y1", true).value = 0;
+                        this.attribute("x2", true).value = 1;
+                        this.attribute("y2", true).value = 0;
+                    }
+                    var x1 = this.gradientUnits == "objectBoundingBox" ? bb.x() + bb.width() * this.attribute("x1").numValue() : this.attribute("x1").toPixels("x");
+                    var y1 = this.gradientUnits == "objectBoundingBox" ? bb.y() + bb.height() * this.attribute("y1").numValue() : this.attribute("y1").toPixels("y");
+                    var x2 = this.gradientUnits == "objectBoundingBox" ? bb.x() + bb.width() * this.attribute("x2").numValue() : this.attribute("x2").toPixels("x");
+                    var y2 = this.gradientUnits == "objectBoundingBox" ? bb.y() + bb.height() * this.attribute("y2").numValue() : this.attribute("y2").toPixels("y");
+                    if (x1 == x2 && y1 == y2) return null;
+                    return ctx.createLinearGradient(x1, y1, x2, y2);
+                };
+            };
+            svg.Element.linearGradient.prototype = new svg.Element.GradientBase();
+            svg.Element.radialGradient = function(node) {
+                this.base = svg.Element.GradientBase;
+                this.base(node);
+                this.getGradient = function(ctx, element) {
+                    var bb = element.getBoundingBox();
+                    if (!this.attribute("cx").hasValue()) this.attribute("cx", true).value = "50%";
+                    if (!this.attribute("cy").hasValue()) this.attribute("cy", true).value = "50%";
+                    if (!this.attribute("r").hasValue()) this.attribute("r", true).value = "50%";
+                    var cx = this.gradientUnits == "objectBoundingBox" ? bb.x() + bb.width() * this.attribute("cx").numValue() : this.attribute("cx").toPixels("x");
+                    var cy = this.gradientUnits == "objectBoundingBox" ? bb.y() + bb.height() * this.attribute("cy").numValue() : this.attribute("cy").toPixels("y");
+                    var fx = cx;
+                    var fy = cy;
+                    if (this.attribute("fx").hasValue()) {
+                        fx = this.gradientUnits == "objectBoundingBox" ? bb.x() + bb.width() * this.attribute("fx").numValue() : this.attribute("fx").toPixels("x");
+                    }
+                    if (this.attribute("fy").hasValue()) {
+                        fy = this.gradientUnits == "objectBoundingBox" ? bb.y() + bb.height() * this.attribute("fy").numValue() : this.attribute("fy").toPixels("y");
+                    }
+                    var r = this.gradientUnits == "objectBoundingBox" ? (bb.width() + bb.height()) / 2 * this.attribute("r").numValue() : this.attribute("r").toPixels();
+                    return ctx.createRadialGradient(fx, fy, 0, cx, cy, r);
+                };
+            };
+            svg.Element.radialGradient.prototype = new svg.Element.GradientBase();
+            svg.Element.stop = function(node) {
+                this.base = svg.Element.ElementBase;
+                this.base(node);
+                this.offset = this.attribute("offset").numValue();
+                if (this.offset < 0) this.offset = 0;
+                if (this.offset > 1) this.offset = 1;
+                var stopColor = this.style("stop-color");
+                if (this.style("stop-opacity").hasValue()) stopColor = stopColor.addOpacity(this.style("stop-opacity").value);
+                this.color = stopColor.value;
+            };
+            svg.Element.stop.prototype = new svg.Element.ElementBase();
+            svg.Element.AnimateBase = function(node) {
+                this.base = svg.Element.ElementBase;
+                this.base(node);
+                svg.Animations.push(this);
+                this.duration = 0;
+                this.begin = this.attribute("begin").toMilliseconds();
+                this.maxDuration = this.begin + this.attribute("dur").toMilliseconds();
+                this.getProperty = function() {
+                    var attributeType = this.attribute("attributeType").value;
+                    var attributeName = this.attribute("attributeName").value;
+                    if (attributeType == "CSS") {
+                        return this.parent.style(attributeName, true);
+                    }
+                    return this.parent.attribute(attributeName, true);
+                };
+                this.initialValue = null;
+                this.initialUnits = "";
+                this.removed = false;
+                this.calcValue = function() {
+                    return "";
+                };
+                this.update = function(delta) {
+                    if (this.initialValue == null) {
+                        this.initialValue = this.getProperty().value;
+                        this.initialUnits = this.getProperty().getUnits();
+                    }
+                    if (this.duration > this.maxDuration) {
+                        if (this.attribute("repeatCount").value == "indefinite" || this.attribute("repeatDur").value == "indefinite") {
+                            this.duration = 0;
+                        } else if (this.attribute("fill").valueOrDefault("remove") == "remove" && !this.removed) {
+                            this.removed = true;
+                            this.getProperty().value = this.initialValue;
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                    this.duration = this.duration + delta;
+                    var updated = false;
+                    if (this.begin < this.duration) {
+                        var newValue = this.calcValue();
+                        if (this.attribute("type").hasValue()) {
+                            var type = this.attribute("type").value;
+                            newValue = type + "(" + newValue + ")";
+                        }
+                        this.getProperty().value = newValue;
+                        updated = true;
+                    }
+                    return updated;
+                };
+                this.from = this.attribute("from");
+                this.to = this.attribute("to");
+                this.values = this.attribute("values");
+                if (this.values.hasValue()) this.values.value = this.values.value.split(";");
+                this.progress = function() {
+                    var ret = {
+                        progress: (this.duration - this.begin) / (this.maxDuration - this.begin)
+                    };
+                    if (this.values.hasValue()) {
+                        var p = ret.progress * (this.values.value.length - 1);
+                        var lb = Math.floor(p), ub = Math.ceil(p);
+                        ret.from = new svg.Property("from", parseFloat(this.values.value[lb]));
+                        ret.to = new svg.Property("to", parseFloat(this.values.value[ub]));
+                        ret.progress = (p - lb) / (ub - lb);
+                    } else {
+                        ret.from = this.from;
+                        ret.to = this.to;
+                    }
+                    return ret;
+                };
+            };
+            svg.Element.AnimateBase.prototype = new svg.Element.ElementBase();
+            svg.Element.animate = function(node) {
+                this.base = svg.Element.AnimateBase;
+                this.base(node);
+                this.calcValue = function() {
+                    var p = this.progress();
+                    var newValue = p.from.numValue() + (p.to.numValue() - p.from.numValue()) * p.progress;
+                    return newValue + this.initialUnits;
+                };
+            };
+            svg.Element.animate.prototype = new svg.Element.AnimateBase();
+            svg.Element.animateColor = function(node) {
+                this.base = svg.Element.AnimateBase;
+                this.base(node);
+                this.calcValue = function() {
+                    var p = this.progress();
+                    var from = new RGBColor(p.from.value);
+                    var to = new RGBColor(p.to.value);
+                    if (from.ok && to.ok) {
+                        var r = from.r + (to.r - from.r) * p.progress;
+                        var g = from.g + (to.g - from.g) * p.progress;
+                        var b = from.b + (to.b - from.b) * p.progress;
+                        return "rgb(" + parseInt(r, 10) + "," + parseInt(g, 10) + "," + parseInt(b, 10) + ")";
+                    }
+                    return this.attribute("from").value;
+                };
+            };
+            svg.Element.animateColor.prototype = new svg.Element.AnimateBase();
+            svg.Element.animateTransform = function(node) {
+                this.base = svg.Element.AnimateBase;
+                this.base(node);
+                this.calcValue = function() {
+                    var p = this.progress();
+                    var from = svg.ToNumberArray(p.from.value);
+                    var to = svg.ToNumberArray(p.to.value);
+                    var newValue = "";
+                    for (var i = 0; i < from.length; i++) {
+                        newValue += from[i] + (to[i] - from[i]) * p.progress + " ";
+                    }
+                    return newValue;
+                };
+            };
+            svg.Element.animateTransform.prototype = new svg.Element.animate();
+            svg.Element.font = function(node) {
+                this.base = svg.Element.ElementBase;
+                this.base(node);
+                this.horizAdvX = this.attribute("horiz-adv-x").numValue();
+                this.isRTL = false;
+                this.isArabic = false;
+                this.fontFace = null;
+                this.missingGlyph = null;
+                this.glyphs = [];
+                for (var i = 0; i < this.children.length; i++) {
+                    var child = this.children[i];
+                    if (child.type == "font-face") {
+                        this.fontFace = child;
+                        if (child.style("font-family").hasValue()) {
+                            svg.Definitions[child.style("font-family").value] = this;
+                        }
+                    } else if (child.type == "missing-glyph") this.missingGlyph = child; else if (child.type == "glyph") {
+                        if (child.arabicForm != "") {
+                            this.isRTL = true;
+                            this.isArabic = true;
+                            if (typeof this.glyphs[child.unicode] == "undefined") this.glyphs[child.unicode] = [];
+                            this.glyphs[child.unicode][child.arabicForm] = child;
+                        } else {
+                            this.glyphs[child.unicode] = child;
+                        }
+                    }
+                }
+            };
+            svg.Element.font.prototype = new svg.Element.ElementBase();
+            svg.Element.fontface = function(node) {
+                this.base = svg.Element.ElementBase;
+                this.base(node);
+                this.ascent = this.attribute("ascent").value;
+                this.descent = this.attribute("descent").value;
+                this.unitsPerEm = this.attribute("units-per-em").numValue();
+            };
+            svg.Element.fontface.prototype = new svg.Element.ElementBase();
+            svg.Element.missingglyph = function(node) {
+                this.base = svg.Element.path;
+                this.base(node);
+                this.horizAdvX = 0;
+            };
+            svg.Element.missingglyph.prototype = new svg.Element.path();
+            svg.Element.glyph = function(node) {
+                this.base = svg.Element.path;
+                this.base(node);
+                this.horizAdvX = this.attribute("horiz-adv-x").numValue();
+                this.unicode = this.attribute("unicode").value;
+                this.arabicForm = this.attribute("arabic-form").value;
+            };
+            svg.Element.glyph.prototype = new svg.Element.path();
+            svg.Element.text = function(node) {
+                this.captureTextNodes = true;
+                this.base = svg.Element.RenderedElementBase;
+                this.base(node);
+                this.baseSetContext = this.setContext;
+                this.setContext = function(ctx) {
+                    this.baseSetContext(ctx);
+                    if (this.style("dominant-baseline").hasValue()) ctx.textBaseline = this.style("dominant-baseline").value;
+                    if (this.style("alignment-baseline").hasValue()) ctx.textBaseline = this.style("alignment-baseline").value;
+                };
+                this.getBoundingBox = function() {
+                    return new svg.BoundingBox(this.attribute("x").toPixels("x"), this.attribute("y").toPixels("y"), 0, 0);
+                };
+                this.renderChildren = function(ctx) {
+                    this.x = this.attribute("x").toPixels("x");
+                    this.y = this.attribute("y").toPixels("y");
+                    this.x += this.getAnchorDelta(ctx, this, 0);
+                    for (var i = 0; i < this.children.length; i++) {
+                        this.renderChild(ctx, this, i);
+                    }
+                };
+                this.getAnchorDelta = function(ctx, parent, startI) {
+                    var textAnchor = this.style("text-anchor").valueOrDefault("start");
+                    if (textAnchor != "start") {
+                        var width = 0;
+                        for (var i = startI; i < parent.children.length; i++) {
+                            var child = parent.children[i];
+                            if (i > startI && child.attribute("x").hasValue()) break;
+                            width += child.measureTextRecursive(ctx);
+                        }
+                        return -1 * (textAnchor == "end" ? width : width / 2);
+                    }
+                    return 0;
+                };
+                this.renderChild = function(ctx, parent, i) {
+                    var child = parent.children[i];
+                    if (child.attribute("x").hasValue()) {
+                        child.x = child.attribute("x").toPixels("x") + this.getAnchorDelta(ctx, parent, i);
+                    } else {
+                        if (this.attribute("dx").hasValue()) this.x += this.attribute("dx").toPixels("x");
+                        if (child.attribute("dx").hasValue()) this.x += child.attribute("dx").toPixels("x");
+                        child.x = this.x;
+                    }
+                    this.x = child.x + child.measureText(ctx);
+                    if (child.attribute("y").hasValue()) {
+                        child.y = child.attribute("y").toPixels("y");
+                    } else {
+                        if (this.attribute("dy").hasValue()) this.y += this.attribute("dy").toPixels("y");
+                        if (child.attribute("dy").hasValue()) this.y += child.attribute("dy").toPixels("y");
+                        child.y = this.y;
+                    }
+                    this.y = child.y;
+                    child.render(ctx);
+                    for (var i = 0; i < child.children.length; i++) {
+                        this.renderChild(ctx, child, i);
+                    }
+                };
+            };
+            svg.Element.text.prototype = new svg.Element.RenderedElementBase();
+            svg.Element.TextElementBase = function(node) {
+                this.base = svg.Element.RenderedElementBase;
+                this.base(node);
+                this.getGlyph = function(font, text, i) {
+                    var c = text[i];
+                    var glyph = null;
+                    if (font.isArabic) {
+                        var arabicForm = "isolated";
+                        if ((i == 0 || text[i - 1] == " ") && i < text.length - 2 && text[i + 1] != " ") arabicForm = "terminal";
+                        if (i > 0 && text[i - 1] != " " && i < text.length - 2 && text[i + 1] != " ") arabicForm = "medial";
+                        if (i > 0 && text[i - 1] != " " && (i == text.length - 1 || text[i + 1] == " ")) arabicForm = "initial";
+                        if (typeof font.glyphs[c] != "undefined") {
+                            glyph = font.glyphs[c][arabicForm];
+                            if (glyph == null && font.glyphs[c].type == "glyph") glyph = font.glyphs[c];
+                        }
+                    } else {
+                        glyph = font.glyphs[c];
+                    }
+                    if (glyph == null) glyph = font.missingGlyph;
+                    return glyph;
+                };
+                this.renderChildren = function(ctx) {
+                    var customFont = this.parent.style("font-family").getDefinition();
+                    if (customFont != null) {
+                        var fontSize = this.parent.style("font-size").numValueOrDefault(svg.Font.Parse(svg.ctx.font).fontSize);
+                        var fontStyle = this.parent.style("font-style").valueOrDefault(svg.Font.Parse(svg.ctx.font).fontStyle);
+                        var text = this.getText();
+                        if (customFont.isRTL) text = text.split("").reverse().join("");
+                        var dx = svg.ToNumberArray(this.parent.attribute("dx").value);
+                        for (var i = 0; i < text.length; i++) {
+                            var glyph = this.getGlyph(customFont, text, i);
+                            var scale = fontSize / customFont.fontFace.unitsPerEm;
+                            ctx.translate(this.x, this.y);
+                            ctx.scale(scale, -scale);
+                            var lw = ctx.lineWidth;
+                            ctx.lineWidth = ctx.lineWidth * customFont.fontFace.unitsPerEm / fontSize;
+                            if (fontStyle == "italic") ctx.transform(1, 0, .4, 1, 0, 0);
+                            glyph.render(ctx);
+                            if (fontStyle == "italic") ctx.transform(1, 0, -.4, 1, 0, 0);
+                            ctx.lineWidth = lw;
+                            ctx.scale(1 / scale, -1 / scale);
+                            ctx.translate(-this.x, -this.y);
+                            this.x += fontSize * (glyph.horizAdvX || customFont.horizAdvX) / customFont.fontFace.unitsPerEm;
+                            if (typeof dx[i] != "undefined" && !isNaN(dx[i])) {
+                                this.x += dx[i];
+                            }
+                        }
+                        return;
+                    }
+                    if (ctx.fillStyle != "") ctx.fillText(svg.compressSpaces(this.getText()), this.x, this.y);
+                    if (ctx.strokeStyle != "") ctx.strokeText(svg.compressSpaces(this.getText()), this.x, this.y);
+                };
+                this.getText = function() {};
+                this.measureTextRecursive = function(ctx) {
+                    var width = this.measureText(ctx);
+                    for (var i = 0; i < this.children.length; i++) {
+                        width += this.children[i].measureTextRecursive(ctx);
+                    }
+                    return width;
+                };
+                this.measureText = function(ctx) {
+                    var customFont = this.parent.style("font-family").getDefinition();
+                    if (customFont != null) {
+                        var fontSize = this.parent.style("font-size").numValueOrDefault(svg.Font.Parse(svg.ctx.font).fontSize);
+                        var measure = 0;
+                        var text = this.getText();
+                        if (customFont.isRTL) text = text.split("").reverse().join("");
+                        var dx = svg.ToNumberArray(this.parent.attribute("dx").value);
+                        for (var i = 0; i < text.length; i++) {
+                            var glyph = this.getGlyph(customFont, text, i);
+                            measure += (glyph.horizAdvX || customFont.horizAdvX) * fontSize / customFont.fontFace.unitsPerEm;
+                            if (typeof dx[i] != "undefined" && !isNaN(dx[i])) {
+                                measure += dx[i];
+                            }
+                        }
+                        return measure;
+                    }
+                    var textToMeasure = svg.compressSpaces(this.getText());
+                    if (!ctx.measureText) return textToMeasure.length * 10;
+                    ctx.save();
+                    this.setContext(ctx);
+                    var width = ctx.measureText(textToMeasure).width;
+                    ctx.restore();
+                    return width;
+                };
+            };
+            svg.Element.TextElementBase.prototype = new svg.Element.RenderedElementBase();
+            svg.Element.tspan = function(node) {
+                this.captureTextNodes = true;
+                this.base = svg.Element.TextElementBase;
+                this.base(node);
+                this.text = node.nodeValue || node.text || "";
+                this.getText = function() {
+                    return this.text;
+                };
+            };
+            svg.Element.tspan.prototype = new svg.Element.TextElementBase();
+            svg.Element.tref = function(node) {
+                this.base = svg.Element.TextElementBase;
+                this.base(node);
+                this.getText = function() {
+                    var element = this.getHrefAttribute().getDefinition();
+                    if (element != null) return element.children[0].getText();
+                };
+            };
+            svg.Element.tref.prototype = new svg.Element.TextElementBase();
+            svg.Element.a = function(node) {
+                this.base = svg.Element.TextElementBase;
+                this.base(node);
+                this.hasText = true;
+                for (var i = 0; i < node.childNodes.length; i++) {
+                    if (node.childNodes[i].nodeType != 3) this.hasText = false;
+                }
+                this.text = this.hasText ? node.childNodes[0].nodeValue : "";
+                this.getText = function() {
+                    return this.text;
+                };
+                this.baseRenderChildren = this.renderChildren;
+                this.renderChildren = function(ctx) {
+                    if (this.hasText) {
+                        this.baseRenderChildren(ctx);
+                        var fontSize = new svg.Property("fontSize", svg.Font.Parse(svg.ctx.font).fontSize);
+                        svg.Mouse.checkBoundingBox(this, new svg.BoundingBox(this.x, this.y - fontSize.toPixels("y"), this.x + this.measureText(ctx), this.y));
+                    } else {
+                        var g = new svg.Element.g();
+                        g.children = this.children;
+                        g.parent = this;
+                        g.render(ctx);
+                    }
+                };
+                this.onclick = function() {
+                    window.open(this.getHrefAttribute().value);
+                };
+                this.onmousemove = function() {
+                    svg.ctx.canvas.style.cursor = "pointer";
+                };
+            };
+            svg.Element.a.prototype = new svg.Element.TextElementBase();
+            svg.Element.image = function(node) {
+                this.base = svg.Element.RenderedElementBase;
+                this.base(node);
+                var href = this.getHrefAttribute().value;
+                var isSvg = href.match(/\.svg$/);
+                svg.Images.push(this);
+                this.loaded = false;
+                if (!isSvg) {
+                    this.img = document.createElement("img");
+                    var self = this;
+                    this.img.onload = function() {
+                        self.loaded = true;
+                    };
+                    this.img.onerror = function() {
+                        if (typeof console != "undefined") {
+                            console.log('ERROR: image "' + href + '" not found');
+                            self.loaded = true;
+                        }
+                    };
+                    this.img.src = href;
+                } else {
+                    this.img = svg.ajax(href);
+                    this.loaded = true;
+                }
+                this.renderChildren = function(ctx) {
+                    var x = this.attribute("x").toPixels("x");
+                    var y = this.attribute("y").toPixels("y");
+                    var width = this.attribute("width").toPixels("x");
+                    var height = this.attribute("height").toPixels("y");
+                    if (width == 0 || height == 0) return;
+                    ctx.save();
+                    if (isSvg) {
+                        ctx.drawSvg(this.img, x, y, width, height);
+                    } else {
+                        ctx.translate(x, y);
+                        svg.AspectRatio(ctx, this.attribute("preserveAspectRatio").value, width, this.img.width, height, this.img.height, 0, 0);
+                        ctx.drawImage(this.img, 0, 0);
+                    }
+                    ctx.restore();
+                };
+                this.getBoundingBox = function() {
+                    var x = this.attribute("x").toPixels("x");
+                    var y = this.attribute("y").toPixels("y");
+                    var width = this.attribute("width").toPixels("x");
+                    var height = this.attribute("height").toPixels("y");
+                    return new svg.BoundingBox(x, y, x + width, y + height);
+                };
+            };
+            svg.Element.image.prototype = new svg.Element.RenderedElementBase();
+            svg.Element.g = function(node) {
+                this.base = svg.Element.RenderedElementBase;
+                this.base(node);
+                this.getBoundingBox = function() {
+                    var bb = new svg.BoundingBox();
+                    for (var i = 0; i < this.children.length; i++) {
+                        bb.addBoundingBox(this.children[i].getBoundingBox());
+                    }
+                    return bb;
+                };
+            };
+            svg.Element.g.prototype = new svg.Element.RenderedElementBase();
+            svg.Element.symbol = function(node) {
+                this.base = svg.Element.RenderedElementBase;
+                this.base(node);
+                this.baseSetContext = this.setContext;
+                this.setContext = function(ctx) {
+                    this.baseSetContext(ctx);
+                    if (this.attribute("viewBox").hasValue()) {
+                        var viewBox = svg.ToNumberArray(this.attribute("viewBox").value);
+                        var minX = viewBox[0];
+                        var minY = viewBox[1];
+                        width = viewBox[2];
+                        height = viewBox[3];
+                        svg.AspectRatio(ctx, this.attribute("preserveAspectRatio").value, this.attribute("width").toPixels("x"), width, this.attribute("height").toPixels("y"), height, minX, minY);
+                        svg.ViewPort.SetCurrent(viewBox[2], viewBox[3]);
+                    }
+                };
+            };
+            svg.Element.symbol.prototype = new svg.Element.RenderedElementBase();
+            svg.Element.style = function(node) {
+                this.base = svg.Element.ElementBase;
+                this.base(node);
+                var css = "";
+                for (var i = 0; i < node.childNodes.length; i++) {
+                    css += node.childNodes[i].nodeValue;
+                }
+                css = css.replace(/(\/\*([^*]|[\r\n]|(\*+([^*\/]|[\r\n])))*\*+\/)|(^[\s]*\/\/.*)/gm, "");
+                css = svg.compressSpaces(css);
+                var cssDefs = css.split("}");
+                for (var i = 0; i < cssDefs.length; i++) {
+                    if (svg.trim(cssDefs[i]) != "") {
+                        var cssDef = cssDefs[i].split("{");
+                        var cssClasses = cssDef[0].split(",");
+                        var cssProps = cssDef[1].split(";");
+                        for (var j = 0; j < cssClasses.length; j++) {
+                            var cssClass = svg.trim(cssClasses[j]);
+                            if (cssClass != "") {
+                                var props = {};
+                                for (var k = 0; k < cssProps.length; k++) {
+                                    var prop = cssProps[k].indexOf(":");
+                                    var name = cssProps[k].substr(0, prop);
+                                    var value = cssProps[k].substr(prop + 1, cssProps[k].length - prop);
+                                    if (name != null && value != null) {
+                                        props[svg.trim(name)] = new svg.Property(svg.trim(name), svg.trim(value));
+                                    }
+                                }
+                                svg.Styles[cssClass] = props;
+                                if (cssClass == "@font-face") {
+                                    var fontFamily = props["font-family"].value.replace(/"/g, "");
+                                    var srcs = props["src"].value.split(",");
+                                    for (var s = 0; s < srcs.length; s++) {
+                                        if (srcs[s].indexOf('format("svg")') > 0) {
+                                            var urlStart = srcs[s].indexOf("url");
+                                            var urlEnd = srcs[s].indexOf(")", urlStart);
+                                            var url = srcs[s].substr(urlStart + 5, urlEnd - urlStart - 6);
+                                            var doc = svg.parseXml(svg.ajax(url));
+                                            var fonts = doc.getElementsByTagName("font");
+                                            for (var f = 0; f < fonts.length; f++) {
+                                                var font = svg.CreateElement(fonts[f]);
+                                                svg.Definitions[fontFamily] = font;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+            svg.Element.style.prototype = new svg.Element.ElementBase();
+            svg.Element.use = function(node) {
+                this.base = svg.Element.RenderedElementBase;
+                this.base(node);
+                this.baseSetContext = this.setContext;
+                this.setContext = function(ctx) {
+                    this.baseSetContext(ctx);
+                    if (this.attribute("x").hasValue()) ctx.translate(this.attribute("x").toPixels("x"), 0);
+                    if (this.attribute("y").hasValue()) ctx.translate(0, this.attribute("y").toPixels("y"));
+                };
+                this.getDefinition = function() {
+                    var element = this.getHrefAttribute().getDefinition();
+                    if (this.attribute("width").hasValue()) element.attribute("width", true).value = this.attribute("width").value;
+                    if (this.attribute("height").hasValue()) element.attribute("height", true).value = this.attribute("height").value;
+                    return element;
+                };
+                this.path = function(ctx) {
+                    var element = this.getDefinition();
+                    if (element != null) element.path(ctx);
+                };
+                this.getBoundingBox = function() {
+                    var element = this.getDefinition();
+                    if (element != null) return element.getBoundingBox();
+                };
+                this.renderChildren = function(ctx) {
+                    var element = this.getDefinition();
+                    if (element != null) {
+                        var oldParent = element.parent;
+                        element.parent = null;
+                        element.render(ctx);
+                        element.parent = oldParent;
+                    }
+                };
+            };
+            svg.Element.use.prototype = new svg.Element.RenderedElementBase();
+            svg.Element.mask = function(node) {
+                this.base = svg.Element.ElementBase;
+                this.base(node);
+                this.apply = function(ctx, element) {
+                    var x = this.attribute("x").toPixels("x");
+                    var y = this.attribute("y").toPixels("y");
+                    var width = this.attribute("width").toPixels("x");
+                    var height = this.attribute("height").toPixels("y");
+                    if (width == 0 && height == 0) {
+                        var bb = new svg.BoundingBox();
+                        for (var i = 0; i < this.children.length; i++) {
+                            bb.addBoundingBox(this.children[i].getBoundingBox());
+                        }
+                        var x = Math.floor(bb.x1);
+                        var y = Math.floor(bb.y1);
+                        var width = Math.floor(bb.width());
+                        var height = Math.floor(bb.height());
+                    }
+                    var mask = element.attribute("mask").value;
+                    element.attribute("mask").value = "";
+                    var cMask = document.createElement("canvas");
+                    cMask.width = x + width;
+                    cMask.height = y + height;
+                    var maskCtx = cMask.getContext("2d");
+                    this.renderChildren(maskCtx);
+                    var c = document.createElement("canvas");
+                    c.width = x + width;
+                    c.height = y + height;
+                    var tempCtx = c.getContext("2d");
+                    element.render(tempCtx);
+                    tempCtx.globalCompositeOperation = "destination-in";
+                    tempCtx.fillStyle = maskCtx.createPattern(cMask, "no-repeat");
+                    tempCtx.fillRect(0, 0, x + width, y + height);
+                    ctx.fillStyle = tempCtx.createPattern(c, "no-repeat");
+                    ctx.fillRect(0, 0, x + width, y + height);
+                    element.attribute("mask").value = mask;
+                };
+                this.render = function(ctx) {};
+            };
+            svg.Element.mask.prototype = new svg.Element.ElementBase();
+            svg.Element.clipPath = function(node) {
+                this.base = svg.Element.ElementBase;
+                this.base(node);
+                this.apply = function(ctx) {
+                    for (var i = 0; i < this.children.length; i++) {
+                        var child = this.children[i];
+                        if (typeof child.path != "undefined") {
+                            var transform = null;
+                            if (child.attribute("transform").hasValue()) {
+                                transform = new svg.Transform(child.attribute("transform").value);
+                                transform.apply(ctx);
+                            }
+                            child.path(ctx);
+                            ctx.clip();
+                            if (transform) {
+                                transform.unapply(ctx);
+                            }
+                        }
+                    }
+                };
+                this.render = function(ctx) {};
+            };
+            svg.Element.clipPath.prototype = new svg.Element.ElementBase();
+            svg.Element.filter = function(node) {
+                this.base = svg.Element.ElementBase;
+                this.base(node);
+                this.apply = function(ctx, element) {
+                    var bb = element.getBoundingBox();
+                    var x = Math.floor(bb.x1);
+                    var y = Math.floor(bb.y1);
+                    var width = Math.floor(bb.width());
+                    var height = Math.floor(bb.height());
+                    var filter = element.style("filter").value;
+                    element.style("filter").value = "";
+                    var px = 0, py = 0;
+                    for (var i = 0; i < this.children.length; i++) {
+                        var efd = this.children[i].extraFilterDistance || 0;
+                        px = Math.max(px, efd);
+                        py = Math.max(py, efd);
+                    }
+                    var c = document.createElement("canvas");
+                    c.width = width + 2 * px;
+                    c.height = height + 2 * py;
+                    var tempCtx = c.getContext("2d");
+                    tempCtx.translate(-x + px, -y + py);
+                    element.render(tempCtx);
+                    for (var i = 0; i < this.children.length; i++) {
+                        this.children[i].apply(tempCtx, 0, 0, width + 2 * px, height + 2 * py);
+                    }
+                    ctx.drawImage(c, 0, 0, width + 2 * px, height + 2 * py, x - px, y - py, width + 2 * px, height + 2 * py);
+                    element.style("filter", true).value = filter;
+                };
+                this.render = function(ctx) {};
+            };
+            svg.Element.filter.prototype = new svg.Element.ElementBase();
+            svg.Element.feMorphology = function(node) {
+                this.base = svg.Element.ElementBase;
+                this.base(node);
+                this.apply = function(ctx, x, y, width, height) {};
+            };
+            svg.Element.feMorphology.prototype = new svg.Element.ElementBase();
+            svg.Element.feColorMatrix = function(node) {
+                this.base = svg.Element.ElementBase;
+                this.base(node);
+                function imGet(img, x, y, width, height, rgba) {
+                    return img[y * width * 4 + x * 4 + rgba];
+                }
+                function imSet(img, x, y, width, height, rgba, val) {
+                    img[y * width * 4 + x * 4 + rgba] = val;
+                }
+                this.apply = function(ctx, x, y, width, height) {
+                    var srcData = ctx.getImageData(0, 0, width, height);
+                    for (var y = 0; y < height; y++) {
+                        for (var x = 0; x < width; x++) {
+                            var r = imGet(srcData.data, x, y, width, height, 0);
+                            var g = imGet(srcData.data, x, y, width, height, 1);
+                            var b = imGet(srcData.data, x, y, width, height, 2);
+                            var gray = (r + g + b) / 3;
+                            imSet(srcData.data, x, y, width, height, 0, gray);
+                            imSet(srcData.data, x, y, width, height, 1, gray);
+                            imSet(srcData.data, x, y, width, height, 2, gray);
+                        }
+                    }
+                    ctx.clearRect(0, 0, width, height);
+                    ctx.putImageData(srcData, 0, 0);
+                };
+            };
+            svg.Element.feColorMatrix.prototype = new svg.Element.ElementBase();
+            svg.Element.feGaussianBlur = function(node) {
+                this.base = svg.Element.ElementBase;
+                this.base(node);
+                this.blurRadius = Math.floor(this.attribute("stdDeviation").numValue());
+                this.extraFilterDistance = this.blurRadius;
+                this.apply = function(ctx, x, y, width, height) {
+                    if (typeof stackBlurCanvasRGBA == "undefined") {
+                        if (typeof console != "undefined") {
+                            console.log("ERROR: StackBlur.js must be included for blur to work");
+                        }
+                        return;
+                    }
+                    ctx.canvas.id = svg.UniqueId();
+                    ctx.canvas.style.display = "none";
+                    document.body.appendChild(ctx.canvas);
+                    stackBlurCanvasRGBA(ctx.canvas.id, x, y, width, height, this.blurRadius);
+                    document.body.removeChild(ctx.canvas);
+                };
+            };
+            svg.Element.feGaussianBlur.prototype = new svg.Element.ElementBase();
+            svg.Element.title = function(node) {};
+            svg.Element.title.prototype = new svg.Element.ElementBase();
+            svg.Element.desc = function(node) {};
+            svg.Element.desc.prototype = new svg.Element.ElementBase();
+            svg.Element.MISSING = function(node) {
+                if (typeof console != "undefined") {
+                    console.log("ERROR: Element '" + node.nodeName + "' not yet implemented.");
+                }
+            };
+            svg.Element.MISSING.prototype = new svg.Element.ElementBase();
+            svg.CreateElement = function(node) {
+                var className = node.nodeName.replace(/^[^:]+:/, "");
+                className = className.replace(/\-/g, "");
+                var e = null;
+                if (typeof svg.Element[className] != "undefined") {
+                    e = new svg.Element[className](node);
+                } else {
+                    e = new svg.Element.MISSING(node);
+                }
+                e.type = node.nodeName;
+                return e;
+            };
+            svg.load = function(ctx, url) {
+                svg.loadXml(ctx, svg.ajax(url));
+            };
+            svg.loadXml = function(ctx, xml) {
+                svg.loadXmlDoc(ctx, svg.parseXml(xml));
+            };
+            svg.loadXmlDoc = function(ctx, dom) {
+                svg.init(ctx);
+                var mapXY = function(p) {
+                    var e = ctx.canvas;
+                    while (e) {
+                        p.x -= e.offsetLeft;
+                        p.y -= e.offsetTop;
+                        e = e.offsetParent;
+                    }
+                    if (window.scrollX) p.x += window.scrollX;
+                    if (window.scrollY) p.y += window.scrollY;
+                    return p;
+                };
+                if (svg.opts["ignoreMouse"] != true) {
+                    ctx.canvas.onclick = function(e) {
+                        var p = mapXY(new svg.Point(e != null ? e.clientX : event.clientX, e != null ? e.clientY : event.clientY));
+                        svg.Mouse.onclick(p.x, p.y);
+                    };
+                    ctx.canvas.onmousemove = function(e) {
+                        var p = mapXY(new svg.Point(e != null ? e.clientX : event.clientX, e != null ? e.clientY : event.clientY));
+                        svg.Mouse.onmousemove(p.x, p.y);
+                    };
+                }
+                var e = svg.CreateElement(dom.documentElement);
+                e.root = true;
+                var isFirstRender = true;
+                var draw = function() {
+                    svg.ViewPort.Clear();
+                    if (ctx.canvas.parentNode) svg.ViewPort.SetCurrent(ctx.canvas.parentNode.clientWidth, ctx.canvas.parentNode.clientHeight);
+                    if (svg.opts["ignoreDimensions"] != true) {
+                        if (e.style("width").hasValue()) {
+                            ctx.canvas.width = e.style("width").toPixels("x");
+                            ctx.canvas.style.width = ctx.canvas.width + "px";
+                        }
+                        if (e.style("height").hasValue()) {
+                            ctx.canvas.height = e.style("height").toPixels("y");
+                            ctx.canvas.style.height = ctx.canvas.height + "px";
+                        }
+                    }
+                    var cWidth = ctx.canvas.clientWidth || ctx.canvas.width;
+                    var cHeight = ctx.canvas.clientHeight || ctx.canvas.height;
+                    if (svg.opts["ignoreDimensions"] == true && e.style("width").hasValue() && e.style("height").hasValue()) {
+                        cWidth = e.style("width").toPixels("x");
+                        cHeight = e.style("height").toPixels("y");
+                    }
+                    svg.ViewPort.SetCurrent(cWidth, cHeight);
+                    if (svg.opts["offsetX"] != null) e.attribute("x", true).value = svg.opts["offsetX"];
+                    if (svg.opts["offsetY"] != null) e.attribute("y", true).value = svg.opts["offsetY"];
+                    if (svg.opts["scaleWidth"] != null && svg.opts["scaleHeight"] != null) {
+                        var xRatio = 1, yRatio = 1, viewBox = svg.ToNumberArray(e.attribute("viewBox").value);
+                        if (e.attribute("width").hasValue()) xRatio = e.attribute("width").toPixels("x") / svg.opts["scaleWidth"]; else if (!isNaN(viewBox[2])) xRatio = viewBox[2] / svg.opts["scaleWidth"];
+                        if (e.attribute("height").hasValue()) yRatio = e.attribute("height").toPixels("y") / svg.opts["scaleHeight"]; else if (!isNaN(viewBox[3])) yRatio = viewBox[3] / svg.opts["scaleHeight"];
+                        e.attribute("width", true).value = svg.opts["scaleWidth"];
+                        e.attribute("height", true).value = svg.opts["scaleHeight"];
+                        e.attribute("viewBox", true).value = "0 0 " + cWidth * xRatio + " " + cHeight * yRatio;
+                        e.attribute("preserveAspectRatio", true).value = "none";
+                    }
+                    if (svg.opts["ignoreClear"] != true) {
+                        ctx.clearRect(0, 0, cWidth, cHeight);
+                    }
+                    e.render(ctx);
+                    if (isFirstRender) {
+                        isFirstRender = false;
+                        if (typeof svg.opts["renderCallback"] == "function") svg.opts["renderCallback"](dom);
+                    }
+                };
+                var waitingForImages = true;
+                if (svg.ImagesLoaded()) {
+                    waitingForImages = false;
+                    draw();
+                }
+                svg.intervalID = setInterval(function() {
+                    var needUpdate = false;
+                    if (waitingForImages && svg.ImagesLoaded()) {
+                        waitingForImages = false;
+                        needUpdate = true;
+                    }
+                    if (svg.opts["ignoreMouse"] != true) {
+                        needUpdate = needUpdate | svg.Mouse.hasEvents();
+                    }
+                    if (svg.opts["ignoreAnimation"] != true) {
+                        for (var i = 0; i < svg.Animations.length; i++) {
+                            needUpdate = needUpdate | svg.Animations[i].update(1e3 / svg.FRAMERATE);
+                        }
+                    }
+                    if (typeof svg.opts["forceRedraw"] == "function") {
+                        if (svg.opts["forceRedraw"]() == true) needUpdate = true;
+                    }
+                    if (needUpdate) {
+                        draw();
+                        svg.Mouse.runEvents();
+                    }
+                }, 1e3 / svg.FRAMERATE);
+            };
+            svg.stop = function() {
+                if (svg.intervalID) {
+                    clearInterval(svg.intervalID);
+                }
+            };
+            svg.Mouse = new function() {
+                this.events = [];
+                this.hasEvents = function() {
+                    return this.events.length != 0;
+                };
+                this.onclick = function(x, y) {
+                    this.events.push({
+                        type: "onclick",
+                        x: x,
+                        y: y,
+                        run: function(e) {
+                            if (e.onclick) e.onclick();
+                        }
+                    });
+                };
+                this.onmousemove = function(x, y) {
+                    this.events.push({
+                        type: "onmousemove",
+                        x: x,
+                        y: y,
+                        run: function(e) {
+                            if (e.onmousemove) e.onmousemove();
+                        }
+                    });
+                };
+                this.eventElements = [];
+                this.checkPath = function(element, ctx) {
+                    for (var i = 0; i < this.events.length; i++) {
+                        var e = this.events[i];
+                        if (ctx.isPointInPath && ctx.isPointInPath(e.x, e.y)) this.eventElements[i] = element;
+                    }
+                };
+                this.checkBoundingBox = function(element, bb) {
+                    for (var i = 0; i < this.events.length; i++) {
+                        var e = this.events[i];
+                        if (bb.isPointInBox(e.x, e.y)) this.eventElements[i] = element;
+                    }
+                };
+                this.runEvents = function() {
+                    svg.ctx.canvas.style.cursor = "";
+                    for (var i = 0; i < this.events.length; i++) {
+                        var e = this.events[i];
+                        var element = this.eventElements[i];
+                        while (element) {
+                            e.run(element);
+                            element = element.parent;
+                        }
+                    }
+                    this.events = [];
+                    this.eventElements = [];
+                };
+            }();
+            return svg;
+        }
+    })();
+    if (typeof CanvasRenderingContext2D != "undefined") {
+        CanvasRenderingContext2D.prototype.drawSvg = function(s, dx, dy, dw, dh) {
+            canvg(this.canvas, s, {
+                ignoreMouse: true,
+                ignoreAnimation: true,
+                ignoreDimensions: true,
+                ignoreClear: true,
+                offsetX: dx,
+                offsetY: dy,
+                scaleWidth: dw,
+                scaleHeight: dh
+            });
+        };
+    }
+    return canvg;
+});
+define("base/output", [ "kity", "base/canvg" ], function(require) {
+    var kity = require("kity"), canvg = require("base/canvg");
+    return kity.createClass("Output", {
+        constructor: function(formula) {
+            this.formula = formula;
+        },
+        toJPG: function(cb) {
+            toImage(this.formula, "image/jpeg", cb);
+        },
+        toPNG: function(cb) {
+            toImage(this.formula, "image/png", cb);
+        }
+    });
+    function toImage(formula, type, cb) {
+        var rectSpace = formula.container.getRenderBox();
+        return getBase64DataURL(formula.node.ownerDocument, {
+            width: rectSpace.width,
+            height: rectSpace.height,
+            content: getSVGContent(formula.node)
+        }, type, cb);
+    }
+    function getBase64DataURL(doc, data, type, cb) {
+        var canvas = null, args = arguments, ctx = null;
+        if (!isChromeCore()) {
+            drawToCanvas.apply(null, args);
+        } else {
+            canvas = getImageCanvas(doc, data.width, data.height, type);
+            ctx = canvas.getContext("2d");
+            var image = new Image();
+            image.onload = function() {
+                try {
+                    ctx.drawImage(image, 0, 0);
+                    cb(canvas.toDataURL(type));
+                } catch (e) {
+                    drawToCanvas.apply(null, args);
+                }
+            };
+            image.src = getSVGDataURL(data.content);
+        }
+    }
+    function getSVGContent(svgNode) {
+        var tmp = svgNode.ownerDocument.createElement("div"), start = [ '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="', svgNode.getAttribute("width"), '" height="', svgNode.getAttribute("height"), '">' ];
+        tmp.appendChild(svgNode.cloneNode(true));
+        return tmp.innerHTML.replace(/<svg[^>]+?>/i, start.join("")).replace(/&nbsp;/g, "");
+    }
+    function getSVGDataURL(data) {
+        return "data:image/svg+xml;base64," + window.btoa(unescape(encodeURIComponent(data)));
+    }
+    function getImageCanvas(doc, width, height, type) {
+        var canvas = doc.createElement("canvas"), ctx = canvas.getContext("2d");
+        canvas.width = width;
+        canvas.height = height;
+        if (type !== "image/png") {
+            ctx.fillStyle = "white";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+        return canvas;
+    }
+    function drawToCanvas(doc, data, type, cb) {
+        var canvas = getImageCanvas(doc, data.width, data.height, type);
+        canvas.style.cssText = "position: absolute; top: 0; left: 100000px; z-index: -1;";
+        doc.body.appendChild(canvas);
+        canvg(canvas, data.content);
+        doc.body.removeChild(canvas);
+        window.setTimeout(function() {
+            cb(canvas.toDataURL(type));
+        }, 50);
+    }
+    function isChromeCore() {
+        return window.navigator.userAgent.indexOf("Chrome") !== -1;
+    }
+});
 define("char/char", [ "kity", "signgroup", "def/gtype" ], function(require, exports, module) {
     var kity = require("kity");
     return kity.createClass("Char", {
         base: require("signgroup"),
         constructor: function(value, type) {
             var currentData;
-            // 默认是标准字体
             type = type || "std";
             currentData = CHAR_DATA[type][value];
             if (!currentData) {
@@ -124,362 +3116,372 @@ define("char/char", [ "kity", "signgroup", "def/gtype" ], function(require, expo
         }
     });
 });
-/*!
- * 字符配置
- */
 define("char/conf", [], function(require) {
     return {
-        // 默认字体
         defaultFont: "KF AMS MAIN"
     };
 });
-/*!
- * Created by hn on 14-4-4.
- */
 define("char/map", [], function(require) {
     return {
-        // char
-        Alpha: "Α",
-        Beta: "Β",
-        Gamma: "Γ",
-        Delta: "Δ",
-        Epsilon: "Ε",
-        Zeta: "Ζ",
-        Eta: "Η",
-        Theta: "Θ",
-        Iota: "Ι",
-        Kappa: "Κ",
-        Lambda: "Λ",
-        Mu: "Μ",
-        Nu: "Ν",
-        Xi: "Ξ",
-        Omicron: "Ο",
-        Pi: "Π",
-        Rho: "Ρ",
-        Sigma: "Σ",
-        Tau: "Τ",
-        Upsilon: "Υ",
-        Phi: "Φ",
-        Chi: "Χ",
-        Psi: "Ψ",
-        Omega: "Ω",
-        alpha: "α",
-        beta: "β",
-        gamma: "γ",
-        delta: "δ",
-        epsilon: "ε",
-        varepsilon: "ε",
-        zeta: "ζ",
-        eta: "η",
-        theta: "θ",
-        iota: "ι",
-        kappa: "κ",
-        lambda: "λ",
-        mu: "μ",
-        nu: "ν",
-        xi: "ξ",
-        omicron: "ο",
-        pi: "π",
-        rho: "ρ",
-        sigma: "σ",
-        tau: "τ",
-        upsilon: "υ",
-        phi: "φ",
-        varphi: "φ",
-        chi: "χ",
-        psi: "ψ",
-        omega: "ω",
-        // symbol
-        doublecap: "⋒",
-        Cap: "⋒",
-        dobulecup: "⋓",
-        Cup: "⋓",
-        ast: "∗",
-        divideontimes: "⋇",
-        rightthreetimes: "⋌",
-        leftthreetimes: "⋋",
-        cdot: "·",
-        dotplus: "∔",
-        rtimes: "⋊",
-        ltimes: "⋉",
-        centerdot: "▪",
-        doublebarwedge: "⒀",
-        setminus: "⒁",
-        amalg: "∐",
-        circ: "◦",
-        bigcirc: "©",
-        gtrdot: "⋗",
-        lessdot: "⋖",
-        smallsetminus: "⒅",
-        circledast: "⊛",
-        circledcirc: "⊚",
-        intercal: "⊺",
-        sqcap: "⊓",
-        sqcup: "⊔",
-        barwedge: "⊼",
-        circleddash: "⊝",
-        star: "⒆",
-        bigtriangledown: "▽",
-        bigtriangleup: "△",
-        cup: "a",
-        cap: "9",
-        times: "×",
-        mp: "∓",
-        pm: "±",
-        triangleleft: "⊲",
-        triangleright: "⊳",
-        boxdot: "⊡",
-        curlyvee: "⋏",
-        curlywedge: "⋎",
-        boxminus: "⊟",
-        ominus: "⊖",
-        oplus: "⊕",
-        oslash: "⊘",
-        otimes: "⊗",
-        uplus: "⊎",
-        boxplus: "⊞",
-        dagger: "†",
-        ddagger: "‡",
-        vee: "∨",
-        lor: "∨",
-        veebar: "⊻",
-        bullet: "•",
-        diamond: "⋄",
-        wedge: "∧",
-        land: "∧",
-        div: "÷",
-        wr: "≀",
-        geqq: "≧",
-        lll: "⒈",
-        llless: "⒈",
-        ggg: "⒉",
-        gggtr: "⒉",
-        preccurlyeq: "⒊",
-        geqslant: "⒋",
-        lnapprox: "≨",
-        preceq: "≼",
-        gg: "≫",
-        lneq: "⒐",
-        precnapprox: "⒒",
-        approx: "≈",
-        lneqq: "⒓",
-        precneqq: "⒔",
-        approxeq: "⒥",
-        gnapprox: "≩",
-        lnsim: "⋦",
-        precnsim: "⋨",
-        asymp: "≍",
-        gneq: "⒑",
-        lvertneqq: "⒖",
-        precsim: "≾",
-        backsim: "∽",
-        gneqq: "⒘",
-        ncong: "≇",
-        risingdotseq: "≓",
-        backsimeq: "⋍",
-        gnsim: "⋧",
-        sim: "∼",
-        simeq: "≃",
-        bumpeq: "⒙",
-        gtrapprox: "⒛",
-        ngeq: "≱",
-        Bumpeq: "⒚",
-        gtreqless: "⋛",
-        ngeqq: "ⓠ",
-        succ: "≻",
-        circeq: "⒜",
-        gtreqqless: "ⓤ",
-        ngeqslant: "ⓦ",
-        succapprox: "⒝",
-        cong: "⒡",
-        gtrless: "≷",
-        ngtr: "≯",
-        succcurlyeq: "⒍",
-        curlyeqprec: "⒢",
-        gtrsim: "≳",
-        nleq: "≰",
-        succeq: "≽",
-        curlyeqsucc: "⒣",
-        gvertneqq: "⒗",
-        nleqq: "ⓡ",
-        succnapprox: "⒤",
-        doteq: "⒟",
-        leq: "≤",
-        le: "≤",
-        nleqslant: "ⓥ",
-        succneqq: "⒕",
-        doteqdot: "≑",
-        Doteq: "≑",
-        leqq: "≦",
-        nless: "≮",
-        succnsim: "⋩",
-        leqslant: "⒌",
-        nprec: "⊀",
-        succsim: "≿",
-        eqsim: "≂",
-        lessapprox: "⒦",
-        npreceq: "⋠",
-        eqslantgtr: "⋝",
-        lesseqgtr: "⋚",
-        nsim: "≁",
-        eqslantless: "⒩",
-        lesseqqgtr: "ⓤ",
-        nsucc: "⊁",
-        triangleq: "≜",
-        eqcirc: "≖",
-        equiv: "≡",
-        lessgtr: "≶",
-        nsucceq: "⋡",
-        fallingdotseq: "≒",
-        lesssim: "≲",
-        prec: "≺",
-        geq: "≥",
-        ge: "≥",
-        ll: "≪",
-        precapprox: "⒞",
-        // arrows
-        uparrow: "↑",
-        downarrow: "↓",
-        updownarrow: "↕",
-        Uparrow: "⇑",
-        Downarrow: "⇓",
-        Updownarrow: "⇕",
-        circlearrowleft: "↺",
-        circlearrowright: "↻",
-        curvearrowleft: "↶",
-        curvearrowright: "↷",
-        downdownarrows: "⇊",
-        downharpoonleft: "⇃",
-        downharpoonright: "⇂",
-        leftarrow: "←",
-        gets: "←",
-        Leftarrow: "⇐",
-        leftarrowtail: "↢",
-        leftharpoondown: "⒬",
-        leftharpoonup: "⒪",
-        leftleftarrows: "⒮",
-        leftrightarrow: "↔",
-        Leftrightarrow: "⇔",
-        leftrightarrows: "⇄",
-        leftrightharpoons: "⇋",
-        leftrightsquigarrow: "↭",
-        Llfetarrow: "⇚",
-        looparrowleft: "↫",
-        looparrowright: "↬",
-        multimap: "⊸",
-        nLeftarrow: "⇍",
-        nRightarrow: "⇏",
-        nLeftrightarrow: "⇎",
-        nearrow: "↗",
-        nleftarrow: "⒰",
-        nleftrightarrow: "↮",
-        nrightarrow: "⒱",
-        nwarrow: "↖",
-        rightarrow: "→",
-        to: "→",
-        Rightarrow: "⇒",
-        rightarrowtail: "↣",
-        rightharpoondown: "⒭",
-        rightharpoonup: "⒫",
-        rightleftarrows: "⇆",
-        rightleftharpoons: "⇌",
-        rigtrightarrows: "⒯",
-        rightsquigarrow: "⇝",
-        Rightarrow: "⇛",
-        searrow: "↘",
-        swarrow: "↙",
-        twoheadleftarrow: "↞",
-        twoheadrightarrow: "↠",
-        upharpoonleft: "↿",
-        upharpoonright: "↾",
+        Alpha: "\u0391",
+        Beta: "\u0392",
+        Gamma: "\u0393",
+        Delta: "\u0394",
+        Epsilon: "\u0395",
+        Zeta: "\u0396",
+        Eta: "\u0397",
+        Theta: "\u0398",
+        Iota: "\u0399",
+        Kappa: "\u039a",
+        Lambda: "\u039b",
+        Mu: "\u039c",
+        Nu: "\u039d",
+        Xi: "\u039e",
+        Omicron: "\u039f",
+        Pi: "\u03a0",
+        Rho: "\u03a1",
+        Sigma: "\u03a3",
+        Tau: "\u03a4",
+        Upsilon: "\u03a5",
+        Phi: "\u03a6",
+        Chi: "\u03a7",
+        Psi: "\u03a8",
+        Omega: "\u03a9",
+        alpha: "\u03b1",
+        beta: "\u03b2",
+        gamma: "\u03b3",
+        delta: "\u03b4",
+        epsilon: "\u03b5",
+        varepsilon: "\u03b5",
+        zeta: "\u03b6",
+        eta: "\u03b7",
+        theta: "\u03b8",
+        iota: "\u03b9",
+        kappa: "\u03ba",
+        lambda: "\u03bb",
+        mu: "\u03bc",
+        nu: "\u03bd",
+        xi: "\u03be",
+        omicron: "\u03bf",
+        pi: "\u03c0",
+        rho: "\u03c1",
+        sigma: "\u03c3",
+        tau: "\u03c4",
+        upsilon: "\u03c5",
+        phi: "\u03c6",
+        varphi: "\u03c6",
+        chi: "\u03c7",
+        psi: "\u03c8",
+        omega: "\u03c9",
+        doublecap: "\u22d2",
+        Cap: "\u22d2",
+        dobulecup: "\u22d3",
+        Cup: "\u22d3",
+        ast: "\u2217",
+        divideontimes: "\u22c7",
+        rightthreetimes: "\u22cc",
+        leftthreetimes: "\u22cb",
+        cdot: "\xb7",
+        dotplus: "\u2214",
+        rtimes: "\u22ca",
+        ltimes: "\u22c9",
+        centerdot: "\u25aa",
+        doublebarwedge: "\u2480",
+        setminus: "\u2481",
+        amalg: "\u2210",
+        circ: "\u25e6",
+        bigcirc: "\xa9",
+        gtrdot: "\u22d7",
+        lessdot: "\u22d6",
+        smallsetminus: "\u2485",
+        circledast: "\u229b",
+        circledcirc: "\u229a",
+        intercal: "\u22ba",
+        sqcap: "\u2293",
+        sqcup: "\u2294",
+        barwedge: "\u22bc",
+        circleddash: "\u229d",
+        star: "\u2486",
+        bigtriangledown: "\u25bd",
+        bigtriangleup: "\u25b3",
+        cup: "\x92a",
+        cap: "\x929",
+        times: "\xd7",
+        mp: "\u2213",
+        pm: "\xb1",
+        triangleleft: "\u22b2",
+        triangleright: "\u22b3",
+        boxdot: "\u22a1",
+        curlyvee: "\u22cf",
+        curlywedge: "\u22ce",
+        boxminus: "\u229f",
+        ominus: "\u2296",
+        oplus: "\u2295",
+        oslash: "\u2298",
+        otimes: "\u2297",
+        uplus: "\u228e",
+        boxplus: "\u229e",
+        dagger: "\u2020",
+        ddagger: "\u2021",
+        vee: "\u2228",
+        lor: "\u2228",
+        veebar: "\u22bb",
+        bullet: "\u2022",
+        diamond: "\u22c4",
+        wedge: "\u2227",
+        land: "\u2227",
+        div: "\xf7",
+        wr: "\u2240",
+        geqq: "\u2267",
+        lll: "\u2488",
+        llless: "\u2488",
+        ggg: "\u2489",
+        gggtr: "\u2489",
+        preccurlyeq: "\u248a",
+        geqslant: "\u248b",
+        lnapprox: "\u2268",
+        preceq: "\u227c",
+        gg: "\u226b",
+        lneq: "\u2490",
+        precnapprox: "\u2492",
+        approx: "\u2248",
+        lneqq: "\u2493",
+        precneqq: "\u2494",
+        approxeq: "\u24a5",
+        gnapprox: "\u2269",
+        lnsim: "\u22e6",
+        precnsim: "\u22e8",
+        asymp: "\u224d",
+        gneq: "\u2491",
+        lvertneqq: "\u2496",
+        precsim: "\u227e",
+        backsim: "\u223d",
+        gneqq: "\u2498",
+        ncong: "\u2247",
+        risingdotseq: "\u2253",
+        backsimeq: "\u22cd",
+        gnsim: "\u22e7",
+        sim: "\u223c",
+        simeq: "\u2243",
+        bumpeq: "\u2499",
+        gtrapprox: "\u249b",
+        ngeq: "\u2271",
+        Bumpeq: "\u249a",
+        gtreqless: "\u22db",
+        ngeqq: "\u24e0",
+        succ: "\u227b",
+        circeq: "\u249c",
+        gtreqqless: "\u24e4",
+        ngeqslant: "\u24e6",
+        succapprox: "\u249d",
+        cong: "\u24a1",
+        gtrless: "\u2277",
+        ngtr: "\u226f",
+        succcurlyeq: "\u248d",
+        curlyeqprec: "\u24a2",
+        gtrsim: "\u2273",
+        nleq: "\u2270",
+        succeq: "\u227d",
+        curlyeqsucc: "\u24a3",
+        gvertneqq: "\u2497",
+        nleqq: "\u24e1",
+        succnapprox: "\u24a4",
+        doteq: "\u249f",
+        leq: "\u2264",
+        le: "\u2264",
+        nleqslant: "\u24e5",
+        succneqq: "\u2495",
+        doteqdot: "\u2251",
+        Doteq: "\u2251",
+        leqq: "\u2266",
+        nless: "\u226e",
+        succnsim: "\u22e9",
+        leqslant: "\u248c",
+        nprec: "\u2280",
+        succsim: "\u227f",
+        eqsim: "\u2242",
+        lessapprox: "\u24a6",
+        npreceq: "\u22e0",
+        eqslantgtr: "\u22dd",
+        lesseqgtr: "\u22da",
+        nsim: "\u2241",
+        eqslantless: "\u24a9",
+        lesseqqgtr: "\u24e4",
+        nsucc: "\u2281",
+        triangleq: "\u225c",
+        eqcirc: "\u2256",
+        equiv: "\u2261",
+        lessgtr: "\u2276",
+        nsucceq: "\u22e1",
+        fallingdotseq: "\u2252",
+        lesssim: "\u2272",
+        prec: "\u227a",
+        geq: "\u2265",
+        ge: "\u2265",
+        ll: "\u226a",
+        precapprox: "\u249e",
+        uparrow: "\u2191",
+        downarrow: "\u2193",
+        updownarrow: "\u2195",
+        Uparrow: "\u21d1",
+        Downarrow: "\u21d3",
+        Updownarrow: "\u21d5",
+        circlearrowleft: "\u21ba",
+        circlearrowright: "\u21bb",
+        curvearrowleft: "\u21b6",
+        curvearrowright: "\u21b7",
+        downdownarrows: "\u21ca",
+        downharpoonleft: "\u21c3",
+        downharpoonright: "\u21c2",
+        leftarrow: "\u2190",
+        gets: "\u2190",
+        Leftarrow: "\u21d0",
+        leftarrowtail: "\u21a2",
+        leftharpoondown: "\u24ac",
+        leftharpoonup: "\u24aa",
+        leftleftarrows: "\u24ae",
+        leftrightarrow: "\u2194",
+        Leftrightarrow: "\u21d4",
+        leftrightarrows: "\u21c4",
+        leftrightharpoons: "\u21cb",
+        leftrightsquigarrow: "\u21ad",
+        Llfetarrow: "\u21da",
+        looparrowleft: "\u21ab",
+        looparrowright: "\u21ac",
+        multimap: "\u22b8",
+        nLeftarrow: "\u21cd",
+        nRightarrow: "\u21cf",
+        nLeftrightarrow: "\u21ce",
+        nearrow: "\u2197",
+        nleftarrow: "\u24b0",
+        nleftrightarrow: "\u21ae",
+        nrightarrow: "\u24b1",
+        nwarrow: "\u2196",
+        rightarrow: "\u2192",
+        to: "\u2192",
+        Rightarrow: "\u21d2",
+        rightarrowtail: "\u21a3",
+        rightharpoondown: "\u24ad",
+        rightharpoonup: "\u24ab",
+        rightleftarrows: "\u21c6",
+        rightleftharpoons: "\u21cc",
+        rigtrightarrows: "\u24af",
+        rightsquigarrow: "\u21dd",
+        Rightarrow: "\u21db",
+        searrow: "\u2198",
+        swarrow: "\u2199",
+        twoheadleftarrow: "\u219e",
+        twoheadrightarrow: "\u21a0",
+        upharpoonleft: "\u21bf",
+        upharpoonright: "\u21be",
         restriction: "be",
-        upuparrows: "⇈",
-        // relation
-        backepsilon: "℈",
-        because: "∵",
-        therefore: "∴",
-        between: "≬",
-        blacktriangleleft: "◀",
-        blacktriangleright: "▸",
-        dashv: "⊣",
-        frown: "⌢",
-        "in": "∈",
-        mid: "Ⓦ",
+        upuparrows: "\u21c8",
+        backepsilon: "\u2108",
+        because: "\u2235",
+        therefore: "\u2234",
+        between: "\u226c",
+        blacktriangleleft: "\u25c0",
+        blacktriangleright: "\u25b8",
+        dashv: "\u22a3",
+        frown: "\u2322",
+        "in": "\u2208",
+        mid: "\u24cc",
         parallel: "d0",
-        models: "⊨",
-        ni: "∋",
-        owns: "∋",
-        nmid: "∤",
-        nparallel: "∦",
-        nshortmid: "⒵",
-        nshortparallel: "Ⓐ",
-        nsubseteq: "⊈",
-        nsubseteqq: "Ⓑ",
-        nsupseteq: "⊉",
-        nsupseteqq: "Ⓒ",
-        ntriangleleft: "⋪",
-        ntrianglelefteq: "⋬",
-        ntriangleright: "⋫",
-        ntrianglerighteq: "⋭",
-        nvdash: "⊬",
-        nVdash: "Ⓚ",
-        nvDash: "Ⓛ",
-        nVDash: "⊯",
-        perp: "⊥",
-        pitchfork: "⋔",
-        propto: "∝",
-        shortmid: "⒃",
-        shortparallel: "⒄",
-        smile: "⌣",
-        sqsubset: "⊏",
-        sqsubseteq: "⊑",
-        sqsupset: "⊐",
-        sqsupseteq: "⊒",
-        subset: "⊂",
-        Subset: "⋐",
-        subseteq: "⊆",
-        subseteqq: "Ⓗ",
-        subsetneq: "⊊",
-        subsetneqq: "Ⓓ",
-        supset: "⊃",
-        Supset: "⋑",
-        supseteq: "⊇",
-        supseteqq: "Ⓘ",
-        supsetneq: "⊋",
-        supsetneqq: "Ⓔ",
-        trianglelefteq: "⊴",
-        trianglerighteq: "⊵",
-        varpropto: "⒲",
-        varsubsetneq: "⒳",
-        varsubsetneqq: "Ⓕ",
-        varsupsetneq: "⒴",
-        varsupsetneqq: "Ⓖ",
-        vdash: "⊢",
-        Vdash: "⊩",
-        vDash: "⊨",
-        Vvdash: "⊪",
+        models: "\u22a8",
+        ni: "\u220b",
+        owns: "\u220b",
+        nmid: "\u2224",
+        nparallel: "\u2226",
+        nshortmid: "\u24b5",
+        nshortparallel: "\u24b6",
+        nsubseteq: "\u2288",
+        nsubseteqq: "\u24b7",
+        nsupseteq: "\u2289",
+        nsupseteqq: "\u24b8",
+        ntriangleleft: "\u22ea",
+        ntrianglelefteq: "\u22ec",
+        ntriangleright: "\u22eb",
+        ntrianglerighteq: "\u22ed",
+        nvdash: "\u22ac",
+        nVdash: "\u24c0",
+        nvDash: "\u24c1",
+        nVDash: "\u22af",
+        perp: "\u22a5",
+        pitchfork: "\u22d4",
+        propto: "\u221d",
+        shortmid: "\u2483",
+        shortparallel: "\u2484",
+        smile: "\u2323",
+        sqsubset: "\u228f",
+        sqsubseteq: "\u2291",
+        sqsupset: "\u2290",
+        sqsupseteq: "\u2292",
+        subset: "\u2282",
+        Subset: "\u22d0",
+        subseteq: "\u2286",
+        subseteqq: "\u24bd",
+        subsetneq: "\u228a",
+        subsetneqq: "\u24b9",
+        supset: "\u2283",
+        Supset: "\u22d1",
+        supseteq: "\u2287",
+        supseteqq: "\u24be",
+        supsetneq: "\u228b",
+        supsetneqq: "\u24ba",
+        trianglelefteq: "\u22b4",
+        trianglerighteq: "\u22b5",
+        varpropto: "\u24b2",
+        varsubsetneq: "\u24b3",
+        varsubsetneqq: "\u24bb",
+        varsupsetneq: "\u24b4",
+        varsupsetneqq: "\u24bc",
+        vdash: "\u22a2",
+        Vdash: "\u22a9",
+        vDash: "\u22a8",
+        Vvdash: "\u22aa",
         vert: "|",
-        Vert: "ǁ",
-        "|": "ǁ",
-        backslash: "ǂ",
-        langle: "〈",
-        rangle: "〉",
-        lceil: "⌈",
-        rceil: "⌉",
+        Vert: "\u01c1",
+        "|": "\u01c1",
+        backslash: "\u01c2",
+        langle: "\u3008",
+        rangle: "\u3009",
+        lceil: "\u2308",
+        rceil: "\u2309",
         lbrace: "{",
         rbrace: "}",
-        lfloor: "⌊",
-        rfllor: "⌋",
-        colon: "Ǆ",
+        lfloor: "\u230a",
+        rfllor: "\u230b",
+        colon: "\u01c4",
         "#": "#",
-        bot: "⊥"
+        bot: "\u22a5"
     };
 });
-/**
- * 文本
- */
-define("char/text", [ "kity", "font/manager", "signgroup", "def/gtype" ], function(require, exports, module) {
-    var kity = require("kity"), FontManager = require("font/manager");
+define("char/text-factory", [ "kity" ], function(require) {
+    var kity = require("kity"), divNode = document.createElement("div"), NAMESPACE = "http://www.w3.org/XML/1998/namespace";
+    function createText(content) {
+        var text = new kity.Text();
+        if ("innerHTML" in text.node) {
+            text.node.setAttributeNS(NAMESPACE, "xml:space", "preserve");
+        } else {
+            if (content.indexOf(" ") != -1) {
+                content = convertContent(content);
+            }
+        }
+        text.setContent(content);
+        return text;
+    }
+    function convertContent(content) {
+        divNode.innerHTML = '<svg><text gg="asfdas">' + content.replace(/\s/gi, "&nbsp;") + "</text></svg>";
+        return divNode.firstChild.firstChild.textContent;
+    }
+    return {
+        create: function(content) {
+            return createText(content);
+        }
+    };
+});
+define("char/text", [ "kity", "sysconf", "font/map/kf-ams-main", "font/map/kf-ams-cal", "font/map/kf-ams-frak", "font/map/kf-ams-bb", "font/map/kf-ams-roman", "font/manager", "char/text-factory", "signgroup", "def/gtype" ], function(require, exports, module) {
+    var kity = require("kity"), FONT_CONF = require("sysconf").font, FontManager = require("font/manager"), TextFactory = require("char/text-factory");
     return kity.createClass("Text", {
         base: require("signgroup"),
         constructor: function(content, fontFamily) {
@@ -487,20 +3489,20 @@ define("char/text", [ "kity", "font/manager", "signgroup", "def/gtype" ], functi
             this.fontFamily = fontFamily;
             this.fontSize = 50;
             this.content = content || "";
+            this.box.remove();
             this.translationContent = this.translation(this.content);
             this.contentShape = new kity.Group();
             this.contentNode = this.createContent();
             this.contentShape.addShape(this.contentNode);
-            this.contentShape.translate(0, 40);
             this.addShape(this.contentShape);
         },
         createContent: function() {
-            var contentNode = new kity.Text(this.translationContent);
+            var contentNode = TextFactory.create(this.translationContent);
             contentNode.setAttr({
                 "font-family": this.fontFamily,
                 "font-size": 50,
                 x: 0,
-                y: 0
+                y: FONT_CONF.offset
             });
             return contentNode;
         },
@@ -511,6 +3513,7 @@ define("char/text", [ "kity", "font/manager", "signgroup", "def/gtype" ], functi
         setFontSize: function(fontSize) {
             this.fontSize = fontSize;
             this.contentNode.setAttr("font-size", fontSize + "px");
+            this.contentNode.setAttr("y", fontSize / 50 * FONT_CONF.offset);
         },
         getBaseHeight: function() {
             var chars = this.contentShape.getItems(), currentChar = null, index = 0, height = 0;
@@ -522,34 +3525,20 @@ define("char/text", [ "kity", "font/manager", "signgroup", "def/gtype" ], functi
         },
         translation: function(content) {
             var fontFamily = this.fontFamily;
-            // 首先特殊处理掉两个相连的"`"符号
-            return content.replace(/``/g, "“").replace(/\\([a-zA-Z,{}]+)\\/g, function(match, input) {
+            return content.replace(/``/g, "\u201c").replace(/\\([a-zA-Z,]+)\\/g, function(match, input) {
                 if (input === ",") {
-                    return "￼ ￼";
+                    return " ";
                 }
                 var data = FontManager.getCharacterValue(input, fontFamily);
                 if (!data) {
-                    console.error(input + "丢失");
+                    console.error(input + "\u4e22\u5931");
+                    return "";
                 }
                 return data;
             });
         }
     });
 });
-/*!
- * 全局定义
- */
-define("conf", [ "font/kf-ams-main", "font/kf-ams-cal", "font/kf-ams-roman", "font/kf-ams-frak", "font/kf-ams-bb" ], function(require) {
-    return {
-        font: {
-            defaultFont: "KF AMS MAIN",
-            list: [ require("font/kf-ams-main"), require("font/kf-ams-cal"), require("font/kf-ams-roman"), require("font/kf-ams-frak"), require("font/kf-ams-bb") ]
-        }
-    };
-});
-/**
- * 定义公式中各种对象的类型
- */
 define("def/gtype", [], function() {
     return {
         UNKNOWN: -1,
@@ -558,85 +3547,12 @@ define("def/gtype", [], function() {
         OP: 2
     };
 });
-/**
- * 定义公式中上下标的类型
- */
 define("def/script-type", [], function() {
     return {
         SIDE: "side",
         FOLLOW: "follow"
     };
 });
-/**
- * 分数表达式
- */
-define("expression/compound-exp/binary-exp/fraction", [ "kity", "operator/binary-opr/fraction", "operator/binary-opr/up-down", "expression/compound-exp/binary-exp/up-down", "expression/compound-exp/binary" ], function(require, exports, modules) {
-    var kity = require("kity"), FractionOperator = require("operator/binary-opr/fraction");
-    return kity.createClass("FractionExpression", {
-        base: require("expression/compound-exp/binary-exp/up-down"),
-        constructor: function(upOperand, downOperand) {
-            this.callBase(upOperand, downOperand);
-            this.setFlag("Fraction");
-            this.setOperator(new FractionOperator());
-        }
-    });
-});
-/**
- * 左右结合二元表达式
- * @abstract
- */
-define("expression/compound-exp/binary-exp/left-right", [ "kity", "expression/compound-exp/binary", "expression/compound" ], function(require, exports, modules) {
-    var kity = require("kity");
-    return kity.createClass("LeftRightExpression", {
-        base: require("expression/compound-exp/binary"),
-        getLeftOperand: function() {
-            return this.getFirstOperand();
-        },
-        setLeftOperand: function(operand) {
-            return this.setFirstOperand(operand);
-        },
-        getRightOperand: function() {
-            return this.getLastOperand();
-        },
-        setRightOperand: function(operand) {
-            return this.setLastOperand(operand);
-        }
-    });
-});
-/**
- * 方根表达式
- */
-define("expression/compound-exp/binary-exp/radical", [ "kity", "operator/binary-opr/radical", "operator/binary", "expression/compound-exp/binary", "expression/compound" ], function(require, exports, modules) {
-    var kity = require("kity"), RadicalOperator = require("operator/binary-opr/radical");
-    return kity.createClass("RadicalExpression", {
-        base: require("expression/compound-exp/binary"),
-        /**
-         * 构造开方表达式
-         * @param radicand 被开方数
-         * @param exponent 指数
-         */
-        constructor: function(radicand, exponent) {
-            this.callBase(radicand, exponent);
-            this.setFlag("Radicand");
-            this.setOperator(new RadicalOperator());
-        },
-        setRadicand: function(operand) {
-            return this.setFirstOperand(operand);
-        },
-        getRadicand: function() {
-            return this.getFirstOperand();
-        },
-        setExponent: function(operand) {
-            return this.setLastOperand(operand);
-        },
-        getExponent: function() {
-            return this.getLastOperand();
-        }
-    });
-});
-/**
- * 下标表达式
- */
 define("expression/compound-exp/binary-exp/subscript", [ "kity", "expression/compound-exp/script", "operator/script", "expression/compound" ], function(require, exports, modules) {
     var kity = require("kity");
     return kity.createClass("SubscriptExpression", {
@@ -647,9 +3563,6 @@ define("expression/compound-exp/binary-exp/subscript", [ "kity", "expression/com
         }
     });
 });
-/**
- * 上标表达式
- */
 define("expression/compound-exp/binary-exp/superscript", [ "kity", "expression/compound-exp/script", "operator/script", "expression/compound" ], function(require, exports, modules) {
     var kity = require("kity");
     return kity.createClass("SuperscriptExpression", {
@@ -660,32 +3573,6 @@ define("expression/compound-exp/binary-exp/superscript", [ "kity", "expression/c
         }
     });
 });
-/**
- * 上下结合二元表达式
- * @abstract
- */
-define("expression/compound-exp/binary-exp/up-down", [ "kity", "expression/compound-exp/binary", "expression/compound" ], function(require, exports, modules) {
-    var kity = require("kity");
-    return kity.createClass("UpDownExpression", {
-        base: require("expression/compound-exp/binary"),
-        getUpOperand: function() {
-            return this.getFirstOperand();
-        },
-        setUpOperand: function(operand) {
-            return this.setFirstOperand(operand);
-        },
-        getDownOperand: function() {
-            return this.getLastOperand();
-        },
-        setDownOperand: function(operand) {
-            return this.setLastOperand(operand);
-        }
-    });
-});
-/**
- * 二元操作表达式
- * @abstract
- */
 define("expression/compound-exp/binary", [ "kity", "expression/compound", "def/gtype", "expression/expression" ], function(require, exports, modules) {
     var kity = require("kity");
     return kity.createClass("BinaryExpression", {
@@ -709,26 +3596,13 @@ define("expression/compound-exp/binary", [ "kity", "expression/compound", "def/g
         }
     });
 });
-/**
- * 自动增长括号表达式
- */
-define("expression/compound-exp/brackets", [ "kity", "operator/brackets", "font/manager", "operator/operator", "expression/compound", "def/gtype", "expression/expression" ], function(require, exports, modules) {
+define("expression/compound-exp/brackets", [ "kity", "operator/brackets", "char/text", "font/manager", "operator/operator", "expression/compound", "def/gtype", "expression/expression" ], function(require, exports, modules) {
     var kity = require("kity"), BracketsOperator = require("operator/brackets");
     return kity.createClass("BracketsExpression", {
         base: require("expression/compound"),
-        /**
-         * 构造函数调用方式：
-         *  new Constructor( 左括号, 右括号, 表达式 )
-         *  或者
-         *  new Constructor( 括号, 表达式 ), 该构造函数转换成上面的构造函数，是： new Constructor( 括号, 括号, 表达式 )
-         * @param left 左括号
-         * @param right 右括号
-         * @param exp 表达式
-         */
         constructor: function(left, right, exp) {
             this.callBase();
             this.setFlag("Brackets");
-            // 参数整理
             if (arguments.length === 2) {
                 exp = right;
                 right = left;
@@ -746,45 +3620,81 @@ define("expression/compound-exp/brackets", [ "kity", "operator/brackets", "font/
         }
     });
 });
-/**
- * 组合表达式
- * 可以组合多个表达式
- */
-define("expression/compound-exp/combination", [ "kity", "operator/combination", "operator/operator", "expression/compound", "def/gtype", "expression/expression" ], function(require, exports, modules) {
-    var kity = require("kity"), CombinationOperator = require("operator/combination");
+define("expression/compound-exp/combination", [ "kity", "sysconf", "font/map/kf-ams-main", "font/map/kf-ams-cal", "font/map/kf-ams-frak", "font/map/kf-ams-bb", "font/map/kf-ams-roman", "operator/combination", "operator/operator", "expression/compound", "def/gtype", "expression/expression" ], function(require, exports, modules) {
+    var kity = require("kity"), FONT_CONF = require("sysconf").font, CombinationOperator = require("operator/combination");
     return kity.createClass("CombinationExpression", {
         base: require("expression/compound"),
-        constructor: function() {
+        constructor: function(abc) {
             this.callBase();
             this.setFlag("Combination");
             this.setOperator(new CombinationOperator());
             kity.Utils.each(arguments, function(operand, index) {
                 this.setOperand(operand, index);
             }, this);
+        },
+        getRenderBox: function(refer) {
+            var rectBox = this.callBase(refer);
+            if (this.getOperands().length === 0) {
+                rectBox.height = FONT_CONF.spaceHeight;
+            }
+            return rectBox;
+        },
+        getBaseline: function(refer) {
+            var maxBaseline = 0, operands = this.getOperands();
+            if (operands.length === 0) {
+                return this.callBase(refer);
+            }
+            kity.Utils.each(operands, function(operand) {
+                maxBaseline = Math.max(operand.getBaseline(refer), maxBaseline);
+            });
+            return maxBaseline;
+        },
+        getMeanline: function(refer) {
+            var minMeanline = 1e7, operands = this.getOperands();
+            if (operands.length === 0) {
+                return this.callBase(refer);
+            }
+            kity.Utils.each(operands, function(operand) {
+                minMeanline = Math.min(operand.getMeanline(refer), minMeanline);
+            });
+            return minMeanline;
         }
     });
 });
-/**
- * 函数表达式
- */
-define("expression/compound-exp/func", [ "kity", "operator/func", "char/text", "operator/common/script-controller", "operator/operator", "expression/compound", "def/gtype", "expression/expression" ], function(require, exports, modules) {
-    var kity = require("kity"), FunctionOperator = require("operator/func");
+define("expression/compound-exp/fraction", [ "kity", "operator/fraction", "sysconf", "operator/operator", "expression/compound-exp/binary", "expression/compound" ], function(require, exports, modules) {
+    var kity = require("kity"), FractionOperator = require("operator/fraction");
+    return kity.createClass("FractionExpression", {
+        base: require("expression/compound-exp/binary"),
+        constructor: function(upOperand, downOperand) {
+            this.callBase(upOperand, downOperand);
+            this.setFlag("Fraction");
+            this.setOperator(new FractionOperator());
+        },
+        getBaseline: function(refer) {
+            var downOperand = this.getOperand(1), rectBox = downOperand.getRenderBox(refer);
+            return rectBox.y + downOperand.getBaselineProportion() * rectBox.height;
+        },
+        getMeanline: function(refer) {
+            var upOperand = this.getOperand(0), rectBox = upOperand.getRenderBox(refer);
+            return upOperand.getMeanlineProportion() * rectBox.height;
+        }
+    });
+});
+define("expression/compound-exp/func", [ "kity", "sysconf", "font/map/kf-ams-main", "font/map/kf-ams-cal", "font/map/kf-ams-frak", "font/map/kf-ams-bb", "font/map/kf-ams-roman", "operator/func", "char/text", "operator/common/script-controller", "operator/operator", "expression/compound", "def/gtype", "expression/expression" ], function(require, exports, modules) {
+    var kity = require("kity"), FUNC_CONF = require("sysconf").func, FunctionOperator = require("operator/func");
     return kity.createClass("FunctionExpression", {
         base: require("expression/compound"),
-        /**
-         * function表达式构造函数
-         * @param funcName function名称
-         * @param expr 函数表达式
-         * @param sup 上标
-         * @param sub 下标
-         */
         constructor: function(funcName, expr, sup, sub) {
             this.callBase();
             this.setFlag("Func");
+            this.funcName = funcName;
             this.setOperator(new FunctionOperator(funcName));
             this.setExpr(expr);
             this.setSuperscript(sup);
             this.setSubscript(sub);
+        },
+        isSideScript: function() {
+            return !FUNC_CONF["ud-script"][this.funcName];
         },
         setExpr: function(expr) {
             return this.setOperand(expr, 0);
@@ -797,18 +3707,9 @@ define("expression/compound-exp/func", [ "kity", "operator/func", "char/text", "
         }
     });
 });
-/**
- * 积分表达式
- */
 define("expression/compound-exp/integration", [ "kity", "operator/integration", "operator/common/script-controller", "operator/operator", "expression/compound", "def/gtype", "expression/expression" ], function(require, exports, modules) {
     var kity = require("kity"), IntegrationOperator = require("operator/integration"), IntegrationExpression = kity.createClass("IntegrationExpression", {
         base: require("expression/compound"),
-        /**
-             * 构造积分表达式
-             * @param integrand 被积函数
-             * @param supOperand 上限
-             * @param subOperand 下限
-             */
         constructor: function(integrand, superscript, subscript) {
             this.callBase();
             this.setFlag("Integration");
@@ -837,9 +3738,29 @@ define("expression/compound-exp/integration", [ "kity", "operator/integration", 
     });
     return IntegrationExpression;
 });
-/**
- * 上标表达式
- */
+define("expression/compound-exp/radical", [ "kity", "operator/radical", "operator/operator", "expression/compound-exp/binary", "expression/compound" ], function(require, exports, modules) {
+    var kity = require("kity"), RadicalOperator = require("operator/radical");
+    return kity.createClass("RadicalExpression", {
+        base: require("expression/compound-exp/binary"),
+        constructor: function(radicand, exponent) {
+            this.callBase(radicand, exponent);
+            this.setFlag("Radicand");
+            this.setOperator(new RadicalOperator());
+        },
+        setRadicand: function(operand) {
+            return this.setFirstOperand(operand);
+        },
+        getRadicand: function() {
+            return this.getFirstOperand();
+        },
+        setExponent: function(operand) {
+            return this.setLastOperand(operand);
+        },
+        getExponent: function() {
+            return this.getLastOperand();
+        }
+    });
+});
 define("expression/compound-exp/script", [ "kity", "operator/script", "operator/common/script-controller", "operator/operator", "expression/compound", "def/gtype", "expression/expression" ], function(require, exports, modules) {
     var kity = require("kity"), ScriptOperator = require("operator/script");
     return kity.createClass("ScriptExpression", {
@@ -863,20 +3784,10 @@ define("expression/compound-exp/script", [ "kity", "operator/script", "operator/
         }
     });
 });
-/**
- * 求和表达式
- * @abstract
- */
 define("expression/compound-exp/summation", [ "kity", "operator/summation", "operator/common/script-controller", "operator/operator", "expression/compound", "def/gtype", "expression/expression" ], function(require, exports, modules) {
     var kity = require("kity"), SummationOperator = require("operator/summation");
     return kity.createClass("SummationExpression", {
         base: require("expression/compound"),
-        /**
-         * 构造求和表达式
-         * @param expr 求和表达式
-         * @param upOperand 上标
-         * @param downOperand 下标
-         */
         constructor: function(expr, superscript, subscript) {
             this.callBase();
             this.setFlag("Summation");
@@ -896,11 +3807,7 @@ define("expression/compound-exp/summation", [ "kity", "operator/summation", "ope
         }
     });
 });
-/**
- * 复合表达式
- * @abstract
- */
-define("expression/compound", [ "kity", "def/gtype", "expression/expression", "signgroup" ], function(require, exports, modules) {
+define("expression/compound", [ "kity", "def/gtype", "expression/expression", "sysconf", "signgroup" ], function(require, exports, modules) {
     var kity = require("kity"), GTYPE = require("def/gtype"), Expression = require("expression/expression");
     return kity.createClass("CompoundExpression", {
         base: require("expression/expression"),
@@ -916,7 +3823,6 @@ define("expression/compound", [ "kity", "def/gtype", "expression/expression", "s
             this.setChildren(0, this.operatorBox);
             this.setChildren(1, this.operandBox);
         },
-        // 操作符存储在第1位置
         setOperator: function(operator) {
             if (operator === undefined) {
                 return this;
@@ -927,16 +3833,13 @@ define("expression/compound", [ "kity", "def/gtype", "expression/expression", "s
             this.operatorBox.addShape(operator);
             this.operator = operator;
             this.operator.setParentExpression(this);
-            // 表达式关联到操作符
             operator.expression = this;
             return this;
         },
         getOperator: function() {
             return this.operator;
         },
-        // 操作数存储位置是从1开始
         setOperand: function(operand, index, isWrap) {
-            // 不包装操作数
             if (isWrap === false) {
                 this.operands[index] = operand;
                 return this;
@@ -961,19 +3864,25 @@ define("expression/compound", [ "kity", "def/gtype", "expression/expression", "s
         }
     });
 });
-/**
- * 空表达式
- * 该表达式主要用途是用于站位
- */
-define("expression/empty", [ "kity", "expression/expression", "def/gtype", "signgroup" ], function(require, exports, module) {
-    var kity = require("kity"), Expression = require("expression/expression"), EmptyExpression = kity.createClass("EmptyExpression", {
+define("expression/empty", [ "kity", "sysconf", "font/map/kf-ams-main", "font/map/kf-ams-cal", "font/map/kf-ams-frak", "font/map/kf-ams-bb", "font/map/kf-ams-roman", "expression/expression", "def/gtype", "signgroup" ], function(require, exports, module) {
+    var kity = require("kity"), FONT_CONF = require("sysconf").font, Expression = require("expression/expression"), EmptyExpression = kity.createClass("EmptyExpression", {
         base: Expression,
         constructor: function() {
             this.callBase();
             this.setFlag("Empty");
+        },
+        getRenderBox: function() {
+            return {
+                width: 0,
+                height: FONT_CONF.spaceHeight,
+                x: 0,
+                y: 0
+            };
         }
     });
-    // 注册打包函数
+    EmptyExpression.isEmpty = function(target) {
+        return target instanceof EmptyExpression;
+    };
     Expression.registerWrap("empty", function(operand) {
         if (operand === null || operand === undefined) {
             return new EmptyExpression();
@@ -981,18 +3890,16 @@ define("expression/empty", [ "kity", "expression/expression", "def/gtype", "sign
     });
     return EmptyExpression;
 });
-/**
- * 基础表达式， 该类是表达式和操作数的高层抽象
- * @abstract
- */
-define("expression/expression", [ "kity", "def/gtype", "signgroup" ], function(require, exports, module) {
-    var kity = require("kity"), GTYPE = require("def/gtype"), // 打包函数列表
-    WRAP_FN = [], // 注册的打包函数的名称与其在注册器列表中的索引之间的对应关系
-    WRAP_FN_INDEX = {}, Expression = kity.createClass("Expression", {
+define("expression/expression", [ "kity", "def/gtype", "sysconf", "font/map/kf-ams-main", "font/map/kf-ams-cal", "font/map/kf-ams-frak", "font/map/kf-ams-bb", "font/map/kf-ams-roman", "signgroup" ], function(require, exports, module) {
+    var kity = require("kity"), GTYPE = require("def/gtype"), FONT_CONF = require("sysconf").font, WRAP_FN = [], WRAP_FN_INDEX = {}, Expression = kity.createClass("Expression", {
         base: require("signgroup"),
         constructor: function() {
             this.callBase();
             this.type = GTYPE.EXP;
+            this._offset = {
+                top: 0,
+                bottom: 0
+            };
             this.children = [];
             this.box.fill("transparent").setAttr("data-type", "kf-editor-exp-box");
             this.box.setAttr("data-type", "kf-editor-exp-bg-box");
@@ -1006,16 +3913,52 @@ define("expression/expression", [ "kity", "def/gtype", "signgroup" ], function(r
         getChild: function(index) {
             return this.children[index] || null;
         },
+        getTopOffset: function() {
+            return this._offset.top;
+        },
+        getBottomOffset: function() {
+            return this._offset.bottom;
+        },
+        getOffset: function() {
+            return this._offset;
+        },
+        setTopOffset: function(val) {
+            this._offset.top = val;
+        },
+        setBottomOffset: function(val) {
+            this._offset.bottom = val;
+        },
+        setOffset: function(top, bottom) {
+            this._offset.top = top;
+            this._offset.bottom = bottom;
+        },
         setFlag: function(flag) {
             this.setAttr("data-flag", flag || "Expression");
         },
         setChildren: function(index, exp) {
-            // 首先清理掉之前的表达式
             if (this.children[index]) {
                 this.children[index].remove();
             }
             this.children[index] = exp;
             this.expContent.addShape(exp);
+        },
+        getBaselineProportion: function() {
+            return FONT_CONF.baselinePosition;
+        },
+        getMeanlineProportion: function() {
+            return FONT_CONF.meanlinePosition;
+        },
+        getBaseline: function(refer) {
+            return this.getRenderBox(refer).height * FONT_CONF.baselinePosition - 3;
+        },
+        getMeanline: function(refer) {
+            return this.getRenderBox(refer).height * FONT_CONF.meanlinePosition - 1;
+        },
+        getAscenderline: function() {
+            return this.getFixRenderBox().height * FONT_CONF.ascenderPosition;
+        },
+        getDescenderline: function() {
+            return this.getFixRenderBox().height * FONT_CONF.descenderPosition;
         },
         translateElement: function(x, y) {
             this.expContent.translate(x, y);
@@ -1038,7 +3981,6 @@ define("expression/expression", [ "kity", "def/gtype", "signgroup" ], function(r
             return this.box;
         }
     });
-    // 表达式自动打包
     kity.Utils.extend(Expression, {
         registerWrap: function(name, fn) {
             WRAP_FN_INDEX[name] = WRAP_FN.length;
@@ -1053,7 +3995,6 @@ define("expression/expression", [ "kity", "def/gtype", "signgroup" ], function(r
             }
             return fn;
         },
-        // 打包函数
         wrap: function(operand) {
             var result = undefined;
             kity.Utils.each(WRAP_FN, function(fn) {
@@ -1070,10 +4011,7 @@ define("expression/expression", [ "kity", "def/gtype", "signgroup" ], function(r
     });
     return Expression;
 });
-/**
- * Text表达式
- */
-define("expression/text", [ "char/text", "kity", "font/manager", "signgroup", "char/conf", "expression/expression", "def/gtype" ], function(require, exports, module) {
+define("expression/text", [ "char/text", "kity", "sysconf", "font/manager", "char/text-factory", "signgroup", "char/conf", "expression/expression", "def/gtype" ], function(require, exports, module) {
     var Text = require("char/text"), kity = require("kity"), FONT_CONF = require("char/conf"), Expression = require("expression/expression"), TextExpression = kity.createClass("TextExpression", {
         base: require("expression/expression"),
         constructor: function(content, fontFamily) {
@@ -1098,7 +4036,6 @@ define("expression/text", [ "char/text", "kity", "font/manager", "signgroup", "c
             return this;
         }
     });
-    // 注册文本表达式的打包函数
     Expression.registerWrap("text", function(operand) {
         var operandType = typeof operand;
         if (operandType === "number" || operandType === "string") {
@@ -1108,41 +4045,111 @@ define("expression/text", [ "char/text", "kity", "font/manager", "signgroup", "c
     });
     return TextExpression;
 });
-/*!
- * 字体管理器
- */
-define("font/installer", [ "kity" ], function(require) {
-    var kity = require("kity"), NS = "http://www.w3.org/2000/svg";
+define("font/checker-tpl", [], function(require) {
+    return [ '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">', '<text id="abcd" font-family="KF AMS MAIN" font-size="50" x="0" y="0">x</text>', "</svg>" ];
+});
+define("font/installer", [ "kity", "font/manager", "sysconf", "jquery", "font/map/kf-ams-main", "font/map/kf-ams-cal", "font/map/kf-ams-frak", "font/map/kf-ams-bb", "font/map/kf-ams-roman", "font/checker-tpl" ], function(require) {
+    var kity = require("kity"), FontManager = require("font/manager"), $ = require("jquery"), FONT_CONF = require("sysconf").font, NODE_LIST = [];
     return kity.createClass("FontInstaller", {
-        constructor: function(paper) {
-            this.paper = paper;
+        constructor: function(doc, resource) {
+            this.callBase();
+            this.resource = resource || "../src/resource/";
+            this.doc = doc;
         },
-        // 挂载字体
-        mount: function(fontData) {
-            var chardata = fontData.data, font = document.createElementNS(NS, "font"), attr = fontData.meta.attr;
-            font.setAttribute("horiz-adv-x", fontData.meta.x);
-            var strArr = [ "<font-face " + attr + ' font-family="' + fontData.meta.fontFamily + '" units-per-em="' + fontData.meta["units-per-em"] + '"></font-face>' ];
-            kity.Utils.each(chardata, function(char, key) {
-                strArr.push('<glyph unicode="' + key + '"' + (char.x !== null ? ' horiz-adv-x="' + char.x + '"' : "") + ' d="' + char.d + '"/>');
+        mount: function(callback) {
+            var fontList = FontManager.getFontList(), count = 0, _self = this;
+            kity.Utils.each(fontList, function(fontInfo) {
+                count++;
+                fontInfo.meta.src = _self.resource + fontInfo.meta.src;
+                _self.createFontStyle(fontInfo);
+                preload(_self.doc, fontInfo, function() {
+                    count--;
+                    if (count === 0) {
+                        complete(_self.doc, callback);
+                    }
+                });
             });
-            strArr = strArr.join("");
-            font.innerHTML = strArr;
-            this.paper.addResource({
-                node: font
-            });
+        },
+        createFontStyle: function(fontInfo) {
+            var stylesheet = this.doc.createElement("style"), tpl = '@font-face{\nfont-family: "${fontFamily}";\nsrc: url("${src}");\n}';
+            stylesheet.setAttribute("type", "text/css");
+            stylesheet.innerHTML = tpl.replace("${fontFamily}", fontInfo.meta.fontFamily).replace("${src}", fontInfo.meta.src);
+            this.doc.head.appendChild(stylesheet);
         }
     });
+    function preload(doc, fontInfo, callback) {
+        $.get(fontInfo.meta.src, function(data, state) {
+            if (state === "success") {
+                applyFonts(doc, fontInfo);
+            }
+            callback();
+        });
+    }
+    function complete(doc, callback) {
+        window.setTimeout(function() {
+            initFontSystemInfo(doc);
+            removeTmpNode();
+            callback();
+        }, 100);
+    }
+    function applyFonts(doc, fontInfo) {
+        var node = document.createElement("div"), fontFamily = fontInfo.meta.fontFamily, strs = [];
+        node.style.cssText = "position: absolute; top: 0; left: -100000px;";
+        kity.Utils.each(fontInfo.data, function(v, key) {
+            strs.push(key);
+        });
+        node.style.fontFamily = fontFamily;
+        node.innerHTML = strs.join("");
+        doc.body.appendChild(node);
+        NODE_LIST.push(node);
+    }
+    function initFontSystemInfo(doc) {
+        var tmpNode = doc.createElement("div");
+        tmpNode.style.cssText = "position: absolute; top: 0; left: -100000px;";
+        tmpNode.innerHTML = require("font/checker-tpl").join("");
+        doc.body.appendChild(tmpNode);
+        var rectBox = tmpNode.getElementsByTagName("text")[0].getBBox();
+        FONT_CONF.spaceHeight = rectBox.height;
+        FONT_CONF.topSpace = -rectBox.y - FONT_CONF.baseline;
+        FONT_CONF.bottomSpace = FONT_CONF.spaceHeight - FONT_CONF.topSpace - FONT_CONF.baseHeight;
+        FONT_CONF.offset = FONT_CONF.baseline + FONT_CONF.topSpace;
+        FONT_CONF.baselinePosition = (FONT_CONF.topSpace + FONT_CONF.baseline) / FONT_CONF.spaceHeight;
+        FONT_CONF.meanlinePosition = (FONT_CONF.topSpace + FONT_CONF.meanline) / FONT_CONF.spaceHeight;
+        FONT_CONF.ascenderPosition = FONT_CONF.topSpace / FONT_CONF.spaceHeight;
+        FONT_CONF.descenderPosition = (FONT_CONF.topSpace + FONT_CONF.baseHeight) / FONT_CONF.spaceHeight;
+        doc.body.removeChild(tmpNode);
+    }
+    function removeTmpNode() {
+        kity.Utils.each(NODE_LIST, function(node) {
+            node.parentNode.removeChild(node);
+        });
+        NODE_LIST = [];
+    }
 });
-/*!
- * 双线字体
- */
-define("font/kf-ams-bb", [], function(require) {
+define("font/manager", [ "kity", "sysconf", "font/map/kf-ams-main", "font/map/kf-ams-cal", "font/map/kf-ams-frak", "font/map/kf-ams-bb", "font/map/kf-ams-roman" ], function(require) {
+    var FONT_LIST = {}, kity = require("kity"), CONF = require("sysconf").font.list;
+    (function() {
+        kity.Utils.each(CONF, function(fontData) {
+            FONT_LIST[fontData.meta.fontFamily] = fontData;
+        });
+    })();
+    return {
+        getFontList: function() {
+            return FONT_LIST;
+        },
+        getCharacterValue: function(key, fontFamily) {
+            if (!FONT_LIST[fontFamily]) {
+                return null;
+            }
+            return FONT_LIST[fontFamily].map[key] || null;
+        }
+    };
+});
+define("font/map/kf-ams-bb", [], function(require) {
     return {
         meta: {
             fontFamily: "KF AMS BB",
-            x: 725,
-            "units-per-em": 1e3,
-            attr: 'panose-1="2 0 6 3 0 0 0 0 0 0" ascent="800" descent="-200" cap-height="685" bbox="50 -179 1034 704" underline-thickness="50" underline-position="-100" unicode-range="U+0041-005A"'
+            src: "KF_AMS_BB.woff"
         },
         data: {
             A: {
@@ -1252,16 +4259,11 @@ define("font/kf-ams-bb", [], function(require) {
         }
     };
 });
-/*!
- * 手写体
- */
-define("font/kf-ams-cal", [], function(require) {
+define("font/map/kf-ams-cal", [], function(require) {
     return {
         meta: {
             fontFamily: "KF AMS CAL",
-            x: 724,
-            "units-per-em": 1e3,
-            attr: 'panose-1="2 0 6 3 0 0 0 0 0 0" ascent="800" descent="-200" cap-height="683" bbox="50 -135 1139 775" underline-thickness="50" underline-position="-100" unicode-range="U+0041-005A"'
+            src: "KF_AMS_CAL.woff"
         },
         data: {
             A: {
@@ -1371,16 +4373,11 @@ define("font/kf-ams-cal", [], function(require) {
         }
     };
 });
-/*!
- * 花体
- */
-define("font/kf-ams-frak", [], function(require) {
+define("font/map/kf-ams-frak", [], function(require) {
     return {
         meta: {
             fontFamily: "KF AMS FRAK",
-            x: 394,
-            "units-per-em": 1e3,
-            attr: 'panose-1="2 0 6 3 0 0 0 0 0 0" ascent="800" descent="-200" x-height="471" cap-height="686" bbox="50 -238 1084 729" underline-thickness="50" underline-position="-100" unicode-range="U+0041-007A"'
+            src: "KF_AMS_FRAK.woff"
         },
         data: {
             A: {
@@ -1594,16 +4591,11 @@ define("font/kf-ams-frak", [], function(require) {
         }
     };
 });
-/**
- * Created by hn on 14-4-4.
- */
-define("font/kf-ams-main", [], function(require) {
+define("font/map/kf-ams-main", [], function(require) {
     return {
         meta: {
             fontFamily: "KF AMS MAIN",
-            x: 911,
-            "units-per-em": 1e3,
-            attr: 'panose-1="2 0 6 3 0 0 0 0 0 0" ascent="800" descent="-200" x-height="441" cap-height="683" bbox="50 -463 1699 1003" underline-thickness="50" underline-position="-100" unicode-range="U+0021-3009"'
+            src: "KF_AMS_MAIN.woff"
         },
         data: {
             "0": {
@@ -3500,435 +6492,426 @@ define("font/kf-ams-main", [], function(require) {
             }
         },
         map: {
-            // char
-            Alpha: "Α",
-            Beta: "Β",
-            Gamma: "Γ",
-            Delta: "Δ",
-            Epsilon: "Ε",
-            Zeta: "Ζ",
-            Eta: "Η",
-            Theta: "Θ",
-            Iota: "Ι",
-            Kappa: "Κ",
-            Lambda: "Λ",
-            Mu: "Μ",
-            Nu: "Ν",
-            Xi: "Ξ",
-            Omicron: "Ο",
-            Pi: "Π",
-            Rho: "Ρ",
-            Sigma: "Σ",
-            Tau: "Τ",
-            Upsilon: "Υ",
-            Phi: "Φ",
-            Chi: "Χ",
-            Psi: "Ψ",
-            Omega: "Ω",
-            alpha: "α",
-            beta: "β",
-            gamma: "γ",
-            delta: "δ",
-            epsilon: "ε",
-            varepsilon: "ε",
-            zeta: "ζ",
-            eta: "η",
-            theta: "θ",
-            iota: "ι",
-            kappa: "κ",
-            lambda: "λ",
-            mu: "μ",
-            nu: "ν",
-            xi: "ξ",
-            omicron: "ο",
-            pi: "π",
-            rho: "ρ",
-            sigma: "σ",
-            tau: "τ",
-            upsilon: "υ",
-            phi: "φ",
-            varkappa: "ϰ",
-            chi: "χ",
-            psi: "ψ",
-            omega: "ω",
-            digamma: "Ϝ",
-            varepsilon: "ϵ",
-            varrho: "ϱ",
-            varphi: "ϕ",
-            vartheta: "ϑ",
-            varpi: "ϖ",
-            varsigma: "Ϲ",
-            aleph: "ℵ",
-            beth: "ℶ",
-            daleth: "ℸ",
-            gimel: "ℷ",
-            eth: "ð",
-            hbar: "ℎ",
-            hslash: "ℏ",
-            mho: "℧",
-            partial: "∂",
-            wp: "℘",
-            Game: "⅁",
-            Bbbk: "⅌",
-            Finv: "Ⅎ",
-            Im: "ℑ",
-            Re: "ℜ",
-            complement: "∁",
-            ell: "ℓ",
-            circledS: "Ⓢ",
-            imath: "ı",
-            jmath: "ȷ",
-            // symbol
-            doublecap: "⋒",
-            Cap: "⋒",
-            doublecup: "⋓",
-            Cup: "⋓",
+            Alpha: "\u0391",
+            Beta: "\u0392",
+            Gamma: "\u0393",
+            Delta: "\u0394",
+            Epsilon: "\u0395",
+            Zeta: "\u0396",
+            Eta: "\u0397",
+            Theta: "\u0398",
+            Iota: "\u0399",
+            Kappa: "\u039a",
+            Lambda: "\u039b",
+            Mu: "\u039c",
+            Nu: "\u039d",
+            Xi: "\u039e",
+            Omicron: "\u039f",
+            Pi: "\u03a0",
+            Rho: "\u03a1",
+            Sigma: "\u03a3",
+            Tau: "\u03a4",
+            Upsilon: "\u03a5",
+            Phi: "\u03a6",
+            Chi: "\u03a7",
+            Psi: "\u03a8",
+            Omega: "\u03a9",
+            alpha: "\u03b1",
+            beta: "\u03b2",
+            gamma: "\u03b3",
+            delta: "\u03b4",
+            epsilon: "\u03b5",
+            varepsilon: "\u03b5",
+            zeta: "\u03b6",
+            eta: "\u03b7",
+            theta: "\u03b8",
+            iota: "\u03b9",
+            kappa: "\u03ba",
+            lambda: "\u03bb",
+            mu: "\u03bc",
+            nu: "\u03bd",
+            xi: "\u03be",
+            omicron: "\u03bf",
+            pi: "\u03c0",
+            rho: "\u03c1",
+            sigma: "\u03c3",
+            tau: "\u03c4",
+            upsilon: "\u03c5",
+            phi: "\u03c6",
+            varkappa: "\u03f0",
+            chi: "\u03c7",
+            psi: "\u03c8",
+            omega: "\u03c9",
+            digamma: "\u03dc",
+            varepsilon: "\u03f5",
+            varrho: "\u03f1",
+            varphi: "\u03d5",
+            vartheta: "\u03d1",
+            varpi: "\u03d6",
+            varsigma: "\u03f9",
+            aleph: "\u2135",
+            beth: "\u2136",
+            daleth: "\u2138",
+            gimel: "\u2137",
+            eth: "\xf0",
+            hbar: "\u210e",
+            hslash: "\u210f",
+            mho: "\u2127",
+            partial: "\u2202",
+            wp: "\u2118",
+            Game: "\u2141",
+            Bbbk: "\u214c",
+            Finv: "\u2132",
+            Im: "\u2111",
+            Re: "\u211c",
+            complement: "\u2201",
+            ell: "\u2113",
+            circledS: "\u24c8",
+            imath: "\u0131",
+            jmath: "\u0237",
+            doublecap: "\u22d2",
+            Cap: "\u22d2",
+            doublecup: "\u22d3",
+            Cup: "\u22d3",
             ast: "*",
-            divideontimes: "⋇",
-            rightthreetimes: "⋌",
-            leftthreetimes: "⋋",
-            cdot: "·",
-            odot: "⊙",
-            dotplus: "∔",
-            rtimes: "⋊",
-            ltimes: "⋉",
-            centerdot: "▪",
-            doublebarwedge: "⌭",
-            setminus: "⒁",
-            amalg: "∐",
-            circ: "◦",
-            bigcirc: "◯",
-            gtrdot: "⋗",
-            lessdot: "⋖",
-            smallsetminus: "⒅",
-            circledast: "⊛",
-            circledcirc: "⊚",
-            sqcap: "⊓",
-            sqcup: "⊔",
-            barwedge: "⊼",
-            circleddash: "⊝",
-            star: "⋆",
-            bigtriangledown: "▽",
-            bigtriangleup: "△",
-            cup: "∪",
-            cap: "∩",
-            times: "×",
-            mp: "∓",
-            pm: "±",
-            triangleleft: "⊲",
-            triangleright: "⊳",
-            boxdot: "⊡",
-            curlyvee: "⋏",
-            curlywedge: "⋎",
-            boxminus: "⊟",
-            boxtimes: "⊠",
-            ominus: "⊖",
-            oplus: "⊕",
-            oslash: "⊘",
-            otimes: "⊗",
-            uplus: "⊎",
-            boxplus: "⊞",
-            dagger: "†",
-            ddagger: "‡",
-            vee: "∨",
-            lor: "∨",
-            veebar: "⊻",
-            bullet: "•",
-            diamond: "⋄",
-            wedge: "∧",
-            land: "∧",
-            div: "÷",
-            wr: "≀",
-            geqq: "≧",
-            lll: "⋘",
-            llless: "⋘",
-            ggg: "⋙",
-            gggtr: "⋙",
-            preccurlyeq: "≼",
-            geqslant: "⩾",
-            lnapprox: "⪉",
-            preceq: "⪯",
-            gg: "≫",
-            lneq: "⪇",
-            precnapprox: "⪹",
-            approx: "≈",
-            lneqq: "≨",
-            precneqq: "⪵",
-            approxeq: "≊",
-            gnapprox: "⪊",
-            lnsim: "⋦",
-            precnsim: "⋨",
-            asymp: "≍",
-            gneq: "⪈",
-            lvertneqq: "⌮",
-            precsim: "≾",
-            backsim: "∽",
-            gneqq: "≩",
-            ncong: "≇",
-            risingdotseq: "≓",
-            backsimeq: "⋍",
-            gnsim: "⋧",
-            sim: "∼",
-            simeq: "≃",
-            bumpeq: "≏",
-            gtrapprox: "⪆",
-            ngeq: "≱",
-            Bumpeq: "≎",
-            gtreqless: "⋛",
-            ngeqq: "⌱",
-            succ: "≻",
-            circeq: "≗",
-            gtreqqless: "⪌",
-            ngeqslant: "⌳",
-            succapprox: "⪸",
-            cong: "≅",
-            gtrless: "≷",
-            ngtr: "≯",
-            succcurlyeq: "≽",
-            curlyeqprec: "⋞",
-            gtrsim: "≳",
-            nleq: "≰",
-            succeq: "⪰",
-            curlyeqsucc: "⋟",
-            gvertneqq: "⌯",
-            neq: "≠",
-            ne: "≠",
-            nequiv: "≢",
-            nleqq: "⌰",
-            succnapprox: "⪺",
-            doteq: "≐",
-            leq: "≤",
-            le: "≤",
-            nleqslant: "⌲",
-            succneqq: "⪶",
-            doteqdot: "≑",
-            Doteq: "≑",
-            leqq: "≦",
-            nless: "≮",
-            succnsim: "⋩",
-            leqslant: "⩽",
-            nprec: "⊀",
-            succsim: "≿",
-            eqsim: "≂",
-            lessapprox: "⪅",
-            npreceq: "⋠",
-            eqslantgtr: "⪖",
-            lesseqgtr: "⋚",
-            nsim: "≁",
-            eqslantless: "⪕",
-            lesseqqgtr: "⪋",
-            nsucc: "⊁",
-            triangleq: "≜",
-            eqcirc: "≖",
-            equiv: "≡",
-            lessgtr: "≶",
-            nsucceq: "⋡",
-            fallingdotseq: "≒",
-            lesssim: "≲",
-            prec: "≺",
-            geq: "≥",
-            ge: "≥",
-            ll: "≪",
-            precapprox: "⪷",
-            // arrows
-            uparrow: "↑",
-            downarrow: "↓",
-            updownarrow: "↕",
-            Uparrow: "⇑",
-            Downarrow: "⇓",
-            Updownarrow: "⇕",
-            circlearrowleft: "↺",
-            circlearrowright: "↻",
-            curvearrowleft: "↶",
-            curvearrowright: "↷",
-            downdownarrows: "⇊",
-            downharpoonleft: "⇃",
-            downharpoonright: "⇂",
-            leftarrow: "←",
-            gets: "←",
-            Leftarrow: "⇐",
-            leftarrowtail: "↢",
-            leftharpoondown: "↽",
-            leftharpoonup: "↼",
-            leftleftarrows: "⇇",
-            leftrightarrow: "↔",
-            Leftrightarrow: "⇔",
-            leftrightarrows: "⇄",
-            leftrightharpoons: "⇋",
-            leftrightsquigarrow: "↭",
-            Lleftarrow: "⇚",
-            looparrowleft: "↫",
-            looparrowright: "↬",
-            multimap: "⊸",
-            nLeftarrow: "⇍",
-            nRightarrow: "⇏",
-            nLeftrightarrow: "⇎",
-            nearrow: "↗",
-            nleftarrow: "↚",
-            nleftrightarrow: "↮",
-            nrightarrow: "↛",
-            nwarrow: "↖",
-            rightarrow: "→",
-            to: "→",
-            Rightarrow: "⇒",
-            rightarrowtail: "↣",
-            rightharpoondown: "⇁",
-            rightharpoonup: "⇀",
-            rightleftarrows: "⇆",
-            rightleftharpoons: "⇌",
-            rightrightarrows: "⇉",
-            rightsquigarrow: "⇝",
-            Rrightarrow: "⇛",
-            searrow: "↘",
-            swarrow: "↙",
-            twoheadleftarrow: "↞",
-            twoheadrightarrow: "↠",
-            upharpoonleft: "↿",
-            upharpoonright: "↾",
-            restriction: "↾",
-            upuparrows: "⇈",
-            Lsh: "↰",
-            Rsh: "↱",
-            longleftarrow: "⟵",
-            longrightarrow: "⟶",
-            Longleftarrow: "⟸",
-            Longrightarrow: "⟹",
-            implies: "⟹",
-            longleftrightarrow: "⟷",
-            Longleftrightarrow: "⟺",
-            // relation
-            backepsilon: "∍",
-            because: "∵",
-            therefore: "∴",
-            between: "≬",
-            blacktriangleleft: "◀",
-            blacktriangleright: "▸",
-            dashv: "⊣",
-            bowtie: "⋈",
-            frown: "⌢",
-            "in": "∈",
-            notin: "∉",
-            mid: "∣",
-            parallel: "∥",
-            models: "⊨",
-            ni: "∋",
-            owns: "∋",
-            nmid: "∤",
-            nparallel: "∦",
-            nshortmid: "⏒",
-            nshortparallel: "⏓",
-            nsubseteq: "⊈",
-            nsubseteqq: "⫇",
-            nsupseteq: "⊉",
-            nsupseteqq: "⫈",
-            ntriangleleft: "⋪",
-            ntrianglelefteq: "⋬",
-            ntriangleright: "⋫",
-            ntrianglerighteq: "⋭",
-            nvdash: "⊬",
-            nVdash: "⊮",
-            nvDash: "⊭",
-            nVDash: "⊯",
-            perp: "⊥",
-            pitchfork: "⋔",
-            propto: "∝",
-            shortmid: "⏐",
-            shortparallel: "⏑",
-            smile: "⌣",
-            sqsubset: "⊏",
-            sqsubseteq: "⊑",
-            sqsupset: "⊐",
-            sqsupseteq: "⊒",
-            subset: "⊂",
-            Subset: "⋐",
-            subseteq: "⊆",
-            subseteqq: "⫅",
-            subsetneq: "⊊",
-            subsetneqq: "⫋",
-            supset: "⊃",
-            Supset: "⋑",
-            supseteq: "⊇",
-            supseteqq: "⫆",
-            supsetneq: "⊋",
-            supsetneqq: "⫌",
-            trianglelefteq: "⊴",
-            trianglerighteq: "⊵",
-            varpropto: "⫉",
-            varsubsetneq: "⏔",
-            varsubsetneqq: "⏖",
-            varsupsetneq: "⏕",
-            varsupsetneqq: "⏗",
-            vdash: "⊢",
-            Vdash: "⊩",
-            vDash: "⊨",
-            Vvdash: "⊪",
+            divideontimes: "\u22c7",
+            rightthreetimes: "\u22cc",
+            leftthreetimes: "\u22cb",
+            cdot: "\xb7",
+            odot: "\u2299",
+            dotplus: "\u2214",
+            rtimes: "\u22ca",
+            ltimes: "\u22c9",
+            centerdot: "\u25aa",
+            doublebarwedge: "\u232d",
+            setminus: "\u2481",
+            amalg: "\u2210",
+            circ: "\u25e6",
+            bigcirc: "\u25ef",
+            gtrdot: "\u22d7",
+            lessdot: "\u22d6",
+            smallsetminus: "\u2485",
+            circledast: "\u229b",
+            circledcirc: "\u229a",
+            sqcap: "\u2293",
+            sqcup: "\u2294",
+            barwedge: "\u22bc",
+            circleddash: "\u229d",
+            star: "\u22c6",
+            bigtriangledown: "\u25bd",
+            bigtriangleup: "\u25b3",
+            cup: "\u222a",
+            cap: "\u2229",
+            times: "\xd7",
+            mp: "\u2213",
+            pm: "\xb1",
+            triangleleft: "\u22b2",
+            triangleright: "\u22b3",
+            boxdot: "\u22a1",
+            curlyvee: "\u22cf",
+            curlywedge: "\u22ce",
+            boxminus: "\u229f",
+            boxtimes: "\u22a0",
+            ominus: "\u2296",
+            oplus: "\u2295",
+            oslash: "\u2298",
+            otimes: "\u2297",
+            uplus: "\u228e",
+            boxplus: "\u229e",
+            dagger: "\u2020",
+            ddagger: "\u2021",
+            vee: "\u2228",
+            lor: "\u2228",
+            veebar: "\u22bb",
+            bullet: "\u2022",
+            diamond: "\u22c4",
+            wedge: "\u2227",
+            land: "\u2227",
+            div: "\xf7",
+            wr: "\u2240",
+            geqq: "\u2267",
+            lll: "\u22d8",
+            llless: "\u22d8",
+            ggg: "\u22d9",
+            gggtr: "\u22d9",
+            preccurlyeq: "\u227c",
+            geqslant: "\u2a7e",
+            lnapprox: "\u2a89",
+            preceq: "\u2aaf",
+            gg: "\u226b",
+            lneq: "\u2a87",
+            precnapprox: "\u2ab9",
+            approx: "\u2248",
+            lneqq: "\u2268",
+            precneqq: "\u2ab5",
+            approxeq: "\u224a",
+            gnapprox: "\u2a8a",
+            lnsim: "\u22e6",
+            precnsim: "\u22e8",
+            asymp: "\u224d",
+            gneq: "\u2a88",
+            lvertneqq: "\u232e",
+            precsim: "\u227e",
+            backsim: "\u223d",
+            gneqq: "\u2269",
+            ncong: "\u2247",
+            risingdotseq: "\u2253",
+            backsimeq: "\u22cd",
+            gnsim: "\u22e7",
+            sim: "\u223c",
+            simeq: "\u2243",
+            bumpeq: "\u224f",
+            gtrapprox: "\u2a86",
+            ngeq: "\u2271",
+            Bumpeq: "\u224e",
+            gtreqless: "\u22db",
+            ngeqq: "\u2331",
+            succ: "\u227b",
+            circeq: "\u2257",
+            gtreqqless: "\u2a8c",
+            ngeqslant: "\u2333",
+            succapprox: "\u2ab8",
+            cong: "\u2245",
+            gtrless: "\u2277",
+            ngtr: "\u226f",
+            succcurlyeq: "\u227d",
+            curlyeqprec: "\u22de",
+            gtrsim: "\u2273",
+            nleq: "\u2270",
+            succeq: "\u2ab0",
+            curlyeqsucc: "\u22df",
+            gvertneqq: "\u232f",
+            neq: "\u2260",
+            ne: "\u2260",
+            nequiv: "\u2262",
+            nleqq: "\u2330",
+            succnapprox: "\u2aba",
+            doteq: "\u2250",
+            leq: "\u2264",
+            le: "\u2264",
+            nleqslant: "\u2332",
+            succneqq: "\u2ab6",
+            doteqdot: "\u2251",
+            Doteq: "\u2251",
+            leqq: "\u2266",
+            nless: "\u226e",
+            succnsim: "\u22e9",
+            leqslant: "\u2a7d",
+            nprec: "\u2280",
+            succsim: "\u227f",
+            eqsim: "\u2242",
+            lessapprox: "\u2a85",
+            npreceq: "\u22e0",
+            eqslantgtr: "\u2a96",
+            lesseqgtr: "\u22da",
+            nsim: "\u2241",
+            eqslantless: "\u2a95",
+            lesseqqgtr: "\u2a8b",
+            nsucc: "\u2281",
+            triangleq: "\u225c",
+            eqcirc: "\u2256",
+            equiv: "\u2261",
+            lessgtr: "\u2276",
+            nsucceq: "\u22e1",
+            fallingdotseq: "\u2252",
+            lesssim: "\u2272",
+            prec: "\u227a",
+            geq: "\u2265",
+            ge: "\u2265",
+            ll: "\u226a",
+            precapprox: "\u2ab7",
+            uparrow: "\u2191",
+            downarrow: "\u2193",
+            updownarrow: "\u2195",
+            Uparrow: "\u21d1",
+            Downarrow: "\u21d3",
+            Updownarrow: "\u21d5",
+            circlearrowleft: "\u21ba",
+            circlearrowright: "\u21bb",
+            curvearrowleft: "\u21b6",
+            curvearrowright: "\u21b7",
+            downdownarrows: "\u21ca",
+            downharpoonleft: "\u21c3",
+            downharpoonright: "\u21c2",
+            leftarrow: "\u2190",
+            gets: "\u2190",
+            Leftarrow: "\u21d0",
+            leftarrowtail: "\u21a2",
+            leftharpoondown: "\u21bd",
+            leftharpoonup: "\u21bc",
+            leftleftarrows: "\u21c7",
+            leftrightarrow: "\u2194",
+            Leftrightarrow: "\u21d4",
+            leftrightarrows: "\u21c4",
+            leftrightharpoons: "\u21cb",
+            leftrightsquigarrow: "\u21ad",
+            Lleftarrow: "\u21da",
+            looparrowleft: "\u21ab",
+            looparrowright: "\u21ac",
+            multimap: "\u22b8",
+            nLeftarrow: "\u21cd",
+            nRightarrow: "\u21cf",
+            nLeftrightarrow: "\u21ce",
+            nearrow: "\u2197",
+            nleftarrow: "\u219a",
+            nleftrightarrow: "\u21ae",
+            nrightarrow: "\u219b",
+            nwarrow: "\u2196",
+            rightarrow: "\u2192",
+            to: "\u2192",
+            Rightarrow: "\u21d2",
+            rightarrowtail: "\u21a3",
+            rightharpoondown: "\u21c1",
+            rightharpoonup: "\u21c0",
+            rightleftarrows: "\u21c6",
+            rightleftharpoons: "\u21cc",
+            rightrightarrows: "\u21c9",
+            rightsquigarrow: "\u21dd",
+            Rrightarrow: "\u21db",
+            searrow: "\u2198",
+            swarrow: "\u2199",
+            twoheadleftarrow: "\u219e",
+            twoheadrightarrow: "\u21a0",
+            upharpoonleft: "\u21bf",
+            upharpoonright: "\u21be",
+            restriction: "\u21be",
+            upuparrows: "\u21c8",
+            Lsh: "\u21b0",
+            Rsh: "\u21b1",
+            longleftarrow: "\u27f5",
+            longrightarrow: "\u27f6",
+            Longleftarrow: "\u27f8",
+            Longrightarrow: "\u27f9",
+            implies: "\u27f9",
+            longleftrightarrow: "\u27f7",
+            Longleftrightarrow: "\u27fa",
+            backepsilon: "\u220d",
+            because: "\u2235",
+            therefore: "\u2234",
+            between: "\u226c",
+            blacktriangleleft: "\u25c0",
+            blacktriangleright: "\u25b8",
+            dashv: "\u22a3",
+            bowtie: "\u22c8",
+            frown: "\u2322",
+            "in": "\u2208",
+            notin: "\u2209",
+            mid: "\u2223",
+            parallel: "\u2225",
+            models: "\u22a8",
+            ni: "\u220b",
+            owns: "\u220b",
+            nmid: "\u2224",
+            nparallel: "\u2226",
+            nshortmid: "\u23d2",
+            nshortparallel: "\u23d3",
+            nsubseteq: "\u2288",
+            nsubseteqq: "\u2ac7",
+            nsupseteq: "\u2289",
+            nsupseteqq: "\u2ac8",
+            ntriangleleft: "\u22ea",
+            ntrianglelefteq: "\u22ec",
+            ntriangleright: "\u22eb",
+            ntrianglerighteq: "\u22ed",
+            nvdash: "\u22ac",
+            nVdash: "\u22ae",
+            nvDash: "\u22ad",
+            nVDash: "\u22af",
+            perp: "\u22a5",
+            pitchfork: "\u22d4",
+            propto: "\u221d",
+            shortmid: "\u23d0",
+            shortparallel: "\u23d1",
+            smile: "\u2323",
+            sqsubset: "\u228f",
+            sqsubseteq: "\u2291",
+            sqsupset: "\u2290",
+            sqsupseteq: "\u2292",
+            subset: "\u2282",
+            Subset: "\u22d0",
+            subseteq: "\u2286",
+            subseteqq: "\u2ac5",
+            subsetneq: "\u228a",
+            subsetneqq: "\u2acb",
+            supset: "\u2283",
+            Supset: "\u22d1",
+            supseteq: "\u2287",
+            supseteqq: "\u2ac6",
+            supsetneq: "\u228b",
+            supsetneqq: "\u2acc",
+            trianglelefteq: "\u22b4",
+            trianglerighteq: "\u22b5",
+            varpropto: "\u2ac9",
+            varsubsetneq: "\u23d4",
+            varsubsetneqq: "\u23d6",
+            varsupsetneq: "\u23d5",
+            varsupsetneqq: "\u23d7",
+            vdash: "\u22a2",
+            Vdash: "\u22a9",
+            vDash: "\u22a8",
+            Vvdash: "\u22aa",
             vert: "|",
-            Vert: "ǁ",
-            "|": "ǁ",
+            Vert: "\u01c1",
+            "|": "\u01c1",
             "{": "{",
             "}": "}",
             backslash: "\\",
-            langle: "〈",
-            rangle: "〉",
-            lceil: "⌈",
-            rceil: "⌉",
+            langle: "\u3008",
+            rangle: "\u3009",
+            lceil: "\u2308",
+            rceil: "\u2309",
             lbrace: "{",
             rbrace: "}",
-            lfloor: "⌊",
-            rfloor: "⌋",
-            cdots: "⋯",
-            ddots: "⋰",
-            vdots: "⋮",
-            dots: "…",
-            ldots: "…",
+            lfloor: "\u230a",
+            rfloor: "\u230b",
+            cdots: "\u22ef",
+            ddots: "\u22f0",
+            vdots: "\u22ee",
+            dots: "\u2026",
+            ldots: "\u2026",
             "#": "#",
-            bot: "⊥",
-            angle: "∠",
-            backprime: "‵",
-            bigstar: "★",
-            blacklozenge: "◆",
-            blacksquare: "■",
-            blacktriangle: "▲",
-            blacktriangledown: "▼",
-            clubsuit: "♣",
-            diagdown: "⒁",
-            diagup: "⒂",
-            diamondsuit: "♢",
-            emptyset: "ø",
-            exists: "∃",
-            flat: "♭",
-            forall: "∀",
-            heartsuit: "♡",
-            infty: "∞",
-            lozenge: "◇",
-            measuredangle: "∡",
-            nabla: "∇",
-            natural: "♮",
-            neg: "¬",
-            lnot: "¬",
-            nexists: "∄",
-            prime: "′",
-            sharp: "♯",
-            spadesuit: "♠",
-            sphericalangle: "∢",
-            surd: "√",
-            top: "⊤",
-            varnothing: "∅",
-            triangle: "△",
-            triangledown: "▽"
+            bot: "\u22a5",
+            angle: "\u2220",
+            backprime: "\u2035",
+            bigstar: "\u2605",
+            blacklozenge: "\u25c6",
+            blacksquare: "\u25a0",
+            blacktriangle: "\u25b2",
+            blacktriangledown: "\u25bc",
+            clubsuit: "\u2663",
+            diagdown: "\u2481",
+            diagup: "\u2482",
+            diamondsuit: "\u2662",
+            emptyset: "\xf8",
+            exists: "\u2203",
+            flat: "\u266d",
+            forall: "\u2200",
+            heartsuit: "\u2661",
+            infty: "\u221e",
+            lozenge: "\u25c7",
+            measuredangle: "\u2221",
+            nabla: "\u2207",
+            natural: "\u266e",
+            neg: "\xac",
+            lnot: "\xac",
+            nexists: "\u2204",
+            prime: "\u2032",
+            sharp: "\u266f",
+            spadesuit: "\u2660",
+            sphericalangle: "\u2222",
+            surd: "\u221a",
+            top: "\u22a4",
+            varnothing: "\u2205",
+            triangle: "\u25b3",
+            triangledown: "\u25bd"
         }
     };
 });
-/*!
- * 罗马字体
- */
-define("font/kf-ams-roman", [], function(require) {
+define("font/map/kf-ams-roman", [], function(require) {
     return {
         meta: {
             fontFamily: "KF AMS ROMAN",
-            x: 50,
-            "units-per-em": 1e3,
-            attr: ""
+            src: "KF_AMS_ROMAN.woff"
         },
         data: {
             A: {
@@ -4142,55 +7125,12 @@ define("font/kf-ams-roman", [], function(require) {
         }
     };
 });
-/*!
- * 字体管理器
- */
-define("font/manager", [], function(require) {
-    var FONT_LIST = {};
-    return {
-        registerFont: function(fontData) {
-            FONT_LIST[fontData.meta.fontFamily] = fontData;
-        },
-        getFontList: function() {
-            return FONT_LIST;
-        },
-        getCharacterMap: function(fontFamily) {
-            if (!FONT_LIST[fontFamily]) {
-                return null;
-            }
-            return FONT_LIST[fontFamily].map || {};
-        },
-        getCharacterData: function(char, fontFamily) {
-            try {
-                return FONT_LIST[fontFamily].data[char].d;
-            } catch (e) {
-                return null;
-            }
-        },
-        /**
-         * 按照指定的字体族， 返回给定的转义序列str所对应的unicode字符
-         * 如果不存在对应的字体族或者该族内不存在对应的转义序列， 则返回空串
-         * @param str 需要转义的序列
-         * @param fontFamily 参考的字体族
-         */
-        getCharacterValue: function(str, fontFamily) {
-            var map = this.getCharacterMap(fontFamily);
-            if (!map) {
-                return "";
-            }
-            return map[str] || "";
-        }
-    };
-});
-/**
- * 公式对象，表达式容器
- */
-define("formula", [ "kity", "def/gtype", "conf", "font/kf-ams-main", "font/kf-ams-cal", "font/kf-ams-roman", "font/kf-ams-frak", "font/kf-ams-bb", "font/manager", "font/installer", "fpaper" ], function(require, exports, module) {
-    var kity = require("kity"), GTYPE = require("def/gtype"), CONF = require("conf"), FontManager = require("font/manager"), FontInstaller = require("font/installer"), DEFAULT_OPTIONS = {
+define("formula", [ "kity", "def/gtype", "font/manager", "sysconf", "font/installer", "jquery", "font/checker-tpl", "base/output", "base/canvg", "fpaper" ], function(require, exports, module) {
+    var kity = require("kity"), GTYPE = require("def/gtype"), FontManager = require("font/manager"), FontInstaller = require("font/installer"), DEFAULT_OPTIONS = {
         fontsize: 50,
         autoresize: true,
         padding: [ 0 ]
-    }, EXPRESSION_INTERVAL = 10, ExpressionWrap = kity.createClass("ExpressionWrap", {
+    }, Output = require("base/output"), EXPRESSION_INTERVAL = 10, ExpressionWrap = kity.createClass("ExpressionWrap", {
         constructor: function(exp, config) {
             this.wrap = new kity.Group();
             this.bg = new kity.Rect(0, 0, 0, 0).fill("transparent");
@@ -4226,7 +7166,7 @@ define("formula", [ "kity", "def/gtype", "conf", "font/kf-ams-main", "font/kf-am
             this.fontInstaller = new FontInstaller(this);
             this.config = kity.Utils.extend({}, DEFAULT_OPTIONS, config);
             this.initEnvironment();
-            this.initFont();
+            this.initInnerFont();
         },
         getContentContainer: function() {
             return this.container;
@@ -4241,15 +7181,20 @@ define("formula", [ "kity", "def/gtype", "conf", "font/kf-ams-main", "font/kf-am
             }
             this.node.setAttribute("font-size", DEFAULT_OPTIONS.fontsize);
         },
-        initFont: function() {
-            var fontInstaller = this.fontInstaller;
-            kity.Utils.each(FontManager.getFontList(), function(fontData) {
-                fontInstaller.mount(fontData);
+        initInnerFont: function() {
+            var fontList = FontManager.getFontList(), _self = this;
+            kity.Utils.each(fontList, function(fontInfo) {
+                createFontStyle(fontInfo);
             });
+            function createFontStyle(fontInfo) {
+                var stylesheet = _self.doc.createElement("style"), tpl = '@font-face{font-family: "${fontFamily}";font-style: normal;src: url("${src}") format("woff");}';
+                stylesheet.setAttribute("type", "text/css");
+                stylesheet.innerHTML = tpl.replace("${fontFamily}", fontInfo.meta.fontFamily).replace("${src}", fontInfo.meta.src);
+                _self.resourceNode.appendChild(stylesheet);
+            }
         },
         insertExpression: function(expression, index) {
             var expWrap = this.wrap(expression);
-            // clear zoom
             this.container.clearTransform();
             this.expressions.splice(index, 0, expWrap.getWrapShape());
             this.addShape(expWrap.getWrapShape());
@@ -4285,6 +7230,12 @@ define("formula", [ "kity", "def/gtype", "conf", "font/kf-ams-main", "font/kf-am
                 exp.remove();
             });
             this.expressions = [];
+        },
+        toJPG: function(cb) {
+            new Output(this).toJPG(cb);
+        },
+        toPNG: function(cb) {
+            new Output(this).toPNG(cb);
         }
     });
     kity.Utils.extend(Formula, {
@@ -4292,13 +7243,6 @@ define("formula", [ "kity", "def/gtype", "conf", "font/kf-ams-main", "font/kf-am
             FontManager.registerFont(fontData);
         }
     });
-    // 自运行， 注册配置好的字体
-    (function() {
-        kity.Utils.each(CONF.font.list, function(fontData) {
-            Formula.registerFont(fontData);
-        });
-    })();
-    // 调整表达式之间的偏移
     function correctOffset() {
         var exprOffset = 0;
         kity.Utils.each(this.expressions, function(expr) {
@@ -4313,7 +7257,6 @@ define("formula", [ "kity", "def/gtype", "conf", "font/kf-ams-main", "font/kf-am
         });
         return this;
     }
-    // 通知表达式已接入到paper
     function notifyExpression(expression) {
         var len = 0, childGroup = null;
         if (!expression) {
@@ -4324,26 +7267,22 @@ define("formula", [ "kity", "def/gtype", "conf", "font/kf-ams-main", "font/kf-am
                 notifyExpression(expression.getChild(i));
             }
         } else if (expression.getType() === GTYPE.COMPOUND_EXP) {
-            // 操作数处理
             for (var i = 0, len = expression.getOperands().length; i < len; i++) {
                 notifyExpression(expression.getOperand(i));
             }
-            // 处理操作符
             notifyExpression(expression.getOperator());
         }
         expression.addedCall && expression.addedCall();
     }
     return Formula;
 });
-/**
- * 公式专用paper
- */
 define("fpaper", [ "kity" ], function(require, exports, module) {
     var kity = require("kity");
     return kity.createClass("FPaper", {
         base: kity.Paper,
         constructor: function(container) {
             this.callBase(container);
+            this.doc = container.ownerDocument;
             this.container = new kity.Group();
             this.container.setAttr("data-type", "kf-container");
             this.background = new kity.Group();
@@ -4373,193 +7312,20 @@ define("fpaper", [ "kity" ], function(require, exports, module) {
         }
     });
 });
-/**
- * kity库封包
- */
+define("jquery", [], function(require, exports, module) {
+    if (!window.jQuery) {
+        throw new Error("Missing jQuery");
+    }
+    return window.jQuery;
+});
 define("kity", [], function(require, exports, module) {
     if (!window.kity) {
         throw new Error("Missing Kity Graphic Lib");
     }
     return window.kity;
 });
-/**
- * 分数操作符
- */
-define("operator/binary-opr/fraction", [ "kity", "operator/binary-opr/up-down", "operator/binary" ], function(require, exports, modules) {
-    var kity = require("kity");
-    return kity.createClass("FractionOperator", {
-        base: require("operator/binary-opr/up-down"),
-        constructor: function() {
-            this.callBase("Fraction");
-        },
-        applyOperand: function(upOperand, downOperand) {
-            upOperand.scale(.66);
-            downOperand.scale(.66);
-            var upWidth = Math.ceil(upOperand.getWidth()), downWidth = Math.ceil(downOperand.getWidth()), upHeight = Math.ceil(upOperand.getHeight()), downHeight = Math.ceil(downOperand.getHeight()), offset = 3, // 整体padding
-            boxPadding = 5, maxWidth = Math.max(upWidth, downWidth), // 内部padding
-            padding = 3, maxHeight = Math.max(upHeight, downHeight), operatorShape = generateOperator(maxWidth, offset);
-            this.addOperatorShape(operatorShape);
-            upOperand.translate((maxWidth - upWidth) / 2 + offset, maxHeight - upHeight);
-            operatorShape.translate(0, maxHeight + padding);
-            // 下部不需要偏移
-            downOperand.translate((maxWidth - downWidth) / 2 + offset, maxHeight + padding + operatorShape.getHeight());
-            this.parentExpression.setBoxSize(maxWidth + offset * 2, maxHeight * 2 + operatorShape.getHeight() + padding * 2);
-            this.parentExpression.expand(boxPadding, boxPadding);
-            this.parentExpression.translateElement(boxPadding, boxPadding);
-        }
-    });
-    function generateOperator(width, offset) {
-        return new kity.Rect(width + offset * 2, 1).fill("black");
-    }
-});
-/**
- * 左右结合二元操作符
- * @abstract
- */
-define("operator/binary-opr/left-right", [ "kity", "operator/binary", "operator/operator" ], function(require, exports, modules) {
-    var kity = require("kity");
-    return kity.createClass("LeftRightOperator", {
-        base: require("operator/binary"),
-        applyOperand: function(leftOperand, rightOperand) {
-            var operator = this, operatorBox = operator.getFixRenderBox(), // 操作数特殊处理
-            leftOperandBox = leftOperand.getFixRenderBox(), rightOperandBox = rightOperand.getFixRenderBox(), // 偏移量
-            offset = 0, // 操作对象最大高度
-            maxHeight = Math.max(leftOperandBox.height, rightOperandBox.height, operatorBox.height);
-            // 左操作数
-            leftOperand.translate(offset, (maxHeight - leftOperandBox.height) / 2);
-            // 操作符
-            offset += leftOperandBox.width + leftOperandBox.x;
-            operator.translate(offset, (maxHeight - operatorBox.height) / 2);
-            // 右操作数
-            offset += operatorBox.width + operatorBox.x;
-            rightOperand.translate(offset, (maxHeight - rightOperandBox.height) / 2);
-        }
-    });
-});
-/**
- * 开方操作符
- */
-define("operator/binary-opr/radical", [ "kity", "operator/binary", "operator/operator" ], function(require, exports, modules) {
-    var kity = require("kity"), // 符号图形属性
-    // 线条宽度
-    SHAPE_DATA_WIDTH = 1, // 计算公式
-    radians = 2 * Math.PI / 360, sin20 = Math.sin(20 * radians), cos20 = Math.cos(20 * radians), tan20 = Math.tan(20 * radians), atan20 = Math.atan(20 * radians);
-    return kity.createClass("RadicalOperator", {
-        base: require("operator/binary"),
-        constructor: function() {
-            this.callBase("Radical");
-        },
-        applyOperand: function(radicand, exponent) {
-            generateOperator.call(this, radicand, exponent);
-        }
-    });
-    // 根据给定的操作数生成操作符的pathData
-    // radicand 表示被开方数
-    // exponent 表示指数
-    function generateOperator(radicand, exponent) {
-        var decoration = generateDecoration(radicand), vLine = generateVLine(radicand), hLine = generateHLine(radicand);
-        this.addOperatorShape(decoration);
-        this.addOperatorShape(vLine);
-        this.addOperatorShape(hLine);
-        adjustmentPosition.call(this, mergeShape(decoration, vLine, hLine), this.operatorShape, radicand, exponent);
-        this.parentExpression.expand(0, 10);
-        this.parentExpression.translateElement(0, 5);
-    }
-    // 生成根号中的左边装饰部分
-    function generateDecoration(radicand) {
-        var shape = new kity.Path(), // 命名为a以便于精简表达式
-        a = SHAPE_DATA_WIDTH, h = radicand.getHeight() / 3, drawer = shape.getDrawer();
-        // 根号尾部左上角开始
-        drawer.moveTo(0, cos20 * a * 6);
-        drawer.lineBy(sin20 * a, cos20 * a);
-        drawer.lineBy(cos20 * a * 3, -sin20 * a * 3);
-        drawer.lineBy(tan20 * h, h);
-        drawer.lineBy(sin20 * a * 3, -cos20 * a * 3);
-        drawer.lineBy(-sin20 * h, -h);
-        drawer.close();
-        return shape.fill("black");
-    }
-    // 根据操作数生成根号的竖直线部分
-    function generateVLine(operand) {
-        var shape = new kity.Path(), h = operand.getHeight(), drawer = shape.getDrawer();
-        drawer.moveTo(tan20 * h, 0);
-        drawer.lineTo(0, h);
-        drawer.lineBy(sin20 * SHAPE_DATA_WIDTH * 3, cos20 * SHAPE_DATA_WIDTH * 3);
-        drawer.lineBy(tan20 * h + sin20 * SHAPE_DATA_WIDTH * 3, -(h + 3 * SHAPE_DATA_WIDTH * cos20));
-        drawer.close();
-        return shape.fill("black");
-    }
-    // 根据操作数生成根号的水平线部分
-    function generateHLine(operand) {
-        // 表达式宽度
-        var w = operand.getWidth() + 2 * SHAPE_DATA_WIDTH;
-        return new kity.Rect(w, 2 * SHAPE_DATA_WIDTH).fill("black");
-    }
-    // 合并根号的各个部分， 并返回根号的关键点位置数据
-    function mergeShape(decoration, vLine, hLine) {
-        var decoBox = decoration.getFixRenderBox(), vLineBox = vLine.getFixRenderBox();
-        vLine.translate(decoBox.width - sin20 * SHAPE_DATA_WIDTH * 3, 0);
-        decoration.translate(0, vLineBox.height - decoBox.height);
-        vLineBox = vLine.getFixRenderBox();
-        hLine.translate(vLineBox.x + vLineBox.width - SHAPE_DATA_WIDTH / cos20, 0);
-        // 返回关键点数据
-        return {
-            x: vLineBox.x + vLineBox.width - SHAPE_DATA_WIDTH / cos20,
-            y: 0
-        };
-    }
-    // 调整整个根号表达式的各个部分： 位置、操作符、被开方数、指数
-    function adjustmentPosition(position, operator, radicand, exponent) {
-        var exponentBox = null, opOffset = {
-            x: 0,
-            y: 0
-        }, opBox = operator.getFixRenderBox();
-        exponent.scale(.66);
-        exponentBox = exponent.getFixRenderBox();
-        if (exponentBox.width > 0 && exponentBox.height > 0) {
-            opOffset.y = exponentBox.height - opBox.height / 2;
-            // 指数不超出根号， 则移动指数
-            if (opOffset.y < 0) {
-                exponent.translate(0, -opOffset.y);
-                opOffset.y = 0;
-            }
-            opOffset.x = exponentBox.width + opBox.height / 2 * tan20 - position.x;
-        }
-        operator.translate(opOffset.x, opOffset.y);
-        radicand.translate(opOffset.x + position.x + SHAPE_DATA_WIDTH, opOffset.y + 2 * SHAPE_DATA_WIDTH);
-    }
-});
-/**
- * 上下结合二元操作符
- * @abstract
- */
-define("operator/binary-opr/up-down", [ "kity", "operator/binary", "operator/operator" ], function(require, exports, modules) {
-    var kity = require("kity");
-    return kity.createClass("UpDownOperator", {
-        base: require("operator/binary"),
-        applyOperand: function(upOperand, downOperand) {
-            throw new Error("applyOperand is abstract");
-        }
-    });
-});
-/**
- * 二元操作符抽象类
- * @abstract
- */
-define("operator/binary", [ "kity", "operator/operator", "def/gtype", "signgroup" ], function(require, exports, modules) {
-    var kity = require("kity");
-    return kity.createClass("BinaryOperator", {
-        base: require("operator/operator"),
-        setParentExpression: function(exp) {
-            this.callBase(exp);
-        }
-    });
-});
-/**
- * 小括号操作符：()
- */
-define("operator/brackets", [ "kity", "font/manager", "operator/operator", "def/gtype", "signgroup" ], function(require, exports, modules) {
-    var kity = require("kity"), FontManager = require("font/manager");
+define("operator/brackets", [ "kity", "char/text", "sysconf", "font/manager", "char/text-factory", "signgroup", "operator/operator", "def/gtype" ], function(require, exports, modules) {
+    var kity = require("kity"), Text = require("char/text"), FontManager = require("font/manager");
     return kity.createClass("BracketsOperator", {
         base: require("operator/operator"),
         constructor: function() {
@@ -4570,32 +7336,16 @@ define("operator/brackets", [ "kity", "font/manager", "operator/operator", "def/
         }
     });
     function generate(exp) {
-        var left = this.getParentExpression().getLeftSymbol(), right = this.getParentExpression().getRightSymbol(), leftPath = FontManager.getCharacterData(left, "KF AMS MAIN"), rightPath = FontManager.getCharacterData(right, "KF AMS MAIN"), group = new kity.Group(), leftOp = new kity.Path(leftPath).fill("black"), rightOp = new kity.Path(rightPath).fill("black"), expSpaceSize = exp.getFixRenderBox(), leftOpSize = null, rightOpSize = null, leftZoom = 1, rightZoom = 1, // 左右空间大小
-        SPACE = 0, offset = 0;
+        var left = this.getParentExpression().getLeftSymbol(), right = this.getParentExpression().getRightSymbol(), fontSize = exp.getFixRenderBox().height, group = new kity.Group(), offset = 0, leftOp = new Text(left, "KF AMS MAIN").fill("black"), rightOp = new Text(right, "KF AMS MAIN").fill("black");
+        leftOp.setFontSize(fontSize);
+        rightOp.setFontSize(fontSize);
         this.addOperatorShape(group.addShape(leftOp).addShape(rightOp));
-        leftOpSize = leftOp.getFixRenderBox();
-        rightOpSize = rightOp.getFixRenderBox();
-        leftZoom = expSpaceSize.height ? expSpaceSize.height / leftOpSize.height : 1;
-        rightZoom = expSpaceSize.height ? expSpaceSize.height / rightOpSize.height : 1;
-        leftOp.scale(leftZoom);
-        rightOp.scale(rightZoom);
-        // 重新获取大小
-        leftOpSize = leftOp.getFixRenderBox();
-        rightOpSize = rightOp.getFixRenderBox();
-        offset -= leftOpSize.x;
-        leftOp.translate(offset, -leftOpSize.y);
-        offset += SPACE + leftOpSize.width - expSpaceSize.x;
+        offset += leftOp.getFixRenderBox().width;
         exp.translate(offset, 0);
-        offset += SPACE + expSpaceSize.width - rightOpSize.x;
-        rightOp.translate(offset, -rightOpSize.y);
-        this.parentExpression.expand(10, 0);
-        this.parentExpression.translateElement(5, 0);
+        offset += exp.getFixRenderBox().width;
+        rightOp.translate(offset, 0);
     }
 });
-/**
- * 组合操作符
- * 操作多个表达式组合在一起
- */
 define("operator/combination", [ "kity", "operator/operator", "def/gtype", "signgroup" ], function(require, exports, modules) {
     var kity = require("kity");
     return kity.createClass("CombinationOperator", {
@@ -4604,104 +7354,212 @@ define("operator/combination", [ "kity", "operator/operator", "def/gtype", "sign
             this.callBase("Combination");
         },
         applyOperand: function() {
-            // 偏移量
-            var offset = 0, // 操作数
-            operands = arguments, // 操作对象最大高度
-            maxHeight = 0, cached = [];
+            var offsetX = 0, offsetY = 0, operands = arguments, maxHeight = 0, maxOffsetTop = 0, maxOffsetBottom = 0, cached = [], offsets = [];
             kity.Utils.each(operands, function(operand) {
-                var box = operand.getFixRenderBox();
+                var box = operand.getFixRenderBox(), offsetY = operand.getOffset();
+                box.height -= offsetY.top + offsetY.bottom;
                 cached.push(box);
+                offsets.push(offsetY);
+                maxOffsetTop = Math.max(offsetY.top, maxOffsetTop);
+                maxOffsetBottom = Math.max(offsetY.bottom, maxOffsetBottom);
                 maxHeight = Math.max(box.height, maxHeight);
             });
             kity.Utils.each(operands, function(operand, index) {
                 var box = cached[index];
-                operand.translate(offset - box.x, (maxHeight - (box.y + box.height)) / 2);
-                offset += box.width;
+                operand.translate(offsetX - box.x, (maxHeight - (box.y + box.height)) / 2 + maxOffsetBottom - offsets[index].bottom);
+                offsetX += box.width;
             });
+            this.parentExpression.setOffset(maxOffsetTop, maxOffsetBottom);
             this.parentExpression.updateBoxSize();
         }
     });
 });
-/*!
- * 上下标控制器`  1``     ``  `   `       `432    1`
- */
-define("operator/common/script-controller", [ "kity" ], function(require) {
-    var kity = require("kity"), defaultOptions = {
+define("operator/common/script-controller", [ "kity", "expression/empty", "sysconf", "expression/expression" ], function(require) {
+    var kity = require("kity"), EmptyExpression = require("expression/empty"), defaultOptions = {
         subOffset: 0,
         supOffset: 0,
-        // 上下标的默认缩放值
         zoom: .66
     };
     return kity.createClass("ScriptController", {
         constructor: function(opObj, target, sup, sub, options) {
-            this.opObj = opObj;
+            this.observer = opObj.getParentExpression();
             this.target = target;
             this.sup = sup;
             this.sub = sub;
             this.options = kity.Utils.extend({}, defaultOptions, options);
         },
-        // 上下标记
         applyUpDown: function() {
             var target = this.target, sup = this.sup, sub = this.sub, options = this.options;
             sup.scale(options.zoom);
             sub.scale(options.zoom);
             var targetBox = target.getFixRenderBox();
-            // 基础空间大小
-            var supBox = sup.getFixRenderBox(), subBox = sub.getFixRenderBox(), maxOffset = Math.max(supBox.height, subBox.height), space = {
-                width: Math.max(targetBox.width, supBox.width, subBox.width),
-                height: maxOffset * 2 + targetBox.height
-            }, targetHeight = targetBox.height, vOffset = 0;
-            if (supBox.height < maxOffset) {
-                vOffset = maxOffset - supBox.height;
+            if (EmptyExpression.isEmpty(sup) && EmptyExpression.isEmpty(sub)) {
+                return {
+                    width: targetBox.width,
+                    height: targetBox.height,
+                    top: 0,
+                    bottom: 0
+                };
+            } else {
+                if (!EmptyExpression.isEmpty(sup) && EmptyExpression.isEmpty(sub)) {
+                    return this.applyUp(target, sup);
+                } else if (EmptyExpression.isEmpty(sup) && !EmptyExpression.isEmpty(sub)) {
+                    return this.applyDown(target, sub);
+                } else {
+                    return this.applyUpDownScript(target, sup, sub);
+                }
             }
-            // 位置调整
-            sup.translate((space.width - supBox.width) / 2, vOffset);
-            target.translate((space.width - targetBox.width) / 2, maxOffset);
-            sub.translate((space.width - subBox.width) / 2, maxOffset + targetBox.height);
+        },
+        applySide: function() {
+            var target = this.target, sup = this.sup, sub = this.sub;
+            if (EmptyExpression.isEmpty(sup) && EmptyExpression.isEmpty(sub)) {
+                var targetRectBox = target.getRenderBox(this.observer);
+                return {
+                    width: targetRectBox.width,
+                    height: targetRectBox.height,
+                    top: 0,
+                    bottom: 0
+                };
+            } else {
+                if (EmptyExpression.isEmpty(sup) && !EmptyExpression.isEmpty(sub)) {
+                    return this.applySideSub(target, sub);
+                } else if (!EmptyExpression.isEmpty(sup) && EmptyExpression.isEmpty(sub)) {
+                    return this.applySideSuper(target, sup);
+                } else {
+                    return this.applySideScript(target, sup, sub);
+                }
+            }
+        },
+        applySideSuper: function(target, sup) {
+            sup.scale(this.options.zoom);
+            var targetRectBox = target.getRenderBox(this.observer), supRectBox = sup.getRenderBox(this.observer), targetMeanline = target.getMeanline(this.observer), supBaseline = sup.getBaseline(this.observer), positionline = targetMeanline, diff = supBaseline - positionline, space = {
+                top: 0,
+                bottom: 0,
+                width: targetRectBox.width + supRectBox.width,
+                height: targetRectBox.height
+            };
+            sup.translate(targetRectBox.width, 0);
+            if (this.options.supOffset) {
+                sup.translate(this.options.supOffset, 0);
+            }
+            if (diff > 0) {
+                target.translate(0, diff);
+                space.bottom = diff;
+                space.height += diff;
+            } else {
+                sup.translate(0, -diff);
+            }
             return space;
         },
-        // 侧面标记
-        applySide: function() {
-            var target = this.target, sup = this.sup, sub = this.sub, options = this.options;
-            sup.scale(options.zoom);
-            sub.scale(options.zoom);
-            var targetBox = target.getFixRenderBox();
-            // 默认字符高度
-            targetBox.height = targetBox.height || 50;
-            // 基础空间大小
-            var supBox = sup.getFixRenderBox(), subBox = sub.getFixRenderBox(), maxOffset = Math.max(supBox.height, subBox.height), space = {
-                width: targetBox.width + Math.max(supBox.width + options.supOffset, subBox.width + options.subOffset),
-                height: 0
-            }, targetHeight = targetBox.height, vOffset = 0;
-            // 水平方向调整
-            sup.translate(targetBox.width + options.supOffset, 0);
-            sub.translate(targetBox.width + options.subOffset, 0);
-            if (maxOffset * 2 < targetHeight) {
-                sub.translate(0, targetHeight - subBox.height);
-                space.height = targetHeight;
-            } else {
-                vOffset = maxOffset - targetHeight / 2;
-                target.translate(0, vOffset);
-                if (supBox.height < targetHeight / 2) {
-                    sup.translate(0, vOffset);
-                } else {
-                    sup.translate(0, maxOffset - supBox.height);
-                }
-                if (subBox.height < targetHeight / 2) {
-                    sub.translate(0, vOffset + targetHeight - subBox.height);
-                } else {
-                    sub.translate(0, maxOffset * 2 - subBox.height);
-                }
-                space.height = maxOffset * 2;
+        applySideSub: function(target, sub) {
+            sub.scale(this.options.zoom);
+            var targetRectBox = target.getRenderBox(this.observer), subRectBox = sub.getRenderBox(this.observer), subOffset = sub.getOffset(), targetBaseline = target.getBaseline(this.observer), subPosition = (subRectBox.height + subOffset.top + subOffset.bottom) / 2, diff = targetRectBox.height - targetBaseline - subPosition, space = {
+                top: 0,
+                bottom: 0,
+                width: targetRectBox.width + subRectBox.width,
+                height: targetRectBox.height
+            };
+            sub.translate(targetRectBox.width, subOffset.top + targetBaseline - subPosition);
+            if (this.options.subOffset) {
+                sub.translate(this.options.subOffset, 0);
             }
+            if (diff < 0) {
+                space.top = -diff;
+                space.height -= diff;
+            }
+            return space;
+        },
+        applySideScript: function(target, sup, sub) {
+            sup.scale(this.options.zoom);
+            sub.scale(this.options.zoom);
+            var targetRectBox = target.getRenderBox(this.observer), subRectBox = sub.getRenderBox(this.observer), supRectBox = sup.getRenderBox(this.observer), targetMeanline = target.getMeanline(this.observer), targetBaseline = target.getBaseline(this.observer), supBaseline = sup.getBaseline(this.observer), subAscenderline = sub.getAscenderline(this.observer), supPosition = targetMeanline, subPosition = targetMeanline + (targetBaseline - targetMeanline) * 2 / 3, topDiff = supPosition - supBaseline, bottomDiff = targetRectBox.height - subPosition - (subRectBox.height - subAscenderline), space = {
+                top: 0,
+                bottom: 0,
+                width: targetRectBox.width + Math.max(subRectBox.width, supRectBox.width),
+                height: targetRectBox.height
+            };
+            sup.translate(targetRectBox.width, topDiff);
+            sub.translate(targetRectBox.width, subPosition - subAscenderline);
+            if (this.options.supOffset) {
+                sup.translate(this.options.supOffset, 0);
+            }
+            if (this.options.subOffset) {
+                sub.translate(this.options.subOffset, 0);
+            }
+            if (topDiff > 0) {
+                if (bottomDiff < 0) {
+                    targetRectBox.height -= bottomDiff;
+                    space.top = -bottomDiff;
+                }
+            } else {
+                target.translate(0, -topDiff);
+                sup.translate(0, -topDiff);
+                sub.translate(0, -topDiff);
+                space.height -= topDiff;
+                if (bottomDiff > 0) {
+                    space.bottom = -topDiff;
+                } else {
+                    space.height -= bottomDiff;
+                    topDiff = -topDiff;
+                    bottomDiff = -bottomDiff;
+                    if (topDiff > bottomDiff) {
+                        space.bottom = topDiff - bottomDiff;
+                    } else {
+                        space.top = bottomDiff - topDiff;
+                    }
+                }
+            }
+            return space;
+        },
+        applyUp: function(target, sup) {
+            var supBox = sup.getFixRenderBox(), targetBox = target.getFixRenderBox(), space = {
+                width: Math.max(targetBox.width, supBox.width),
+                height: supBox.height + targetBox.height,
+                top: 0,
+                bottom: supBox.height
+            };
+            sup.translate((space.width - supBox.width) / 2, 0);
+            target.translate((space.width - targetBox.width) / 2, supBox.height);
+            return space;
+        },
+        applyDown: function(target, sub) {
+            var subBox = sub.getFixRenderBox(), targetBox = target.getFixRenderBox(), space = {
+                width: Math.max(targetBox.width, subBox.width),
+                height: subBox.height + targetBox.height,
+                top: subBox.height,
+                bottom: 0
+            };
+            sub.translate((space.width - subBox.width) / 2, targetBox.height);
+            target.translate((space.width - targetBox.width) / 2, 0);
             return space;
         }
     });
 });
-/**
- * 函数操作符
- */
-define("operator/func", [ "kity", "char/text", "font/manager", "signgroup", "operator/common/script-controller", "operator/operator", "def/gtype" ], function(require, exports, modules) {
+define("operator/fraction", [ "kity", "sysconf", "font/map/kf-ams-main", "font/map/kf-ams-cal", "font/map/kf-ams-frak", "font/map/kf-ams-bb", "font/map/kf-ams-roman", "operator/operator", "def/gtype", "signgroup" ], function(require, exports, modules) {
+    var kity = require("kity"), ZOOM = require("sysconf").zoom;
+    return kity.createClass("FractionOperator", {
+        base: require("operator/operator"),
+        constructor: function() {
+            this.callBase("Fraction");
+        },
+        applyOperand: function(upOperand, downOperand) {
+            upOperand.scale(ZOOM);
+            downOperand.scale(ZOOM);
+            var upWidth = Math.ceil(upOperand.getWidth()), downWidth = Math.ceil(downOperand.getWidth()), upHeight = Math.ceil(upOperand.getHeight()), downHeight = Math.ceil(downOperand.getHeight()), overflow = 3, padding = 1, maxWidth = Math.max(upWidth, downWidth), maxHeight = Math.max(upHeight, downHeight), operatorShape = generateOperator(maxWidth, overflow);
+            this.addOperatorShape(operatorShape);
+            upOperand.translate((maxWidth - upWidth) / 2 + overflow, 0);
+            operatorShape.translate(0, upHeight + 1);
+            downOperand.translate((maxWidth - downWidth) / 2 + overflow, upHeight + operatorShape.getHeight() + 1 * 2);
+            this.parentExpression.setOffset(maxHeight - upHeight, maxHeight - downHeight);
+            this.parentExpression.expand(padding * 2, padding * 2);
+            this.parentExpression.translateElement(padding, padding);
+        }
+    });
+    function generateOperator(width, overflow) {
+        return new kity.Rect(width + overflow * 2, 1).fill("black");
+    }
+});
+define("operator/func", [ "kity", "char/text", "sysconf", "font/manager", "char/text-factory", "signgroup", "operator/common/script-controller", "expression/empty", "operator/operator", "def/gtype" ], function(require, exports, modules) {
     var kity = require("kity"), Text = require("char/text"), ScriptController = require("operator/common/script-controller");
     return kity.createClass("FunctionOperator", {
         base: require("operator/operator"),
@@ -4709,16 +7567,13 @@ define("operator/func", [ "kity", "char/text", "font/manager", "signgroup", "ope
             this.callBase("Function: " + funcName);
             this.funcName = funcName;
         },
-        /*
-         * 积分操作符应用操作数
-         * @param expr 函数表达式
-         * @param sup 上限
-         * @param sub 下限
-         */
         applyOperand: function(expr, sup, sub) {
-            var opShape = generateOperator.call(this), padding = 5, expBox = expr.getFixRenderBox(), space = new ScriptController(this, opShape, sup, sub, {
+            var opShape = generateOperator.call(this), expBox = expr.getFixRenderBox(), scriptHanlder = this.parentExpression.isSideScript() ? "applySide" : "applyUpDown", space = new ScriptController(this, opShape, sup, sub, {
                 zoom: .5
-            }).applyUpDown(), diff = (space.height - expBox.height) / 2;
+            })[scriptHanlder](), padding = 5, diff = (space.height + space.top + space.bottom - expBox.height) / 2;
+            opShape.translate(0, space.top);
+            sup.translate(0, space.top);
+            sub.translate(0, space.top);
             if (diff >= 0) {
                 expr.translate(space.width + padding, diff);
             } else {
@@ -4732,36 +7587,34 @@ define("operator/func", [ "kity", "char/text", "font/manager", "signgroup", "ope
             this.parentExpression.translateElement(padding, padding);
         }
     });
-    /* 返回操作符对象 */
     function generateOperator() {
         var opShape = new Text(this.funcName, "KF AMS ROMAN");
         this.addOperatorShape(opShape);
         return opShape;
     }
 });
-/**
- * 积分操作符：∫
- */
-define("operator/integration", [ "kity", "operator/common/script-controller", "operator/operator", "def/gtype", "signgroup" ], function(require, exports, modules) {
+define("operator/integration", [ "kity", "operator/common/script-controller", "expression/empty", "operator/operator", "def/gtype", "signgroup" ], function(require, exports, modules) {
     var kity = require("kity"), ScriptController = require("operator/common/script-controller");
     return kity.createClass("IntegrationOperator", {
         base: require("operator/operator"),
         constructor: function(type) {
             this.callBase("Integration");
-            // 默认是普通单重积分
             this.opType = type || 1;
         },
         setType: function(type) {
             this.opType = type | 0;
         },
-        // 重置类型
         resetType: function() {
             this.opType = 1;
         },
         applyOperand: function(exp, sup, sub) {
-            var opShape = this.getOperatorShape(), padding = 5, expBox = exp.getFixRenderBox(), space = new ScriptController(this, opShape, sup, sub, {
+            var opShape = this.getOperatorShape(), padding = 3, expBox = exp.getFixRenderBox(), space = new ScriptController(this, opShape, sup, sub, {
+                supOffset: 3,
                 subOffset: -15
-            }).applySide(), diff = (space.height - expBox.height) / 2;
+            }).applySide(), diff = (space.height + space.top - expBox.height) / 2;
+            opShape.translate(0, space.top);
+            sup.translate(0, space.top);
+            sub.translate(0, space.top);
             if (diff >= 0) {
                 exp.translate(space.width + padding, diff);
             } else {
@@ -4779,24 +7632,23 @@ define("operator/integration", [ "kity", "operator/common/script-controller", "o
             opGroup.addShape(opShape);
             group.addShape(opBox);
             group.addShape(opGroup);
+            this.addOperatorShape(group);
             for (var i = 1; i < this.opType; i++) {
                 tmpShape = new kity.Use(opShape).translate(opShape.getWidth() / 2 * i, 0);
-                tmpShape.translate(10 * i, 0);
                 opGroup.addShape(tmpShape);
             }
-            tmpShape = null;
             opGroup.scale(1.6);
-            this.addOperatorShape(group);
-            opGroup.translate(2, 15);
-            opBox.setSize(opGroup.getFixRenderBox().width + 4, opGroup.getFixRenderBox().height + 25);
+            tmpShape = null;
+            group.getBaseline = function() {
+                return opGroup.getFixRenderBox().height;
+            };
+            group.getMeanline = function() {
+                return 10;
+            };
             return group;
         }
     });
 });
-/**
- * 操作符抽象类
- * @abstract
- */
 define("operator/operator", [ "kity", "def/gtype", "signgroup" ], function(require, exports, modules) {
     var kity = require("kity"), GTYPE = require("def/gtype");
     return kity.createClass("Operator", {
@@ -4804,11 +7656,8 @@ define("operator/operator", [ "kity", "def/gtype", "signgroup" ], function(requi
         constructor: function(operatorName) {
             this.callBase();
             this.type = GTYPE.OP;
-            // 该操作符所属的表达式
             this.parentExpression = null;
-            // 操作符名称
             this.operatorName = operatorName;
-            // 操作符图形
             this.operatorShape = new kity.Group();
             this.addShape(this.operatorShape);
         },
@@ -4824,7 +7673,6 @@ define("operator/operator", [ "kity", "def/gtype", "signgroup" ], function(requi
         clearParentExpression: function() {
             this.parentExpression = null;
         },
-        // 提供给具体实现类附加其绘制的操作符图形的接口
         addOperatorShape: function(shpae) {
             return this.operatorShape.addShape(shpae);
         },
@@ -4833,10 +7681,81 @@ define("operator/operator", [ "kity", "def/gtype", "signgroup" ], function(requi
         }
     });
 });
-/**
- * 上下标操作符
- */
-define("operator/script", [ "kity", "operator/common/script-controller", "operator/operator", "def/gtype", "signgroup" ], function(require, exports, module) {
+define("operator/radical", [ "kity", "operator/operator", "def/gtype", "signgroup" ], function(require, exports, modules) {
+    var kity = require("kity"), SHAPE_DATA_WIDTH = 1, radians = 2 * Math.PI / 360, sin15 = Math.sin(15 * radians), cos15 = Math.cos(15 * radians), tan15 = Math.tan(15 * radians);
+    return kity.createClass("RadicalOperator", {
+        base: require("operator/operator"),
+        constructor: function() {
+            this.callBase("Radical");
+        },
+        applyOperand: function(radicand, exponent) {
+            generateOperator.call(this, radicand, exponent);
+        }
+    });
+    function generateOperator(radicand, exponent) {
+        var decoration = generateDecoration(radicand), vLine = generateVLine(radicand), padding = 5, hLine = generateHLine(radicand);
+        this.addOperatorShape(decoration);
+        this.addOperatorShape(vLine);
+        this.addOperatorShape(hLine);
+        adjustmentPosition.call(this, mergeShape(decoration, vLine, hLine), this.operatorShape, radicand, exponent);
+        this.parentExpression.expand(0, padding * 2);
+        this.parentExpression.translateElement(0, padding);
+    }
+    function generateDecoration(radicand) {
+        var shape = new kity.Path(), a = SHAPE_DATA_WIDTH, h = radicand.getHeight() / 3, drawer = shape.getDrawer();
+        drawer.moveTo(0, cos15 * a * 6);
+        drawer.lineBy(sin15 * a, cos15 * a);
+        drawer.lineBy(cos15 * a * 3, -sin15 * a * 3);
+        drawer.lineBy(tan15 * h, h);
+        drawer.lineBy(sin15 * a * 3, -cos15 * a * 3);
+        drawer.lineBy(-sin15 * h, -h);
+        drawer.close();
+        return shape.fill("black");
+    }
+    function generateVLine(operand) {
+        var shape = new kity.Path(), h = operand.getHeight() * .9, drawer = shape.getDrawer();
+        drawer.moveTo(tan15 * h, 0);
+        drawer.lineTo(0, h);
+        drawer.lineBy(sin15 * SHAPE_DATA_WIDTH * 3, cos15 * SHAPE_DATA_WIDTH * 3);
+        drawer.lineBy(tan15 * h + sin15 * SHAPE_DATA_WIDTH * 3, -(h + 3 * SHAPE_DATA_WIDTH * cos15));
+        drawer.close();
+        return shape.fill("black");
+    }
+    function generateHLine(operand) {
+        var w = operand.getWidth() + 2 * SHAPE_DATA_WIDTH;
+        return new kity.Rect(w, 2 * SHAPE_DATA_WIDTH).fill("black");
+    }
+    function mergeShape(decoration, vLine, hLine) {
+        var decoBox = decoration.getFixRenderBox(), vLineBox = vLine.getFixRenderBox();
+        vLine.translate(decoBox.width - sin15 * SHAPE_DATA_WIDTH * 3, 0);
+        decoration.translate(0, vLineBox.height - decoBox.height);
+        vLineBox = vLine.getFixRenderBox();
+        hLine.translate(vLineBox.x + vLineBox.width - SHAPE_DATA_WIDTH / cos15, 0);
+        return {
+            x: vLineBox.x + vLineBox.width - SHAPE_DATA_WIDTH / cos15,
+            y: 0
+        };
+    }
+    function adjustmentPosition(position, operator, radicand, exponent) {
+        var exponentBox = null, opOffset = {
+            x: 0,
+            y: 0
+        }, opBox = operator.getFixRenderBox();
+        exponent.scale(.66);
+        exponentBox = exponent.getFixRenderBox();
+        if (exponentBox.width > 0 && exponentBox.height > 0) {
+            opOffset.y = exponentBox.height - opBox.height / 2;
+            if (opOffset.y < 0) {
+                exponent.translate(0, -opOffset.y);
+                opOffset.y = 0;
+            }
+            opOffset.x = exponentBox.width + opBox.height / 2 * tan15 - position.x;
+        }
+        operator.translate(opOffset.x, opOffset.y);
+        radicand.translate(opOffset.x + position.x + SHAPE_DATA_WIDTH, opOffset.y + 2 * SHAPE_DATA_WIDTH);
+    }
+});
+define("operator/script", [ "kity", "operator/common/script-controller", "expression/empty", "operator/operator", "def/gtype", "signgroup" ], function(require, exports, module) {
     var kity = require("kity"), ScriptController = require("operator/common/script-controller");
     return kity.createClass("ScriptOperator", {
         base: require("operator/operator"),
@@ -4844,17 +7763,14 @@ define("operator/script", [ "kity", "operator/common/script-controller", "operat
             this.callBase(operatorName || "Script");
         },
         applyOperand: function(operand, sup, sub) {
-            var opShape = this.getOperatorShape(), padding = 5, space = new ScriptController(this, operand, sup, sub).applySide();
-            this.parentExpression.setBoxSize(space.width, space.height);
-            this.parentExpression.expand(0, padding * 2);
-            this.parentExpression.translateElement(0, padding);
+            var opShape = this.getOperatorShape(), padding = 1, parent = this.parentExpression, space = new ScriptController(this, operand, sup, sub).applySide();
+            space && parent.setOffset(space.top, space.bottom);
+            parent.expand(4, padding * 2);
+            parent.translateElement(2, padding);
         }
     });
 });
-/**
- * 求和操作符：∑
- */
-define("operator/summation", [ "kity", "operator/common/script-controller", "operator/operator", "def/gtype", "signgroup" ], function(require, exports, modules) {
+define("operator/summation", [ "kity", "operator/common/script-controller", "expression/empty", "operator/operator", "def/gtype", "signgroup" ], function(require, exports, modules) {
     var kity = require("kity"), ScriptController = require("operator/common/script-controller");
     return kity.createClass("SummationOperator", {
         base: require("operator/operator"),
@@ -4863,16 +7779,17 @@ define("operator/summation", [ "kity", "operator/common/script-controller", "ope
             this.displayType = "equation";
         },
         applyOperand: function(expr, sup, sub) {
-            var opShape = this.getOperatorShape(), expBox = expr.getFixRenderBox(), padding = 5, space = new ScriptController(this, opShape, sup, sub).applyUpDown(), diff = (space.height - expBox.height) / 2;
+            var opShape = this.getOperatorShape(), expBox = expr.getFixRenderBox(), padding = 0, space = new ScriptController(this, opShape, sup, sub).applyUpDown(), diff = (space.height - space.top - space.bottom - expBox.height) / 2;
             if (diff >= 0) {
-                expr.translate(space.width + padding, diff);
+                expr.translate(space.width + padding, diff + space.bottom);
             } else {
                 diff = -diff;
                 opShape.translate(0, diff);
                 sup.translate(0, diff);
                 sub.translate(0, diff);
-                expr.translate(space.width + padding, 0);
+                expr.translate(space.width + padding, space.bottom);
             }
+            this.parentExpression.setOffset(space.top, space.bottom);
             this.parentExpression.expand(padding, padding * 2);
             this.parentExpression.translateElement(padding, padding);
         },
@@ -4894,9 +7811,33 @@ define("operator/summation", [ "kity", "operator/common/script-controller", "ope
         }
     });
 });
-/**
- * Created by hn on 13-12-3.
- */
+define("resource-manager", [ "kity", "sysconf", "font/map/kf-ams-main", "font/map/kf-ams-cal", "font/map/kf-ams-frak", "font/map/kf-ams-bb", "font/map/kf-ams-roman", "font/installer", "font/manager", "jquery", "font/checker-tpl", "formula", "def/gtype", "base/output", "fpaper" ], function(require) {
+    var kity = require("kity"), cbList = [], RES_CONF = require("sysconf").resource, FontInstall = require("font/installer"), Formula = require("formula"), __readyState = false, inited = false;
+    return {
+        ready: function(cb, options) {
+            if (!inited) {
+                inited = true;
+                init(options);
+            }
+            if (__readyState) {
+                window.setTimeout(function() {
+                    cb(Formula);
+                }, 0);
+            } else {
+                cbList.push(cb);
+            }
+        }
+    };
+    function init(options) {
+        var options = kity.Utils.extend({}, RES_CONF, options);
+        new FontInstall(document, options.path).mount(complete);
+    }
+    function complete() {
+        kity.Utils.each(cbList, function(cb) {
+            cb(Formula);
+        });
+    }
+});
 define("signgroup", [ "kity", "def/gtype" ], function(require, exports, module) {
     var kity = require("kity"), GTYPE = require("def/gtype");
     return kity.createClass("SignGroup", {
@@ -4935,6 +7876,25 @@ define("signgroup", [ "kity", "def/gtype" ], function(require, exports, module) 
         addedCall: function() {}
     });
 });
+define("sysconf", [ "font/map/kf-ams-main", "font/map/kf-ams-cal", "font/map/kf-ams-frak", "font/map/kf-ams-bb", "font/map/kf-ams-roman" ], function(require) {
+    return {
+        zoom: .66,
+        font: {
+            meanline: Math.round(380 / 1e3 * 50),
+            baseline: Math.round(800 / 1e3 * 50),
+            baseHeight: 50,
+            list: [ require("font/map/kf-ams-main"), require("font/map/kf-ams-cal"), require("font/map/kf-ams-frak"), require("font/map/kf-ams-bb"), require("font/map/kf-ams-roman") ]
+        },
+        resource: {
+            path: "src/resource/"
+        },
+        func: {
+            "ud-script": {
+                limit: true
+            }
+        }
+    };
+});
 
 /**
  * 模块暴露
@@ -4947,6 +7907,10 @@ define("signgroup", [ "kity", "def/gtype" ], function(require, exports, module) 
     kity.extendClass(kity.Shape, {
         getFixRenderBox: function () {
             return this.getRenderBox( this.container.container );
+        },
+
+        getTranslate: function () {
+            return this.transform.translate;
         }
     });
 
@@ -4955,7 +7919,7 @@ define("signgroup", [ "kity", "def/gtype" ], function(require, exports, module) 
         global.kf = {
 
             // base
-            Formula: require( "formula" ),
+            ResourceManager: require( "resource-manager" ),
             Operator: require( "operator/operator" ),
 
             // expression
@@ -4966,9 +7930,9 @@ define("signgroup", [ "kity", "def/gtype" ], function(require, exports, module) 
             CombinationExpression: require( "expression/compound-exp/combination" ),
             FunctionExpression: require( "expression/compound-exp/func" ),
 
-            FractionExpression: require( "expression/compound-exp/binary-exp/fraction" ),
+            FractionExpression: require( "expression/compound-exp/fraction" ),
             IntegrationExpression: require( "expression/compound-exp/integration" ),
-            RadicalExpression: require( "expression/compound-exp/binary-exp/radical" ),
+            RadicalExpression: require( "expression/compound-exp/radical" ),
             ScriptExpression: require( "expression/compound-exp/script" ),
             SuperscriptExpression: require( "expression/compound-exp/binary-exp/superscript" ),
             SubscriptExpression: require( "expression/compound-exp/binary-exp/subscript" ),
