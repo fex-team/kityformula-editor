@@ -137,8 +137,6 @@
     position: absolute;
     top: 0;
     left: -1px;
-    overflow-x: hidden;
-    overflow-y: auto;
 }
 
 .kf-editor-ui-area .kf-editor-ui-box {
@@ -424,17 +422,17 @@
     -moz-transition: all 0.1s linear;
     transition: all 0.1s linear;
 
-    -webkit-transform: scale( 0.76, 0.76 );
-    -moz-transform: scale( 0.76, 0.76 );
-    transform: scale( 0.76, 0.76 );
+    -webkit-transform: scale( 0.76 );
+    -moz-transform: scale( 0.76 );
+    transform: scale( 0.76 );
 }
 
 .kf-editor-ui-enabled .kf-editor-ui-area-item-inner:HOVER {
     border-color: #dff3df;
 
-    -webkit-transform: scale( 1, 1 );
-    -moz-transform: scale( 1, 1 );
-    transform: scale( 1, 1 );
+    -webkit-transform: scale( 1 );
+    -moz-transform: scale( 1 );
+    transform: scale( 1 );
 }
 
 .kf-editor-ui-area-item-img {

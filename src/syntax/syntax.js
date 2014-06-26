@@ -43,8 +43,8 @@ define( function ( require ) {
             },
 
             initComponents: function () {
-                this.components[ 'move' ] = new MoveComponent( this, this.kfEditor );
-                this.components[ 'delete' ] = new DeleteComponent( this, this.kfEditor );
+                this.components.move = new MoveComponent( this, this.kfEditor );
+                this.components.delete = new DeleteComponent( this, this.kfEditor );
             },
 
             initServices: function () {
@@ -99,7 +99,7 @@ define( function ( require ) {
 
                 this.kfEditor.registerService( "syntax.get.root", this, {
                     getRootObject: this.getRootObject
-                } )
+                } );
 
                 this.kfEditor.registerService( "syntax.update.record.cursor", this, {
                     updateCursor: this.updateCursor
@@ -348,7 +348,7 @@ define( function ( require ) {
                     str: resultStr,
                     startOffset: startOffset,
                     endOffset: endOffset
-                }
+                };
 
             },
 
@@ -396,7 +396,7 @@ define( function ( require ) {
                     str: resultStr,
                     startOffset: strStartIndex,
                     endOffset: strEndIndex
-                }
+                };
 
             },
 

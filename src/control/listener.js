@@ -30,9 +30,9 @@ define( function ( require, exports, module ) {
 
         initComponents: function () {
 
-            this.components[ "location" ] = new LocationComponent( this, this.kfEditor );
-            this.components[ "selection" ] = new SelectionComponent( this, this.kfEditor );
-            this.components[ "input" ] = new InputComponent( this, this.kfEditor );
+            this.components.location= new LocationComponent( this, this.kfEditor );
+            this.components.selection = new SelectionComponent( this, this.kfEditor );
+            this.components.input = new InputComponent( this, this.kfEditor );
 
         }
 

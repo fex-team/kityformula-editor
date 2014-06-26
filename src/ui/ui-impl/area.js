@@ -384,8 +384,4 @@ define( function ( require ) {
 
     return Area;
 
-    function getRect ( node ) {
-        return node.getBoundingClientRect();
-    }
-
 } );

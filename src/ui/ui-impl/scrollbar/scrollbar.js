@@ -127,7 +127,9 @@ define( function ( require ) {
                 container = this.container;
 
             for ( var wgtName in widgets ) {
-                container.appendChild( widgets[ wgtName ] );
+                if ( widgets.hasOwnProperty( wgtName ) ) {
+                    container.appendChild( widgets[ wgtName ] );
+                }
             }
 
             widgets.thumb.appendChild( widgets.thumbBody );
@@ -312,7 +314,7 @@ define( function ( require ) {
 
         } );
 
-        Utils.addEvent( comp.container.ownerDocument, "mouseup", function ( e ) {
+        Utils.addEvent( comp.container.ownerDocument, "mouseup", function () {
 
             isMoving = false;
             startPoint = 0;

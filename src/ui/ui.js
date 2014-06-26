@@ -2,7 +2,7 @@
  * Created by hn on 14-3-17.
  */
 
-define( function ( require, exports, modules ) {
+define( function ( require ) {
 
     var kity = require( "kity"),
 
@@ -83,7 +83,7 @@ define( function ( require, exports, modules ) {
 
             },
 
-            updateContainerSize: function ( container, toolbar, editArea, canvasContainer ) {
+            updateContainerSize: function ( container, toolbar, editArea ) {
 
                 var containerBox = container.getBoundingClientRect(),
                     toolbarBox = toolbar.getBoundingClientRect();
@@ -180,7 +180,7 @@ define( function ( require, exports, modules ) {
 
                     // 更新滚动条， 参数是：滚动条所控制的内容长度
                     this.kfEditor.requestService( "ui.update.scrollbar", contentRect.width );
-                    this.kfEditor.requestService( "ui.relocation.scrollbar" )
+                    this.kfEditor.requestService( "ui.relocation.scrollbar" );
 
                 } else {
 

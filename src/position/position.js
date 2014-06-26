@@ -9,9 +9,6 @@ define( function ( require ) {
 
         kfUtils = require( "base/utils" ),
 
-        // 表达式的内容组"标签"
-        CONTENT_DATA_TYPE = "kf-editor-exp-content-box",
-
         PositionComponenet = kity.createClass( 'PositionComponenet', {
 
             constructor: function ( kfEditor ) {
@@ -245,10 +242,6 @@ define( function ( require ) {
         } else {
             return null;
         }
-
-    }
-
-    function getWrap ( isAllowWrap ) {
 
     }
 

@@ -22,7 +22,7 @@ define( function ( require ) {
 
             initComponents: function () {
 
-                this.components[ 'listener' ] = new ListenerComponent( this, this.kfEditor );
+                this.components.listener = new ListenerComponent( this, this.kfEditor );
 
             }
 

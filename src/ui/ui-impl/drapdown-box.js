@@ -6,8 +6,6 @@ define( function ( require ) {
 
     var kity = require( "kity" ),
 
-        PREFIX = "kf-editor-ui-",
-
         // UiUitls
         $$ = require( "ui/ui-impl/ui-utils" ),
 

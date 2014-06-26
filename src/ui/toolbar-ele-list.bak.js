@@ -686,7 +686,7 @@ define( function ( require ) {
             list[ 0 ].values[ index ] = {
                 key: "\\mathcal{" + item + "}",
                 img: item.toLowerCase()
-            }
+            };
 
         } );
 
@@ -697,7 +697,7 @@ define( function ( require ) {
                 img: item.replace( /[A-Z]/, function ( match ) {
                     return "u" + match.toLowerCase();
                 } )
-            }
+            };
 
         } );
 
@@ -706,7 +706,7 @@ define( function ( require ) {
             list[ 2 ].values[ index ] = {
                 key: "\\mathbb{" + item + "}",
                 img: item.toLowerCase()
-            }
+            };
 
         } );
 
@@ -717,7 +717,7 @@ define( function ( require ) {
                 img: item.replace( /[A-Z]/, function ( match ) {
                     return "u" + match.toLowerCase();
                 } )
-            }
+            };
 
         } );
 

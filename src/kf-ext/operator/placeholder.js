@@ -6,7 +6,6 @@ define( function ( require, exports, modules ) {
 
     var kity = require( "kity" ),
         FILL_COLOR = require( "sysconf" ).rootPlaceholder.color,
-        FONT_SIZE = require( "sysconf" ).rootPlaceholder.fontsize,
         SELECT_COLOR = require( "kf-ext/def" ).selectColor,
         ALL_SELECT_COLOR = require( "kf-ext/def" ).allSelectColor;
 

@@ -75,7 +75,7 @@ define( function ( require ) {
 
         getClassList: function ( node ) {
 
-            return node.classList || new ClassList( node );;
+            return node.classList || new ClassList( node );
 
         }
 
@@ -117,7 +117,7 @@ define( function ( require ) {
             var index = this.classes.indexOf( className );
 
             if ( index !== -1 ) {
-                this.classes = this.classes.splice( index, 1 );
+                this.classes.splice( index, 1 );
                 this._update();
             }
 

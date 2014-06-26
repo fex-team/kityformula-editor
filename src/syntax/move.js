@@ -271,7 +271,6 @@ define( function ( require, exports, module ) {
     function locateOuterLeftIndex ( moveComponent, groupNode ) {
 
         var kfEditor = moveComponent.kfEditor,
-            syntaxComponent = moveComponent.parentComponent,
             outerGroupInfo = null,
             groupInfo = null;
 
@@ -502,7 +501,7 @@ define( function ( require, exports, module ) {
     }
 
     function isContainerNode ( node ) {
-        return node.getAttribute( "data-type" ) === "kf-editor-group"
+        return node.getAttribute( "data-type" ) === "kf-editor-group";
     }
 
     function isGroupNode ( node ) {

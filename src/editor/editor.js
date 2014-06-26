@@ -109,9 +109,9 @@ define( function ( require ) {
 
             var _self = this;
 
-            Utils.each( COMPONENTS, function ( component, name ) {
+            Utils.each( COMPONENTS, function ( Component, name ) {
 
-                new component( _self, _self.options[ name ] );
+                new Component( _self, _self.options[ name ] );
 
             } );
 

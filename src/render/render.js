@@ -171,8 +171,6 @@ define( function ( require ) {
 
             initCommands: function () {
 
-                var _self = this;
-
                 this.kfEditor.registerCommand( "render", this, function ( str ) {
                     this.render( str );
                     this.kfEditor.requestService( "ui.update.canvas.view" );
@@ -356,7 +354,6 @@ define( function ( require ) {
             clearSelect: function () {
 
                 var box = null,
-                    transform = null,
                     currentSelect = this.record.select.lastSelect;
 
                 if ( !currentSelect || !currentSelect.node.ownerSVGElement ) {

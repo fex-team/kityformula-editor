@@ -375,8 +375,7 @@ define( function ( require, exports, module ) {
 
             var bigBoundingGroup = null,
                 targetGroup = startGroupInfo.groupObj,
-                groupNode = null,
-                cursorInfo = {};
+                groupNode = null;
 
             while ( bigBoundingGroup = this.kfEditor.requestService( "position.get.group.info", targetGroup ) ) {
 

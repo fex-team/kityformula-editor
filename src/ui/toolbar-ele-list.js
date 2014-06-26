@@ -632,7 +632,7 @@ define( function ( require ) {
 
         kity.Utils.each( list[ 1 ].values, function ( item, index ) {
 
-            list[ 1 ].values[ index ] = "mathfrak{" + item + "}"
+            list[ 1 ].values[ index ] = "mathfrak{" + item + "}";
 
         } );
 

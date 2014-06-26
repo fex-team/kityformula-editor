@@ -81,8 +81,7 @@ define( function ( require, exports, module ) {
 
         updateCursorInfo: function ( evt ) {
 
-            var cursorInfo = null,
-                wrapNode = null,
+            var wrapNode = null,
                 groupInfo = null,
                 index = -1;
 

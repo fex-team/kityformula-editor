@@ -30,6 +30,7 @@ define( function ( require ) {
 
             },
 
+            // 预定义的方法留空
             onselectHandler: function ( index, oldIndex ) {},
 
             setSelectHandler: function ( selectHandler ) {
